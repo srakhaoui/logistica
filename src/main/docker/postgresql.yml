@@ -1,0 +1,11 @@
+version: '2'
+services:
+  logistica-postgresql:
+    image: postgres:11.5
+    # volumes:
+    #     - ~/volumes/jhipster/logistica/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=logistica
+      - POSTGRES_PASSWORD=
+    ports:
+      - 5432:5432
