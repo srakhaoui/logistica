@@ -10,5 +10,8 @@ eg $input-color: red;
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
 @import '~bootswatch/dist/litera/bootswatch';
-
+a.nav-link {
+	color: white;
+}
+@import "~@ng-select/ng-select/themes/default.theme.css";
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */
