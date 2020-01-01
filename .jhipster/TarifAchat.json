@@ -1,0 +1,46 @@
+{
+    "name": "TarifAchat",
+    "fields": [
+        {
+            "fieldName": "unite",
+            "fieldType": "Unite",
+            "fieldValues": "Tonne,M3,Voyage",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "prix",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "fournisseur",
+            "otherEntityRelationshipName": "tarifAchat",
+            "relationshipName": "fournisseur",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "produit",
+            "otherEntityRelationshipName": "tarifAchat",
+            "relationshipName": "produit",
+            "otherEntityField": "code"
+        }
+    ],
+    "changelogDate": "20200101112154",
+    "entityTableName": "tarif_achat",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

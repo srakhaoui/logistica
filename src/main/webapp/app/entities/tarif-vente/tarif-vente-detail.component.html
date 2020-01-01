@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tarifVente">
+            <h2><span jhiTranslate="logisticaApp.tarifVente.detail.title">Tarif Vente</span> {{tarifVente.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="logisticaApp.tarifVente.unite">Unite</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'logisticaApp.Unite.' + tarifVente.unite}}">{{tarifVente.unite}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.tarifVente.prix">Prix</span></dt>
+                <dd>
+                    <span>{{tarifVente.prix}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.tarifVente.client">Client</span></dt>
+                <dd>
+                    <div *ngIf="tarifVente.client">
+                        <a [routerLink]="['/client', tarifVente.client?.id, 'view']">{{tarifVente.client?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.tarifVente.produit">Produit</span></dt>
+                <dd>
+                    <div *ngIf="tarifVente.produit">
+                        <a [routerLink]="['/produit', tarifVente.produit?.id, 'view']">{{tarifVente.produit?.code}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tarif-vente', tarifVente.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

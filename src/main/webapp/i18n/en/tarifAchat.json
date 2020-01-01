@@ -1,0 +1,25 @@
+{
+  "logisticaApp": {
+    "tarifAchat": {
+      "home": {
+        "title": "Tarif Achats",
+        "createLabel": "Create a new Tarif Achat",
+        "createOrEditLabel": "Create or edit a Tarif Achat",
+        "notFound": "No Tarif Achats found"
+      },
+      "created": "A new Tarif Achat is created with identifier {{ param }}",
+      "updated": "A Tarif Achat is updated with identifier {{ param }}",
+      "deleted": "A Tarif Achat is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tarif Achat {{ id }}?"
+      },
+      "detail": {
+        "title": "Tarif Achat"
+      },
+      "unite": "Unite",
+      "prix": "Prix",
+      "fournisseur": "Fournisseur",
+      "produit": "Produit"
+    }
+  }
+}

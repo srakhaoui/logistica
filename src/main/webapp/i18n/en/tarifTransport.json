@@ -1,0 +1,26 @@
+{
+  "logisticaApp": {
+    "tarifTransport": {
+      "home": {
+        "title": "Tarif Transports",
+        "createLabel": "Create a new Tarif Transport",
+        "createOrEditLabel": "Create or edit a Tarif Transport",
+        "notFound": "No Tarif Transports found"
+      },
+      "created": "A new Tarif Transport is created with identifier {{ param }}",
+      "updated": "A Tarif Transport is updated with identifier {{ param }}",
+      "deleted": "A Tarif Transport is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Tarif Transport {{ id }}?"
+      },
+      "detail": {
+        "title": "Tarif Transport"
+      },
+      "unite": "Unite",
+      "prix": "Prix",
+      "client": "Client",
+      "trajet": "Trajet",
+      "produit": "Produit"
+    }
+  }
+}

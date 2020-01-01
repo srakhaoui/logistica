@@ -1,0 +1,26 @@
+{
+  "logisticaApp": {
+    "transporteur": {
+      "home": {
+        "title": "Transporteurs",
+        "createLabel": "Create a new Transporteur",
+        "createOrEditLabel": "Create or edit a Transporteur",
+        "notFound": "No Transporteurs found"
+      },
+      "created": "A new Transporteur is created with identifier {{ param }}",
+      "updated": "A Transporteur is updated with identifier {{ param }}",
+      "deleted": "A Transporteur is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Transporteur {{ id }}?"
+      },
+      "detail": {
+        "title": "Transporteur"
+      },
+      "nom": "Nom",
+      "prenom": "Prenom",
+      "telephone": "Telephone",
+      "matricule": "Matricule",
+      "proprietaire": "Proprietaire"
+    }
+  }
+}

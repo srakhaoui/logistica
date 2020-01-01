@@ -1,0 +1,59 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.trajet.home.title">Trajets</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-trajet" [routerLink]="['/trajet/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="logisticaApp.trajet.home.createLabel">
+            Create a new Trajet
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="trajets?.length === 0">
+        <span jhiTranslate="logisticaApp.trajet.home.notFound">No trajets found</span>
+    </div>
+    <div class="table-responsive" *ngIf="trajets?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="depart"><span jhiTranslate="logisticaApp.trajet.depart">Depart</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="destination"><span jhiTranslate="logisticaApp.trajet.destination">Destination</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="commission"><span jhiTranslate="logisticaApp.trajet.commission">Commission</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let trajet of trajets ;trackBy: trackId">
+                <td><a [routerLink]="['/trajet', trajet.id, 'view' ]">{{trajet.id}}</a></td>
+                <td>{{trajet.depart}}</td>
+                <td>{{trajet.destination}}</td>
+                <td>{{trajet.commission}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/trajet', trajet.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/trajet', trajet.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(trajet)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

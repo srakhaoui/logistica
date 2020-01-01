@@ -1,0 +1,10 @@
+{
+  "logisticaApp": {
+    "Unite": {
+      "null": "",
+      "Tonne": "Tonne",
+      "M3": "M3",
+      "Voyage": "Voyage"
+    }
+  }
+}

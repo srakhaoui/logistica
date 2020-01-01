@@ -1,0 +1,178 @@
+{
+    "name": "Livraison",
+    "fields": [
+        {
+            "fieldName": "dateBonCommande",
+            "fieldType": "LocalDate"
+        },
+        {
+            "fieldName": "numeroBonCommande",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "numeroBonLivraison",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dateBonLivraison",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "numeroBonFournisseur",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "quantiteVendue",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "uniteVente",
+            "fieldType": "Unite",
+            "fieldValues": "Tonne,M3,Voyage"
+        },
+        {
+            "fieldName": "prixTotalVente",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "quantiteAchetee",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "uniteAchat",
+            "fieldType": "Unite",
+            "fieldValues": "Tonne,M3,Voyage"
+        },
+        {
+            "fieldName": "prixTotalAchat",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "quantiteConvertie",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "TypeLivraison",
+            "fieldValues": "Transport,Marchandise",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "facture",
+            "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "dateBonCaisse",
+            "fieldType": "LocalDate",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "reparationDivers",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "trax",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "balance",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "avance",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "autoroute",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "dernierEtat",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "penaliteEse",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "penaliteChfrs",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "fraisEspece",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "retenu",
+            "fieldType": "Float"
+        },
+        {
+            "fieldName": "totalComission",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "fournisseur",
+            "otherEntityRelationshipName": "livraison",
+            "relationshipName": "fournisseur",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "client",
+            "otherEntityRelationshipName": "livraison",
+            "relationshipName": "client",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "transporteur",
+            "otherEntityRelationshipName": "livraison",
+            "relationshipName": "transporteur",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "trajet",
+            "otherEntityRelationshipName": "livraison",
+            "relationshipName": "trajet",
+            "otherEntityField": "depart"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "produit",
+            "otherEntityRelationshipName": "livraison",
+            "relationshipName": "produit",
+            "otherEntityField": "code"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "societe",
+            "otherEntityRelationshipName": "livraison",
+            "relationshipName": "societeFacturation",
+            "otherEntityField": "nom"
+        }
+    ],
+    "changelogDate": "20200101112156",
+    "entityTableName": "livraison",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

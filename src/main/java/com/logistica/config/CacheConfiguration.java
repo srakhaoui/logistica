@@ -42,6 +42,16 @@ public class CacheConfiguration {
             createCache(cm, com.logistica.domain.User.class.getName());
             createCache(cm, com.logistica.domain.Authority.class.getName());
             createCache(cm, com.logistica.domain.User.class.getName() + ".authorities");
+            createCache(cm, com.logistica.domain.Societe.class.getName());
+            createCache(cm, com.logistica.domain.Transporteur.class.getName());
+            createCache(cm, com.logistica.domain.Fournisseur.class.getName());
+            createCache(cm, com.logistica.domain.Produit.class.getName());
+            createCache(cm, com.logistica.domain.Client.class.getName());
+            createCache(cm, com.logistica.domain.Trajet.class.getName());
+            createCache(cm, com.logistica.domain.TarifVente.class.getName());
+            createCache(cm, com.logistica.domain.TarifAchat.class.getName());
+            createCache(cm, com.logistica.domain.TarifTransport.class.getName());
+            createCache(cm, com.logistica.domain.Livraison.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

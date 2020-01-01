@@ -1,0 +1,69 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.tarifVente.home.title">Tarif Ventes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-tarif-vente" [routerLink]="['/tarif-vente/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="logisticaApp.tarifVente.home.createLabel">
+            Create a new Tarif Vente
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="tarifVentes?.length === 0">
+        <span jhiTranslate="logisticaApp.tarifVente.home.notFound">No tarifVentes found</span>
+    </div>
+    <div class="table-responsive" *ngIf="tarifVentes?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="unite"><span jhiTranslate="logisticaApp.tarifVente.unite">Unite</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="prix"><span jhiTranslate="logisticaApp.tarifVente.prix">Prix</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="client.nom"><span jhiTranslate="logisticaApp.tarifVente.client">Client</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="produit.code"><span jhiTranslate="logisticaApp.tarifVente.produit">Produit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let tarifVente of tarifVentes ;trackBy: trackId">
+                <td><a [routerLink]="['/tarif-vente', tarifVente.id, 'view' ]">{{tarifVente.id}}</a></td>
+                <td jhiTranslate="{{'logisticaApp.Unite.' + tarifVente.unite}}">{{tarifVente.unite}}</td>
+                <td>{{tarifVente.prix}}</td>
+                <td>
+                    <div *ngIf="tarifVente.client">
+                        <a [routerLink]="['/client', tarifVente.client?.id, 'view' ]" >{{tarifVente.client?.nom}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="tarifVente.produit">
+                        <a [routerLink]="['/produit', tarifVente.produit?.id, 'view' ]" >{{tarifVente.produit?.code}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/tarif-vente', tarifVente.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/tarif-vente', tarifVente.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(tarifVente)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

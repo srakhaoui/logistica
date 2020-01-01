@@ -1,0 +1,163 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="livraison">
+            <h2><span jhiTranslate="logisticaApp.livraison.detail.title">Livraison</span> {{livraison.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="logisticaApp.livraison.dateBonCommande">Date Bon Commande</span></dt>
+                <dd>
+                    <span>{{livraison.dateBonCommande}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.numeroBonCommande">Numero Bon Commande</span></dt>
+                <dd>
+                    <span>{{livraison.numeroBonCommande}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.numeroBonLivraison">Numero Bon Livraison</span></dt>
+                <dd>
+                    <span>{{livraison.numeroBonLivraison}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.dateBonLivraison">Date Bon Livraison</span></dt>
+                <dd>
+                    <span>{{livraison.dateBonLivraison}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.numeroBonFournisseur">Numero Bon Fournisseur</span></dt>
+                <dd>
+                    <span>{{livraison.numeroBonFournisseur}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.quantiteVendue">Quantite Vendue</span></dt>
+                <dd>
+                    <span>{{livraison.quantiteVendue}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.uniteVente">Unite Vente</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'logisticaApp.Unite.' + livraison.uniteVente}}">{{livraison.uniteVente}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.prixTotalVente">Prix Total Vente</span></dt>
+                <dd>
+                    <span>{{livraison.prixTotalVente}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.quantiteAchetee">Quantite Achetee</span></dt>
+                <dd>
+                    <span>{{livraison.quantiteAchetee}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.uniteAchat">Unite Achat</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'logisticaApp.Unite.' + livraison.uniteAchat}}">{{livraison.uniteAchat}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.prixTotalAchat">Prix Total Achat</span></dt>
+                <dd>
+                    <span>{{livraison.prixTotalAchat}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.quantiteConvertie">Quantite Convertie</span></dt>
+                <dd>
+                    <span>{{livraison.quantiteConvertie}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.type">Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'logisticaApp.TypeLivraison.' + livraison.type}}">{{livraison.type}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.facture">Facture</span></dt>
+                <dd>
+                    <span>{{livraison.facture}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.dateBonCaisse">Date Bon Caisse</span></dt>
+                <dd>
+                    <span>{{livraison.dateBonCaisse}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.reparationDivers">Reparation Divers</span></dt>
+                <dd>
+                    <span>{{livraison.reparationDivers}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.trax">Trax</span></dt>
+                <dd>
+                    <span>{{livraison.trax}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.balance">Balance</span></dt>
+                <dd>
+                    <span>{{livraison.balance}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.avance">Avance</span></dt>
+                <dd>
+                    <span>{{livraison.avance}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.autoroute">Autoroute</span></dt>
+                <dd>
+                    <span>{{livraison.autoroute}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.dernierEtat">Dernier Etat</span></dt>
+                <dd>
+                    <span>{{livraison.dernierEtat}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.penaliteEse">Penalite Ese</span></dt>
+                <dd>
+                    <span>{{livraison.penaliteEse}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.penaliteChfrs">Penalite Chfrs</span></dt>
+                <dd>
+                    <span>{{livraison.penaliteChfrs}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.fraisEspece">Frais Espece</span></dt>
+                <dd>
+                    <span>{{livraison.fraisEspece}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.retenu">Retenu</span></dt>
+                <dd>
+                    <span>{{livraison.retenu}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.totalComission">Total Comission</span></dt>
+                <dd>
+                    <span>{{livraison.totalComission}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.fournisseur">Fournisseur</span></dt>
+                <dd>
+                    <div *ngIf="livraison.fournisseur">
+                        <a [routerLink]="['/fournisseur', livraison.fournisseur?.id, 'view']">{{livraison.fournisseur?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.client">Client</span></dt>
+                <dd>
+                    <div *ngIf="livraison.client">
+                        <a [routerLink]="['/client', livraison.client?.id, 'view']">{{livraison.client?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.transporteur">Transporteur</span></dt>
+                <dd>
+                    <div *ngIf="livraison.transporteur">
+                        <a [routerLink]="['/transporteur', livraison.transporteur?.id, 'view']">{{livraison.transporteur?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.trajet">Trajet</span></dt>
+                <dd>
+                    <div *ngIf="livraison.trajet">
+                        <a [routerLink]="['/trajet', livraison.trajet?.id, 'view']">{{livraison.trajet?.depart}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.produit">Produit</span></dt>
+                <dd>
+                    <div *ngIf="livraison.produit">
+                        <a [routerLink]="['/produit', livraison.produit?.id, 'view']">{{livraison.produit?.code}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.livraison.societeFacturation">Societe Facturation</span></dt>
+                <dd>
+                    <div *ngIf="livraison.societeFacturation">
+                        <a [routerLink]="['/societe', livraison.societeFacturation?.id, 'view']">{{livraison.societeFacturation?.nom}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/livraison', livraison.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

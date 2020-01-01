@@ -1,0 +1,21 @@
+import { ISociete } from 'app/shared/model/societe.model';
+
+export interface ITransporteur {
+  id?: number;
+  nom?: string;
+  prenom?: string;
+  telephone?: string;
+  matricule?: string;
+  proprietaire?: ISociete;
+}
+
+export class Transporteur implements ITransporteur {
+  constructor(
+    public id?: number,
+    public nom?: string,
+    public prenom?: string,
+    public telephone?: string,
+    public matricule?: string,
+    public proprietaire?: ISociete
+  ) {}
+}

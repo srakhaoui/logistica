@@ -1,0 +1,67 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.transporteur.home.title">Transporteurs</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-transporteur" [routerLink]="['/transporteur/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span  jhiTranslate="logisticaApp.transporteur.home.createLabel">
+            Create a new Transporteur
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="transporteurs?.length === 0">
+        <span jhiTranslate="logisticaApp.transporteur.home.notFound">No transporteurs found</span>
+    </div>
+    <div class="table-responsive" *ngIf="transporteurs?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="nom"><span jhiTranslate="logisticaApp.transporteur.nom">Nom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="prenom"><span jhiTranslate="logisticaApp.transporteur.prenom">Prenom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="telephone"><span jhiTranslate="logisticaApp.transporteur.telephone">Telephone</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="matricule"><span jhiTranslate="logisticaApp.transporteur.matricule">Matricule</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="proprietaire.nom"><span jhiTranslate="logisticaApp.transporteur.proprietaire">Proprietaire</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let transporteur of transporteurs ;trackBy: trackId">
+                <td><a [routerLink]="['/transporteur', transporteur.id, 'view' ]">{{transporteur.id}}</a></td>
+                <td>{{transporteur.nom}}</td>
+                <td>{{transporteur.prenom}}</td>
+                <td>{{transporteur.telephone}}</td>
+                <td>{{transporteur.matricule}}</td>
+                <td>
+                    <div *ngIf="transporteur.proprietaire">
+                        <a [routerLink]="['/societe', transporteur.proprietaire?.id, 'view' ]" >{{transporteur.proprietaire?.nom}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/transporteur', transporteur.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/transporteur', transporteur.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(transporteur)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

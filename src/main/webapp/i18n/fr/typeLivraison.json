@@ -1,0 +1,9 @@
+{
+  "logisticaApp": {
+    "TypeLivraison": {
+      "null": "",
+      "Transport": "Transport",
+      "Marchandise": "Marchandise"
+    }
+  }
+}

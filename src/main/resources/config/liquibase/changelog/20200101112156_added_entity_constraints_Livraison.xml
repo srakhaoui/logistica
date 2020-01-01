@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity Livraison.
+    -->
+    <changeSet id="20200101112156-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="fournisseur_id"
+                                 baseTableName="livraison"
+                                 constraintName="fk_livraison_fournisseur_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="fournisseur"/>
+
+        <addForeignKeyConstraint baseColumnNames="client_id"
+                                 baseTableName="livraison"
+                                 constraintName="fk_livraison_client_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="client"/>
+
+        <addForeignKeyConstraint baseColumnNames="transporteur_id"
+                                 baseTableName="livraison"
+                                 constraintName="fk_livraison_transporteur_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="transporteur"/>
+
+        <addForeignKeyConstraint baseColumnNames="trajet_id"
+                                 baseTableName="livraison"
+                                 constraintName="fk_livraison_trajet_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="trajet"/>
+
+        <addForeignKeyConstraint baseColumnNames="produit_id"
+                                 baseTableName="livraison"
+                                 constraintName="fk_livraison_produit_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="produit"/>
+
+        <addForeignKeyConstraint baseColumnNames="societe_facturation_id"
+                                 baseTableName="livraison"
+                                 constraintName="fk_livraison_societe_facturation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="societe"/>
+
+    </changeSet>
+</databaseChangeLog>

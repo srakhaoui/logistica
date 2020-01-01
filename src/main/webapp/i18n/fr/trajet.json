@@ -1,0 +1,24 @@
+{
+  "logisticaApp": {
+    "trajet": {
+      "home": {
+        "title": "Trajets",
+        "createLabel": "Créer un nouveau Trajet",
+        "createOrEditLabel": "Créer ou éditer un Trajet",
+        "notFound": "Aucun Trajet trouvé"
+      },
+      "created": "Un nouveau Trajet a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Trajet avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Trajet avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Trajet {{ id }} ?"
+      },
+      "detail": {
+        "title": "Trajet"
+      },
+      "depart": "Depart",
+      "destination": "Destination",
+      "commission": "Commission"
+    }
+  }
+}

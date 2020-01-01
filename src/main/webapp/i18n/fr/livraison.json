@@ -1,0 +1,53 @@
+{
+  "logisticaApp": {
+    "livraison": {
+      "home": {
+        "title": "Livraisons",
+        "createLabel": "Créer un nouveau Livraison",
+        "createOrEditLabel": "Créer ou éditer un Livraison",
+        "notFound": "Aucun Livraison trouvé"
+      },
+      "created": "Un nouveau Livraison a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Livraison avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Livraison avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Livraison {{ id }} ?"
+      },
+      "detail": {
+        "title": "Livraison"
+      },
+      "dateBonCommande": "Date Bon Commande",
+      "numeroBonCommande": "Numero Bon Commande",
+      "numeroBonLivraison": "Numero Bon Livraison",
+      "dateBonLivraison": "Date Bon Livraison",
+      "numeroBonFournisseur": "Numero Bon Fournisseur",
+      "quantiteVendue": "Quantite Vendue",
+      "uniteVente": "Unite Vente",
+      "prixTotalVente": "Prix Total Vente",
+      "quantiteAchetee": "Quantite Achetee",
+      "uniteAchat": "Unite Achat",
+      "prixTotalAchat": "Prix Total Achat",
+      "quantiteConvertie": "Quantite Convertie",
+      "type": "Type",
+      "facture": "Facture",
+      "dateBonCaisse": "Date Bon Caisse",
+      "reparationDivers": "Reparation Divers",
+      "trax": "Trax",
+      "balance": "Balance",
+      "avance": "Avance",
+      "autoroute": "Autoroute",
+      "dernierEtat": "Dernier Etat",
+      "penaliteEse": "Penalite Ese",
+      "penaliteChfrs": "Penalite Chfrs",
+      "fraisEspece": "Frais Espece",
+      "retenu": "Retenu",
+      "totalComission": "Total Comission",
+      "fournisseur": "Fournisseur",
+      "client": "Client",
+      "transporteur": "Transporteur",
+      "trajet": "Trajet",
+      "produit": "Produit",
+      "societeFacturation": "Societe Facturation"
+    }
+  }
+}

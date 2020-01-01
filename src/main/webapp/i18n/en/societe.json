@@ -1,0 +1,22 @@
+{
+  "logisticaApp": {
+    "societe": {
+      "home": {
+        "title": "Societes",
+        "createLabel": "Create a new Societe",
+        "createOrEditLabel": "Create or edit a Societe",
+        "notFound": "No Societes found"
+      },
+      "created": "A new Societe is created with identifier {{ param }}",
+      "updated": "A Societe is updated with identifier {{ param }}",
+      "deleted": "A Societe is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Societe {{ id }}?"
+      },
+      "detail": {
+        "title": "Societe"
+      },
+      "nom": "Nom"
+    }
+  }
+}

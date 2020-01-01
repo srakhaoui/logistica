@@ -1,0 +1,25 @@
+{
+  "logisticaApp": {
+    "tarifVente": {
+      "home": {
+        "title": "TarifVentes",
+        "createLabel": "Créer un nouveau Tarif Vente",
+        "createOrEditLabel": "Créer ou éditer un Tarif Vente",
+        "notFound": "Aucun Tarif Vente trouvé"
+      },
+      "created": "Un nouveau Tarif Vente a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Tarif Vente avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Tarif Vente avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Tarif Vente {{ id }} ?"
+      },
+      "detail": {
+        "title": "Tarif Vente"
+      },
+      "unite": "Unite",
+      "prix": "Prix",
+      "client": "Client",
+      "produit": "Produit"
+    }
+  }
+}

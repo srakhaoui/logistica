@@ -1,0 +1,46 @@
+{
+    "name": "TarifVente",
+    "fields": [
+        {
+            "fieldName": "unite",
+            "fieldType": "Unite",
+            "fieldValues": "Tonne,M3,Voyage",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "prix",
+            "fieldType": "Float",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "client",
+            "otherEntityRelationshipName": "tarifVente",
+            "relationshipName": "client",
+            "otherEntityField": "nom"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "produit",
+            "otherEntityRelationshipName": "tarifVente",
+            "relationshipName": "produit",
+            "otherEntityField": "code"
+        }
+    ],
+    "changelogDate": "20200101112153",
+    "entityTableName": "tarif_vente",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

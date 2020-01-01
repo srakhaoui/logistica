@@ -1,0 +1,34 @@
+{
+    "name": "Trajet",
+    "fields": [
+        {
+            "fieldName": "depart",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "destination",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "commission",
+            "fieldType": "Float"
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200101112152",
+    "entityTableName": "trajet",
+    "dto": "no",
+    "pagination": "infinite-scroll",
+    "service": "serviceClass",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

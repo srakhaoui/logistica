@@ -1,0 +1,30 @@
+import { Component } from '@angular/core';
+
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
+
+import { IClient } from 'app/shared/model/client.model';
+import { ClientService } from './client.service';
+
+@Component({
+  templateUrl: './client-delete-dialog.component.html'
+})
+export class ClientDeleteDialogComponent {
+  client: IClient;
+
+  constructor(protected clientService: ClientService, public activeModal: NgbActiveModal, protected eventManager: JhiEventManager) {}
+
+  clear() {
+    this.activeModal.dismiss('cancel');
+  }
+
+  confirmDelete(id: number) {
+    this.clientService.delete(id).subscribe(() => {
+      this.eventManager.broadcast({
+        name: 'clientListModification',
+        content: 'Deleted an client'
+      });
+      this.activeModal.dismiss(true);
+    });
+  }
+}

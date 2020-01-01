@@ -1,0 +1,49 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tarifTransport">
+            <h2><span jhiTranslate="logisticaApp.tarifTransport.detail.title">Tarif Transport</span> {{tarifTransport.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="logisticaApp.tarifTransport.unite">Unite</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'logisticaApp.Unite.' + tarifTransport.unite}}">{{tarifTransport.unite}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.tarifTransport.prix">Prix</span></dt>
+                <dd>
+                    <span>{{tarifTransport.prix}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.tarifTransport.client">Client</span></dt>
+                <dd>
+                    <div *ngIf="tarifTransport.client">
+                        <a [routerLink]="['/client', tarifTransport.client?.id, 'view']">{{tarifTransport.client?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.tarifTransport.trajet">Trajet</span></dt>
+                <dd>
+                    <div *ngIf="tarifTransport.trajet">
+                        <a [routerLink]="['/trajet', tarifTransport.trajet?.id, 'view']">{{tarifTransport.trajet?.depart}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.tarifTransport.produit">Produit</span></dt>
+                <dd>
+                    <div *ngIf="tarifTransport.produit">
+                        <a [routerLink]="['/produit', tarifTransport.produit?.id, 'view']">{{tarifTransport.produit?.code}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tarif-transport', tarifTransport.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

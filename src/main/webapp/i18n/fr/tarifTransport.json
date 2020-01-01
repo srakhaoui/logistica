@@ -1,0 +1,26 @@
+{
+  "logisticaApp": {
+    "tarifTransport": {
+      "home": {
+        "title": "TarifTransports",
+        "createLabel": "Créer un nouveau Tarif Transport",
+        "createOrEditLabel": "Créer ou éditer un Tarif Transport",
+        "notFound": "Aucun Tarif Transport trouvé"
+      },
+      "created": "Un nouveau Tarif Transport a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Tarif Transport avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Tarif Transport avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Tarif Transport {{ id }} ?"
+      },
+      "detail": {
+        "title": "Tarif Transport"
+      },
+      "unite": "Unite",
+      "prix": "Prix",
+      "client": "Client",
+      "trajet": "Trajet",
+      "produit": "Produit"
+    }
+  }
+}

@@ -1,0 +1,244 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-livraison-heading" jhiTranslate="logisticaApp.livraison.home.createOrEditLabel">Create or edit a Livraison</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                        readonly />
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.dateBonCommande" for="field_dateBonCommande">Date Bon Commande</label>
+                    <div class="input-group">
+                        <input id="field_dateBonCommande" type="text" class="form-control" name="dateBonCommande" ngbDatepicker  #dateBonCommandeDp="ngbDatepicker" formControlName="dateBonCommande"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateBonCommandeDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.numeroBonCommande" for="field_numeroBonCommande">Numero Bon Commande</label>
+                    <input type="number" class="form-control" name="numeroBonCommande" id="field_numeroBonCommande"
+                           formControlName="numeroBonCommande"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.numeroBonLivraison" for="field_numeroBonLivraison">Numero Bon Livraison</label>
+                    <input type="number" class="form-control" name="numeroBonLivraison" id="field_numeroBonLivraison"
+                           formControlName="numeroBonLivraison"/>
+                    <div *ngIf="editForm.get('numeroBonLivraison').invalid && (editForm.get('numeroBonLivraison').dirty || editForm.get('numeroBonLivraison').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('numeroBonLivraison').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('numeroBonLivraison')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.dateBonLivraison" for="field_dateBonLivraison">Date Bon Livraison</label>
+                    <div class="input-group">
+                        <input id="field_dateBonLivraison" type="text" class="form-control" name="dateBonLivraison" ngbDatepicker  #dateBonLivraisonDp="ngbDatepicker" formControlName="dateBonLivraison"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateBonLivraisonDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('dateBonLivraison').invalid && (editForm.get('dateBonLivraison').dirty || editForm.get('dateBonLivraison').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dateBonLivraison').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.numeroBonFournisseur" for="field_numeroBonFournisseur">Numero Bon Fournisseur</label>
+                    <input type="number" class="form-control" name="numeroBonFournisseur" id="field_numeroBonFournisseur"
+                           formControlName="numeroBonFournisseur"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.quantiteVendue" for="field_quantiteVendue">Quantite Vendue</label>
+                    <input type="number" class="form-control" name="quantiteVendue" id="field_quantiteVendue"
+                           formControlName="quantiteVendue"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.uniteVente" for="field_uniteVente">Unite Vente</label>
+                    <select class="form-control" name="uniteVente" formControlName="uniteVente" id="field_uniteVente">
+                        <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
+                        <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
+                        <option value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.prixTotalVente" for="field_prixTotalVente">Prix Total Vente</label>
+                    <input type="number" class="form-control" name="prixTotalVente" id="field_prixTotalVente"
+                           formControlName="prixTotalVente"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.quantiteAchetee" for="field_quantiteAchetee">Quantite Achetee</label>
+                    <input type="number" class="form-control" name="quantiteAchetee" id="field_quantiteAchetee"
+                           formControlName="quantiteAchetee"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.uniteAchat" for="field_uniteAchat">Unite Achat</label>
+                    <select class="form-control" name="uniteAchat" formControlName="uniteAchat" id="field_uniteAchat">
+                        <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
+                        <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
+                        <option value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.prixTotalAchat" for="field_prixTotalAchat">Prix Total Achat</label>
+                    <input type="number" class="form-control" name="prixTotalAchat" id="field_prixTotalAchat"
+                           formControlName="prixTotalAchat"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.quantiteConvertie" for="field_quantiteConvertie">Quantite Convertie</label>
+                    <input type="number" class="form-control" name="quantiteConvertie" id="field_quantiteConvertie"
+                           formControlName="quantiteConvertie"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.type" for="field_type">Type</label>
+                    <select class="form-control" name="type" formControlName="type" id="field_type">
+                        <option value="Transport">{{'logisticaApp.TypeLivraison.Transport' | translate}}</option>
+                        <option value="Marchandise">{{'logisticaApp.TypeLivraison.Marchandise' | translate}}</option>
+                    </select>
+                    <div *ngIf="editForm.get('type').invalid && (editForm.get('type').dirty || editForm.get('type').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('type').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.facture" for="field_facture">Facture</label>
+                    <input type="checkbox" class="form-control" name="facture" id="field_facture"
+                           formControlName="facture"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.dateBonCaisse" for="field_dateBonCaisse">Date Bon Caisse</label>
+                    <div class="input-group">
+                        <input id="field_dateBonCaisse" type="text" class="form-control" name="dateBonCaisse" ngbDatepicker  #dateBonCaisseDp="ngbDatepicker" formControlName="dateBonCaisse"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateBonCaisseDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                    <div *ngIf="editForm.get('dateBonCaisse').invalid && (editForm.get('dateBonCaisse').dirty || editForm.get('dateBonCaisse').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dateBonCaisse').errors.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.reparationDivers" for="field_reparationDivers">Reparation Divers</label>
+                    <input type="number" class="form-control" name="reparationDivers" id="field_reparationDivers"
+                           formControlName="reparationDivers"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.trax" for="field_trax">Trax</label>
+                    <input type="number" class="form-control" name="trax" id="field_trax"
+                           formControlName="trax"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.balance" for="field_balance">Balance</label>
+                    <input type="number" class="form-control" name="balance" id="field_balance"
+                           formControlName="balance"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.avance" for="field_avance">Avance</label>
+                    <input type="number" class="form-control" name="avance" id="field_avance"
+                           formControlName="avance"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.autoroute" for="field_autoroute">Autoroute</label>
+                    <input type="number" class="form-control" name="autoroute" id="field_autoroute"
+                           formControlName="autoroute"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.dernierEtat" for="field_dernierEtat">Dernier Etat</label>
+                    <input type="number" class="form-control" name="dernierEtat" id="field_dernierEtat"
+                           formControlName="dernierEtat"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.penaliteEse" for="field_penaliteEse">Penalite Ese</label>
+                    <input type="number" class="form-control" name="penaliteEse" id="field_penaliteEse"
+                           formControlName="penaliteEse"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.penaliteChfrs" for="field_penaliteChfrs">Penalite Chfrs</label>
+                    <input type="number" class="form-control" name="penaliteChfrs" id="field_penaliteChfrs"
+                           formControlName="penaliteChfrs"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fraisEspece" for="field_fraisEspece">Frais Espece</label>
+                    <input type="number" class="form-control" name="fraisEspece" id="field_fraisEspece"
+                           formControlName="fraisEspece"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.retenu" for="field_retenu">Retenu</label>
+                    <input type="number" class="form-control" name="retenu" id="field_retenu"
+                           formControlName="retenu"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.totalComission" for="field_totalComission">Total Comission</label>
+                    <input type="number" class="form-control" name="totalComission" id="field_totalComission"
+                           formControlName="totalComission"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur" for="field_fournisseur">Fournisseur</label>
+                    <select class="form-control" id="field_fournisseur" name="fournisseur" formControlName="fournisseur">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="fournisseurOption.id === editForm.get('fournisseur').value?.id ? editForm.get('fournisseur').value : fournisseurOption" *ngFor="let fournisseurOption of fournisseurs; trackBy: trackFournisseurById">{{fournisseurOption.nom}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client" for="field_client">Client</label>
+                    <select class="form-control" id="field_client" name="client" formControlName="client">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="clientOption.id === editForm.get('client').value?.id ? editForm.get('client').value : clientOption" *ngFor="let clientOption of clients; trackBy: trackClientById">{{clientOption.nom}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.transporteur" for="field_transporteur">Transporteur</label>
+                    <select class="form-control" id="field_transporteur" name="transporteur" formControlName="transporteur">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="transporteurOption.id === editForm.get('transporteur').value?.id ? editForm.get('transporteur').value : transporteurOption" *ngFor="let transporteurOption of transporteurs; trackBy: trackTransporteurById">{{transporteurOption.nom}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.trajet" for="field_trajet">Trajet</label>
+                    <select class="form-control" id="field_trajet" name="trajet" formControlName="trajet">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="trajetOption.id === editForm.get('trajet').value?.id ? editForm.get('trajet').value : trajetOption" *ngFor="let trajetOption of trajets; trackBy: trackTrajetById">{{trajetOption.depart}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.produit" for="field_produit">Produit</label>
+                    <select class="form-control" id="field_produit" name="produit" formControlName="produit">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="produitOption.id === editForm.get('produit').value?.id ? editForm.get('produit').value : produitOption" *ngFor="let produitOption of produits; trackBy: trackProduitById">{{produitOption.code}}</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.societeFacturation" for="field_societeFacturation">Societe Facturation</label>
+                    <select class="form-control" id="field_societeFacturation" name="societeFacturation" formControlName="societeFacturation">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="societeOption.id === editForm.get('societeFacturation').value?.id ? editForm.get('societeFacturation').value : societeOption" *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

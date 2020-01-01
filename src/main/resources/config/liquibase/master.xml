@@ -14,6 +14,21 @@
     <property name="uuidType" value="uuid" dbms="h2, postgresql"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112147_added_entity_Societe.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112148_added_entity_Transporteur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112149_added_entity_Fournisseur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112150_added_entity_Produit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112151_added_entity_Client.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112152_added_entity_Trajet.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112153_added_entity_TarifVente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112154_added_entity_TarifAchat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112155_added_entity_TarifTransport.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112156_added_entity_Livraison.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20200101112148_added_entity_constraints_Transporteur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112153_added_entity_constraints_TarifVente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112154_added_entity_constraints_TarifAchat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112155_added_entity_constraints_TarifTransport.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112156_added_entity_constraints_Livraison.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
