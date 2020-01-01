@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(TrajetService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Trajet(0, 'AAAAAAA', 'AAAAAAA', 0);
+      elemDefault = new Trajet(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0);
     });
 
     describe('Service methods', () => {
@@ -58,6 +58,7 @@ describe('Service Tests', () => {
           {
             depart: 'BBBBBB',
             destination: 'BBBBBB',
+            description: 'BBBBBB',
             commission: 1
           },
           elemDefault
@@ -78,6 +79,7 @@ describe('Service Tests', () => {
           {
             depart: 'BBBBBB',
             destination: 'BBBBBB',
+            description: 'BBBBBB',
             commission: 1
           },
           elemDefault

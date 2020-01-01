@@ -22,7 +22,7 @@
                 <dt><span jhiTranslate="logisticaApp.tarifTransport.trajet">Trajet</span></dt>
                 <dd>
                     <div *ngIf="tarifTransport.trajet">
-                        <a [routerLink]="['/trajet', tarifTransport.trajet?.id, 'view']">{{tarifTransport.trajet?.depart}}</a>
+                        <a [routerLink]="['/trajet', tarifTransport.trajet?.id, 'view']">{{tarifTransport.trajet?.description}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="logisticaApp.tarifTransport.produit">Produit</span></dt>

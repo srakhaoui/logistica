@@ -30,6 +30,9 @@ public class Trajet implements Serializable {
     @Column(name = "destination", nullable = false)
     private String destination;
 
+    @Column(name = "description")
+    private String description;
+
     @Column(name = "commission")
     private Float commission;
 
@@ -68,6 +71,19 @@ public class Trajet implements Serializable {
         this.destination = destination;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public Trajet description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Float getCommission() {
         return commission;
     }
@@ -104,6 +120,7 @@ public class Trajet implements Serializable {
             "id=" + getId() +
             ", depart='" + getDepart() + "'" +
             ", destination='" + getDestination() + "'" +
+            ", description='" + getDescription() + "'" +
             ", commission=" + getCommission() +
             "}";
     }

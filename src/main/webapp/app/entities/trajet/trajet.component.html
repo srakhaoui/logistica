@@ -21,6 +21,7 @@
             <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="depart"><span jhiTranslate="logisticaApp.trajet.depart">Depart</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="destination"><span jhiTranslate="logisticaApp.trajet.destination">Destination</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="description"><span jhiTranslate="logisticaApp.trajet.description">Description</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="commission"><span jhiTranslate="logisticaApp.trajet.commission">Commission</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
@@ -30,6 +31,7 @@
                 <td><a [routerLink]="['/trajet', trajet.id, 'view' ]">{{trajet.id}}</a></td>
                 <td>{{trajet.depart}}</td>
                 <td>{{trajet.destination}}</td>
+                <td>{{trajet.description}}</td>
                 <td>{{trajet.commission}}</td>
                 <td class="text-right">
                     <div class="btn-group">

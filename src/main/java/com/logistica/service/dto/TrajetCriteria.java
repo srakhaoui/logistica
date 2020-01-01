@@ -30,6 +30,8 @@ public class TrajetCriteria implements Serializable, Criteria {
 
     private StringFilter destination;
 
+    private StringFilter description;
+
     private FloatFilter commission;
 
     public TrajetCriteria(){
@@ -39,6 +41,7 @@ public class TrajetCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.depart = other.depart == null ? null : other.depart.copy();
         this.destination = other.destination == null ? null : other.destination.copy();
+        this.description = other.description == null ? null : other.description.copy();
         this.commission = other.commission == null ? null : other.commission.copy();
     }
 
@@ -71,6 +74,14 @@ public class TrajetCriteria implements Serializable, Criteria {
         this.destination = destination;
     }
 
+    public StringFilter getDescription() {
+        return description;
+    }
+
+    public void setDescription(StringFilter description) {
+        this.description = description;
+    }
+
     public FloatFilter getCommission() {
         return commission;
     }
@@ -93,6 +104,7 @@ public class TrajetCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
             Objects.equals(depart, that.depart) &&
             Objects.equals(destination, that.destination) &&
+            Objects.equals(description, that.description) &&
             Objects.equals(commission, that.commission);
     }
 
@@ -102,6 +114,7 @@ public class TrajetCriteria implements Serializable, Criteria {
         id,
         depart,
         destination,
+        description,
         commission
         );
     }
@@ -112,6 +125,7 @@ public class TrajetCriteria implements Serializable, Criteria {
                 (id != null ? "id=" + id + ", " : "") +
                 (depart != null ? "depart=" + depart + ", " : "") +
                 (destination != null ? "destination=" + destination + ", " : "") +
+                (description != null ? "description=" + description + ", " : "") +
                 (commission != null ? "commission=" + commission + ", " : "") +
             "}";
     }

@@ -91,6 +91,9 @@ public class TrajetQueryService extends QueryService<Trajet> {
             if (criteria.getDestination() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDestination(), Trajet_.destination));
             }
+            if (criteria.getDescription() != null) {
+                specification = specification.and(buildStringSpecification(criteria.getDescription(), Trajet_.description));
+            }
             if (criteria.getCommission() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getCommission(), Trajet_.commission));
             }

@@ -4,7 +4,8 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subject, Observable, of, concat } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, startWith } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { ITarifTransport, TarifTransport } from 'app/shared/model/tarif-transport.model';
 import { TarifTransportService } from './tarif-transport.service';
@@ -22,11 +23,17 @@ import { ProduitService } from 'app/entities/produit/produit.service';
 export class TarifTransportUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  clients: IClient[];
+  clients$: Observable<IClient[]>;
+  clientInput$ = new Subject<string>();
+  clientsLoading:Boolean = false;
 
-  trajets: ITrajet[];
+  trajets$: Observable<ITrajet[]>;
+  trajetInput$ = new Subject<string>();
+  trajetsLoading:Boolean = false;
 
-  produits: IProduit[];
+  produits$: Observable<IProduit[]>;
+  produitInput$ = new Subject<string>();
+  produitsLoading:Boolean = false;
 
   editForm = this.fb.group({
     id: [],
@@ -52,15 +59,9 @@ export class TarifTransportUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ tarifTransport }) => {
       this.updateForm(tarifTransport);
     });
-    this.clientService
-      .query()
-      .subscribe((res: HttpResponse<IClient[]>) => (this.clients = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.trajetService
-      .query()
-      .subscribe((res: HttpResponse<ITrajet[]>) => (this.trajets = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.produitService
-      .query()
-      .subscribe((res: HttpResponse<IProduit[]>) => (this.produits = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.loadClients();
+    this.loadTrajets();
+    this.loadProduits();
   }
 
   updateForm(tarifTransport: ITarifTransport) {
@@ -126,5 +127,59 @@ export class TarifTransportUpdateComponent implements OnInit {
 
   trackProduitById(index: number, item: IProduit) {
     return item.id;
+  }
+
+  private loadClients(){
+    this.clients$ = concat(
+            of([]), // default items
+            this.clientInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.clientsLoading = true)),
+                switchMap(nom =>
+                    this.clientService
+                        .query({'nom.contains': nom})
+                        .pipe(map((resp: HttpResponse<IClient[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.clientsLoading = false))
+            )
+        );
+  }
+
+  private loadProduits(){
+    this.produits$ = concat(
+            of([]), // default items
+            this.produitInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.produitsLoading = true)),
+                switchMap(nom =>
+                    this.produitService
+                        .query({'code.contains': nom})
+                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.produitsLoading = false))
+            )
+        );
+  }
+
+  private loadTrajets(){
+    this.trajets$ = concat(
+            of([]), // default items
+            this.trajetInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.trajetsLoading = true)),
+                switchMap(nom =>
+                    this.trajetService
+                        .query({'description.contains': nom})
+                        .pipe(map((resp: HttpResponse<ITrajet[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.trajetsLoading = false))
+            )
+        );
   }
 }

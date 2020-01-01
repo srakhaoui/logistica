@@ -19,6 +19,7 @@ export class TrajetUpdateComponent implements OnInit {
     id: [],
     depart: [null, [Validators.required]],
     destination: [null, [Validators.required]],
+    description: [],
     commission: []
   });
 
@@ -36,6 +37,7 @@ export class TrajetUpdateComponent implements OnInit {
       id: trajet.id,
       depart: trajet.depart,
       destination: trajet.destination,
+      description: trajet.description,
       commission: trajet.commission
     });
   }
@@ -60,6 +62,7 @@ export class TrajetUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       depart: this.editForm.get(['depart']).value,
       destination: this.editForm.get(['destination']).value,
+      description: this.editForm.get(['description']).value,
       commission: this.editForm.get(['commission']).value
     };
   }

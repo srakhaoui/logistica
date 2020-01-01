@@ -48,7 +48,7 @@
             <th scope="col"  jhiSortBy="fournisseur.nom"><span jhiTranslate="logisticaApp.livraison.fournisseur">Fournisseur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="client.nom"><span jhiTranslate="logisticaApp.livraison.client">Client</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="transporteur.nom"><span jhiTranslate="logisticaApp.livraison.transporteur">Transporteur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="trajet.depart"><span jhiTranslate="logisticaApp.livraison.trajet">Trajet</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="trajet.description"><span jhiTranslate="logisticaApp.livraison.trajet">Trajet</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="produit.code"><span jhiTranslate="logisticaApp.livraison.produit">Produit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="societeFacturation.nom"><span jhiTranslate="logisticaApp.livraison.societeFacturation">Societe Facturation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
@@ -100,7 +100,7 @@
                 </td>
                 <td>
                     <div *ngIf="livraison.trajet">
-                        <a [routerLink]="['/trajet', livraison.trajet?.id, 'view' ]" >{{livraison.trajet?.depart}}</a>
+                        <a [routerLink]="['/trajet', livraison.trajet?.id, 'view' ]" >{{livraison.trajet?.description}}</a>
                     </div>
                 </td>
                 <td>

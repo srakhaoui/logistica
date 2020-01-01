@@ -42,6 +42,9 @@ public class TrajetResourceIT {
     private static final String DEFAULT_DESTINATION = "AAAAAAAAAA";
     private static final String UPDATED_DESTINATION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
     private static final Float DEFAULT_COMMISSION = 1F;
     private static final Float UPDATED_COMMISSION = 2F;
     private static final Float SMALLER_COMMISSION = 1F - 1F;
@@ -96,6 +99,7 @@ public class TrajetResourceIT {
         Trajet trajet = new Trajet()
             .depart(DEFAULT_DEPART)
             .destination(DEFAULT_DESTINATION)
+            .description(DEFAULT_DESCRIPTION)
             .commission(DEFAULT_COMMISSION);
         return trajet;
     }
@@ -109,6 +113,7 @@ public class TrajetResourceIT {
         Trajet trajet = new Trajet()
             .depart(UPDATED_DEPART)
             .destination(UPDATED_DESTINATION)
+            .description(UPDATED_DESCRIPTION)
             .commission(UPDATED_COMMISSION);
         return trajet;
     }
@@ -135,6 +140,7 @@ public class TrajetResourceIT {
         Trajet testTrajet = trajetList.get(trajetList.size() - 1);
         assertThat(testTrajet.getDepart()).isEqualTo(DEFAULT_DEPART);
         assertThat(testTrajet.getDestination()).isEqualTo(DEFAULT_DESTINATION);
+        assertThat(testTrajet.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testTrajet.getCommission()).isEqualTo(DEFAULT_COMMISSION);
     }
 
@@ -207,6 +213,7 @@ public class TrajetResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(trajet.getId().intValue())))
             .andExpect(jsonPath("$.[*].depart").value(hasItem(DEFAULT_DEPART)))
             .andExpect(jsonPath("$.[*].destination").value(hasItem(DEFAULT_DESTINATION)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].commission").value(hasItem(DEFAULT_COMMISSION.doubleValue())));
     }
     
@@ -223,6 +230,7 @@ public class TrajetResourceIT {
             .andExpect(jsonPath("$.id").value(trajet.getId().intValue()))
             .andExpect(jsonPath("$.depart").value(DEFAULT_DEPART))
             .andExpect(jsonPath("$.destination").value(DEFAULT_DESTINATION))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.commission").value(DEFAULT_COMMISSION.doubleValue()));
     }
 
@@ -404,6 +412,84 @@ public class TrajetResourceIT {
 
     @Test
     @Transactional
+    public void getAllTrajetsByDescriptionIsEqualToSomething() throws Exception {
+        // Initialize the database
+        trajetRepository.saveAndFlush(trajet);
+
+        // Get all the trajetList where description equals to DEFAULT_DESCRIPTION
+        defaultTrajetShouldBeFound("description.equals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trajetList where description equals to UPDATED_DESCRIPTION
+        defaultTrajetShouldNotBeFound("description.equals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrajetsByDescriptionIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        trajetRepository.saveAndFlush(trajet);
+
+        // Get all the trajetList where description not equals to DEFAULT_DESCRIPTION
+        defaultTrajetShouldNotBeFound("description.notEquals=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trajetList where description not equals to UPDATED_DESCRIPTION
+        defaultTrajetShouldBeFound("description.notEquals=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrajetsByDescriptionIsInShouldWork() throws Exception {
+        // Initialize the database
+        trajetRepository.saveAndFlush(trajet);
+
+        // Get all the trajetList where description in DEFAULT_DESCRIPTION or UPDATED_DESCRIPTION
+        defaultTrajetShouldBeFound("description.in=" + DEFAULT_DESCRIPTION + "," + UPDATED_DESCRIPTION);
+
+        // Get all the trajetList where description equals to UPDATED_DESCRIPTION
+        defaultTrajetShouldNotBeFound("description.in=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrajetsByDescriptionIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        trajetRepository.saveAndFlush(trajet);
+
+        // Get all the trajetList where description is not null
+        defaultTrajetShouldBeFound("description.specified=true");
+
+        // Get all the trajetList where description is null
+        defaultTrajetShouldNotBeFound("description.specified=false");
+    }
+                @Test
+    @Transactional
+    public void getAllTrajetsByDescriptionContainsSomething() throws Exception {
+        // Initialize the database
+        trajetRepository.saveAndFlush(trajet);
+
+        // Get all the trajetList where description contains DEFAULT_DESCRIPTION
+        defaultTrajetShouldBeFound("description.contains=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trajetList where description contains UPDATED_DESCRIPTION
+        defaultTrajetShouldNotBeFound("description.contains=" + UPDATED_DESCRIPTION);
+    }
+
+    @Test
+    @Transactional
+    public void getAllTrajetsByDescriptionNotContainsSomething() throws Exception {
+        // Initialize the database
+        trajetRepository.saveAndFlush(trajet);
+
+        // Get all the trajetList where description does not contain DEFAULT_DESCRIPTION
+        defaultTrajetShouldNotBeFound("description.doesNotContain=" + DEFAULT_DESCRIPTION);
+
+        // Get all the trajetList where description does not contain UPDATED_DESCRIPTION
+        defaultTrajetShouldBeFound("description.doesNotContain=" + UPDATED_DESCRIPTION);
+    }
+
+
+    @Test
+    @Transactional
     public void getAllTrajetsByCommissionIsEqualToSomething() throws Exception {
         // Initialize the database
         trajetRepository.saveAndFlush(trajet);
@@ -516,6 +602,7 @@ public class TrajetResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(trajet.getId().intValue())))
             .andExpect(jsonPath("$.[*].depart").value(hasItem(DEFAULT_DEPART)))
             .andExpect(jsonPath("$.[*].destination").value(hasItem(DEFAULT_DESTINATION)))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].commission").value(hasItem(DEFAULT_COMMISSION.doubleValue())));
 
         // Check, that the count call also returns 1
@@ -566,6 +653,7 @@ public class TrajetResourceIT {
         updatedTrajet
             .depart(UPDATED_DEPART)
             .destination(UPDATED_DESTINATION)
+            .description(UPDATED_DESCRIPTION)
             .commission(UPDATED_COMMISSION);
 
         restTrajetMockMvc.perform(put("/api/trajets")
@@ -579,6 +667,7 @@ public class TrajetResourceIT {
         Trajet testTrajet = trajetList.get(trajetList.size() - 1);
         assertThat(testTrajet.getDepart()).isEqualTo(UPDATED_DEPART);
         assertThat(testTrajet.getDestination()).isEqualTo(UPDATED_DESTINATION);
+        assertThat(testTrajet.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testTrajet.getCommission()).isEqualTo(UPDATED_COMMISSION);
     }
 

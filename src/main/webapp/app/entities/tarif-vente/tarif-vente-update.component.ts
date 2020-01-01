@@ -4,7 +4,8 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subject, Observable, of, concat } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, startWith } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { ITarifVente, TarifVente } from 'app/shared/model/tarif-vente.model';
 import { TarifVenteService } from './tarif-vente.service';
@@ -20,9 +21,13 @@ import { ProduitService } from 'app/entities/produit/produit.service';
 export class TarifVenteUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  clients: IClient[];
+  clients$: Observable<IClient[]>;
+  clientInput$ = new Subject<string>();
+  clientsLoading:Boolean = false;
 
-  produits: IProduit[];
+  produits$: Observable<IProduit[]>;
+  produitInput$ = new Subject<string>();
+  produitsLoading:Boolean = false;
 
   editForm = this.fb.group({
     id: [],
@@ -46,12 +51,8 @@ export class TarifVenteUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ tarifVente }) => {
       this.updateForm(tarifVente);
     });
-    this.clientService
-      .query()
-      .subscribe((res: HttpResponse<IClient[]>) => (this.clients = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.produitService
-      .query()
-      .subscribe((res: HttpResponse<IProduit[]>) => (this.produits = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.loadClients();
+    this.loadProduits();
   }
 
   updateForm(tarifVente: ITarifVente) {
@@ -111,5 +112,40 @@ export class TarifVenteUpdateComponent implements OnInit {
 
   trackProduitById(index: number, item: IProduit) {
     return item.id;
+  }
+
+  private loadClients(){
+    this.clients$ = concat(
+            of([]), // default items
+            this.clientInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.clientsLoading = true)),
+                switchMap(nom =>
+                    this.clientService
+                        .query({'nom.contains': nom})
+                        .pipe(map((resp: HttpResponse<IClient[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.clientsLoading = false))
+            )
+        );
+  }
+  private loadProduits(){
+    this.produits$ = concat(
+            of([]), // default items
+            this.produitInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.produitsLoading = true)),
+                switchMap(nom =>
+                    this.produitService
+                        .query({'code.contains': nom})
+                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.produitsLoading = false))
+            )
+        );
   }
 }

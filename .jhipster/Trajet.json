@@ -16,6 +16,10 @@
             ]
         },
         {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
             "fieldName": "commission",
             "fieldType": "Float"
         }
@@ -25,7 +29,7 @@
     "entityTableName": "trajet",
     "dto": "no",
     "pagination": "infinite-scroll",
-    "service": "serviceClass",
+    "service": "serviceImpl",
     "jpaMetamodelFiltering": true,
     "fluentMethods": true,
     "readOnly": false,

@@ -30,7 +30,7 @@
             "otherEntityName": "trajet",
             "otherEntityRelationshipName": "tarifTransport",
             "relationshipName": "trajet",
-            "otherEntityField": "depart"
+            "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",

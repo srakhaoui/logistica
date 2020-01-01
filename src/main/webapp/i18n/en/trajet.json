@@ -18,6 +18,7 @@
       },
       "depart": "Depart",
       "destination": "Destination",
+      "description": "Description",
       "commission": "Commission"
     }
   }

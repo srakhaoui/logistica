@@ -4,7 +4,8 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subject, Observable, of, concat } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, startWith } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { ITarifAchat, TarifAchat } from 'app/shared/model/tarif-achat.model';
 import { TarifAchatService } from './tarif-achat.service';
@@ -20,9 +21,13 @@ import { ProduitService } from 'app/entities/produit/produit.service';
 export class TarifAchatUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  fournisseurs: IFournisseur[];
+  fournisseurs$: Observable<IFournisseur[]>;
+  fournisseurInput$ = new Subject<string>();
+  fournisseursLoading:Boolean = false;
 
-  produits: IProduit[];
+  produits$: Observable<IProduit[]>;
+  produitInput$ = new Subject<string>();
+  produitsLoading:Boolean = false;
 
   editForm = this.fb.group({
     id: [],
@@ -46,15 +51,8 @@ export class TarifAchatUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ tarifAchat }) => {
       this.updateForm(tarifAchat);
     });
-    this.fournisseurService
-      .query()
-      .subscribe(
-        (res: HttpResponse<IFournisseur[]>) => (this.fournisseurs = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    this.produitService
-      .query()
-      .subscribe((res: HttpResponse<IProduit[]>) => (this.produits = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.loadFournisseurs();
+    this.loadProduits();
   }
 
   updateForm(tarifAchat: ITarifAchat) {
@@ -114,5 +112,41 @@ export class TarifAchatUpdateComponent implements OnInit {
 
   trackProduitById(index: number, item: IProduit) {
     return item.id;
+  }
+
+  private loadProduits(){
+    this.produits$ = concat(
+            of([]), // default items
+            this.produitInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.produitsLoading = true)),
+                switchMap(nom =>
+                    this.produitService
+                        .query({'code.contains': nom})
+                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.produitsLoading = false))
+            )
+        );
+  }
+
+  private loadFournisseurs(){
+    this.fournisseurs$ = concat(
+            of([]), // default items
+            this.fournisseurInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.fournisseursLoading = true)),
+                switchMap(nom =>
+                    this.fournisseurService
+                        .query({'nom.contains': nom})
+                        .pipe(map((resp: HttpResponse<IFournisseur[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.fournisseursLoading = false))
+            )
+        );
   }
 }

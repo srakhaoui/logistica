@@ -41,17 +41,27 @@
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.tarifAchat.fournisseur" for="field_fournisseur">Fournisseur</label>
-                    <select class="form-control" id="field_fournisseur" name="fournisseur" formControlName="fournisseur">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="fournisseurOption.id === editForm.get('fournisseur').value?.id ? editForm.get('fournisseur').value : fournisseurOption" *ngFor="let fournisseurOption of fournisseurs; trackBy: trackFournisseurById">{{fournisseurOption.nom}}</option>
-                    </select>
+                    <ng-select [items]="fournisseurs$ | async"
+                        [typeahead]="fournisseurInput$"
+						bindLabel="nom"
+                        [addTag]="true" 
+                        [hideSelected]="true"
+						[loading]="fournisseursLoading" 
+						formControlName="fournisseur"
+						name="fournisseur">
+						</ng-select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.tarifAchat.produit" for="field_produit">Produit</label>
-                    <select class="form-control" id="field_produit" name="produit" formControlName="produit">
-                        <option [ngValue]="null"></option>
-                        <option [ngValue]="produitOption.id === editForm.get('produit').value?.id ? editForm.get('produit').value : produitOption" *ngFor="let produitOption of produits; trackBy: trackProduitById">{{produitOption.code}}</option>
-                    </select>
+                    <ng-select [items]="produits$ | async"
+                        [typeahead]="produitInput$"
+						bindLabel="code"
+                        [addTag]="true" 
+                        [hideSelected]="true"
+						[loading]="produitsLoading" 
+						formControlName="produit"
+						name="produit">
+						</ng-select>
                 </div>
             </div>
             <div>

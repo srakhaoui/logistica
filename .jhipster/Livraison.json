@@ -148,7 +148,7 @@
             "otherEntityName": "trajet",
             "otherEntityRelationshipName": "livraison",
             "relationshipName": "trajet",
-            "otherEntityField": "depart"
+            "otherEntityField": "description"
         },
         {
             "relationshipType": "many-to-one",
