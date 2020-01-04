@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subject, Observable, of, concat } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, flatMap, startWith } from 'rxjs/operators';
 import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
 import { ILivraison, Livraison } from 'app/shared/model/livraison.model';
@@ -21,6 +22,7 @@ import { IProduit } from 'app/shared/model/produit.model';
 import { ProduitService } from 'app/entities/produit/produit.service';
 import { ISociete } from 'app/shared/model/societe.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
+import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
 
 @Component({
   selector: 'jhi-livraison-update',
@@ -29,56 +31,66 @@ import { SocieteService } from 'app/entities/societe/societe.service';
 export class LivraisonUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  fournisseurs: IFournisseur[];
+  fournisseurs$: Observable<IFournisseur[]>;
+  fournisseurInput$ = new Subject<string>();
+  fournisseursLoading:Boolean = false;
 
-  clients: IClient[];
+  clients$: Observable<IClient[]>;
+  clientInput$ = new Subject<string>();
+  clientsLoading:Boolean = false;
 
-  transporteurs: ITransporteur[];
+  transporteurs$: Observable<ITransporteur[]>;
+  transporteurInput$ = new Subject<string>();
+  transporteursLoading:Boolean = false;
+  
+  trajets$: Observable<ITrajet[]>;
+  trajetInput$ = new Subject<string>();
+  trajetsLoading:Boolean = false;
 
-  trajets: ITrajet[];
-
-  produits: IProduit[];
+  produits$: Observable<IProduit[]>;
+  produitInput$ = new Subject<string>();
+  produitsLoading:Boolean = false;
 
   societes: ISociete[];
   dateBonCommandeDp: any;
   dateBonLivraisonDp: any;
   dateBonCaisseDp: any;
 
-  editForm = this.fb.group({
-    id: [],
-    dateBonCommande: [],
-    numeroBonCommande: [],
-    numeroBonLivraison: [null, [Validators.required]],
-    dateBonLivraison: [null, [Validators.required]],
-    numeroBonFournisseur: [],
-    quantiteVendue: [],
-    uniteVente: [],
-    prixTotalVente: [],
-    quantiteAchetee: [],
-    uniteAchat: [],
-    prixTotalAchat: [],
-    quantiteConvertie: [],
-    type: [null, [Validators.required]],
-    facture: [],
-    dateBonCaisse: [null, [Validators.required]],
-    reparationDivers: [],
-    trax: [],
-    balance: [],
-    avance: [],
-    autoroute: [],
-    dernierEtat: [],
-    penaliteEse: [],
-    penaliteChfrs: [],
-    fraisEspece: [],
-    retenu: [],
-    totalComission: [],
-    fournisseur: [],
-    client: [],
-    transporteur: [],
-    trajet: [],
-    produit: [],
-    societeFacturation: []
-  });
+  editForm = new FormGroup({
+    id: new FormControl(),
+    dateBonCommande: new FormControl(),
+    numeroBonCommande: new FormControl(),
+    numeroBonLivraison: new FormControl(null, Validators.required),
+    dateBonLivraison: new FormControl(null, Validators.required),
+    numeroBonFournisseur: new FormControl(),
+    quantiteVendue: new FormControl(null, Validators.min(0)),
+    uniteVente: new FormControl(),
+    prixTotalVente: new FormControl(),
+    quantiteAchetee: new FormControl(),
+    uniteAchat: new FormControl(),
+    prixTotalAchat: new FormControl(),
+    quantiteConvertie: new FormControl(),
+    type: new FormControl(null, Validators.required),
+    facture: new FormControl(),
+    dateBonCaisse: new FormControl(null, [Validators.required]),
+    reparationDivers: new FormControl(null, Validators.min(0)),
+    trax: new FormControl(null, Validators.min(0)),
+    balance: new FormControl(null, Validators.min(0)),
+    avance: new FormControl(null, Validators.min(0)),
+    autoroute: new FormControl(null, Validators.min(0)),
+    dernierEtat: new FormControl(null, Validators.min(0)),
+    penaliteEse: new FormControl(null, Validators.min(0)),
+    penaliteChfrs: new FormControl(null, Validators.min(0)),
+    fraisEspece: new FormControl(null, Validators.min(0)),
+    retenu: new FormControl(null, Validators.min(0)),
+    totalComission: new FormControl(),
+    fournisseur: new FormControl(),
+    client: new FormControl(null, [Validators.required]),
+    transporteur: new FormControl(null, [Validators.required]),
+    trajet: new FormControl(),
+    produit: new FormControl(null, [Validators.required]),
+    societeFacturation: new FormControl(null, [Validators.required])
+  }, this.validateMarchandise);
 
   constructor(
     protected jhiAlertService: JhiAlertService,
@@ -98,30 +110,15 @@ export class LivraisonUpdateComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ livraison }) => {
       this.updateForm(livraison);
     });
-    this.fournisseurService
-      .query()
-      .subscribe(
-        (res: HttpResponse<IFournisseur[]>) => (this.fournisseurs = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    this.clientService
-      .query()
-      .subscribe((res: HttpResponse<IClient[]>) => (this.clients = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.transporteurService
-      .query()
-      .subscribe(
-        (res: HttpResponse<ITransporteur[]>) => (this.transporteurs = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    this.trajetService
-      .query()
-      .subscribe((res: HttpResponse<ITrajet[]>) => (this.trajets = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.produitService
-      .query()
-      .subscribe((res: HttpResponse<IProduit[]>) => (this.produits = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.loadFournisseurs();
+    this.loadClients();
+    this.loadTransporteurs();
+    this.loadTrajets();
+    this.loadProduits();
     this.societeService
       .query()
       .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.editForm.get('dateBonCaisse').setValue(moment(new Date()));
   }
 
   updateForm(livraison: ILivraison) {
@@ -253,5 +250,126 @@ export class LivraisonUpdateComponent implements OnInit {
 
   trackSocieteById(index: number, item: ISociete) {
     return item.id;
+  }
+
+  private loadFournisseurs(){
+    this.fournisseurs$ = concat(
+            of([]), // default items
+            this.fournisseurInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.fournisseursLoading = true)),
+                switchMap(nom =>
+                    this.fournisseurService
+                        .query({'nom.contains': nom})
+                        .pipe(map((resp: HttpResponse<IFournisseur[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.fournisseursLoading = false))
+            )
+        );
+  }
+
+  private loadClients(){
+    this.clients$ = concat(
+            of([]), // default items
+            this.clientInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.clientsLoading = true)),
+                switchMap(nom =>
+                    this.clientService
+                        .query({'nom.contains': nom})
+                        .pipe(map((resp: HttpResponse<IClient[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.clientsLoading = false))
+            )
+        );
+  }
+
+  private loadTransporteurs(){
+    this.transporteurs$ = concat(
+            of([]), // default items
+            this.transporteurInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.transporteursLoading = true)),
+                switchMap(nom =>
+                    this.transporteurService
+                        .query({'nom.contains': nom})
+                        .pipe(
+                          map((resp: HttpResponse<ITransporteur[]>) => resp.body),
+                          catchError(() => of([])),
+                          map((transporteurs: ITransporteur[]) => {
+                            const enriched:ITransporteur[] = [];  
+                            transporteurs.forEach(transporteur => {
+                              transporteur.description = `${transporteur.nom} | ${transporteur.prenom} | ${transporteur.matricule}`
+                              enriched.push(transporteur);
+                            });
+                            return enriched;
+                          })
+                         )
+                ),
+                tap(() => (this.transporteursLoading = false))
+            )
+        );
+  }
+
+  private loadTrajets(){
+    this.trajets$ = concat(
+            of([]), // default items
+            this.trajetInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.trajetsLoading = true)),
+                switchMap(nom =>
+                    this.trajetService
+                        .query({'description.contains': nom})
+                        .pipe(map((resp: HttpResponse<ITrajet[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.trajetsLoading = false))
+            )
+        );
+  }
+
+  private loadProduits(){
+    this.produits$ = concat(
+            of([]), // default items
+            this.produitInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.produitsLoading = true)),
+                switchMap(nom =>
+                    this.produitService
+                        .query({'code.contains': nom})
+                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.produitsLoading = false))
+            )
+        );
+  }
+
+  private isMarchandise(): Boolean {
+    return this.editForm.get('type').value === TypeLivraison.Marchandise;
+  }
+
+  validateMarchandise(formGroup: FormGroup): ValidationErrors {
+    const typeLivraison = formGroup.get('type').value;
+    const otherThanMarchandise: boolean = typeLivraison !== TypeLivraison.Marchandise;
+    const isValid = otherThanMarchandise || (
+      formGroup.get('fournisseur').value !== undefined &&
+      formGroup.get('quantiteAchetee').value !== undefined &&
+      formGroup.get('uniteAchat').value !== undefined && 
+      formGroup.get('dateBonCommande').value !== undefined &&
+      formGroup.get('numeroBonCommande').value !== undefined &&
+      formGroup.get('quantiteVendue').value !== undefined &&
+      formGroup.get('uniteVente').value !== undefined &&
+      formGroup.get('quantiteConvertie').value !== undefined
+    ); 
+    return  isValid ? null : {invalidMarchandise: true};
   }
 }

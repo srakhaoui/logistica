@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import { ILivraison } from 'app/shared/model/livraison.model';
+import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
 
 @Component({
   selector: 'jhi-livraison-detail',
@@ -20,5 +21,9 @@ export class LivraisonDetailComponent implements OnInit {
 
   previousState() {
     window.history.back();
+  }
+
+  isMarchandise(): boolean{
+      return this.livraison.type === TypeLivraison.Marchandise;
   }
 }

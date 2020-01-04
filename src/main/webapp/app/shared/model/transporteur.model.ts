@@ -6,6 +6,7 @@ export interface ITransporteur {
   prenom?: string;
   telephone?: string;
   matricule?: string;
+  description?: string;
   proprietaire?: ISociete;
 }
 
