@@ -56,7 +56,8 @@
                         [hideSelected]="true"
 						[loading]="transporteursLoading" 
 						formControlName="transporteur"
-						name="transporteur">
+                        name="transporteur"
+                        placeholder="Recherchez par nom">
                         </ng-select>
                     <div *ngIf="editForm.get('transporteur').invalid && (editForm.get('transporteur').dirty || editForm.get('transporteur').touched)">
                         <small class="form-text text-danger"
@@ -74,7 +75,12 @@
 						[loading]="trajetsLoading" 
 						formControlName="trajet"
 						name="trajet">
-						</ng-select>
+                        </ng-select>
+                    <div *ngIf="isTransport() && (editForm.get('trajet').dirty || editForm.get('trajet').touched)">
+                        <small class="form-text text-danger" [hidden]="editForm.get('trajet').value" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.livraison.produit" for="field_produit">Produit</label>
@@ -189,8 +195,9 @@
                         </small>
                     </div>
                 </div>
-                <div *ngIf="isMarchandise()" class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.uniteVente" for="field_uniteVente">Unite Vente</label>
+                <div class="form-group">
+                    <label *ngIf="isMarchandise()" class="form-control-label" jhiTranslate="logisticaApp.livraison.uniteVente" for="field_uniteVente">Unite Vente</label>
+                    <label *ngIf="!isMarchandise()" class="form-control-label" jhiTranslate="logisticaApp.livraison.unite" for="field_uniteVente">Unite</label>
                     <select class="form-control" name="uniteVente" formControlName="uniteVente" id="field_uniteVente">
                         <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
                         <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>

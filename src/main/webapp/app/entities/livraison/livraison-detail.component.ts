@@ -26,4 +26,8 @@ export class LivraisonDetailComponent implements OnInit {
   isMarchandise(): boolean{
       return this.livraison.type === TypeLivraison.Marchandise;
   }
+
+  isTransport(): boolean{
+      return this.livraison.type === TypeLivraison.Transport;
+  }
 }

@@ -1,6 +1,7 @@
 package com.logistica.service;
 
 import com.logistica.domain.TarifAchat;
+import com.logistica.domain.enumeration.Unite;
 import com.logistica.repository.TarifAchatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,5 +72,9 @@ public class TarifAchatService {
     public void delete(Long id) {
         log.debug("Request to delete TarifAchat : {}", id);
         tarifAchatRepository.deleteById(id);
+    }
+    
+    public Float findPrixByFournisseurProduitAndUnite(Long fournisseurId, Long produitId, Unite unite) {
+    	return tarifAchatRepository.findPrixByFournisseurProduitAndUnite(fournisseurId, produitId, unite);
     }
 }

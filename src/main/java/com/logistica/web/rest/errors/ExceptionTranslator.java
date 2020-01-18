@@ -18,6 +18,11 @@ import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
 
+import com.logistica.service.CommissionTrajetUndefinedException;
+import com.logistica.service.PlusieursCommissionTrajetException;
+import com.logistica.service.PriceComputingException;
+import com.logistica.service.TrajetNotFoundException;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -127,6 +132,46 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .withStatus(Status.CONFLICT)
             .with(MESSAGE_KEY, ErrorConstants.ERR_CONCURRENCY_FAILURE)
             .build();
+        return create(ex, problem, request);
+    }
+    
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidPasswordException(PriceComputingException ex, NativeWebRequest request) {
+    	Problem problem = Problem.builder()
+                .withStatus(Status.BAD_REQUEST)
+                .with(MESSAGE_KEY, String.format(ErrorConstants.ERR_PRICING, ex.getType().name().toLowerCase()))
+                .withDetail(ex.getMessage())
+                .build();
+        return create(ex, problem, request);
+    }
+    
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidPasswordException(TrajetNotFoundException ex, NativeWebRequest request) {
+    	Problem problem = Problem.builder()
+                .withStatus(Status.BAD_REQUEST)
+                .with(MESSAGE_KEY, ErrorConstants.ERR_TRAJET_NOT_FOUND)
+                .withDetail(ex.getMessage())
+                .build();
+        return create(ex, problem, request);
+    }
+    
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidPasswordException(CommissionTrajetUndefinedException ex, NativeWebRequest request) {
+    	Problem problem = Problem.builder()
+                .withStatus(Status.BAD_REQUEST)
+                .with(MESSAGE_KEY, ErrorConstants.ERR_COMMISSION_UNDEFINED)
+                .withDetail(ex.getMessage())
+                .build();
+        return create(ex, problem, request);
+    }
+    
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleInvalidPasswordException(PlusieursCommissionTrajetException ex, NativeWebRequest request) {
+    	Problem problem = Problem.builder()
+                .withStatus(Status.BAD_REQUEST)
+                .with(MESSAGE_KEY, ErrorConstants.ERR_MANY_COMMISSION)
+                .withDetail(ex.getMessage())
+                .build();
         return create(ex, problem, request);
     }
 }

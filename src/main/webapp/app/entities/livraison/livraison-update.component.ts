@@ -5,7 +5,7 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, Validators, FormControl, FormGroup, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, Observable, of, concat } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, flatMap, startWith } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, startWith } from 'rxjs/operators';
 import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
 import { ILivraison, Livraison } from 'app/shared/model/livraison.model';
@@ -90,7 +90,7 @@ export class LivraisonUpdateComponent implements OnInit {
     trajet: new FormControl(),
     produit: new FormControl(null, [Validators.required]),
     societeFacturation: new FormControl(null, [Validators.required])
-  }, this.validateMarchandise);
+  }, [this.validateMarchandise, this.validateTransport]);
 
   constructor(
     protected jhiAlertService: JhiAlertService,
@@ -119,6 +119,16 @@ export class LivraisonUpdateComponent implements OnInit {
       .query()
       .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
     this.editForm.get('dateBonCaisse').setValue(moment(new Date()));
+    this.editForm.get('reparationDivers').setValue(0);
+    this.editForm.get('trax').setValue(0);
+    this.editForm.get('balance').setValue(0);
+    this.editForm.get('avance').setValue(0);
+    this.editForm.get('autoroute').setValue(0);
+    this.editForm.get('dernierEtat').setValue(0);
+    this.editForm.get('penaliteEse').setValue(0);
+    this.editForm.get('penaliteChfrs').setValue(0);
+    this.editForm.get('fraisEspece').setValue(0);
+    this.editForm.get('retenu').setValue(0);
   }
 
   updateForm(livraison: ILivraison) {
@@ -371,5 +381,17 @@ export class LivraisonUpdateComponent implements OnInit {
       formGroup.get('quantiteConvertie').value !== undefined
     ); 
     return  isValid ? null : {invalidMarchandise: true};
+  }
+
+  private isTransport(): Boolean {
+    return this.editForm.get('type').value === TypeLivraison.Transport;
+  }
+
+
+  validateTransport(formGroup: FormGroup): ValidationErrors {
+    const typeLivraison = formGroup.get('type').value;
+    const otherThanTransport: boolean = typeLivraison !== TypeLivraison.Transport;
+    const isValid = otherThanTransport || formGroup.get('trajet').value !== undefined; 
+    return  isValid ? null : {invalidTransport: true};
   }
 }

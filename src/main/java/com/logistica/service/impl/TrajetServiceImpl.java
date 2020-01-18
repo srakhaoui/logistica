@@ -1,16 +1,21 @@
 package com.logistica.service.impl;
 
+import com.logistica.service.TrajetNotFoundException;
+import com.logistica.service.CommissionTrajetUndefinedException;
+import com.logistica.service.PlusieursCommissionTrajetException;
+import com.logistica.service.PriceComputingException;
 import com.logistica.service.TrajetService;
 import com.logistica.domain.Trajet;
 import com.logistica.repository.TrajetRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -37,6 +42,7 @@ public class TrajetServiceImpl implements TrajetService {
     @Override
     public Trajet save(Trajet trajet) {
         log.debug("Request to save Trajet : {}", trajet);
+        trajet.setDescription(String.format("%s > %s", trajet.getDepart(), trajet.getDestination()));
         return trajetRepository.save(trajet);
     }
 
@@ -77,4 +83,18 @@ public class TrajetServiceImpl implements TrajetService {
         log.debug("Request to delete Trajet : {}", id);
         trajetRepository.deleteById(id);
     }
+
+	@Override
+	public Float getCommissionByTrajet(String depart, String destination) {
+		Trajet trajet = new Trajet();
+		trajet.setDepart(depart);
+		trajet.setDestination(destination);
+		List<Trajet> trajets = trajetRepository.findAll(Example.of(trajet));
+		if(trajets.isEmpty()) {
+			throw new TrajetNotFoundException();
+		}else if(trajets.size() > 1) {
+			throw new PlusieursCommissionTrajetException();			
+		}
+		return trajets.get(0).getCommission();
+	}
 }

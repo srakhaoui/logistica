@@ -97,6 +97,16 @@
                         <span>{{livraison.quantiteConvertie}}</span>
                     </dd>
                 </span>
+                <span *ngIf="isTransport()">
+                    <dt><span jhiTranslate="logisticaApp.livraison.uniteVente">Unite Vente</span></dt>
+                    <dd>
+                        <span jhiTranslate="{{'logisticaApp.Unite.' + livraison.uniteVente}}">{{livraison.uniteVente}}</span>
+                    </dd>
+                    <dt><span jhiTranslate="logisticaApp.livraison.prixTotalVente">Prix Total Vente</span></dt>
+                    <dd>
+                        <span>{{livraison.prixTotalVente}}</span>
+                    </dd>
+                </span>
                 <dt><span jhiTranslate="logisticaApp.livraison.numeroBonFournisseur">Numero Bon Fournisseur</span></dt>
                 <dd>
                     <span>{{livraison.numeroBonFournisseur}}</span>

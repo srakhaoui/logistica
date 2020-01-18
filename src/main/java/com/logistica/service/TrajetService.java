@@ -43,4 +43,11 @@ public interface TrajetService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    /**
+     * Return a fee depending on the source and destination
+     *
+     * @param id the fee of the entity.
+     */
+    Float getCommissionByTrajet(String depart, String destination);
 }
