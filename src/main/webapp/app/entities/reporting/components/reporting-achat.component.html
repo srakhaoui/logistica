@@ -1,0 +1,63 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.reporting.home.title">Achats</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="reportingAchatForm" role="form" novalidate (ngSubmit)="loadAll()" [formGroup]="reportingAchatForm">
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="logisticaApp.societe.home.title" for="field_proprietaire">SociÃ©tÃ©</label>
+                <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
+                    <option [ngValue]="null"></option>
+                    <option [ngValue]="societeOption.id === reportingAchatForm.get('societe').value?.id ? reportingAchatForm.get('societe').value : societeOption" *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="logisticaApp.fournisseur.home.title" for="field_fournisseur">Fournisseur</label>
+                <ng-select [items]="fournisseurs$ | async"
+                           [typeahead]="fournisseurInput$"
+                           bindLabel="nom"
+                           [hideSelected]="true"
+                           [loading]="fournisseursLoading"
+                           formControlName="fournisseur"
+                           name="fournisseur">
+                </ng-select>
+            </div>
+            <div>
+                <button type="submit" id="search-reporting" class="btn btn-primary">
+                    <fa-icon [icon]="'search'"></fa-icon>&nbsp;
+                    <span jhiTranslate="entity.action.search">Search</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="alert alert-warning" *ngIf="recapitulatifAchats?.length === 0">
+        <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
+    </div>
+    <div class="table-responsive" *ngIf="recapitulatifAchats?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+            <th scope="col"  jhiSortBy="dateBonCommande"><span jhiTranslate="logisticaApp.reporting.dateBonCommande">Date Bon Commande</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"><span jhiTranslate="logisticaApp.reporting.numeroBonCommande">N° Bon Commande</span></th>
+            <th scope="col"  jhiSortBy="codeProduit"><span jhiTranslate="logisticaApp.reporting.codeProduit">Code Produit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteAchetee">Total Quantitée Achetée</span></th>
+            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteConvertie">Total Quantitée Convertie</span></th>
+            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalPrixAchat">Total Prix Achat</span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let recapitulatifAchat of recapitulatifAchats ;trackBy: trackId">
+                <td>{{recapitulatifAchat.dateBonCommande.format('DD-MM-YYYY')}}</td>
+                <td>{{recapitulatifAchat.numeroBonCommande}}</td>
+                <td>{{recapitulatifAchat.codeProduit}}</td>
+                <td>{{recapitulatifAchat.totalQuantiteAchetee}}</td>
+                <td>{{recapitulatifAchat.totalQuantiteConvertie}}</td>
+                <td>{{recapitulatifAchat.totalPrixAchat}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

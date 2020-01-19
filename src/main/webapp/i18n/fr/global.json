@@ -17,6 +17,7 @@
         "tarifAchat": "Tarif Achat",
         "tarifTransport": "Tarif Transport",
         "livraison": "Livraison",
+        "recapitulatif-achat": "Récapitulatif des achats",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
@@ -108,7 +109,8 @@
       "delete": "Supprimer",
       "open": "Ouvrir",
       "save": "Sauvegarder",
-      "view": "Voir"
+      "view": "Voir",
+      "search": "Rechercher"
     },
     "detail": {
       "field": "Champs",

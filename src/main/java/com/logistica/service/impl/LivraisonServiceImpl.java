@@ -4,12 +4,15 @@ import com.logistica.service.CommissionTrajetUndefinedException;
 import com.logistica.service.LivraisonService;
 import com.logistica.service.PriceComputingException;
 import com.logistica.service.TrajetService;
+import com.logistica.service.dto.RecapitulatifAchatRequest;
 import com.logistica.service.tarif.Pricer;
 import com.logistica.service.tarif.PricerFactory;
 import com.logistica.service.tarif.TypePricer;
 import com.logistica.domain.Livraison;
+import com.logistica.domain.RecapitulatifAchat;
 import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.repository.LivraisonRepository;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -144,5 +148,11 @@ public class LivraisonServiceImpl implements LivraisonService {
     public void delete(Long id) {
         log.debug("Request to delete Livraison : {}", id);
         livraisonRepository.deleteById(id);
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable) {
+    	return livraisonRepository.getRecapitulatifByFournisseur(recapitulatifAchatRequest.getSocieteId(), recapitulatifAchatRequest.getFournisseurId(), pageable);
     }
 }

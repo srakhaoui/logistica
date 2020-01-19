@@ -1,9 +1,11 @@
 package com.logistica.web.rest;
 
 import com.logistica.domain.Livraison;
+import com.logistica.domain.RecapitulatifAchat;
 import com.logistica.service.LivraisonService;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import com.logistica.service.dto.LivraisonCriteria;
+import com.logistica.service.dto.RecapitulatifAchatRequest;
 import com.logistica.service.LivraisonQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -143,5 +145,13 @@ public class LivraisonResource {
         log.debug("REST request to delete Livraison : {}", id);
         livraisonService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+    
+    @GetMapping("/livraisons/achat")
+    public ResponseEntity<List<RecapitulatifAchat>> getAllLivraisons(RecapitulatifAchatRequest recaptulatifAchatRequest, Pageable pageable) {
+        log.debug("REST request to get RecapAchat : {}", recaptulatifAchatRequest);
+        Page<RecapitulatifAchat> page = livraisonService.getRecapitulatifAchat(recaptulatifAchatRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

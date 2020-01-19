@@ -1,0 +1,26 @@
+{
+  "logisticaApp": {
+    "reporting": {
+      "home": {
+        "title": "Récapitulatif des achats",
+        "createLabel": "Create a new Reporting",
+        "createOrEditLabel": "Create or edit a Reporting",
+        "notFound": "No Reporting found"
+      },
+      "dateBonCommande": "Date Bon Commande",
+      "numeroBonCommande": "N&deg; Bon Commande",
+      "codeProduit": "Code Produit",
+      "deleted": "A Reporting is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Reporting {{ id }}?"
+      },
+      "detail": {
+        "title": "Reporting"
+      },
+      "nom": "Nom",
+      "totalQuantiteAchetee": "Total Quantité Achetée",
+      "totalQuantiteConvertie": "Total Quantité Convertie",
+      "totalPrixAchat": "Total Prix Achat"
+    }
+  }
+}

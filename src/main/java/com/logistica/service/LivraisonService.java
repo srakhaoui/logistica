@@ -1,10 +1,13 @@
 package com.logistica.service;
 
 import com.logistica.domain.Livraison;
+import com.logistica.domain.RecapitulatifAchat;
+import com.logistica.service.dto.RecapitulatifAchatRequest;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,4 +46,6 @@ public interface LivraisonService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+    
+    Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable);
 }
