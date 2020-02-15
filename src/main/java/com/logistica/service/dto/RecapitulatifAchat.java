@@ -1,4 +1,4 @@
-package com.logistica.domain;
+package com.logistica.service.dto;
 
 import java.time.LocalDate;
 
@@ -6,11 +6,11 @@ public class RecapitulatifAchat {
 	private LocalDate dateBonCommande;
 	private Integer numeroBonCommande;
 	private String codeProduit;
-	private Long totalQuantiteAchetee;
-	private Long totalQuantiteConvertie;
+	private Double totalQuantiteAchetee;
+	private Double totalQuantiteConvertie;
 	private Double totalPrixAchat;
 
-	public RecapitulatifAchat(LocalDate dateBonCommande, Integer numeroBonCommande, String codeProduit, Long totalQuantiteAchetee, Long totalQuantiteConvertie, Double totalPrixAchat) {
+	public RecapitulatifAchat(LocalDate dateBonCommande, Integer numeroBonCommande, String codeProduit, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
 		this.dateBonCommande = dateBonCommande;
 		this.numeroBonCommande = numeroBonCommande;
 		this.codeProduit = codeProduit;
@@ -31,11 +31,11 @@ public class RecapitulatifAchat {
 		return codeProduit;
 	}
 
-	public Long getTotalQuantiteAchetee() {
+	public Double getTotalQuantiteAchetee() {
 		return totalQuantiteAchetee;
 	}
 
-	public Long getTotalQuantiteConvertie() {
+	public Double getTotalQuantiteConvertie() {
 		return totalQuantiteConvertie;
 	}
 

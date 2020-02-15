@@ -1,11 +1,10 @@
 package com.logistica.web.rest;
 
 import com.logistica.domain.Livraison;
-import com.logistica.domain.RecapitulatifAchat;
+import com.logistica.service.dto.RecapitulatifAchat;
 import com.logistica.service.LivraisonService;
+import com.logistica.service.dto.*;
 import com.logistica.web.rest.errors.BadRequestAlertException;
-import com.logistica.service.dto.LivraisonCriteria;
-import com.logistica.service.dto.RecapitulatifAchatRequest;
 import com.logistica.service.LivraisonQueryService;
 
 import io.github.jhipster.web.util.HeaderUtil;
@@ -17,7 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -146,11 +144,51 @@ public class LivraisonResource {
         livraisonService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
-    
+
     @GetMapping("/livraisons/achat")
     public ResponseEntity<List<RecapitulatifAchat>> getAllLivraisons(RecapitulatifAchatRequest recaptulatifAchatRequest, Pageable pageable) {
         log.debug("REST request to get RecapAchat : {}", recaptulatifAchatRequest);
         Page<RecapitulatifAchat> page = livraisonService.getRecapitulatifAchat(recaptulatifAchatRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/livraisons/achat/trajet")
+    public ResponseEntity<List<Livraison>> getAllLivraisons(SuiviTrajetRequest suiviTrajetRequest, Pageable pageable) {
+        log.debug("REST request to get SuiviTrajetRequest : {}", suiviTrajetRequest);
+        Page<Livraison> page = livraisonService.getSuiviTrajet(suiviTrajetRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/livraisons/vente/client")
+    public ResponseEntity<List<RecapitulatifClient>> getAllLivraisons(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable) {
+        log.debug("REST request to get recapitulatifClientRequest : {}", recapitulatifClientRequest);
+        Page<RecapitulatifClient> page = livraisonService.getRecapitulatifClient(recapitulatifClientRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/livraisons/vente/chauffeur")
+    public ResponseEntity<List<IRecapitulatifChauffeur>> getAllLivraisons(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable) {
+        log.debug("REST request to get recapitulatifChauffeurRequest : {}", recapitulatifChauffeurRequest);
+        Page<IRecapitulatifChauffeur> page = livraisonService.getRecapitulatifChauffeur(recapitulatifChauffeurRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+
+    @GetMapping("/livraisons/vente/facturation")
+    public ResponseEntity<List<RecapitulatifFacturation>> getAllLivraisons(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable) {
+        log.debug("REST request to get RecapitulatifFacturationRequest : {}", recapitulatifFacturationRequest);
+        Page<RecapitulatifFacturation> page = livraisonService.getRecapitulatifFacturation(recapitulatifFacturationRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/livraisons/vente/ca-camion")
+    public ResponseEntity<List<RecapitulatifCaCamion>> getAllLivraisons(Pageable pageable) {
+        Page<RecapitulatifCaCamion> page = livraisonService.getRecapitulatifCaCamion(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

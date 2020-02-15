@@ -78,9 +78,9 @@ public class LivraisonResourceIT {
     private static final Float UPDATED_PRIX_TOTAL_VENTE = 2F;
     private static final Float SMALLER_PRIX_TOTAL_VENTE = 1F - 1F;
 
-    private static final Integer DEFAULT_QUANTITE_ACHETEE = 1;
-    private static final Integer UPDATED_QUANTITE_ACHETEE = 2;
-    private static final Integer SMALLER_QUANTITE_ACHETEE = 1 - 1;
+    private static final Float DEFAULT_QUANTITE_ACHETEE = 1F;
+    private static final Float UPDATED_QUANTITE_ACHETEE = 2F;
+    private static final Float SMALLER_QUANTITE_ACHETEE = 1F - 1F;
 
     private static final Unite DEFAULT_UNITE_ACHAT = Unite.Tonne;
     private static final Unite UPDATED_UNITE_ACHAT = Unite.M3;
@@ -89,9 +89,9 @@ public class LivraisonResourceIT {
     private static final Float UPDATED_PRIX_TOTAL_ACHAT = 2F;
     private static final Float SMALLER_PRIX_TOTAL_ACHAT = 1F - 1F;
 
-    private static final Integer DEFAULT_QUANTITE_CONVERTIE = 1;
-    private static final Integer UPDATED_QUANTITE_CONVERTIE = 2;
-    private static final Integer SMALLER_QUANTITE_CONVERTIE = 1 - 1;
+    private static final Float DEFAULT_QUANTITE_CONVERTIE = 1F;
+    private static final Float UPDATED_QUANTITE_CONVERTIE = 2F;
+    private static final Float SMALLER_QUANTITE_CONVERTIE = 1F - 1F;
 
     private static final TypeLivraison DEFAULT_TYPE = TypeLivraison.Transport;
     private static final TypeLivraison UPDATED_TYPE = TypeLivraison.Marchandise;
@@ -438,7 +438,7 @@ public class LivraisonResourceIT {
             .andExpect(jsonPath("$.[*].retenu").value(hasItem(DEFAULT_RETENU.doubleValue())))
             .andExpect(jsonPath("$.[*].totalComission").value(hasItem(DEFAULT_TOTAL_COMISSION.doubleValue())));
     }
-    
+
     @Test
     @Transactional
     public void getLivraison() throws Exception {

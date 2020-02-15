@@ -1,12 +1,14 @@
 package com.logistica.service.dto;
 
-import org.springframework.data.domain.Pageable;
+import java.time.LocalDate;
 
 public class RecapitulatifAchatRequest {
-	
+
 	private Long societeId;
 	private Long fournisseurId;
-	
+	private LocalDate dateDebutBonCommande;
+	private LocalDate dateFinBonCommande;
+
 	public Long getSocieteId() {
 		return societeId;
 	}
@@ -19,4 +21,20 @@ public class RecapitulatifAchatRequest {
 	public void setFournisseurId(Long fournisseurId) {
 		this.fournisseurId = fournisseurId;
 	}
+
+    public LocalDate getDateDebutBonCommande() {
+        return dateDebutBonCommande;
+    }
+
+    public void setDateDebutBonCommande(LocalDate dateDebutBonCommande) {
+        this.dateDebutBonCommande = dateDebutBonCommande;
+    }
+
+    public LocalDate getDateFinBonCommande() {
+        return dateFinBonCommande;
+    }
+
+    public void setDateFinBonCommande(LocalDate dateFinBonCommande) {
+        this.dateFinBonCommande = dateFinBonCommande;
+    }
 }

@@ -56,7 +56,7 @@ public class Livraison implements Serializable {
     private Float prixTotalVente;
 
     @Column(name = "quantite_achetee")
-    private Integer quantiteAchetee;
+    private Float quantiteAchetee;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "unite_achat")
@@ -66,7 +66,7 @@ public class Livraison implements Serializable {
     private Float prixTotalAchat;
 
     @Column(name = "quantite_convertie")
-    private Integer quantiteConvertie;
+    private Float quantiteConvertie;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -250,16 +250,16 @@ public class Livraison implements Serializable {
         this.prixTotalVente = prixTotalVente;
     }
 
-    public Integer getQuantiteAchetee() {
+    public Float getQuantiteAchetee() {
         return quantiteAchetee;
     }
 
-    public Livraison quantiteAchetee(Integer quantiteAchetee) {
+    public Livraison quantiteAchetee(Float quantiteAchetee) {
         this.quantiteAchetee = quantiteAchetee;
         return this;
     }
 
-    public void setQuantiteAchetee(Integer quantiteAchetee) {
+    public void setQuantiteAchetee(Float quantiteAchetee) {
         this.quantiteAchetee = quantiteAchetee;
     }
 
@@ -289,16 +289,16 @@ public class Livraison implements Serializable {
         this.prixTotalAchat = prixTotalAchat;
     }
 
-    public Integer getQuantiteConvertie() {
+    public Float getQuantiteConvertie() {
         return quantiteConvertie;
     }
 
-    public Livraison quantiteConvertie(Integer quantiteConvertie) {
+    public Livraison quantiteConvertie(Float quantiteConvertie) {
         this.quantiteConvertie = quantiteConvertie;
         return this;
     }
 
-    public void setQuantiteConvertie(Integer quantiteConvertie) {
+    public void setQuantiteConvertie(Float quantiteConvertie) {
         this.quantiteConvertie = quantiteConvertie;
     }
 

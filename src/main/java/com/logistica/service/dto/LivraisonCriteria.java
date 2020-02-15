@@ -82,13 +82,13 @@ public class LivraisonCriteria implements Serializable, Criteria {
 
     private FloatFilter prixTotalVente;
 
-    private IntegerFilter quantiteAchetee;
+    private FloatFilter quantiteAchetee;
 
     private UniteFilter uniteAchat;
 
     private FloatFilter prixTotalAchat;
 
-    private IntegerFilter quantiteConvertie;
+    private FloatFilter quantiteConvertie;
 
     private TypeLivraisonFilter type;
 
@@ -246,11 +246,11 @@ public class LivraisonCriteria implements Serializable, Criteria {
         this.prixTotalVente = prixTotalVente;
     }
 
-    public IntegerFilter getQuantiteAchetee() {
+    public FloatFilter getQuantiteAchetee() {
         return quantiteAchetee;
     }
 
-    public void setQuantiteAchetee(IntegerFilter quantiteAchetee) {
+    public void setQuantiteAchetee(FloatFilter quantiteAchetee) {
         this.quantiteAchetee = quantiteAchetee;
     }
 
@@ -270,11 +270,11 @@ public class LivraisonCriteria implements Serializable, Criteria {
         this.prixTotalAchat = prixTotalAchat;
     }
 
-    public IntegerFilter getQuantiteConvertie() {
+    public FloatFilter getQuantiteConvertie() {
         return quantiteConvertie;
     }
 
-    public void setQuantiteConvertie(IntegerFilter quantiteConvertie) {
+    public void setQuantiteConvertie(FloatFilter quantiteConvertie) {
         this.quantiteConvertie = quantiteConvertie;
     }
 

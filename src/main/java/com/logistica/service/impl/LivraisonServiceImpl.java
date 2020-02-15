@@ -4,12 +4,12 @@ import com.logistica.service.CommissionTrajetUndefinedException;
 import com.logistica.service.LivraisonService;
 import com.logistica.service.PriceComputingException;
 import com.logistica.service.TrajetService;
-import com.logistica.service.dto.RecapitulatifAchatRequest;
+import com.logistica.service.dto.*;
 import com.logistica.service.tarif.Pricer;
 import com.logistica.service.tarif.PricerFactory;
 import com.logistica.service.tarif.TypePricer;
 import com.logistica.domain.Livraison;
-import com.logistica.domain.RecapitulatifAchat;
+import com.logistica.service.dto.RecapitulatifAchat;
 import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.repository.LivraisonRepository;
 
@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -36,10 +35,10 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Autowired
     private PricerFactory pricerFactory;
-    
+
     @Autowired
     private TrajetService trajetService;
-    
+
     private final LivraisonRepository livraisonRepository;
 
     public LivraisonServiceImpl(LivraisonRepository livraisonRepository) {
@@ -86,18 +85,18 @@ public class LivraisonServiceImpl implements LivraisonService {
 		Optional.ofNullable(prixVente).orElseThrow(()-> new PriceComputingException(TypePricer.Vente));
 		return livraison.getQuantiteVendue() * prixVente;
 	}
-	
+
 	private Float getPrixTransport(Livraison livraison) {
 		Pricer pricer = pricerFactory.getPricer(TypePricer.Transport);
 		Float prixTransport = pricer.price(livraison);
 		Optional.ofNullable(prixTransport).orElseThrow(()-> new PriceComputingException(TypePricer.Transport));
 		return prixTransport;
 	}
-	
+
 	private void calculerCommissionTotalTrajet(Livraison livraison) {
 		Assert.notNull(livraison.getTrajet().getDepart(), "Merci de renseigner le départ du trajet");
 		Assert.notNull(livraison.getTrajet().getDestination(), "Merci de renseigner la destination du trajet");
-		
+
 		Float commissionTrajet = Optional.ofNullable(trajetService.getCommissionByTrajet(livraison.getTrajet().getDepart(), livraison.getTrajet().getDestination())).orElseThrow(CommissionTrajetUndefinedException::new);;
 		Float reparationDivers = Optional.ofNullable(livraison.getReparationDivers()).orElse(0.0F);
 		Float trax = Optional.ofNullable(livraison.getTrax()).orElse(0.0F);
@@ -107,7 +106,7 @@ public class LivraisonServiceImpl implements LivraisonService {
 		Float penaliteChfrs = Optional.ofNullable(livraison.getPenaliteChfrs()).orElse(0.0F);
 		Float fraisEspece = Optional.ofNullable(livraison.getFraisEspece()).orElse(0.0F);
 		Float retenu = Optional.ofNullable(livraison.getRetenu()).orElse(0.0F);
-		
+
 		Float totalCommission = commissionTrajet + reparationDivers + trax + balance - avance + penaliteEse - penaliteChfrs - fraisEspece - retenu;
 		livraison.setTotalComission(totalCommission);
 	}
@@ -149,10 +148,43 @@ public class LivraisonServiceImpl implements LivraisonService {
         log.debug("Request to delete Livraison : {}", id);
         livraisonRepository.deleteById(id);
     }
-    
+
     @Override
     @Transactional(readOnly = true)
     public Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable) {
-    	return livraisonRepository.getRecapitulatifByFournisseur(recapitulatifAchatRequest.getSocieteId(), recapitulatifAchatRequest.getFournisseurId(), pageable);
+    	return livraisonRepository.getRecapitulatifAchat(recapitulatifAchatRequest, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Livraison> getSuiviTrajet(SuiviTrajetRequest suiviTrajetRequest, Pageable pageable){
+        return livraisonRepository.getSuiviTrajet(suiviTrajetRequest, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RecapitulatifClient> getRecapitulatifClient(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable){
+        return livraisonRepository.getRecapitulatifClient(recapitulatifClientRequest, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RecapitulatifFacturation> getRecapitulatifFacturation(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable){
+        return livraisonRepository.getRecapitulatifFacturation(recapitulatifFacturationRequest, pageable);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable){
+        Long transporteurId = recapitulatifChauffeurRequest.getIdTransporteur();
+        return Optional.ofNullable(transporteurId)
+            .map(aTransporteurId ->  livraisonRepository.getRecapitulatifChauffeur(recapitulatifChauffeurRequest.getDateDebut(), recapitulatifChauffeurRequest.getDateFin(), aTransporteurId, pageable))
+            .orElseGet(() -> livraisonRepository.getRecapitulatifChauffeur(recapitulatifChauffeurRequest.getDateDebut(), recapitulatifChauffeurRequest.getDateFin(), pageable));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(Pageable pageable){
+        return livraisonRepository.getRecapitulatifCaCamion(pageable);
     }
 }

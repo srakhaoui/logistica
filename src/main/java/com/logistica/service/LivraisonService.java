@@ -1,20 +1,18 @@
 package com.logistica.service;
 
 import com.logistica.domain.Livraison;
-import com.logistica.domain.RecapitulatifAchat;
-import com.logistica.service.dto.RecapitulatifAchatRequest;
+import com.logistica.service.dto.RecapitulatifAchat;
+import com.logistica.service.dto.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
  * Service Interface for managing {@link Livraison}.
  */
 public interface LivraisonService {
-
     /**
      * Save a livraison.
      *
@@ -46,6 +44,16 @@ public interface LivraisonService {
      * @param id the id of the entity.
      */
     void delete(Long id);
-    
+
     Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable);
+
+    Page<Livraison> getSuiviTrajet(SuiviTrajetRequest suiviTrajetRequest, Pageable pageable);
+
+    Page<RecapitulatifClient> getRecapitulatifClient(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable);
+
+    Page<RecapitulatifFacturation> getRecapitulatifFacturation(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable);
+
+    Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable);
+
+    Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(Pageable pageable);
 }
