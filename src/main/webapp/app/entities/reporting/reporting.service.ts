@@ -12,6 +12,7 @@ import { ILivraison } from 'app/shared/model/livraison.model';
 import { IRecapitulatifAchat } from 'app/shared/model/recapitulatif-achat.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
+type ILivraisonResponseType = HttpResponse<ILivraison[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ReportingService {
@@ -25,6 +26,13 @@ export class ReportingService {
     return this.http
       .get<IRecapitulatifAchat[]>(`${this.resourceUrl}/achat`, { params: options, observe: 'response' })
       .pipe(map((res: IRecapitulatifAchatsResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
+  getReportingAchatTrajet(req?: any): Observable<ILivraisonResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<ILivraison[]>(`${this.resourceUrl}/achat/trajet`, { params: options, observe: 'response' })
+      .pipe(map((res: ILivraisonResponseType) => res));
   }
 
   protected convertDateArrayFromServer(res: IRecapitulatifAchatsResponseType): IRecapitulatifAchatsResponseType {

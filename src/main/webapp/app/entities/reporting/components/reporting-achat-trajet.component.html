@@ -1,0 +1,74 @@
+<div>
+    <h2 id="page-heading">
+        <span>Trajets</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="reportingAchatForm" role="form" novalidate (ngSubmit)="loadAll()" [formGroup]="reportingAchatForm">
+            <div class="form-group">
+                <label class="form-control-label" for="field_proprietaire">Société</label>
+                <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
+                    <option [ngValue]="null"></option>
+                    <option [ngValue]="societeOption.id === reportingAchatForm.get('societe').value?.id ? reportingAchatForm.get('societe').value : societeOption" *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_dateDebutBonLivraison">Date de déBut</label>
+                <div class="input-group">
+                    <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_dateFinBonLivraison">Date de fin</label>
+                <div class="input-group">
+                    <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <button type="submit" id="search-reporting" class="btn btn-primary">
+                    <fa-icon [icon]="'search'"></fa-icon>&nbsp;
+                    <span>Rechercher</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="alert alert-warning" *ngIf="recapitulatifAchats?.length === 0">
+        <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
+    </div>
+    <div class="table-responsive" *ngIf="recapitulatifAchats?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col"><span>Bon de livraison</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"><span>Client</span></th>
+                <th scope="col"><span>Départ</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"><span>Total Quantité Achetée</span></th>
+                <th scope="col"><span>Fournisseur</span></th>
+                <th scope="col"><span>Déstination</span></th>
+                <th scope="col"><span>Matricule</span></th>
+                <th scope="col"><span>Chauffeur</span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let recapitulatifAchat of recapitulatifAchats ;trackBy: trackId">
+                <td>{{recapitulatifAchat.numeroBonLivraison}}</td>
+                <td>{{recapitulatifAchat.client.nom}}</td>
+                <td>{{recapitulatifAchat.trajet.depart}}</td>
+                <td>{{recapitulatifAchat.prixTotalAchat}}</td>
+                <td>{{recapitulatifAchat.fournisseur.nom}}</td>
+                <td>{{recapitulatifAchat.trajet.destination}}</td>
+                <td>{{recapitulatifAchat.transporteur.matricule}}</td>
+                <td>{{recapitulatifAchat.transporteur.nom + ' ' + recapitulatifAchat.transporteur.prenom}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

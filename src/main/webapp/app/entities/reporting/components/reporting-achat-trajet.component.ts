@@ -13,23 +13,22 @@ import { IFournisseur } from 'app/shared/model/fournisseur.model';
 import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
+import { Livraison, ILivraison } from 'app/shared/model/livraison.model';
 
 @Component({
-  selector: 'jhi-reporting-achat',
-  templateUrl: './reporting-achat.component.html'
+  selector: 'jhi-reporting-achat-trajet',
+  templateUrl: './reporting-achat-trajet.component.html'
 })
-export class ReportingAchatComponent implements OnInit, OnDestroy {
+export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
   societes: ISociete[];
-  fournisseurs$: Observable<IFournisseur[]>;
-  fournisseurInput$ = new Subject<string>();
-  fournisseursLoading:Boolean = false;
 
   reportingAchatForm = new FormGroup({
-      fournisseur: new FormControl(),
-      societe: new FormControl()
+      societe: new FormControl(),
+      dateDebut: new FormControl(),
+      dateFin: new FormControl()
     });
 
-  recapitulatifAchats: IRecapitulatifAchat[];
+  recapitulatifAchats: ILivraison[];
   itemsPerPage: number;
   links: any;
   page: any;
@@ -37,11 +36,8 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
   reverse: any;
   totalItems: number;
 
-
-
   constructor(
     protected reportingService: ReportingService,
-    protected fournisseurService: FournisseurService,
     protected societeService: SocieteService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
@@ -54,16 +50,16 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     this.links = {
       last: 0
     };
-    this.predicate = 'dateBonCommande';
+    this.predicate = 'fournisseur';
     this.reverse = true;
   }
 
   loadAll() {
     this.reportingService
-      .getReportingAchat(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<IRecapitulatifAchat[]>) => {
+      .getReportingAchatTrajet(this.buildReportingRequest())
+      .subscribe((res: HttpResponse<ILivraison[]>) => {
         this.recapitulatifAchats = [];
-        const data:IRecapitulatifAchat[] = res.body;
+        const data:ILivraison[] = res.body;
         for (let i = 0; i < data.length; i++) {
           this.recapitulatifAchats.push(data[i]);
         }
@@ -71,7 +67,6 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     this.societeService
             .query()
             .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.loadFournisseurs();
   }
 
   private buildReportingRequest(): any {
@@ -83,8 +78,11 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     if(this.reportingAchatForm.get('societe').value){
       reportingRequest['societeId'] = this.reportingAchatForm.get('societe').value.id;
     }
-    if(this.reportingAchatForm.get('fournisseur').value){
-      reportingRequest['fournisseurId'] = this.reportingAchatForm.get('fournisseur').value.id;
+    if(this.reportingAchatForm.get('dateDebut').value){
+      reportingRequest['dateDebut'] = this.reportingAchatForm.get('dateDebut').value.id;
+    }
+    if(this.reportingAchatForm.get('dateFin').value){
+      reportingRequest['dateFin'] = this.reportingAchatForm.get('dateFin').value.id;
     }
     return reportingRequest;
   }
@@ -111,6 +109,10 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     return item.dateBonCommande.unix + '' + item.numeroBonCommande + item.codeProduit;
   }
 
+  trackSocieteById(index: number, item: ISociete) {
+    return item.id;
+  }
+
   sort() {
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
     if (this.predicate !== 'id') {
@@ -123,29 +125,11 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  protected paginateRecapitulatifAchats(data: IRecapitulatifAchat[], headers: HttpHeaders) {
+  protected paginateRecapitulatifAchats(data: ILivraison[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     for (let i = 0; i < data.length; i++) {
       this.recapitulatifAchats.push(data[i]);
     }
-  }
-
-  private loadFournisseurs(){
-    this.fournisseurs$ = concat(
-            of([]), // default items
-            this.fournisseurInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.fournisseursLoading = true)),
-                switchMap(nom =>
-                    this.fournisseurService
-                        .query({'nom.contains': nom})
-                        .pipe(map((resp: HttpResponse<IFournisseur[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.fournisseursLoading = false))
-              )
-      );
   }
 }

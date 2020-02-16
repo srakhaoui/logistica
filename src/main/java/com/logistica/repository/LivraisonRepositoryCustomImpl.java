@@ -95,6 +95,17 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 
         StringBuilder query = new StringBuilder("From Livraison l ").append(predicate);
         Query entityQuery = entityManager.createQuery(query.toString());
+
+        if(withSociete) {
+            entityQuery.setParameter("societeId", societeId);
+        }
+        if(withDateDebutLivraison){
+            entityQuery.setParameter("dateDebutLivraison", dateDebutLivraison);
+        }
+        if(withDateFinLivraison){
+            entityQuery.setParameter("dateFinLivraison", dateFinLivraison);
+        }
+
         if(pageable.isPaged()) {
             entityQuery.setFirstResult((int) pageable.getOffset());
             entityQuery.setMaxResults(pageable.getPageSize());

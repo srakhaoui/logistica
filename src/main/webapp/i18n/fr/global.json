@@ -5,8 +5,14 @@
     "menu": {
       "home": "Accueil",
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
+      "reporting":{
+        "main": "Reporting",
+        "achats": "Achats",
+        "trajets": "Achats",
+        "trajets": "Achats"       
+      },
       "entities": {
-        "main": "Entités",
+        "main": "Saisie",
         "societe": "Societe",
         "transporteur": "Transporteur",
         "fournisseur": "Fournisseur",
