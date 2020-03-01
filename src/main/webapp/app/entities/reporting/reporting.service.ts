@@ -10,9 +10,11 @@ import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { ILivraison } from 'app/shared/model/livraison.model';
 import { IRecapitulatifAchat } from 'app/shared/model/recapitulatif-achat.model';
+import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
+type IRecapitulatifVenteClientResponseType = HttpResponse<IRecapitulatifVenteClient[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ReportingService {
@@ -35,10 +37,26 @@ export class ReportingService {
       .pipe(map((res: ILivraisonResponseType) => res));
   }
 
+  getReportingVenteClient(req?: any): Observable<IRecapitulatifVenteClientResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifVenteClient[]>(`${this.resourceUrl}/vente/client`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifVenteClientResponseType) => this.convertRecapClientDateArrayFromServer(res)));
+  }
+
   protected convertDateArrayFromServer(res: IRecapitulatifAchatsResponseType): IRecapitulatifAchatsResponseType {
     if (res.body) {
       res.body.forEach((recapitulatifAchat: IRecapitulatifAchat) => {
         recapitulatifAchat.dateBonCommande = recapitulatifAchat.dateBonCommande != null ? moment(recapitulatifAchat.dateBonCommande) : null;
+      });
+    }
+    return res;
+  }
+
+  protected convertRecapClientDateArrayFromServer(res: IRecapitulatifVenteClientResponseType): IRecapitulatifVenteClientResponseType {
+    if (res.body) {
+      res.body.forEach((recapitulatifVenteClient: IRecapitulatifVenteClient) => {
+        recapitulatifVenteClient.dateBonLivraison = recapitulatifVenteClient.dateBonLivraison != null ? moment(recapitulatifVenteClient.dateBonLivraison) : null;
       });
     }
     return res;
