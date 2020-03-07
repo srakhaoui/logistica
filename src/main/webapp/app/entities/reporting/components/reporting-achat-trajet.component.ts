@@ -14,6 +14,7 @@ import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
 import { Livraison, ILivraison } from 'app/shared/model/livraison.model';
+import { format } from 'app/shared/util/date-util';
 
 @Component({
   selector: 'jhi-reporting-achat-trajet',
@@ -79,10 +80,10 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
       reportingRequest['societeId'] = this.reportingAchatForm.get('societe').value.id;
     }
     if(this.reportingAchatForm.get('dateDebut').value){
-      reportingRequest['dateDebut'] = this.reportingAchatForm.get('dateDebut').value.id;
+      reportingRequest['dateDebut'] = format(this.reportingAchatForm.get('dateDebut').value);
     }
     if(this.reportingAchatForm.get('dateFin').value){
-      reportingRequest['dateFin'] = this.reportingAchatForm.get('dateFin').value.id;
+      reportingRequest['dateFin'] = format(this.reportingAchatForm.get('dateFin').value);
     }
     return reportingRequest;
   }

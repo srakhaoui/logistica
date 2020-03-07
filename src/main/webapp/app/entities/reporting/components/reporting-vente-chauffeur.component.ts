@@ -5,35 +5,33 @@ import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { IRecapitulatifAchat } from 'app/shared/model/recapitulatif-achat.model';
 import { ReportingService } from '../reporting.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ISociete } from 'app/shared/model/societe.model';
-import { IFournisseur } from 'app/shared/model/fournisseur.model';
-import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
-import { SocieteService } from 'app/entities/societe/societe.service';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
-import { Livraison, ILivraison } from 'app/shared/model/livraison.model';
 import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
 import * as moment from 'moment';
+import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
+import { ITransporteur } from 'app/shared/model/transporteur.model';
+import { IRecapitulatifVenteChauffeur } from 'app/shared/model/recapitulatif-vente-chauffeur.model';
 import { format } from 'app/shared/util/date-util';
 
 @Component({
-  selector: 'jhi-reporting-vente-client',
-  templateUrl: './reporting-vente-client.component.html'
+  selector: 'jhi-reporting-vente-chauffeur',
+  templateUrl: './reporting-vente-chauffeur.component.html'
 })
-export class ReportingVenteClientComponent implements OnInit, OnDestroy {
-  societes: ISociete[];
+export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
+  
+  transporteurs$: Observable<ITransporteur[]>;
+  transporteurInput$ = new Subject<string>();
+  transporteursLoading:Boolean = false;
 
   reportingForm = new FormGroup({
-      societe: new FormControl(),
-      facture: new FormControl(),
-      typeLivraison: new FormControl(),
+      transporteur: new FormControl(),
       dateDebut: new FormControl(),
       dateFin: new FormControl()
     });
 
-  recapitulatifs: IRecapitulatifVenteClient[];
+  recapitulatifs: IRecapitulatifVenteChauffeur[];
   itemsPerPage: number;
   links: any;
   page: any;
@@ -43,7 +41,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
 
   constructor(
     protected reportingService: ReportingService,
-    protected societeService: SocieteService,
+    protected transporteurService: TransporteurService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
@@ -56,7 +54,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.links = {
       last: 0
     };
-    this.predicate = 'fournisseur';
+    this.predicate = 'nomChauffeur';
     this.reverse = true;
   }
 
@@ -70,17 +68,15 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
 
   loadAll() {
     this.reportingService
-      .getReportingVenteClient(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<IRecapitulatifVenteClient[]>) => {
+      .getReportingVenteChauffeur(this.buildReportingRequest())
+      .subscribe((res: HttpResponse<IRecapitulatifVenteChauffeur[]>) => {
         this.recapitulatifs = [];
-        const data:IRecapitulatifVenteClient[] = res.body;
+        const data:IRecapitulatifVenteChauffeur[] = res.body;
         for (let i = 0; i < data.length; i++) {
           this.recapitulatifs.push(data[i]);
         }
       });
-    this.societeService
-            .query()
-            .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.loadTransporteurs();
   }
 
   private buildReportingRequest(): any {
@@ -89,8 +85,8 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
       size: this.itemsPerPage,
       sort: this.sort()
     }
-    if(this.reportingForm.get('societe').value){
-      reportingRequest['societeId'] = this.reportingForm.get('societe').value.id;
+    if(this.reportingForm.get('transporteur').value){
+      reportingRequest['transporteur'] = this.reportingForm.get('transporteur').value.id;
     }
     if(this.reportingForm.get('dateDebut').value){
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
@@ -119,12 +115,8 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  trackId(index: number, item: IRecapitulatifVenteClient) {
-    return item.client;
-  }
-
-  trackSocieteById(index: number, item: ISociete) {
-    return item.id;
+  trackId(index: number, item: IRecapitulatifVenteChauffeur) {
+    return item.nomChauffeur + '|' + item.prenomChauffeur;
   }
 
   sort() {
@@ -139,11 +131,40 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  protected paginateRecapitulatifs(data: IRecapitulatifVenteClient[], headers: HttpHeaders) {
+  protected paginateRecapitulatifs(data: IRecapitulatifVenteChauffeur[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     for (let i = 0; i < data.length; i++) {
       this.recapitulatifs.push(data[i]);
     }
+  }
+
+    private loadTransporteurs(){
+      this.transporteurs$ = concat(
+        of([]), // default items
+        this.transporteurInput$.pipe(
+            startWith(''),
+            debounceTime(500),
+            distinctUntilChanged(),
+            tap(() => (this.transporteursLoading = true)),
+            switchMap(nom =>
+                this.transporteurService
+                    .query({'nom.contains': nom})
+                    .pipe(
+                      map((resp: HttpResponse<ITransporteur[]>) => resp.body),
+                      catchError(() => of([])),
+                      map((transporteurs: ITransporteur[]) => {
+                        const enriched:ITransporteur[] = [];  
+                        transporteurs.forEach(transporteur => {
+                          transporteur.description = `${transporteur.nom} | ${transporteur.prenom} | ${transporteur.matricule}`
+                          enriched.push(transporteur);
+                        });
+                        return enriched;
+                      })
+                      )
+            ),
+            tap(() => (this.transporteursLoading = false))
+        )
+    );
   }
 }

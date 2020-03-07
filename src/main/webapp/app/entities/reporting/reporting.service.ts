@@ -11,10 +11,12 @@ import { createRequestOption } from 'app/shared/util/request-util';
 import { ILivraison } from 'app/shared/model/livraison.model';
 import { IRecapitulatifAchat } from 'app/shared/model/recapitulatif-achat.model';
 import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
+import { IRecapitulatifVenteChauffeur } from 'app/shared/model/recapitulatif-vente-chauffeur.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
 type IRecapitulatifVenteClientResponseType = HttpResponse<IRecapitulatifVenteClient[]>;
+type IRecapitulatifVenteChauffeurResponseType = HttpResponse<IRecapitulatifVenteChauffeur[]>;
 
 @Injectable({ providedIn: 'root' })
 export class ReportingService {
@@ -42,6 +44,13 @@ export class ReportingService {
     return this.http
       .get<IRecapitulatifVenteClient[]>(`${this.resourceUrl}/vente/client`, { params: options, observe: 'response' })
       .pipe(map((res: IRecapitulatifVenteClientResponseType) => this.convertRecapClientDateArrayFromServer(res)));
+  }
+
+  getReportingVenteChauffeur(req?: any): Observable<IRecapitulatifVenteChauffeurResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifVenteChauffeur[]>(`${this.resourceUrl}/vente/chauffeur`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifVenteChauffeurResponseType) => res));
   }
 
   protected convertDateArrayFromServer(res: IRecapitulatifAchatsResponseType): IRecapitulatifAchatsResponseType {

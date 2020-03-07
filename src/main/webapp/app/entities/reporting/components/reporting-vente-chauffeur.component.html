@@ -1,0 +1,91 @@
+<div>
+    <h2 id="page-heading">
+        <span>Trajets</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="reportingForm" role="form" novalidate (ngSubmit)="loadAll()" [formGroup]="reportingForm">
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.transporteur" for="field_transporteur">Transporteur</label>
+                <ng-select [items]="transporteurs$ | async"
+                    [typeahead]="transporteurInput$"
+                    bindLabel="description"
+                    [hideSelected]="true"
+                    [loading]="transporteursLoading" 
+                    formControlName="transporteur"
+                    name="transporteur"
+                    placeholder="Recherchez par nom">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_dateDebutBonCaisse">Date de déBut</label>
+                <div class="input-group">
+                    <input id="field_dateDebutBonCaisse" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_dateFinBonCaisse">Date de fin</label>
+                <div class="input-group">
+                    <input id="field_dateFinBonCaisse" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <button type="submit" id="search-reporting" class="btn btn-primary">
+                    <fa-icon [icon]="'search'"></fa-icon>&nbsp;
+                    <span>Rechercher</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
+        <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
+    </div>
+    <div class="table-responsive" *ngIf="recapitulatifs?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col"><span>Prenom</span></th>
+                <th scope="col"><span>Nom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"><span>Description</span></th>
+                <th scope="col"><span>Nombre Trajets</span></th>
+                <th scope="col"><span>Commission Trajet</span></th>
+                <th scope="col"><span>Reparation Divers</span></th>
+                <th scope="col"><span>Trax</span></th>
+                <th scope="col"><span>Balance</span></th>
+                <th scope="col"><span>Avance</span></th>
+                <th scope="col"><span>PenaliteEse</span></th>
+                <th scope="col"><span>PenaliteChfrs</span></th>
+                <th scope="col"><span>FraisEspece</span></th>
+                <th scope="col"><span>Retenu</span></th>
+                <th scope="col"><span>TotalComission</span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
+            <tr *ngFor="let recapitulatif of recapitulatifs ;trackBy: trackId">
+                <td>{{recapitulatif.prenomChauffeur}}</td>
+                <td>{{recapitulatif.nomChauffeur}}</td>
+                <td>{{recapitulatif.description}}</td>
+                <td>{{recapitulatif.nombreTrajets}}</td>
+                <td>{{recapitulatif.commissionTrajet}}</td>
+                <td>{{recapitulatif.reparationDivers}}</td>
+                <td>{{recapitulatif.trax}}</td>
+                <td>{{recapitulatif.balance}}</td>
+                <td>{{recapitulatif.avance}}</td>
+                <td>{{recapitulatif.penaliteEse}}</td>
+                <td>{{recapitulatif.penaliteChfrs}}</td>
+                <td>{{recapitulatif.fraisEspece}}</td>
+                <td>{{recapitulatif.retenu}}</td>
+                <td>{{recapitulatif.totalComission}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
