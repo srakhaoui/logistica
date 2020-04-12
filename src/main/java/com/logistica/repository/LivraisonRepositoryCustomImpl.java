@@ -220,12 +220,16 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     }
 
     @Override
-    public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(Pageable pageable) {
+    public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable) {
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifCaCamion(l.transporteur.matricule, l.uniteVente, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
-        StringBuilder predicate = new StringBuilder();
+        final StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateDebutLivraison()).ifPresent(aDateDebutLivraison -> predicate.append(" And l.dateBonLivraison >= :dateDebutLivraison"));
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFinLivraison()).ifPresent(aDateFinLivraison -> predicate.append(" And l.dateBonLivraison >= :dateFinLivraison"));
         String queryAsStr = query.append(predicate.toString()).append(" Group by l.transporteur.matricule, l.uniteVente").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifCaCamion.class);
 
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateDebutLivraison()).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFinLivraison()).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
         if(pageable.isPaged()) {
             entityQuery.setFirstResult((int) pageable.getOffset());
             entityQuery.setMaxResults(pageable.getPageSize());

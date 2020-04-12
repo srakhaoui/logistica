@@ -5,6 +5,7 @@ import { Routes } from '@angular/router';
 import { ReportingVenteClientComponent } from './components/reporting-vente-client.component';
 import { ReportingVenteChauffeurComponent } from './components/reporting-vente-chauffeur.component';
 import { ReportingVenteFacturationComponent } from './components/reporting-vente-facturation.component';
+import { ReportingVenteCaCamionComponent } from './components/reporting-vente-ca-camion.component';
 
 export const reportingRoute: Routes = [
 
@@ -47,6 +48,15 @@ export const reportingRoute: Routes = [
   {
     path: 'vente/facturation',
     component: ReportingVenteFacturationComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'logisticaApp.reporting.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'vente/ca-camion',
+    component: ReportingVenteCaCamionComponent,
     data: {
       authorities: ['ROLE_USER'],
       pageTitle: 'logisticaApp.reporting.home.title'

@@ -184,7 +184,7 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(Pageable pageable){
-        return livraisonRepository.getRecapitulatifCaCamion(pageable);
+    public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable){
+        return livraisonRepository.getRecapitulatifCaCamion(recapitulatifCaCamionRequest, pageable);
     }
 }

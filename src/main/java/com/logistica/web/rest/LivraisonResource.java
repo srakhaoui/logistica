@@ -187,8 +187,8 @@ public class LivraisonResource {
     }
 
     @GetMapping("/livraisons/vente/ca-camion")
-    public ResponseEntity<List<RecapitulatifCaCamion>> getAllLivraisons(Pageable pageable) {
-        Page<RecapitulatifCaCamion> page = livraisonService.getRecapitulatifCaCamion(pageable);
+    public ResponseEntity<List<RecapitulatifCaCamion>> getAllLivraisons(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable) {
+        Page<RecapitulatifCaCamion> page = livraisonService.getRecapitulatifCaCamion(recapitulatifCaCamionRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

@@ -18,5 +18,5 @@ public interface LivraisonRepositoryCustom {
 
     Page<RecapitulatifFacturation> getRecapitulatifFacturation(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable);
 
-    Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(Pageable pageable);
+    Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable);
 }

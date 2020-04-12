@@ -55,5 +55,5 @@ public interface LivraisonService {
 
     Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable);
 
-    Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(Pageable pageable);
+    Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable);
 }
