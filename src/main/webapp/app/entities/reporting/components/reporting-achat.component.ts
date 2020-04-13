@@ -4,6 +4,7 @@ import { Subscription, Observable, Subject, of, concat } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+import * as moment from 'moment';
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { IRecapitulatifAchat } from 'app/shared/model/recapitulatif-achat.model';
 import { ReportingService } from '../reporting.service';
@@ -13,6 +14,7 @@ import { IFournisseur } from 'app/shared/model/fournisseur.model';
 import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
+import { format } from 'app/shared/util/date-util';
 
 @Component({
   selector: 'jhi-reporting-achat',
@@ -26,7 +28,9 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
 
   reportingAchatForm = new FormGroup({
       fournisseur: new FormControl(),
-      societe: new FormControl()
+      societe: new FormControl(),
+      dateDebut: new FormControl(),
+      dateFin: new FormControl()
     });
 
   recapitulatifAchats: IRecapitulatifAchat[];
@@ -49,13 +53,22 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     protected parseLinks: JhiParseLinks
   ) {
     this.recapitulatifAchats = [];
+    this.initForm();
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.page = 0;
     this.links = {
       last: 0
     };
     this.predicate = 'dateBonCommande';
-    this.reverse = true;
+    this.reverse = false;
+  }
+
+  private initForm() {
+      const defaultDateDebut = moment(new Date());
+      defaultDateDebut.set("day", -7);
+      this.reportingAchatForm.get('dateDebut').setValue(defaultDateDebut);
+      const defaultDateFin = moment(new Date());
+      this.reportingAchatForm.get('dateFin').setValue(defaultDateFin);
   }
 
   loadAll() {
@@ -86,6 +99,12 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     if(this.reportingAchatForm.get('fournisseur').value){
       reportingRequest['fournisseurId'] = this.reportingAchatForm.get('fournisseur').value.id;
     }
+    if(this.reportingAchatForm.get('dateDebut').value){
+      reportingRequest['dateDebut'] = format(this.reportingAchatForm.get('dateDebut').value);
+    }
+    if(this.reportingAchatForm.get('dateFin').value){
+      reportingRequest['dateFin'] = format(this.reportingAchatForm.get('dateFin').value);
+    }
     return reportingRequest;
   }
 
@@ -113,9 +132,7 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
 
   sort() {
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
-    if (this.predicate !== 'id') {
-      result.push('id');
-    }
+    result.push('numeroBonCommande,asc');
     return result;
   }
 

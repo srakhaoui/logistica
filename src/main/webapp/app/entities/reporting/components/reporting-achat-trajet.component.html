@@ -15,6 +15,55 @@
                 </select>
             </div>
             <div class="form-group">
+                <label class="form-control-label" for="field_fournisseur">Fournisseur</label>
+                <ng-select id="field_fournisseur"
+                           [items]="fournisseurs$ | async"
+                           [typeahead]="fournisseurInput$"
+                           bindLabel="nom"
+                           [hideSelected]="true"
+                           [loading]="fournisseursLoading"
+                           formControlName="fournisseur"
+                           name="fournisseur">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_client">Client</label>
+                <ng-select id="field_client"
+                           [items]="clients$ | async"
+                           [typeahead]="clientInput$"
+                           bindLabel="nom"
+                           [hideSelected]="true"
+                           [loading]="clientsLoading"
+                           formControlName="client"
+                           name="client">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_transporteur">Transporteur</label>
+                <ng-select id="field_transporteur"
+                           [items]="transporteurs$ | async"
+                           [typeahead]="transporteurInput$"
+                           bindLabel="description"
+                           [hideSelected]="true"
+                           [loading]="transporteursLoading"
+                           formControlName="transporteur"
+                           name="transporteur"
+                           placeholder="Recherchez par nom">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_trajet">Trajet</label>
+                <ng-select id="field_trajet"
+                           [items]="trajets$ | async"
+                           [typeahead]="trajetInput$"
+                           bindLabel="description"
+                           [hideSelected]="true"
+                           [loading]="trajetsLoading"
+                           formControlName="trajet"
+                           name="trajet">
+                </ng-select>
+            </div>
+            <div class="form-group">
                 <label class="form-control-label" for="field_dateDebutBonLivraison">Date de déBut</label>
                 <div class="input-group">
                     <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>

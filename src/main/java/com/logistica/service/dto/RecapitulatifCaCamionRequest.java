@@ -3,22 +3,22 @@ package com.logistica.service.dto;
 import java.time.LocalDate;
 
 public class RecapitulatifCaCamionRequest {
-    private LocalDate dateDebutLivraison;
-    private LocalDate dateFinLivraison;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
 
-    public LocalDate getDateDebutLivraison() {
-        return dateDebutLivraison;
+    public LocalDate getDateDebut() {
+        return dateDebut;
     }
 
-    public void setDateDebutLivraison(LocalDate dateDebutLivraison) {
-        this.dateDebutLivraison = dateDebutLivraison;
+    public void setDateDebut(LocalDate dateDebut) {
+        this.dateDebut = dateDebut;
     }
 
-    public LocalDate getDateFinLivraison() {
-        return dateFinLivraison;
+    public LocalDate getDateFin() {
+        return dateFin;
     }
 
-    public void setDateFinLivraison(LocalDate dateFinLivraison) {
-        this.dateFinLivraison = dateFinLivraison;
+    public void setDateFin(LocalDate dateFin) {
+        this.dateFin = dateFin;
     }
 }

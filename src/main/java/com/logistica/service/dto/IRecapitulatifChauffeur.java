@@ -1,6 +1,7 @@
 package com.logistica.service.dto;
 
 public interface IRecapitulatifChauffeur {
+    Long getId();
     String getPrenomChauffeur();
     String getNomChauffeur();
     String getDescription();

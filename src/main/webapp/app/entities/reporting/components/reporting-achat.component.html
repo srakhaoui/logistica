@@ -25,6 +25,24 @@
                            name="fournisseur">
                 </ng-select>
             </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_dateDebutBonCommande">Date de dÃ©But</label>
+                <div class="input-group">
+                    <input id="field_dateDebutBonCommande" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_dateFinBonCommand">Date de fin</label>
+                <div class="input-group">
+                    <input id="field_dateFinBonCommand" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                </div>
+            </div>
             <div>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
                     <fa-icon [icon]="'search'"></fa-icon>&nbsp;
@@ -41,10 +59,10 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
             <th scope="col"  jhiSortBy="dateBonCommande"><span jhiTranslate="logisticaApp.reporting.dateBonCommande">Date Bon Commande</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"><span jhiTranslate="logisticaApp.reporting.numeroBonCommande">N° Bon Commande</span></th>
+            <th scope="col"><span jhiTranslate="logisticaApp.reporting.numeroBonCommande">Nï¿½ Bon Commande</span></th>
             <th scope="col"  jhiSortBy="codeProduit"><span jhiTranslate="logisticaApp.reporting.codeProduit">Code Produit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteAchetee">Total Quantitée Achetée</span></th>
-            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteConvertie">Total Quantitée Convertie</span></th>
+            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteAchetee">Total Quantitï¿½e Achetï¿½e</span></th>
+            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteConvertie">Total Quantitï¿½e Convertie</span></th>
             <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalPrixAchat">Total Prix Achat</span></th>
             </tr>
             </thead>

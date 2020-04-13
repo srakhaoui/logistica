@@ -20,7 +20,7 @@ import { format } from 'app/shared/util/date-util';
   templateUrl: './reporting-vente-chauffeur.component.html'
 })
 export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
-  
+
   transporteurs$: Observable<ITransporteur[]>;
   transporteurInput$ = new Subject<string>();
   transporteursLoading:Boolean = false;
@@ -86,7 +86,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
       sort: this.sort()
     }
     if(this.reportingForm.get('transporteur').value){
-      reportingRequest['transporteur'] = this.reportingForm.get('transporteur').value.id;
+      reportingRequest['idTransporteur'] = this.reportingForm.get('transporteur').value.id;
     }
     if(this.reportingForm.get('dateDebut').value){
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
@@ -154,7 +154,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
                       map((resp: HttpResponse<ITransporteur[]>) => resp.body),
                       catchError(() => of([])),
                       map((transporteurs: ITransporteur[]) => {
-                        const enriched:ITransporteur[] = [];  
+                        const enriched:ITransporteur[] = [];
                         transporteurs.forEach(transporteur => {
                           transporteur.description = `${transporteur.nom} | ${transporteur.prenom} | ${transporteur.matricule}`
                           enriched.push(transporteur);

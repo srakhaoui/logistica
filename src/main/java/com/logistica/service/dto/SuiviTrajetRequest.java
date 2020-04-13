@@ -5,8 +5,12 @@ import java.time.LocalDate;
 public class SuiviTrajetRequest {
 
     private Long societeId;
-    private LocalDate dateDebutLivraison;
-    private LocalDate dateFinLivraison;
+    private Long clientId;
+    private Long fournisseurId;
+    private Long trajetId;
+    private Long transporteurId;
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
 
     public Long getSocieteId() {
         return societeId;
@@ -16,19 +20,51 @@ public class SuiviTrajetRequest {
         this.societeId = societeId;
     }
 
-    public LocalDate getDateDebutLivraison() {
-        return dateDebutLivraison;
+    public Long getClientId() {
+        return clientId;
     }
 
-    public void setDateDebutLivraison(LocalDate dateDebutLivraison) {
-        this.dateDebutLivraison = dateDebutLivraison;
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
-    public LocalDate getDateFinLivraison() {
-        return dateFinLivraison;
+    public Long getFournisseurId() {
+        return fournisseurId;
     }
 
-    public void setDateFinLivraison(LocalDate dateFinLivraison) {
-        this.dateFinLivraison = dateFinLivraison;
+    public void setFournisseurId(Long fournisseurId) {
+        this.fournisseurId = fournisseurId;
+    }
+
+    public Long getTrajetId() {
+        return trajetId;
+    }
+
+    public void setTrajetId(Long trajetId) {
+        this.trajetId = trajetId;
+    }
+
+    public Long getTransporteurId() {
+        return transporteurId;
+    }
+
+    public void setTransporteurId(Long transporteurId) {
+        this.transporteurId = transporteurId;
+    }
+
+    public LocalDate getDateDebut() {
+        return dateDebut;
+    }
+
+    public void setDateDebut(LocalDate dateDebut) {
+        this.dateDebut = dateDebut;
+    }
+
+    public LocalDate getDateFin() {
+        return dateFin;
+    }
+
+    public void setDateFin(LocalDate dateFin) {
+        this.dateFin = dateFin;
     }
 }

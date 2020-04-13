@@ -25,9 +25,9 @@ import { SocieteService } from 'app/entities/societe/societe.service';
   templateUrl: './reporting-vente-facturation.component.html'
 })
 export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
-  
+
   societes: ISociete[];
-  
+
   clients$: Observable<IClient[]>;
   clientInput$ = new Subject<string>();
   clientsLoading:Boolean = false;
@@ -51,7 +51,7 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
   constructor(
     protected reportingService: ReportingService,
     protected societeService: SocieteService,
-    protected clientService: ClientService,    
+    protected clientService: ClientService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
@@ -97,10 +97,13 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
       sort: this.sort()
     }
     if(this.reportingForm.get('societe').value){
-      reportingRequest['societe'] = this.reportingForm.get('societe').value.id;
+      reportingRequest['societeId'] = this.reportingForm.get('societe').value.id;
     }
     if(this.reportingForm.get('client').value){
-      reportingRequest['client'] = this.reportingForm.get('client').value.id;
+      reportingRequest['clientId'] = this.reportingForm.get('client').value.id;
+    }
+    if(this.reportingForm.get('facture').value){
+      reportingRequest['facture'] = this.reportingForm.get('facture').value;
     }
     if(this.reportingForm.get('dateDebut').value){
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);

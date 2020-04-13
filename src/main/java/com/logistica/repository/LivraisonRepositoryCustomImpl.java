@@ -26,8 +26,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 	public Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable){
 	    final Long societeId = recapitulatifAchatRequest.getSocieteId();
 	    final Long fournisseurId = recapitulatifAchatRequest.getFournisseurId();
-	    final LocalDate dateDebutBonCommande = recapitulatifAchatRequest.getDateDebutBonCommande();
-	    final LocalDate dateFinBonCommande = recapitulatifAchatRequest.getDateFinBonCommande();
+	    final LocalDate dateDebutBonCommande = recapitulatifAchatRequest.getDateDebut();
+	    final LocalDate dateFinBonCommande = recapitulatifAchatRequest.getDateFin();
 
 		StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifAchat(l.dateBonCommande, l.numeroBonCommande, l.produit.code, sum(l.quantiteAchetee), sum(l.quantiteConvertie), sum(l.prixTotalAchat)) From Livraison l");
 		boolean withSocieteId = societeId != null;
@@ -75,16 +75,36 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     @Override
     public Page<Livraison> getSuiviTrajet(SuiviTrajetRequest suiviTrajetRequest, Pageable pageable) {
 	    final Long societeId = suiviTrajetRequest.getSocieteId();
-	    final LocalDate dateDebutLivraison = suiviTrajetRequest.getDateDebutLivraison();
-	    final LocalDate dateFinLivraison = suiviTrajetRequest.getDateFinLivraison();
+	    final Long clientId = suiviTrajetRequest.getClientId();
+	    final Long fournisseurId = suiviTrajetRequest.getFournisseurId();
+	    final Long trajetId = suiviTrajetRequest.getTrajetId();
+	    final Long transporteurId = suiviTrajetRequest.getTransporteurId();
+	    final LocalDate dateDebutLivraison = suiviTrajetRequest.getDateDebut();
+	    final LocalDate dateFinLivraison = suiviTrajetRequest.getDateFin();
 
 	    boolean withSociete = societeId != null;
+	    boolean withClientId = clientId != null;
+	    boolean withFournisseurId = fournisseurId != null;
+	    boolean withTrajetId = trajetId != null;
+	    boolean withTransporteurId = transporteurId != null;
 	    boolean withDateDebutLivraison = dateDebutLivraison != null;
 	    boolean withDateFinLivraison = dateFinLivraison != null;
 
         StringBuilder predicate = new StringBuilder(" Where 1=1");
         if(withSociete){
             predicate.append(" And l.societeFacturation.id = :societeId");
+        }
+        if(withClientId){
+            predicate.append(" And l.client.id = :clientId");
+        }
+        if(withFournisseurId){
+            predicate.append(" And l.fournisseur.id = :fournisseurId");
+        }
+        if(withTrajetId){
+            predicate.append(" And l.trajet.id = :trajetId");
+        }
+        if(withTransporteurId){
+            predicate.append(" And l.transporteur.id = :transporteurId");
         }
         if(withDateDebutLivraison){
             predicate.append(" And l.dateBonLivraison <= :dateDebutLivraison");
@@ -98,6 +118,18 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 
         if(withSociete) {
             entityQuery.setParameter("societeId", societeId);
+        }
+        if(withClientId){
+            entityQuery.setParameter("clientId", clientId);
+        }
+        if(withFournisseurId){
+            entityQuery.setParameter("fournisseurId", fournisseurId);
+        }
+        if(withTrajetId){
+            entityQuery.setParameter("trajetId", trajetId);
+        }
+        if(withTransporteurId){
+            entityQuery.setParameter("transporteurId", transporteurId);
         }
         if(withDateDebutLivraison){
             entityQuery.setParameter("dateDebutLivraison", dateDebutLivraison);
@@ -122,8 +154,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 	    final Long societeId = recapitulatifClientRequest.getSocieteId();
 	    final Boolean isFacturee = recapitulatifClientRequest.isFacture();
 	    final TypeLivraison typeLivraison = recapitulatifClientRequest.getTypeLivraison();
-	    final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebutLivraison();
-	    final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFinLivraison();
+	    final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
+	    final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalAchat)) From Livraison l");
         boolean withSocieteId = societeId != null;
@@ -173,8 +205,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 	    final Long societeId = recapitulatifFacturationRequest.getSocieteId();
 	    final Boolean isFacturee = recapitulatifFacturationRequest.getFacture();
 	    final Long clientId = recapitulatifFacturationRequest.getClientId();
-        final LocalDate dateDebutLivraison = recapitulatifFacturationRequest.getDateDebutLivraison();
-        final LocalDate dateFinLivraison = recapitulatifFacturationRequest.getDateFinLivraison();
+        final LocalDate dateDebutLivraison = recapitulatifFacturationRequest.getDateDebut();
+        final LocalDate dateFinLivraison = recapitulatifFacturationRequest.getDateFin();
 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifFacturation(month(l.dateBonLivraison), l.produit.code, l.uniteVente, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
         boolean withSocieteId = societeId != null;
@@ -223,13 +255,13 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable) {
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifCaCamion(l.transporteur.matricule, l.uniteVente, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
         final StringBuilder predicate = new StringBuilder(" Where 1=1 ");
-        Optional.ofNullable(recapitulatifCaCamionRequest.getDateDebutLivraison()).ifPresent(aDateDebutLivraison -> predicate.append(" And l.dateBonLivraison >= :dateDebutLivraison"));
-        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFinLivraison()).ifPresent(aDateFinLivraison -> predicate.append(" And l.dateBonLivraison >= :dateFinLivraison"));
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateDebut()).ifPresent(aDateDebutLivraison -> predicate.append(" And l.dateBonLivraison >= :dateDebutLivraison"));
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFin()).ifPresent(aDateFinLivraison -> predicate.append(" And l.dateBonLivraison >= :dateFinLivraison"));
         String queryAsStr = query.append(predicate.toString()).append(" Group by l.transporteur.matricule, l.uniteVente").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifCaCamion.class);
 
-        Optional.ofNullable(recapitulatifCaCamionRequest.getDateDebutLivraison()).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
-        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFinLivraison()).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateDebut()).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFin()).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
         if(pageable.isPaged()) {
             entityQuery.setFirstResult((int) pageable.getOffset());
             entityQuery.setMaxResults(pageable.getPageSize());

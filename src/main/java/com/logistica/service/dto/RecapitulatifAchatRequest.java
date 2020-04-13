@@ -6,8 +6,8 @@ public class RecapitulatifAchatRequest {
 
 	private Long societeId;
 	private Long fournisseurId;
-	private LocalDate dateDebutBonCommande;
-	private LocalDate dateFinBonCommande;
+	private LocalDate dateDebut;
+	private LocalDate dateFin;
 
 	public Long getSocieteId() {
 		return societeId;
@@ -22,19 +22,19 @@ public class RecapitulatifAchatRequest {
 		this.fournisseurId = fournisseurId;
 	}
 
-    public LocalDate getDateDebutBonCommande() {
-        return dateDebutBonCommande;
+    public LocalDate getDateDebut() {
+        return dateDebut;
     }
 
-    public void setDateDebutBonCommande(LocalDate dateDebutBonCommande) {
-        this.dateDebutBonCommande = dateDebutBonCommande;
+    public void setDateDebut(LocalDate dateDebut) {
+        this.dateDebut = dateDebut;
     }
 
-    public LocalDate getDateFinBonCommande() {
-        return dateFinBonCommande;
+    public LocalDate getDateFin() {
+        return dateFin;
     }
 
-    public void setDateFinBonCommande(LocalDate dateFinBonCommande) {
-        this.dateFinBonCommande = dateFinBonCommande;
+    public void setDateFin(LocalDate dateFin) {
+        this.dateFin = dateFin;
     }
 }

@@ -92,6 +92,12 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     if(this.reportingForm.get('societe').value){
       reportingRequest['societeId'] = this.reportingForm.get('societe').value.id;
     }
+    if(this.reportingForm.get('typeLivraison').value){
+      reportingRequest['typeLivraison'] = this.reportingForm.get('typeLivraison').value;
+    }
+    if(this.reportingForm.get('facture').value){
+      reportingRequest['facture'] = this.reportingForm.get('facture').value;
+    }
     if(this.reportingForm.get('dateDebut').value){
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
     }
