@@ -35,10 +35,10 @@
                     <label class="form-control-label" jhiTranslate="logisticaApp.transporteur.telephone" for="field_telephone">Telephone</label>
                     <input type="text" class="form-control" name="telephone" id="field_telephone"
                            formControlName="telephone"/>
-                    <div *ngIf="editForm.get('telephone').invalid && (editForm.get('telephone').dirty || editForm.get('telephone').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('telephone').errors.pattern" jhiTranslate="entity.validation.pattern" [translateValues]="{ pattern: 'Telephone' }">
-                            This field should follow pattern for "Telephone".
+                    <div
+                        *ngIf="editForm.get('telephone').invalid && (editForm.get('telephone').dirty || editForm.get('telephone').touched)">
+                        <small class="form-text text-danger" *ngIf="editForm.get('telephone').errors.pattern">
+                            Le N° de t&eacute;l&eacute;phone saisi est invalide
                         </small>
                     </div>
                 </div>
@@ -61,13 +61,17 @@
                         <option [ngValue]="societeOption.id === editForm.get('proprietaire').value?.id ? editForm.get('proprietaire').value : societeOption" *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}</option>
                     </select>
                 </div>
+                <jhi-alert-error></jhi-alert-error>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving"
+                        class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span *ngIf="!isSaving" jhiTranslate="entity.action.save">Save</span>
+                    <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
                 </button>
             </div>
         </form>

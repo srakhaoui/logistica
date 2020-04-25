@@ -1,6 +1,7 @@
 {
   "error": {
     "title": "Page d'erreur !",
+    "Pattern": "Format invalid",
     "http": {
       "400": "Mauvaise requête.",
       "403": "Vous n'avez pas les droits pour accéder à cette page.",
@@ -13,7 +14,7 @@
     "achat.pricingIssue": "Aucun tarif d'achat n'a été trouvé pour le fournisseur et l'unité d'achat fournis",
     "vente.pricingIssue": "Aucun tarif de vente n'a été trouvé pour le client, le produit et l'unité de vente fournis",
     "transport.pricingIssue": "Aucun tarif de transport n'a été trouvé pour le client, le produit et l'unité fournis",
-    "error.trajetNotFound": "Aucun trajet n'a été trouv� pour la description fournie",
+    "error.trajetNotFound": "Aucun trajet n'a été trouv� pour la description fournie",
     "error.trajetWithCommissionUndefined": "Le trajet sélectionné n'a pas de commission de définie",
     "error.trajetManyCommission": "Plusieurs commissions ont été trouvées pour le trajet sélectionné"
   }

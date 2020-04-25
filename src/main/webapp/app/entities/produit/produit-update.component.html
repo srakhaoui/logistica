@@ -25,14 +25,17 @@
                     <input type="text" class="form-control" name="categorie" id="field_categorie"
                            formControlName="categorie"/>
                 </div>
-
+                <jhi-alert-error></jhi-alert-error>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving"
+                        class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span *ngIf="!isSaving" jhiTranslate="entity.action.save">Save</span>
+                    <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
                 </button>
             </div>
         </form>

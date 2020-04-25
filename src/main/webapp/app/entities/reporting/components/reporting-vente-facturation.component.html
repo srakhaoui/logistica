@@ -6,29 +6,33 @@
     <jhi-alert></jhi-alert>
     <br/>
     <div>
-        <form name="reportingForm" role="form" novalidate (ngSubmit)="loadAll()" [formGroup]="reportingForm">
+        <form name="reportingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingForm">
             <div class="form-group">
                 <label class="form-control-label" for="field_societe">Soci&eacute;t&eacute; de facturation</label>
                 <select class="form-control" id="field_societe" name="societe" formControlName="societe">
                     <option [ngValue]="null"></option>
-                    <option [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption" *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}</option>
+                    <option
+                        [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption"
+                        *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                    </option>
                 </select>
-            </div>            
+            </div>
             <div class="form-group">
-                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client" for="field_client">Client</label>
+                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
+                       for="field_client">Client</label>
                 <ng-select [items]="clients$ | async"
-                    [typeahead]="clientInput$"
-                    bindLabel="nom"
-                    [hideSelected]="true"
-                    [loading]="clientsLoading" 
-                    formControlName="client"
-                    name="client">
+                           [typeahead]="clientInput$"
+                           bindLabel="nom"
+                           [hideSelected]="true"
+                           [loading]="clientsLoading"
+                           formControlName="client"
+                           name="client">
                     </ng-select>
             </div>
             <div class="form-group">
                 <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
-                <input id="field_facture" type="checkbox" name="facture" formControlName="facture" />
-            </div>            
+                <input id="field_facture" type="checkbox" name="facture" formControlName="facture"/>
+            </div>
             <div class="form-group">
                 <label class="form-control-label" for="field_dateDebutBonCaisse">Date de déBut</label>
                 <div class="input-group">
@@ -49,8 +53,10 @@
             </div>
             <div>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
-                    <fa-icon [icon]="'search'"></fa-icon>&nbsp;
-                    <span>Rechercher</span>
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
                 </button>
             </div>
         </form>

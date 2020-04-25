@@ -39,6 +39,8 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
   reverse: any;
   totalItems: number;
 
+  isSearching:Boolean = false;
+
   constructor(
     protected reportingService: ReportingService,
     protected transporteurService: TransporteurService,
@@ -67,16 +69,22 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
+    this.loadTransporteurs();
+    this.search();
+  }
+
+  search(){
+    this.isSearching = true;
     this.reportingService
       .getReportingVenteChauffeur(this.buildReportingRequest())
       .subscribe((res: HttpResponse<IRecapitulatifVenteChauffeur[]>) => {
+        this.isSearching = false;
         this.recapitulatifs = [];
         const data:IRecapitulatifVenteChauffeur[] = res.body;
         for (let i = 0; i < data.length; i++) {
           this.recapitulatifs.push(data[i]);
         }
       });
-    this.loadTransporteurs();
   }
 
   private buildReportingRequest(): any {

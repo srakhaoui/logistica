@@ -48,6 +48,8 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
   reverse: any;
   totalItems: number;
 
+  isSearching: Boolean = false;
+
   constructor(
     protected reportingService: ReportingService,
     protected societeService: SocieteService,
@@ -77,17 +79,23 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
+    this.loadSocietes();
+    this.loadClients();
+    this.search();
+  }
+
+  search(){
+    this.isSearching = true;
     this.reportingService
       .getReportingVenteFacturation(this.buildReportingRequest())
       .subscribe((res: HttpResponse<IRecapitulatifVenteFacturation[]>) => {
+        this.isSearching = false;
         this.recapitulatifs = [];
         const data:IRecapitulatifVenteFacturation[] = res.body;
         for (let i = 0; i < data.length; i++) {
           this.recapitulatifs.push(data[i]);
         }
       });
-    this.loadSocietes();
-    this.loadClients();
   }
 
   private buildReportingRequest(): any {

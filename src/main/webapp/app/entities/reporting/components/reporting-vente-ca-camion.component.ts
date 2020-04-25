@@ -14,7 +14,7 @@ import { IRecapitulatifVenteCaCamion } from 'app/shared/model/recapitulatif-vent
   templateUrl: './reporting-vente-ca-camion.component.html'
 })
 export class ReportingVenteCaCamionComponent implements OnInit, OnDestroy {
-  
+
   reportingForm = new FormGroup({
       dateDebut: new FormControl(),
       dateFin: new FormControl()
@@ -27,6 +27,8 @@ export class ReportingVenteCaCamionComponent implements OnInit, OnDestroy {
   predicate: any;
   reverse: any;
   totalItems: number;
+
+  isSearching:Boolean = false;
 
   constructor(
     protected reportingService: ReportingService,
@@ -54,9 +56,11 @@ export class ReportingVenteCaCamionComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
+    this.isSearching = true;
     this.reportingService
       .getReportingVenteCaCamion(this.buildReportingRequest())
       .subscribe((res: HttpResponse<IRecapitulatifVenteCaCamion[]>) => {
+        this.isSearching = false;
         this.recapitulatifs = [];
         const data:IRecapitulatifVenteCaCamion[] = res.body;
         for (let i = 0; i < data.length; i++) {

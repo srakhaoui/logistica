@@ -1,11 +1,12 @@
 package com.logistica.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -31,7 +32,7 @@ public class Transporteur implements Serializable {
     @Column(name = "prenom", nullable = false)
     private String prenom;
 
-    @Pattern(regexp = "^0[0-9]{9}$")
+    @Pattern(regexp = "^0[0-9]{9}$|\\s*")
     @Column(name = "telephone")
     private String telephone;
 

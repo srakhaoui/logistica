@@ -26,6 +26,8 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
   fournisseurInput$ = new Subject<string>();
   fournisseursLoading:Boolean = false;
 
+  isSearching: boolean;
+
   reportingAchatForm = new FormGroup({
       fournisseur: new FormControl(),
       societe: new FormControl(),
@@ -61,6 +63,7 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     };
     this.predicate = 'dateBonCommande';
     this.reverse = false;
+    this.isSearching = false;
   }
 
   private initForm() {
@@ -72,19 +75,25 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
-    this.reportingService
-      .getReportingAchat(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<IRecapitulatifAchat[]>) => {
-        this.recapitulatifAchats = [];
-        const data:IRecapitulatifAchat[] = res.body;
-        for (let i = 0; i < data.length; i++) {
-          this.recapitulatifAchats.push(data[i]);
-        }
-      });
     this.societeService
             .query()
             .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
     this.loadFournisseurs();
+    this.search();
+  }
+
+  search(){
+      this.isSearching = true;
+      this.reportingService
+        .getReportingAchat(this.buildReportingRequest())
+        .subscribe((res: HttpResponse<IRecapitulatifAchat[]>) => {
+          this.isSearching = false;
+          this.recapitulatifAchats = [];
+          const data:IRecapitulatifAchat[] = res.body;
+          for (let i = 0; i < data.length; i++) {
+            this.recapitulatifAchats.push(data[i]);
+          }
+        });
   }
 
   private buildReportingRequest(): any {

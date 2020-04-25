@@ -41,6 +41,8 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   reverse: any;
   totalItems: number;
 
+  isSearching: Boolean = false;
+
   constructor(
     protected reportingService: ReportingService,
     protected societeService: SocieteService,
@@ -69,18 +71,24 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
+    this.societeService
+            .query()
+            .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.search();
+  }
+
+  search(){
+    this.isSearching = true;
     this.reportingService
       .getReportingVenteClient(this.buildReportingRequest())
       .subscribe((res: HttpResponse<IRecapitulatifVenteClient[]>) => {
+        this.isSearching = false;
         this.recapitulatifs = [];
         const data:IRecapitulatifVenteClient[] = res.body;
         for (let i = 0; i < data.length; i++) {
           this.recapitulatifs.push(data[i]);
         }
       });
-    this.societeService
-            .query()
-            .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   private buildReportingRequest(): any {

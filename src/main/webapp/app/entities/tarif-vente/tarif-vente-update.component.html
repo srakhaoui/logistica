@@ -42,34 +42,38 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.tarifVente.client" for="field_client">Client</label>
                     <ng-select [items]="clients$ | async"
-                        [typeahead]="clientInput$"
-						bindLabel="nom"
-                        [addTag]="true" 
-                        [hideSelected]="true"
-						[loading]="clientsLoading" 
-						formControlName="client"
-						name="client">
-						</ng-select>
+                               [typeahead]="clientInput$"
+                               bindLabel="nom"
+                               [addTag]="true"
+                               [hideSelected]="true"
+                               [loading]="clientsLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.tarifVente.produit" for="field_produit">Produit</label>
                     <ng-select [items]="produits$ | async"
-                        [typeahead]="produitInput$"
-						bindLabel="code"
-                        [addTag]="true" 
-                        [hideSelected]="true"
-						[loading]="produitsLoading" 
-						formControlName="produit"
-						name="produit">
-						</ng-select>
+                               [typeahead]="produitInput$"
+                               bindLabel="code"
+                               [addTag]="true"
+                               [hideSelected]="true"
+                               [loading]="produitsLoading"
+                               formControlName="produit"
+                               name="produit">
+                    </ng-select>
                 </div>
+                <jhi-alert-error></jhi-alert-error>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
                 </button>
-                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving"
+                        class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span *ngIf="!isSaving" jhiTranslate="entity.action.save">Save</span>
+                    <span *ngIf="isSaving" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
                 </button>
             </div>
         </form>

@@ -6,17 +6,18 @@
     <jhi-alert></jhi-alert>
     <br/>
     <div>
-        <form name="reportingForm" role="form" novalidate (ngSubmit)="loadAll()" [formGroup]="reportingForm">
+        <form name="reportingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingForm">
             <div class="form-group">
-                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.transporteur" for="field_transporteur">Transporteur</label>
+                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.transporteur"
+                       for="field_transporteur">Transporteur</label>
                 <ng-select [items]="transporteurs$ | async"
-                    [typeahead]="transporteurInput$"
-                    bindLabel="description"
-                    [hideSelected]="true"
-                    [loading]="transporteursLoading" 
-                    formControlName="transporteur"
-                    name="transporteur"
-                    placeholder="Recherchez par nom">
+                           [typeahead]="transporteurInput$"
+                           bindLabel="description"
+                           [hideSelected]="true"
+                           [loading]="transporteursLoading"
+                           formControlName="transporteur"
+                           name="transporteur"
+                           placeholder="Recherchez par nom">
                 </ng-select>
             </div>
             <div class="form-group">
@@ -39,8 +40,10 @@
             </div>
             <div>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
-                    <fa-icon [icon]="'search'"></fa-icon>&nbsp;
-                    <span>Rechercher</span>
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
                 </button>
             </div>
         </form>

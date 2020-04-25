@@ -46,6 +46,8 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
   trajetInput$ = new Subject<string>();
   trajetsLoading:Boolean = false;
 
+  isSearching:Boolean = false;
+
   reportingAchatForm = new FormGroup({
       societe: new FormControl(),
       client: new FormControl(),
@@ -96,22 +98,28 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
   }
 
   loadAll() {
-    this.reportingService
-      .getReportingAchatTrajet(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<ILivraison[]>) => {
-        this.recapitulatifAchats = [];
-        const data:ILivraison[] = res.body;
-        for (let i = 0; i < data.length; i++) {
-          this.recapitulatifAchats.push(data[i]);
-        }
-      });
     this.societeService
             .query()
             .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
     this.loadClients();
     this.loadFournisseurs();
     this.loadTrajets();
-    this.loadTransporteurs();  
+    this.loadTransporteurs();
+    this.search();
+  }
+
+  search(){
+    this.isSearching = true;
+    this.reportingService
+        .getReportingAchatTrajet(this.buildReportingRequest())
+        .subscribe((res: HttpResponse<ILivraison[]>) => {
+          this.isSearching = false;
+          this.recapitulatifAchats = [];
+          const data:ILivraison[] = res.body;
+          for (let i = 0; i < data.length; i++) {
+            this.recapitulatifAchats.push(data[i]);
+          }
+        });
   }
 
   private buildReportingRequest(): any {

@@ -1,10 +1,11 @@
 package com.logistica.domain;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 /**
@@ -29,7 +30,7 @@ public class Client implements Serializable {
     @Column(name = "adresse")
     private String adresse;
 
-    @Pattern(regexp = "^0[0-9]{9}$")
+    @Pattern(regexp = "^0[0-9]{9}$|\\s*")
     @Column(name = "telephone")
     private String telephone;
 

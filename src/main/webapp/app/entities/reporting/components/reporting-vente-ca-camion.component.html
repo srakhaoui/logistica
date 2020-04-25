@@ -27,8 +27,10 @@
             </div>
             <div>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
-                    <fa-icon [icon]="'search'"></fa-icon>&nbsp;
-                    <span>Rechercher</span>
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
                 </button>
             </div>
         </form>
