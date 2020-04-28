@@ -3,15 +3,15 @@
     "livraison": {
       "home": {
         "title": "Livraisons",
-        "createLabel": "Créer un nouveau Livraison",
-        "createOrEditLabel": "Créer ou éditer un Livraison",
-        "notFound": "Aucun Livraison trouvé"
+        "createLabel": "Créer une nouvelle Livraison",
+        "createOrEditLabel": "Créer ou éditer une Livraison",
+        "notFound": "Aucune Livraison trouvée"
       },
-      "created": "Un nouveau Livraison a été créé avec l'identifiant {{ param }}",
-      "updated": "Le Livraison avec l'identifiant {{ param }} a été mis à jour",
-      "deleted": "Le Livraison avec l'identifiant {{ param }} a été supprimé",
+      "created": "Une nouvelle Livraison a été créée avec l'identifiant {{ param }}",
+      "updated": "La Livraison avec l'identifiant {{ param }} a été mise à jour",
+      "deleted": "La Livraison avec l'identifiant {{ param }} a été supprimée",
       "delete": {
-        "question": "Etes-vous certain de vouloir supprimer le Livraison {{ id }} ?"
+        "question": "Etes-vous certain de vouloir supprimer la Livraison {{ id }} ?"
       },
       "detail": {
         "title": "Livraison"
@@ -22,25 +22,25 @@
       "dateBonLivraison": "Date Bon Livraison",
       "numeroBonFournisseur": "Numero Bon Fournisseur",
       "quantiteVendue": "Quantite Vendue",
-      "uniteVente": "Unite Vente",
+      "uniteVente": "Unité Vente",
       "unite": "Unité",
       "prixTotalVente": "Prix Total Vente",
-      "quantiteAchetee": "Quantite Achetee",
-      "uniteAchat": "Unite Achat",
+      "quantiteAchetee": "Quantite Achetée",
+      "uniteAchat": "Unité Achat",
       "prixTotalAchat": "Prix Total Achat",
-      "quantiteConvertie": "Quantite Convertie",
+      "quantiteConvertie": "Quantité Convertie",
       "type": "Type",
       "facture": "Facture",
       "dateBonCaisse": "Date Bon Caisse",
-      "reparationDivers": "Reparation Divers",
+      "reparationDivers": "Réparation Divers",
       "trax": "Trax",
       "balance": "Balance",
       "avance": "Avance",
       "autoroute": "Autoroute",
       "dernierEtat": "Dernier Etat",
-      "penaliteEse": "Penalite Ese",
-      "penaliteChfrs": "Penalite Chfrs",
-      "fraisEspece": "Frais Espece",
+      "penaliteEse": "Penalité Ese",
+      "penaliteChfrs": "Penalité Chfrs",
+      "fraisEspece": "Frais Espèce",
       "retenu": "Retenu",
       "totalComission": "Total Comission",
       "fournisseur": "Fournisseur",
@@ -48,7 +48,7 @@
       "transporteur": "Transporteur",
       "trajet": "Trajet",
       "produit": "Produit",
-      "societeFacturation": "Societe Facturation"
+      "societeFacturation": "Société Facturation"
     }
   }
 }

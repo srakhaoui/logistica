@@ -9,11 +9,11 @@
         "main": "Reporting",
         "achats": "Achats",
         "trajets": "Achats",
-        "trajets": "Achats"       
+        "trajets": "Achats"
       },
       "entities": {
         "main": "Saisie",
-        "societe": "Societe",
+        "societe": "Société",
         "transporteur": "Transporteur",
         "fournisseur": "Fournisseur",
         "produit": "Produit",
