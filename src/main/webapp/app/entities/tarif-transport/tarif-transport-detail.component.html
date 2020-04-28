@@ -31,6 +31,26 @@
                         <a [routerLink]="['/produit', tarifTransport.produit?.id, 'view']">{{tarifTransport.produit?.code}}</a>
                     </div>
                 </dd>
+                <dt><span>Cr&eacute;&eacute; le</span></dt>
+                <dd>
+                    <span>{{tarifTransport.audit.createdOn | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                </dd>
+                <dt><span>Cr&eacute;&eacute; par</span></dt>
+                <dd>
+                    <span>{{tarifTransport.audit.createdBy}}</span>
+                </dd>
+                <ng-template [ngIf]="tarifTransport.audit.lastModifiedOn">
+                    <dt><span>Modifi&eacute; le</span></dt>
+                    <dd>
+                        <span>{{tarifTransport.audit.lastModifiedOn | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                    </dd>
+                </ng-template>
+                <ng-template [ngIf]="tarifTransport.audit.lastModifiedBy">
+                    <dt><span>Modifi&eacute; par</span></dt>
+                    <dd>
+                        <span>{{tarifTransport.audit.lastModifiedBy}}</span>
+                    </dd>
+                </ng-template>
             </dl>
 
             <button type="submit"

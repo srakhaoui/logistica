@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <databaseChangeLog
     xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd
-                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
 
     <!--
@@ -39,8 +37,8 @@
             <column name="prix_total_vente" type="${floatType}">
                 <constraints nullable="true" />
             </column>
-            <column name="quantite_achetee" type="integer">
-                <constraints nullable="true" />
+            <column name="quantite_achetee" type="${floatType}">
+                <constraints nullable="true"/>
             </column>
             <column name="unite_achat" type="varchar(255)">
                 <constraints nullable="true" />
@@ -48,8 +46,8 @@
             <column name="prix_total_achat" type="${floatType}">
                 <constraints nullable="true" />
             </column>
-            <column name="quantite_convertie" type="integer">
-                <constraints nullable="true" />
+            <column name="quantite_convertie" type="${floatType}">
+                <constraints nullable="true"/>
             </column>
             <column name="type" type="varchar(255)">
                 <constraints nullable="false" />

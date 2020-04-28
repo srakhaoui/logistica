@@ -30,5 +30,7 @@
     <include file="config/liquibase/changelog/20200101112154_added_entity_constraints_TarifAchat.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112155_added_entity_constraints_TarifTransport.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112156_added_entity_constraints_Livraison.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200426160000_added_auditing_Columns.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

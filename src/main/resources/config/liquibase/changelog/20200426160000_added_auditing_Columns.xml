@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="20200101112147-1" author="said.rakhaoui">
+        <addColumn tableName="societe">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="client">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="fournisseur">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="livraison">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="produit">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="tarif_achat">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="tarif_transport">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="tarif_vente">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="trajet">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="transporteur">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>

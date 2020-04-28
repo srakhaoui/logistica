@@ -17,6 +17,26 @@
                 <dd>
                     <span>{{fournisseur.telephone}}</span>
                 </dd>
+                <dt><span>Cr&eacute;&eacute; le</span></dt>
+                <dd>
+                    <span>{{fournisseur.audit.createdOn | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                </dd>
+                <dt><span>Cr&eacute;&eacute; par</span></dt>
+                <dd>
+                    <span>{{fournisseur.audit.createdBy}}</span>
+                </dd>
+                <ng-template [ngIf]="fournisseur.audit.lastModifiedOn">
+                    <dt><span>Modifi&eacute; le</span></dt>
+                    <dd>
+                        <span>{{fournisseur.audit.lastModifiedOn | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                    </dd>
+                </ng-template>
+                <ng-template [ngIf]="fournisseur.audit.lastModifiedBy">
+                    <dt><span>Modifi&eacute; par</span></dt>
+                    <dd>
+                        <span>{{fournisseur.audit.lastModifiedBy}}</span>
+                    </dd>
+                </ng-template>
             </dl>
 
             <button type="submit"

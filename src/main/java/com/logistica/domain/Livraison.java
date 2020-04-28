@@ -1,23 +1,23 @@
 package com.logistica.domain;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.logistica.domain.enumeration.TypeLivraison;
+import com.logistica.domain.enumeration.Unite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
-
-import com.logistica.domain.enumeration.Unite;
-
-import com.logistica.domain.enumeration.TypeLivraison;
 
 /**
  * A Livraison.
  */
 @Entity
 @Table(name = "livraison")
+@EntityListeners(AuditingEntityListener.class)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Livraison implements Serializable {
 
@@ -136,6 +136,17 @@ public class Livraison implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("livraisons")
     private Societe societeFacturation;
+
+    @Embedded
+    private Audit audit = new Audit();
+
+    public Audit getAudit() {
+        return audit;
+    }
+
+    public void setAudit(Audit audit) {
+        this.audit = audit;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {

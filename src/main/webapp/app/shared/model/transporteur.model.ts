@@ -1,4 +1,5 @@
 import { ISociete } from 'app/shared/model/societe.model';
+import { IAudit } from 'app/shared/model/audit.model';
 
 export interface ITransporteur {
   id?: number;
@@ -8,6 +9,7 @@ export interface ITransporteur {
   matricule?: string;
   description?: string;
   proprietaire?: ISociete;
+  audit?: IAudit;
 }
 
 export class Transporteur implements ITransporteur {

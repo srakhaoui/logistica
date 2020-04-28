@@ -2,9 +2,7 @@ package com.logistica;
 
 import com.logistica.config.ApplicationProperties;
 import com.logistica.config.DefaultProfileUtil;
-
 import io.github.jhipster.config.JHipsterConstants;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -21,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
+@EnableJpaAuditing
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class LogisticaApp implements InitializingBean {
 

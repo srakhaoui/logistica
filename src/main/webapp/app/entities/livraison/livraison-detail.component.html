@@ -111,12 +111,12 @@
                 <dd>
                     <span>{{livraison.numeroBonFournisseur}}</span>
                 </dd>
-                
+
                 <dt><span jhiTranslate="logisticaApp.livraison.facture">Facture</span></dt>
                 <dd>
                     <span>{{livraison.facture}}</span>
                 </dd>
-                
+
                 <dt><span jhiTranslate="logisticaApp.livraison.reparationDivers">Reparation Divers</span></dt>
                 <dd>
                     <span>{{livraison.reparationDivers}}</span>
@@ -161,6 +161,26 @@
                 <dd>
                     <span>{{livraison.totalComission}}</span>
                 </dd>
+                <dt><span>Cr&eacute;&eacute; le</span></dt>
+                <dd>
+                    <span>{{livraison.audit.createdOn | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                </dd>
+                <dt><span>Cr&eacute;&eacute; par</span></dt>
+                <dd>
+                    <span>{{livraison.audit.createdBy}}</span>
+                </dd>
+                <ng-template [ngIf]="livraison.audit.lastModifiedOn">
+                    <dt><span>Modifi&eacute; le</span></dt>
+                    <dd>
+                        <span>{{livraison.audit.lastModifiedOn | date:'dd MMM yyyy HH:mm:ss'}}</span>
+                    </dd>
+                </ng-template>
+                <ng-template [ngIf]="livraison.audit.lastModifiedBy">
+                    <dt><span>Modifi&eacute; par</span></dt>
+                    <dd>
+                        <span>{{livraison.audit.lastModifiedBy}}</span>
+                    </dd>
+                </ng-template>
             </dl>
 
             <button type="submit"

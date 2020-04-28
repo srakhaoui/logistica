@@ -7,6 +7,7 @@ import { IProduit } from 'app/shared/model/produit.model';
 import { ISociete } from 'app/shared/model/societe.model';
 import { Unite } from 'app/shared/model/enumerations/unite.model';
 import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
+import { IAudit } from 'app/shared/model/audit.model';
 
 export interface ILivraison {
   id?: number;
@@ -42,6 +43,7 @@ export interface ILivraison {
   trajet?: ITrajet;
   produit?: IProduit;
   societeFacturation?: ISociete;
+  audit?: IAudit;
 }
 
 export class Livraison implements ILivraison {

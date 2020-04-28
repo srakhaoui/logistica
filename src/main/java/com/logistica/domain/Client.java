@@ -2,6 +2,7 @@ package com.logistica.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -13,6 +14,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "client")
+@EntityListeners(AuditingEntityListener.class)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Client implements Serializable {
 
@@ -33,6 +35,17 @@ public class Client implements Serializable {
     @Pattern(regexp = "^0[0-9]{9}$|\\s*")
     @Column(name = "telephone")
     private String telephone;
+
+    @Embedded
+    private Audit audit = new Audit();
+
+    public Audit getAudit() {
+        return audit;
+    }
+
+    public void setAudit(Audit audit) {
+        this.audit = audit;
+    }
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
