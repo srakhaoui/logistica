@@ -7,50 +7,59 @@
     <br/>
     <div>
         <form name="reportingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingForm">
-            <div class="form-group">
-                <label class="form-control-label" for="field_societe">Soci&eacute;t&eacute; de facturation</label>
-                <select class="form-control" id="field_societe" name="societe" formControlName="societe">
-                    <option [ngValue]="null"></option>
-                    <option
-                        [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption"
-                        *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
-                       for="field_client">Client</label>
-                <ng-select [items]="clients$ | async"
-                           [typeahead]="clientInput$"
-                           bindLabel="nom"
-                           [hideSelected]="true"
-                           [loading]="clientsLoading"
-                           formControlName="client"
-                           name="client">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_societe">Soci&eacute;t&eacute; de facturation</label>
+                    <select class="form-control" id="field_societe" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
+                           for="field_client">Client</label>
+                    <ng-select [items]="clients$ | async"
+                               [typeahead]="clientInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsLoading"
+                               formControlName="client"
+                               name="client">
                     </ng-select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label col-form-label" for="field_dateDebutBonCaisse">De</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutBonCaisse" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-control-label col-form-label" for="field_dateFinBonCaisse">à</label>
+                    <div class="input-group">
+                        <input id="field_dateFinBonCaisse" type="text" class="form-control" name="dateFin" ngbDatepicker
+                               #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
-                <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
                 <input id="field_facture" type="checkbox" name="facture" formControlName="facture"/>
+                <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_dateDebutBonCaisse">Date de déBut</label>
-                <div class="input-group">
-                    <input id="field_dateDebutBonCaisse" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
-                    </span>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_dateFinBonCaisse">Date de fin</label>
-                <div class="input-group">
-                    <input id="field_dateFinBonCaisse" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
-                    </span>
-                </div>
-            </div>
+
             <div>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
                     <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;

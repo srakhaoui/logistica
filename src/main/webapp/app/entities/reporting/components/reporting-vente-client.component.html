@@ -7,44 +7,52 @@
     <br/>
     <div>
         <form name="reportingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingForm">
-            <div class="form-group">
-                <label class="form-control-label" for="field_proprietaire">Société</label>
-                <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
-                    <option [ngValue]="null"></option>
-                    <option
-                        [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption"
-                        *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                    </option>
-                </select>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_proprietaire">Société</label>
+                    <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_type">Type</label>
+                    <select class="form-control" name="typeLivraison" formControlName="typeLivraison" id="field_type">
+                        <option value="Transport">{{'logisticaApp.TypeLivraison.Transport' | translate}}</option>
+                        <option value="Marchandise">{{'logisticaApp.TypeLivraison.Marchandise' | translate}}</option>
+                    </select>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_type">Type</label>
-                <select class="form-control" name="typeLivraison" formControlName="typeLivraison" id="field_type">
-                    <option value="Transport">{{'logisticaApp.TypeLivraison.Transport' | translate}}</option>
-                    <option value="Marchandise">{{'logisticaApp.TypeLivraison.Marchandise' | translate}}</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_facture">Facturée</label>
-                <input type="checkbox" class="form-control" name="facture" id="field_facture" formControlName="facture"/>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_dateDebutBonLivraison">Date de déBut</label>
-                <div class="input-group">
-                    <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_dateDebutBonLivraison">Date de déBut</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                            [icon]="'calendar-alt'"></fa-icon></button>
                     </span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_dateFinBonLivraison">Date de fin</label>
+                    <div class="input-group">
+                        <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin"
+                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                            [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                    </div>
                 </div>
             </div>
             <div class="form-group">
-                <label class="form-control-label" for="field_dateFinBonLivraison">Date de fin</label>
-                <div class="input-group">
-                    <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
-                    </span>
-                </div>
+                <input id="field_facture" type="checkbox" name="facture" formControlName="facture"/>
+                <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
             </div>
             <div>
                 <button type="submit" id="search-reporting" class="btn btn-primary">

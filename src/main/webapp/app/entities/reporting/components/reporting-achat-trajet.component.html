@@ -7,52 +7,56 @@
     <br/>
     <div>
         <form name="reportingAchatForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingAchatForm">
-            <div class="form-group">
-                <label class="form-control-label" for="field_proprietaire">Société</label>
-                <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
-                    <option [ngValue]="null"></option>
-                    <option
-                        [ngValue]="societeOption.id === reportingAchatForm.get('societe').value?.id ? reportingAchatForm.get('societe').value : societeOption"
-                        *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                    </option>
-                </select>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_proprietaire">Société</label>
+                    <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingAchatForm.get('societe').value?.id ? reportingAchatForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_fournisseur">Fournisseur</label>
+                    <ng-select id="field_fournisseur"
+                               [items]="fournisseurs$ | async"
+                               [typeahead]="fournisseurInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="fournisseursLoading"
+                               formControlName="fournisseur"
+                               name="fournisseur">
+                    </ng-select>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_fournisseur">Fournisseur</label>
-                <ng-select id="field_fournisseur"
-                           [items]="fournisseurs$ | async"
-                           [typeahead]="fournisseurInput$"
-                           bindLabel="nom"
-                           [hideSelected]="true"
-                           [loading]="fournisseursLoading"
-                           formControlName="fournisseur"
-                           name="fournisseur">
-                </ng-select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_client">Client</label>
-                <ng-select id="field_client"
-                           [items]="clients$ | async"
-                           [typeahead]="clientInput$"
-                           bindLabel="nom"
-                           [hideSelected]="true"
-                           [loading]="clientsLoading"
-                           formControlName="client"
-                           name="client">
-                </ng-select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_transporteur">Transporteur</label>
-                <ng-select id="field_transporteur"
-                           [items]="transporteurs$ | async"
-                           [typeahead]="transporteurInput$"
-                           bindLabel="description"
-                           [hideSelected]="true"
-                           [loading]="transporteursLoading"
-                           formControlName="transporteur"
-                           name="transporteur"
-                           placeholder="Recherchez par nom">
-                </ng-select>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select id="field_client"
+                               [items]="clients$ | async"
+                               [typeahead]="clientInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_transporteur">Transporteur</label>
+                    <ng-select id="field_transporteur"
+                               [items]="transporteurs$ | async"
+                               [typeahead]="transporteurInput$"
+                               bindLabel="description"
+                               [hideSelected]="true"
+                               [loading]="transporteursLoading"
+                               formControlName="transporteur"
+                               name="transporteur"
+                               placeholder="Recherchez par nom">
+                    </ng-select>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-control-label" for="field_trajet">Trajet</label>
@@ -66,22 +70,28 @@
                            name="trajet">
                 </ng-select>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_dateDebutBonLivraison">Date de déBut</label>
-                <div class="input-group">
-                    <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
-                    </span>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_dateDebutBonLivraison">De</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_dateFinBonLivraison">Date de fin</label>
-                <div class="input-group">
-                    <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
-                    </span>
+                <div class="col">
+                    <label class="form-control-label" for="field_dateFinBonLivraison">à</label>
+                    <div class="input-group">
+                        <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin"
+                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div>

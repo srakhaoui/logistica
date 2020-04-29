@@ -7,45 +7,53 @@
     <br/>
     <div>
         <form name="reportingAchatForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingAchatForm">
-            <div class="form-group">
-                <label class="form-control-label" jhiTranslate="logisticaApp.societe.home.title"
-                       for="field_proprietaire">Société</label>
-                <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
-                    <option [ngValue]="null"></option>
-                    <option
-                        [ngValue]="societeOption.id === reportingAchatForm.get('societe').value?.id ? reportingAchatForm.get('societe').value : societeOption"
-                        *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                    </option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" jhiTranslate="logisticaApp.fournisseur.home.title"
-                       for="field_fournisseur">Fournisseur</label>
-                <ng-select [items]="fournisseurs$ | async"
-                           [typeahead]="fournisseurInput$"
-                           bindLabel="nom"
-                           [hideSelected]="true"
-                           [loading]="fournisseursLoading"
-                           formControlName="fournisseur"
-                           name="fournisseur">
-                </ng-select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_dateDebutBonCommande">Date de déBut</label>
-                <div class="input-group">
-                    <input id="field_dateDebutBonCommande" type="text" class="form-control" name="dateDebut" ngbDatepicker  #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
-                    </span>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.societe.home.title"
+                           for="field_proprietaire">Société</label>
+                    <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingAchatForm.get('societe').value?.id ? reportingAchatForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.fournisseur.home.title"
+                           for="field_fournisseur">Fournisseur</label>
+                    <ng-select [items]="fournisseurs$ | async"
+                               [typeahead]="fournisseurInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="fournisseursLoading"
+                               formControlName="fournisseur"
+                               name="fournisseur">
+                    </ng-select>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_dateFinBonCommand">Date de fin</label>
-                <div class="input-group">
-                    <input id="field_dateFinBonCommand" type="text" class="form-control" name="dateFin" ngbDatepicker  #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
-                    <span class="input-group-append">
-                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon [icon]="'calendar-alt'"></fa-icon></button>
-                    </span>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_dateDebutBonCommande">De</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutBonCommande" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_dateFinBonCommand">à</label>
+                    <div class="input-group">
+                        <input id="field_dateFinBonCommand" type="text" class="form-control" name="dateFin"
+                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
                 </div>
             </div>
             <div>

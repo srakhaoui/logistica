@@ -3,7 +3,7 @@
     "tarifTransport": {
       "home": {
         "title": "TarifTransports",
-        "createLabel": "Transport",
+        "createLabel": "Tarif de Transport",
         "createOrEditLabel": "Créer ou éditer un Tarif de Transport",
         "notFound": "Aucun Tarif Transport trouvé"
       },
