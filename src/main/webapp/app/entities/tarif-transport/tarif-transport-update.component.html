@@ -40,7 +40,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.client" for="field_client">Client</label>
+                    <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.client"
+                           for="field_client">Client</label>
                     <ng-select [items]="clients$ | async"
                                [typeahead]="clientInput$"
                                bindLabel="nom"
@@ -49,9 +50,17 @@
                                formControlName="client"
                                name="client">
                     </ng-select>
+                    <div
+                        *ngIf="editForm.get('client').invalid && (editForm.get('client').dirty || editForm.get('client').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('client').errors.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.trajet" for="field_trajet">Trajet</label>
+                    <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.trajet"
+                           for="field_trajet">Trajet</label>
                     <ng-select [items]="trajets$ | async"
                                [typeahead]="trajetInput$"
                                bindLabel="description"
@@ -60,9 +69,17 @@
                                formControlName="trajet"
                                name="trajet">
                     </ng-select>
+                    <div
+                        *ngIf="editForm.get('trajet').invalid && (editForm.get('trajet').dirty || editForm.get('trajet').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('trajet').errors.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.produit" for="field_produit">Produit</label>
+                    <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.produit"
+                           for="field_produit">Produit</label>
                     <ng-select [items]="produits$ | async"
                                [typeahead]="produitInput$"
                                bindLabel="code"
@@ -71,6 +88,14 @@
                                formControlName="produit"
                                name="produit">
                     </ng-select>
+                    <div
+                        *ngIf="editForm.get('produit').invalid && (editForm.get('produit').dirty || editForm.get('produit').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('produit').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
                 </div>
                 <jhi-alert-error></jhi-alert-error>
             </div>

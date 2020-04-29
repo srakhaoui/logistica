@@ -33,8 +33,8 @@ export class TarifVenteUpdateComponent implements OnInit {
     id: [],
     unite: [null, [Validators.required]],
     prix: [null, [Validators.required]],
-    client: [],
-    produit: []
+    client: [null, [Validators.required]],
+    produit: [null, [Validators.required]]
   });
 
   constructor(

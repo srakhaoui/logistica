@@ -3,7 +3,7 @@
     "fournisseur": {
       "home": {
         "title": "Fournisseurs",
-        "createLabel": "Créer un nouveau Fournisseur",
+        "createLabel": "Fournisseur",
         "createOrEditLabel": "Créer ou éditer un Fournisseur",
         "notFound": "Aucun Fournisseur trouvé"
       },
@@ -18,7 +18,7 @@
       },
       "nom": "Nom",
       "adresse": "Adresse",
-      "telephone": "Telephone"
+      "telephone": "Téléphone"
     }
   }
 }

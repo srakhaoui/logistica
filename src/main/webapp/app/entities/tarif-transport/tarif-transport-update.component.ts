@@ -39,9 +39,9 @@ export class TarifTransportUpdateComponent implements OnInit {
     id: [],
     unite: [null, [Validators.required]],
     prix: [null, [Validators.required]],
-    client: [],
-    trajet: [],
-    produit: []
+    client: [null, [Validators.required]],
+    trajet: [null, [Validators.required]],
+    produit: [null, [Validators.required]]
   });
 
   constructor(

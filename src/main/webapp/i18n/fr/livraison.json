@@ -3,7 +3,7 @@
     "livraison": {
       "home": {
         "title": "Livraisons",
-        "createLabel": "Créer une nouvelle Livraison",
+        "createLabel": "Livraison",
         "createOrEditLabel": "Créer ou éditer une Livraison",
         "notFound": "Aucune Livraison trouvée"
       },
@@ -17,15 +17,15 @@
         "title": "Livraison"
       },
       "dateBonCommande": "Date Bon Commande",
-      "numeroBonCommande": "Numero Bon Commande",
-      "numeroBonLivraison": "Numero Bon Livraison",
+      "numeroBonCommande": "Numéro Bon Commande",
+      "numeroBonLivraison": "Numéro Bon Livraison",
       "dateBonLivraison": "Date Bon Livraison",
-      "numeroBonFournisseur": "Numero Bon Fournisseur",
-      "quantiteVendue": "Quantite Vendue",
+      "numeroBonFournisseur": "Numéro Bon Fournisseur",
+      "quantiteVendue": "Quantité Vendue",
       "uniteVente": "Unité Vente",
       "unite": "Unité",
       "prixTotalVente": "Prix Total Vente",
-      "quantiteAchetee": "Quantite Achetée",
+      "quantiteAchetee": "Quantité Achetée",
       "uniteAchat": "Unité Achat",
       "prixTotalAchat": "Prix Total Achat",
       "quantiteConvertie": "Quantité Convertie",

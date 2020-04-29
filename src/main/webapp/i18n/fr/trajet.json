@@ -3,7 +3,7 @@
     "trajet": {
       "home": {
         "title": "Trajets",
-        "createLabel": "Créer un nouveau Trajet",
+        "createLabel": "Trajet",
         "createOrEditLabel": "Créer ou éditer un Trajet",
         "notFound": "Aucun Trajet trouvé"
       },
@@ -16,7 +16,7 @@
       "detail": {
         "title": "Trajet"
       },
-      "depart": "Depart",
+      "depart": "Départ",
       "destination": "Destination",
       "description": "Description",
       "commission": "Commission"

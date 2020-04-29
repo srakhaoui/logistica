@@ -3,8 +3,8 @@
     "tarifAchat": {
       "home": {
         "title": "TarifAchats",
-        "createLabel": "Créer un nouveau Tarif Achat",
-        "createOrEditLabel": "Créer ou éditer un Tarif Achat",
+        "createLabel": "Tarif Achat",
+        "createOrEditLabel": "Créer ou éditer un Tarif d'Achat",
         "notFound": "Aucun Tarif Achat trouvé"
       },
       "created": "Un nouveau Tarif Achat a été créé avec l'identifiant {{ param }}",
@@ -16,7 +16,7 @@
       "detail": {
         "title": "Tarif Achat"
       },
-      "unite": "Unite",
+      "unite": "Unité",
       "prix": "Prix",
       "fournisseur": "Fournisseur",
       "produit": "Produit"

@@ -3,7 +3,7 @@
     "societe": {
       "home": {
         "title": "Sociétés",
-        "createLabel": "Créer une nouvelle Société",
+        "createLabel": "Société",
         "createOrEditLabel": "Créer ou éditer une Société",
         "notFound": "Aucune Société trouvéé"
       },

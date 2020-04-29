@@ -3,7 +3,7 @@
     "transporteur": {
       "home": {
         "title": "Transporteurs",
-        "createLabel": "Créer un nouveau Transporteur",
+        "createLabel": "Transporteur",
         "createOrEditLabel": "Créer ou éditer un Transporteur",
         "notFound": "Aucun Transporteur trouvé"
       },
@@ -17,8 +17,8 @@
         "title": "Transporteur"
       },
       "nom": "Nom",
-      "prenom": "Prenom",
-      "telephone": "Telephone",
+      "prenom": "Prénom",
+      "telephone": "Téléphone",
       "matricule": "Matricule",
       "proprietaire": "Proprietaire"
     }

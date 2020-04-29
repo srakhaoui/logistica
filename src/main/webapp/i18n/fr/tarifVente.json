@@ -3,8 +3,8 @@
     "tarifVente": {
       "home": {
         "title": "TarifVentes",
-        "createLabel": "Créer un nouveau Tarif Vente",
-        "createOrEditLabel": "Créer ou éditer un Tarif Vente",
+        "createLabel": "Tarif Vente",
+        "createOrEditLabel": "Créer ou éditer un Tarif de Vente",
         "notFound": "Aucun Tarif Vente trouvé"
       },
       "created": "Un nouveau Tarif Vente a été créé avec l'identifiant {{ param }}",
@@ -16,7 +16,7 @@
       "detail": {
         "title": "Tarif Vente"
       },
-      "unite": "Unite",
+      "unite": "Unité",
       "prix": "Prix",
       "client": "Client",
       "produit": "Produit"

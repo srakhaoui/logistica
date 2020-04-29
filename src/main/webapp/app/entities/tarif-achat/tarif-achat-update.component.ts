@@ -33,8 +33,8 @@ export class TarifAchatUpdateComponent implements OnInit {
     id: [],
     unite: [null, [Validators.required]],
     prix: [null, [Validators.required]],
-    fournisseur: [],
-    produit: []
+    fournisseur: [null, [Validators.required]],
+    produit: [null, [Validators.required]]
   });
 
   constructor(

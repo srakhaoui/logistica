@@ -3,8 +3,8 @@
     "tarifTransport": {
       "home": {
         "title": "TarifTransports",
-        "createLabel": "Créer un nouveau Tarif Transport",
-        "createOrEditLabel": "Créer ou éditer un Tarif Transport",
+        "createLabel": "Transport",
+        "createOrEditLabel": "Créer ou éditer un Tarif de Transport",
         "notFound": "Aucun Tarif Transport trouvé"
       },
       "created": "Un nouveau Tarif Transport a été créé avec l'identifiant {{ param }}",
@@ -16,7 +16,7 @@
       "detail": {
         "title": "Tarif Transport"
       },
-      "unite": "Unite",
+      "unite": "Unité",
       "prix": "Prix",
       "client": "Client",
       "trajet": "Trajet",
