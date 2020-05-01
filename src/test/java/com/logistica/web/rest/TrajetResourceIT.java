@@ -3,11 +3,9 @@ package com.logistica.web.rest;
 import com.logistica.LogisticaApp;
 import com.logistica.domain.Trajet;
 import com.logistica.repository.TrajetRepository;
+import com.logistica.service.TrajetQueryService;
 import com.logistica.service.TrajetService;
 import com.logistica.web.rest.errors.ExceptionTranslator;
-import com.logistica.service.dto.TrajetCriteria;
-import com.logistica.service.TrajetQueryService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -42,8 +40,8 @@ public class TrajetResourceIT {
     private static final String DEFAULT_DESTINATION = "AAAAAAAAAA";
     private static final String UPDATED_DESTINATION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
-    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+    private static final String DEFAULT_DESCRIPTION = DEFAULT_DEPART + " > " + DEFAULT_DEPART;
+    private static final String UPDATED_DESCRIPTION = UPDATED_DEPART + " > " + UPDATED_DEPART;
 
     private static final Float DEFAULT_COMMISSION = 1F;
     private static final Float UPDATED_COMMISSION = 2F;
@@ -216,7 +214,7 @@ public class TrajetResourceIT {
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].commission").value(hasItem(DEFAULT_COMMISSION.doubleValue())));
     }
-    
+
     @Test
     @Transactional
     public void getTrajet() throws Exception {

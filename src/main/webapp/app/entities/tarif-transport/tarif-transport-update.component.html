@@ -72,9 +72,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.unite"
                            for="field_unite">Unite</label>
-                    <select class="form-control" name="unite" formControlName="unite" id="field_unite">
-                        <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
-                        <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
+                    <select class="form-control" name="unite" formControlName="unite" id="field_unite" readOnly>
                         <option value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}</option>
                     </select>
                     <div

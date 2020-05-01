@@ -1,7 +1,6 @@
 package com.logistica.repository;
 
 import com.logistica.domain.Livraison;
-import com.logistica.service.dto.RecapitulatifAchat;
 import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.service.dto.*;
 import org.slf4j.Logger;
@@ -107,10 +106,10 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             predicate.append(" And l.transporteur.id = :transporteurId");
         }
         if(withDateDebutLivraison){
-            predicate.append(" And l.dateBonLivraison <= :dateDebutLivraison");
+            predicate.append(" And l.dateBonLivraison >= :dateDebutLivraison");
         }
         if(withDateFinLivraison){
-            predicate.append(" And l.dateBonLivraison >= :dateFinLivraison");
+            predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
 
         StringBuilder query = new StringBuilder("From Livraison l ").append(predicate);
@@ -157,7 +156,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 	    final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
 	    final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalAchat)) From Livraison l");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
         boolean withSocieteId = societeId != null;
         boolean withIsFacturee = isFacturee != null;
         boolean withTypeLivraison = typeLivraison != null;
@@ -256,7 +255,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifCaCamion(l.transporteur.matricule, l.uniteVente, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
         final StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         Optional.ofNullable(recapitulatifCaCamionRequest.getDateDebut()).ifPresent(aDateDebutLivraison -> predicate.append(" And l.dateBonLivraison >= :dateDebutLivraison"));
-        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFin()).ifPresent(aDateFinLivraison -> predicate.append(" And l.dateBonLivraison >= :dateFinLivraison"));
+        Optional.ofNullable(recapitulatifCaCamionRequest.getDateFin()).ifPresent(aDateFinLivraison -> predicate.append(" And l.dateBonLivraison <= :dateFinLivraison"));
         String queryAsStr = query.append(predicate.toString()).append(" Group by l.transporteur.matricule, l.uniteVente").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifCaCamion.class);
 

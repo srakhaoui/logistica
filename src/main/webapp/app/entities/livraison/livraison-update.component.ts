@@ -42,7 +42,7 @@ export class LivraisonUpdateComponent implements OnInit {
   transporteurs$: Observable<ITransporteur[]>;
   transporteurInput$ = new Subject<string>();
   transporteursLoading:Boolean = false;
-  
+
   trajets$: Observable<ITrajet[]>;
   trajetInput$ = new Subject<string>();
   trajetsLoading:Boolean = false;
@@ -73,16 +73,16 @@ export class LivraisonUpdateComponent implements OnInit {
     type: new FormControl(null, Validators.required),
     facture: new FormControl(),
     dateBonCaisse: new FormControl(null, [Validators.required]),
-    reparationDivers: new FormControl(null, Validators.min(0)),
-    trax: new FormControl(null, Validators.min(0)),
-    balance: new FormControl(null, Validators.min(0)),
-    avance: new FormControl(null, Validators.min(0)),
-    autoroute: new FormControl(null, Validators.min(0)),
-    dernierEtat: new FormControl(null, Validators.min(0)),
-    penaliteEse: new FormControl(null, Validators.min(0)),
-    penaliteChfrs: new FormControl(null, Validators.min(0)),
-    fraisEspece: new FormControl(null, Validators.min(0)),
-    retenu: new FormControl(null, Validators.min(0)),
+    reparationDivers: new FormControl(0, Validators.min(0)),
+    trax: new FormControl(null, [Validators.min(0)]),
+    balance: new FormControl(null, [Validators.min(0)]),
+    avance: new FormControl(null, [Validators.min(0)]),
+    autoroute: new FormControl(null, [Validators.min(0)]),
+    dernierEtat: new FormControl(null, [Validators.min(0)]),
+    penaliteEse: new FormControl(null, [Validators.min(0)]),
+    penaliteChfrs: new FormControl(null, [Validators.min(0)]),
+    fraisEspece: new FormControl(null, [Validators.min(0)]),
+    retenu: new FormControl(null, [Validators.min(0)]),
     totalComission: new FormControl(),
     fournisseur: new FormControl(),
     client: new FormControl(null, [Validators.required]),
@@ -103,7 +103,7 @@ export class LivraisonUpdateComponent implements OnInit {
     protected societeService: SocieteService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.isSaving = false;
@@ -118,17 +118,10 @@ export class LivraisonUpdateComponent implements OnInit {
     this.societeService
       .query()
       .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.editForm.get('dateBonCaisse').setValue(moment(new Date()));
-    this.editForm.get('reparationDivers').setValue(0);
-    this.editForm.get('trax').setValue(0);
-    this.editForm.get('balance').setValue(0);
-    this.editForm.get('avance').setValue(0);
-    this.editForm.get('autoroute').setValue(0);
-    this.editForm.get('dernierEtat').setValue(0);
-    this.editForm.get('penaliteEse').setValue(0);
-    this.editForm.get('penaliteChfrs').setValue(0);
-    this.editForm.get('fraisEspece').setValue(0);
-    this.editForm.get('retenu').setValue(0);
+    if(this.editForm.get('transporteur').value) {
+      const transporteur: ITransporteur = this.editForm.get('transporteur').value;
+      transporteur.description = `${transporteur.nom} - ${transporteur.prenom} - ${transporteur.matricule}`;
+    }
   }
 
   updateForm(livraison: ILivraison) {
@@ -148,17 +141,17 @@ export class LivraisonUpdateComponent implements OnInit {
       quantiteConvertie: livraison.quantiteConvertie,
       type: livraison.type,
       facture: livraison.facture,
-      dateBonCaisse: livraison.dateBonCaisse,
-      reparationDivers: livraison.reparationDivers,
-      trax: livraison.trax,
-      balance: livraison.balance,
-      avance: livraison.avance,
-      autoroute: livraison.autoroute,
-      dernierEtat: livraison.dernierEtat,
-      penaliteEse: livraison.penaliteEse,
-      penaliteChfrs: livraison.penaliteChfrs,
-      fraisEspece: livraison.fraisEspece,
-      retenu: livraison.retenu,
+      dateBonCaisse: livraison.id ? livraison.dateBonCaisse: moment(new Date()),
+      reparationDivers: livraison.id ? livraison.reparationDivers : 0,
+      trax: livraison.id ?livraison.trax : 0,
+      balance: livraison.id ?livraison.balance : 0,
+      avance: livraison.id ?livraison.avance : 0,
+      autoroute: livraison.id ?livraison.autoroute : 0,
+      dernierEtat: livraison.id ?livraison.dernierEtat : 0,
+      penaliteEse: livraison.id ?livraison.penaliteEse : 0,
+      penaliteChfrs: livraison.id ?livraison.penaliteChfrs : 0,
+      fraisEspece: livraison.id ?livraison.fraisEspece : 0,
+      retenu: livraison.id ?livraison.retenu : 0,
       totalComission: livraison.totalComission,
       fournisseur: livraison.fournisseur,
       client: livraison.client,
@@ -313,9 +306,9 @@ export class LivraisonUpdateComponent implements OnInit {
                           map((resp: HttpResponse<ITransporteur[]>) => resp.body),
                           catchError(() => of([])),
                           map((transporteurs: ITransporteur[]) => {
-                            const enriched:ITransporteur[] = [];  
+                            const enriched:ITransporteur[] = [];
                             transporteurs.forEach(transporteur => {
-                              transporteur.description = `${transporteur.nom} | ${transporteur.prenom} | ${transporteur.matricule}`
+                              transporteur.description = `${transporteur.nom} - ${transporteur.prenom} - ${transporteur.matricule}`
                               enriched.push(transporteur);
                             });
                             return enriched;
@@ -373,13 +366,13 @@ export class LivraisonUpdateComponent implements OnInit {
     const isValid = otherThanMarchandise || (
       formGroup.get('fournisseur').value !== undefined &&
       formGroup.get('quantiteAchetee').value !== undefined &&
-      formGroup.get('uniteAchat').value !== undefined && 
+      formGroup.get('uniteAchat').value !== undefined &&
       formGroup.get('dateBonCommande').value !== undefined &&
       formGroup.get('numeroBonCommande').value !== undefined &&
       formGroup.get('quantiteVendue').value !== undefined &&
       formGroup.get('uniteVente').value !== undefined &&
       formGroup.get('quantiteConvertie').value !== undefined
-    ); 
+    );
     return  isValid ? null : {invalidMarchandise: true};
   }
 
@@ -391,7 +384,7 @@ export class LivraisonUpdateComponent implements OnInit {
   validateTransport(formGroup: FormGroup): ValidationErrors {
     const typeLivraison = formGroup.get('type').value;
     const otherThanTransport: boolean = typeLivraison !== TypeLivraison.Transport;
-    const isValid = otherThanTransport || formGroup.get('trajet').value !== undefined; 
+    const isValid = otherThanTransport || formGroup.get('trajet').value !== undefined;
     return  isValid ? null : {invalidTransport: true};
   }
 }

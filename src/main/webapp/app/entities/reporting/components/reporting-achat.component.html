@@ -83,7 +83,7 @@
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let recapitulatifAchat of recapitulatifAchats ;trackBy: trackId">
-                <td>{{recapitulatifAchat.dateBonCommande.format('DD-MM-YYYY')}}</td>
+                <td>{{recapitulatifAchat.dateBonCommande | date:'dd MMM yyyy'}}</td>
                 <td>{{recapitulatifAchat.numeroBonCommande}}</td>
                 <td>{{recapitulatifAchat.codeProduit}}</td>
                 <td>{{recapitulatifAchat.totalQuantiteAchetee}}</td>

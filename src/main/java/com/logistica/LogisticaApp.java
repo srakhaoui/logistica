@@ -12,7 +12,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.core.env.Environment;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -20,7 +19,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 @SpringBootApplication
-@EnableJpaAuditing
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
 public class LogisticaApp implements InitializingBean {
 

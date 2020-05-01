@@ -1,24 +1,23 @@
 package com.logistica.web.rest;
 
 import com.logistica.LogisticaApp;
-import com.logistica.domain.Livraison;
-import com.logistica.domain.Fournisseur;
-import com.logistica.domain.Client;
-import com.logistica.domain.Transporteur;
-import com.logistica.domain.Trajet;
-import com.logistica.domain.Produit;
-import com.logistica.domain.Societe;
+import com.logistica.domain.*;
+import com.logistica.domain.enumeration.TypeLivraison;
+import com.logistica.domain.enumeration.Unite;
 import com.logistica.repository.LivraisonRepository;
-import com.logistica.service.LivraisonService;
-import com.logistica.web.rest.errors.ExceptionTranslator;
-import com.logistica.service.dto.LivraisonCriteria;
 import com.logistica.service.LivraisonQueryService;
-
+import com.logistica.service.LivraisonService;
+import com.logistica.service.TrajetService;
+import com.logistica.service.tarif.AchatPricer;
+import com.logistica.service.tarif.TransportPricer;
+import com.logistica.service.tarif.VentePricer;
+import com.logistica.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -35,12 +34,9 @@ import java.util.List;
 import static com.logistica.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import com.logistica.domain.enumeration.Unite;
-import com.logistica.domain.enumeration.Unite;
-import com.logistica.domain.enumeration.TypeLivraison;
 /**
  * Integration tests for the {@link LivraisonResource} REST controller.
  */
@@ -74,9 +70,9 @@ public class LivraisonResourceIT {
     private static final Unite DEFAULT_UNITE_VENTE = Unite.Tonne;
     private static final Unite UPDATED_UNITE_VENTE = Unite.M3;
 
-    private static final Float DEFAULT_PRIX_TOTAL_VENTE = 1F;
-    private static final Float UPDATED_PRIX_TOTAL_VENTE = 2F;
-    private static final Float SMALLER_PRIX_TOTAL_VENTE = 1F - 1F;
+    private static final Float DEFAULT_PRIX_TOTAL_VENTE = 0F;
+    private static final Float UPDATED_PRIX_TOTAL_VENTE = 200F;
+    private static final Float SMALLER_PRIX_TOTAL_VENTE = -1F;
 
     private static final Float DEFAULT_QUANTITE_ACHETEE = 1F;
     private static final Float UPDATED_QUANTITE_ACHETEE = 2F;
@@ -85,9 +81,9 @@ public class LivraisonResourceIT {
     private static final Unite DEFAULT_UNITE_ACHAT = Unite.Tonne;
     private static final Unite UPDATED_UNITE_ACHAT = Unite.M3;
 
-    private static final Float DEFAULT_PRIX_TOTAL_ACHAT = 1F;
-    private static final Float UPDATED_PRIX_TOTAL_ACHAT = 2F;
-    private static final Float SMALLER_PRIX_TOTAL_ACHAT = 1F - 1F;
+    private static final Float DEFAULT_PRIX_TOTAL_ACHAT = 0F;
+    private static final Float UPDATED_PRIX_TOTAL_ACHAT = 200F;
+    private static final Float SMALLER_PRIX_TOTAL_ACHAT = -1F;
 
     private static final Float DEFAULT_QUANTITE_CONVERTIE = 1F;
     private static final Float UPDATED_QUANTITE_CONVERTIE = 2F;
@@ -143,9 +139,13 @@ public class LivraisonResourceIT {
     private static final Float UPDATED_RETENU = 2F;
     private static final Float SMALLER_RETENU = 1F - 1F;
 
-    private static final Float DEFAULT_TOTAL_COMISSION = 1F;
-    private static final Float UPDATED_TOTAL_COMISSION = 2F;
+    private static final Float DEFAULT_TOTAL_COMISSION = 150F;
+    private static final Float UPDATED_TOTAL_COMISSION = 150F;
     private static final Float SMALLER_TOTAL_COMISSION = 1F - 1F;
+    public static final float DEFAULT_ACHAT_PRICE = 100.0F;
+    public static final float DEFAULT_VENTE_PRICE = 100.0F;
+    public static final float DEFAULT_TRANSPORT_PRICE = 100.0F;
+    public static final float DEFAULT_COMMISSION_TRAJET = 150F;
 
     @Autowired
     private LivraisonRepository livraisonRepository;
@@ -171,6 +171,18 @@ public class LivraisonResourceIT {
     @Autowired
     private Validator validator;
 
+    @MockBean
+    private VentePricer ventePricer;
+
+    @MockBean
+    private AchatPricer achatPricer;
+
+    @MockBean
+    private TransportPricer transportPricer;
+
+    @MockBean
+    private TrajetService trajetService;
+
     private MockMvc restLivraisonMockMvc;
 
     private Livraison livraison;
@@ -194,7 +206,10 @@ public class LivraisonResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Livraison createEntity(EntityManager em) {
+        Trajet trajet = new Trajet().depart("depart").destination("destination");
+        em.persist(trajet);
         Livraison livraison = new Livraison()
+            .trajet(trajet)
             .dateBonCommande(DEFAULT_DATE_BON_COMMANDE)
             .numeroBonCommande(DEFAULT_NUMERO_BON_COMMANDE)
             .numeroBonLivraison(DEFAULT_NUMERO_BON_LIVRAISON)
@@ -268,6 +283,11 @@ public class LivraisonResourceIT {
     @Test
     @Transactional
     public void createLivraison() throws Exception {
+        when(trajetService.getCommissionByTrajet(livraison.getTrajet().getDepart(), livraison.getTrajet().getDestination())).thenReturn(DEFAULT_COMMISSION_TRAJET);
+        when(achatPricer.price(livraison)).thenReturn(DEFAULT_ACHAT_PRICE);
+        when(ventePricer.price(livraison)).thenReturn(DEFAULT_VENTE_PRICE);
+        when(transportPricer.price(livraison)).thenReturn(DEFAULT_TRANSPORT_PRICE);
+
         int databaseSizeBeforeCreate = livraisonRepository.findAll().size();
 
         // Create the Livraison
@@ -419,10 +439,10 @@ public class LivraisonResourceIT {
             .andExpect(jsonPath("$.[*].quantiteVendue").value(hasItem(DEFAULT_QUANTITE_VENDUE.doubleValue())))
             .andExpect(jsonPath("$.[*].uniteVente").value(hasItem(DEFAULT_UNITE_VENTE.toString())))
             .andExpect(jsonPath("$.[*].prixTotalVente").value(hasItem(DEFAULT_PRIX_TOTAL_VENTE.doubleValue())))
-            .andExpect(jsonPath("$.[*].quantiteAchetee").value(hasItem(DEFAULT_QUANTITE_ACHETEE)))
+            .andExpect(jsonPath("$.[*].quantiteAchetee").value(hasItem(DEFAULT_QUANTITE_ACHETEE.doubleValue())))
             .andExpect(jsonPath("$.[*].uniteAchat").value(hasItem(DEFAULT_UNITE_ACHAT.toString())))
             .andExpect(jsonPath("$.[*].prixTotalAchat").value(hasItem(DEFAULT_PRIX_TOTAL_ACHAT.doubleValue())))
-            .andExpect(jsonPath("$.[*].quantiteConvertie").value(hasItem(DEFAULT_QUANTITE_CONVERTIE)))
+            .andExpect(jsonPath("$.[*].quantiteConvertie").value(hasItem(DEFAULT_QUANTITE_CONVERTIE.doubleValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].facture").value(hasItem(DEFAULT_FACTURE.booleanValue())))
             .andExpect(jsonPath("$.[*].dateBonCaisse").value(hasItem(DEFAULT_DATE_BON_CAISSE.toString())))
@@ -2921,7 +2941,7 @@ public class LivraisonResourceIT {
         defaultLivraisonShouldBeFound("totalComission.equals=" + DEFAULT_TOTAL_COMISSION);
 
         // Get all the livraisonList where totalComission equals to UPDATED_TOTAL_COMISSION
-        defaultLivraisonShouldNotBeFound("totalComission.equals=" + UPDATED_TOTAL_COMISSION);
+        defaultLivraisonShouldNotBeFound("totalComission.equals=" + SMALLER_TOTAL_COMISSION);
     }
 
     @Test
@@ -2934,7 +2954,7 @@ public class LivraisonResourceIT {
         defaultLivraisonShouldNotBeFound("totalComission.notEquals=" + DEFAULT_TOTAL_COMISSION);
 
         // Get all the livraisonList where totalComission not equals to UPDATED_TOTAL_COMISSION
-        defaultLivraisonShouldBeFound("totalComission.notEquals=" + UPDATED_TOTAL_COMISSION);
+        defaultLivraisonShouldBeFound("totalComission.notEquals=" + SMALLER_TOTAL_COMISSION);
     }
 
     @Test
@@ -2947,7 +2967,7 @@ public class LivraisonResourceIT {
         defaultLivraisonShouldBeFound("totalComission.in=" + DEFAULT_TOTAL_COMISSION + "," + UPDATED_TOTAL_COMISSION);
 
         // Get all the livraisonList where totalComission equals to UPDATED_TOTAL_COMISSION
-        defaultLivraisonShouldNotBeFound("totalComission.in=" + UPDATED_TOTAL_COMISSION);
+        defaultLivraisonShouldNotBeFound("totalComission.in=" + SMALLER_TOTAL_COMISSION);
     }
 
     @Test
@@ -2973,7 +2993,7 @@ public class LivraisonResourceIT {
         defaultLivraisonShouldBeFound("totalComission.greaterThanOrEqual=" + DEFAULT_TOTAL_COMISSION);
 
         // Get all the livraisonList where totalComission is greater than or equal to UPDATED_TOTAL_COMISSION
-        defaultLivraisonShouldNotBeFound("totalComission.greaterThanOrEqual=" + UPDATED_TOTAL_COMISSION);
+        defaultLivraisonShouldNotBeFound("totalComission.lessThan=" + UPDATED_TOTAL_COMISSION);
     }
 
     @Test
@@ -2997,9 +3017,6 @@ public class LivraisonResourceIT {
 
         // Get all the livraisonList where totalComission is less than DEFAULT_TOTAL_COMISSION
         defaultLivraisonShouldNotBeFound("totalComission.lessThan=" + DEFAULT_TOTAL_COMISSION);
-
-        // Get all the livraisonList where totalComission is less than UPDATED_TOTAL_COMISSION
-        defaultLivraisonShouldBeFound("totalComission.lessThan=" + UPDATED_TOTAL_COMISSION);
     }
 
     @Test
@@ -3151,10 +3168,10 @@ public class LivraisonResourceIT {
             .andExpect(jsonPath("$.[*].quantiteVendue").value(hasItem(DEFAULT_QUANTITE_VENDUE.doubleValue())))
             .andExpect(jsonPath("$.[*].uniteVente").value(hasItem(DEFAULT_UNITE_VENTE.toString())))
             .andExpect(jsonPath("$.[*].prixTotalVente").value(hasItem(DEFAULT_PRIX_TOTAL_VENTE.doubleValue())))
-            .andExpect(jsonPath("$.[*].quantiteAchetee").value(hasItem(DEFAULT_QUANTITE_ACHETEE)))
+            .andExpect(jsonPath("$.[*].quantiteAchetee").value(hasItem(DEFAULT_QUANTITE_ACHETEE.doubleValue())))
             .andExpect(jsonPath("$.[*].uniteAchat").value(hasItem(DEFAULT_UNITE_ACHAT.toString())))
             .andExpect(jsonPath("$.[*].prixTotalAchat").value(hasItem(DEFAULT_PRIX_TOTAL_ACHAT.doubleValue())))
-            .andExpect(jsonPath("$.[*].quantiteConvertie").value(hasItem(DEFAULT_QUANTITE_CONVERTIE)))
+            .andExpect(jsonPath("$.[*].quantiteConvertie").value(hasItem(DEFAULT_QUANTITE_CONVERTIE.doubleValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].facture").value(hasItem(DEFAULT_FACTURE.booleanValue())))
             .andExpect(jsonPath("$.[*].dateBonCaisse").value(hasItem(DEFAULT_DATE_BON_CAISSE.toString())))
@@ -3207,6 +3224,11 @@ public class LivraisonResourceIT {
     @Transactional
     public void updateLivraison() throws Exception {
         // Initialize the database
+        when(trajetService.getCommissionByTrajet(livraison.getTrajet().getDepart(), livraison.getTrajet().getDestination())).thenReturn(150F);
+        when(achatPricer.price(livraison)).thenReturn(100.0F);
+        when(ventePricer.price(livraison)).thenReturn(100.0F);
+        when(transportPricer.price(livraison)).thenReturn(100.0F);
+
         livraisonService.save(livraison);
 
         int databaseSizeBeforeUpdate = livraisonRepository.findAll().size();

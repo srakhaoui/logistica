@@ -15,6 +15,7 @@ import { ITrajet } from 'app/shared/model/trajet.model';
 import { TrajetService } from 'app/entities/trajet/trajet.service';
 import { IProduit } from 'app/shared/model/produit.model';
 import { ProduitService } from 'app/entities/produit/produit.service';
+import { Unite } from 'app/shared/model/enumerations/unite.model';
 
 @Component({
   selector: 'jhi-tarif-transport-update',
@@ -62,6 +63,7 @@ export class TarifTransportUpdateComponent implements OnInit {
     this.loadClients();
     this.loadTrajets();
     this.loadProduits();
+    this.editForm.get('unite').setValue(Unite.Voyage);
   }
 
   updateForm(tarifTransport: ITarifTransport) {

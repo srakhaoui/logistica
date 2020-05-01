@@ -171,7 +171,7 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
   }
 
   trackId(index: number, item: IRecapitulatifAchat) {
-    return item.dateBonCommande.unix + '' + item.numeroBonCommande + item.codeProduit;
+    return item.dateBonCommande + '' + item.numeroBonCommande + item.codeProduit;
   }
 
   trackSocieteById(index: number, item: ISociete) {

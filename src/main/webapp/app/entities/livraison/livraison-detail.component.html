@@ -10,7 +10,7 @@
             </dd>
             <dt><span jhiTranslate="logisticaApp.livraison.dateBonCaisse">Date Bon Caisse</span></dt>
             <dd>
-                <span>{{livraison.dateBonCaisse}}</span>
+                <span>{{livraison.dateBonCaisse | date:'dd MMM yyyy'}}</span>
             </dd>
             <dt><span jhiTranslate="logisticaApp.livraison.client">Client</span></dt>
             <dd>
@@ -48,7 +48,7 @@
             </dd>
             <dt><span jhiTranslate="logisticaApp.livraison.dateBonLivraison">Date Bon Livraison</span></dt>
             <dd>
-                <span>{{livraison.dateBonLivraison}}</span>
+                <span>{{livraison.dateBonLivraison | date:'dd MMM yyyy'}}</span>
             </dd>
             <span *ngIf="isMarchandise()">
                 <dt><span jhiTranslate="logisticaApp.livraison.fournisseur">Fournisseur</span></dt>
@@ -62,7 +62,7 @@
                 <span *ngIf="isMarchandise()">
                     <dt><span jhiTranslate="logisticaApp.livraison.dateBonCommande">Date Bon Commande</span></dt>
                     <dd>
-                        <span>{{livraison.dateBonCommande}}</span>
+                        <span>{{livraison.dateBonCommande | date:'dd MMM yyyy'}}</span>
                     </dd>
                     <dt><span jhiTranslate="logisticaApp.livraison.numeroBonCommande">Numero Bon Commande</span></dt>
                     <dd>
