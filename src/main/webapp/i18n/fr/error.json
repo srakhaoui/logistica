@@ -16,6 +16,11 @@
     "transport.pricingIssue": "Aucun tarif de transport n'a été trouvé pour le client, le produit et l'unité fournis",
     "error.trajetNotFound": "Aucun trajet n'a été trouv� pour la description fournie",
     "error.trajetWithCommissionUndefined": "Le trajet sélectionné n'a pas de commission de définie",
-    "error.trajetManyCommission": "Plusieurs commissions ont été trouvées pour le trajet sélectionné"
+    "error.trajetManyCommission": "Plusieurs commissions ont été trouvées pour le trajet sélectionné",
+    "livraison.save.date.caisse.future": "La date du bon de caisse ne peut être dans le future",
+    "livraison.save.date.livraison.future": "La date de livraison ne peut être dans le future",
+    "livraison.save.date.caisse.sup.date.livraison": "La date du bon de caisse ne peut être antérieure à la date de livraison",
+    "livraison.save.date.caisse.ant.date.commande": "La date du bon de caisse ne peut être antérieure à la date du bon de commande",
+    "livraison.save.date.livraison.ant.date.commande": "La date de livraison ne peut être antérieure à la date du bon de commande"
   }
 }

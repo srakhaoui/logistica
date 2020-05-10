@@ -150,45 +150,57 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 
     @Override
     public Page<RecapitulatifClient> getRecapitulatifClient(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable) {
-	    final Long societeId = recapitulatifClientRequest.getSocieteId();
-	    final Boolean isFacturee = recapitulatifClientRequest.isFacture();
-	    final TypeLivraison typeLivraison = recapitulatifClientRequest.getTypeLivraison();
-	    final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
-	    final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
+        final Long societeId = recapitulatifClientRequest.getSocieteId();
+        final Long produitId = recapitulatifClientRequest.getProduitId();
+        final Long clientId = recapitulatifClientRequest.getClientId();
+        final Boolean isFacturee = recapitulatifClientRequest.isFacture();
+        final TypeLivraison typeLivraison = recapitulatifClientRequest.getTypeLivraison();
+        final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
+        final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
         boolean withSocieteId = societeId != null;
+        boolean withProduitId = produitId != null;
+        boolean withClientId = clientId != null;
         boolean withIsFacturee = isFacturee != null;
         boolean withTypeLivraison = typeLivraison != null;
         boolean withDateDebutLivraison = dateDebutLivraison != null;
         boolean withDateFinLivraison = dateFinLivraison != null;
 
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
-        if(withSocieteId){
+        if (withSocieteId) {
             predicate.append(" And l.societeFacturation.id = :societeId ");
         }
-        if(withIsFacturee){
+        if (withProduitId) {
+            predicate.append(" And l.produit.id = :produitId ");
+        }
+        if (withClientId) {
+            predicate.append(" And l.client.id = :clientId ");
+        }
+        if (withIsFacturee) {
             predicate.append(" And l.facture = :facture ");
         }
-        if(withTypeLivraison){
+        if (withTypeLivraison) {
             predicate.append(" And l.type = :type");
         }
-        if(withDateDebutLivraison){
+        if (withDateDebutLivraison) {
             predicate.append(" And l.dateBonLivraison >= :dateDebutLivraison");
         }
-        if(withDateFinLivraison){
+        if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
         String queryAsStr = query.append(predicate.toString()).append(" Group by l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifClient.class);
 
         Optional.ofNullable(societeId).ifPresent(aSocieteId -> entityQuery.setParameter("societeId", aSocieteId));
+        Optional.ofNullable(produitId).ifPresent(aProduitId -> entityQuery.setParameter("produitId", aProduitId));
+        Optional.ofNullable(clientId).ifPresent(aClientId -> entityQuery.setParameter("clientId", aClientId));
         Optional.ofNullable(isFacturee).ifPresent(aFacture -> entityQuery.setParameter("facture", aFacture));
         Optional.ofNullable(typeLivraison).ifPresent(aTypeLivraison -> entityQuery.setParameter("type", aTypeLivraison));
         Optional.ofNullable(dateDebutLivraison).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
         Optional.ofNullable(dateFinLivraison).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
 
-        if(pageable.isPaged()) {
+        if (pageable.isPaged()) {
             entityQuery.setFirstResult((int) pageable.getOffset());
             entityQuery.setMaxResults(pageable.getPageSize());
         }
@@ -201,9 +213,10 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 
     @Override
     public Page<RecapitulatifFacturation> getRecapitulatifFacturation(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable) {
-	    final Long societeId = recapitulatifFacturationRequest.getSocieteId();
-	    final Boolean isFacturee = recapitulatifFacturationRequest.getFacture();
-	    final Long clientId = recapitulatifFacturationRequest.getClientId();
+        final Long societeId = recapitulatifFacturationRequest.getSocieteId();
+        final Boolean isFacturee = recapitulatifFacturationRequest.getFacture();
+        final Long clientId = recapitulatifFacturationRequest.getClientId();
+        final Long produitId = recapitulatifFacturationRequest.getProduitId();
         final LocalDate dateDebutLivraison = recapitulatifFacturationRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifFacturationRequest.getDateFin();
 
@@ -211,29 +224,34 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         boolean withSocieteId = societeId != null;
         boolean withIsFacturee = isFacturee != null;
         boolean withClientId = clientId != null;
+        boolean withProduitId = produitId != null;
         boolean withDateDebutLivraison = dateDebutLivraison != null;
         boolean withDateFinLivraison = dateFinLivraison != null;
 
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
-        if(withSocieteId){
+        if (withSocieteId) {
             predicate.append(" And l.societeFacturation.id = :societeId ");
         }
-        if(withIsFacturee){
+        if (withProduitId) {
+            predicate.append(" And l.produit.id = :produitId ");
+        }
+        if (withIsFacturee) {
             predicate.append(" And l.facture = :facture ");
         }
-        if(withClientId){
+        if (withClientId) {
             predicate.append(" And l.client.id = :clientId");
         }
-        if(withDateDebutLivraison){
+        if (withDateDebutLivraison) {
             predicate.append(" And l.dateBonLivraison >= :dateDebutLivraison");
         }
-        if(withDateFinLivraison){
+        if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
         String queryAsStr = query.append(predicate.toString()).append(" Group by MONTH(l.dateBonLivraison), l.produit.code, l.uniteVente").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifFacturation.class);
 
         Optional.ofNullable(societeId).ifPresent(aSocieteId -> entityQuery.setParameter("societeId", aSocieteId));
+        Optional.ofNullable(produitId).ifPresent(aProduitId -> entityQuery.setParameter("produitId", aProduitId));
         Optional.ofNullable(isFacturee).ifPresent(aFacture -> entityQuery.setParameter("facture", aFacture));
         Optional.ofNullable(clientId).ifPresent(aClientId -> entityQuery.setParameter("clientId", aClientId));
         Optional.ofNullable(dateDebutLivraison).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));

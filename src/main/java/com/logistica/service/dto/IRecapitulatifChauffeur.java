@@ -6,7 +6,9 @@ public interface IRecapitulatifChauffeur {
     String getNomChauffeur();
     String getDescription();
     Integer getNombreTrajets();
-    Double GetCommissionTrajet();
+
+    Double getCommissionTrajet();
+
     Double getReparationDivers();
     Double getTrax();
     Double getBalance();

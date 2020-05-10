@@ -1,7 +1,7 @@
 package com.logistica.web.rest.errors;
 
+import com.logistica.service.*;
 import io.github.jhipster.web.util.HeaderUtil;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,6 @@ import org.zalando.problem.Status;
 import org.zalando.problem.spring.web.advice.ProblemHandling;
 import org.zalando.problem.spring.web.advice.security.SecurityAdviceTrait;
 import org.zalando.problem.violations.ConstraintViolationProblem;
-
-import com.logistica.service.CommissionTrajetUndefinedException;
-import com.logistica.service.PlusieursCommissionTrajetException;
-import com.logistica.service.PriceComputingException;
-import com.logistica.service.TrajetNotFoundException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -134,27 +129,78 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .build();
         return create(ex, problem, request);
     }
-    
+
     @ExceptionHandler
-    public ResponseEntity<Problem> handleInvalidPasswordException(PriceComputingException ex, NativeWebRequest request) {
-    	Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
-                .with(MESSAGE_KEY, String.format(ErrorConstants.ERR_PRICING, ex.getType().name().toLowerCase()))
-                .withDetail(ex.getMessage())
-                .build();
+    public ResponseEntity<Problem> handleDateBonCaisseFutureException(DateBonCaisseFutureException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_DATE_BON_CAISSE_FUTURE)
+            .withDetail(ex.getMessage())
+            .build();
         return create(ex, problem, request);
     }
-    
+
+
     @ExceptionHandler
-    public ResponseEntity<Problem> handleInvalidPasswordException(TrajetNotFoundException ex, NativeWebRequest request) {
-    	Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
-                .with(MESSAGE_KEY, ErrorConstants.ERR_TRAJET_NOT_FOUND)
-                .withDetail(ex.getMessage())
-                .build();
+    public ResponseEntity<Problem> handleDateLivraisonFutureException(DateLivraisonFutureException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_DATE_BON_LIVRAISON_FUTURE)
+            .withDetail(ex.getMessage())
+            .build();
         return create(ex, problem, request);
     }
-    
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleDateBonCaisseAnterieureDateLivraisonException(DateBonCaisseAnterieureDateLivraisonException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_DATE_BON_CAISSE_SUP_DATE_LIVRAISON)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleDateBonCaisseAnterieureDateCommandeException(DateBonCaisseAnterieureDateCommandeException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_DATE_BON_CAISSE_ANT_DATE_CMD)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleDateLivraisonAnterieureDateCommandeException(DateLivraisonAnterieureDateCommandeException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_DATE_BON_LIVRAISON_ANT_DATE_CMD)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handlePriceComputingException(PriceComputingException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, String.format(ErrorConstants.ERR_PRICING, ex.getType().name().toLowerCase()))
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleTrajetNotFoundException(TrajetNotFoundException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_TRAJET_NOT_FOUND)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
     @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(CommissionTrajetUndefinedException ex, NativeWebRequest request) {
     	Problem problem = Problem.builder()
@@ -164,14 +210,14 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
                 .build();
         return create(ex, problem, request);
     }
-    
+
     @ExceptionHandler
-    public ResponseEntity<Problem> handleInvalidPasswordException(PlusieursCommissionTrajetException ex, NativeWebRequest request) {
-    	Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
-                .with(MESSAGE_KEY, ErrorConstants.ERR_MANY_COMMISSION)
-                .withDetail(ex.getMessage())
-                .build();
+    public ResponseEntity<Problem> handlePlusieursCommissionTrajetException(PlusieursCommissionTrajetException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_MANY_COMMISSION)
+            .withDetail(ex.getMessage())
+            .build();
         return create(ex, problem, request);
     }
 }

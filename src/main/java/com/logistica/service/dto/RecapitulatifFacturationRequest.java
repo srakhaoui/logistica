@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class RecapitulatifFacturationRequest {
     private Long societeId;
+    private Long produitId;
     private Boolean facture;
     private Long clientId;
     private LocalDate dateDebut;
@@ -47,5 +48,13 @@ public class RecapitulatifFacturationRequest {
 
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public Long getProduitId() {
+        return produitId;
+    }
+
+    public void setProduitId(Long produitId) {
+        this.produitId = produitId;
     }
 }

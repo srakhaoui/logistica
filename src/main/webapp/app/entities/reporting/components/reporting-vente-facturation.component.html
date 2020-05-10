@@ -6,7 +6,7 @@
     <jhi-alert></jhi-alert>
     <br/>
     <div>
-        <form name="reportingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingForm">
+        <div name="reportingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingForm">
             <div class="form-row">
                 <div class="col">
                     <label class="form-control-label" for="field_societe">Soci&eacute;t&eacute; de facturation</label>
@@ -18,6 +18,8 @@
                         </option>
                     </select>
                 </div>
+            </div>
+            <div class="form-row">
                 <div class="col">
                     <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
                            for="field_client">Client</label>
@@ -28,6 +30,17 @@
                                [loading]="clientsLoading"
                                formControlName="client"
                                name="client">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_produit">Produit</label>
+                    <ng-select [items]="produits$ | async"
+                               [typeahead]="produitInput$"
+                               bindLabel="code"
+                               [hideSelected]="true"
+                               [loading]="produitsLoading"
+                               formControlName="produit"
+                               name="produit">
                     </ng-select>
                 </div>
             </div>

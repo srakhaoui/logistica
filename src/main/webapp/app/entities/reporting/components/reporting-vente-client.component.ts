@@ -12,6 +12,8 @@ import { ISociete } from 'app/shared/model/societe.model';
 import { IFournisseur } from 'app/shared/model/fournisseur.model';
 import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
 import { SocieteService } from 'app/entities/societe/societe.service';
+import { ProduitService } from 'app/entities/produit/produit.service';
+import { ClientService } from 'app/entities/client/client.service';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
 import { Livraison, ILivraison } from 'app/shared/model/livraison.model';
 import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
@@ -25,8 +27,18 @@ import { format } from 'app/shared/util/date-util';
 export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   societes: ISociete[];
 
+  clients$: Observable<IClient[]>;
+  clientInput$ = new Subject<string>();
+  clientsLoading:Boolean = false;
+
+  produits$: Observable<IProduit[]>;
+  produitInput$ = new Subject<string>();
+  produitsLoading:Boolean = false;
+
   reportingForm = new FormGroup({
       societe: new FormControl(),
+      client: new FormControl(),
+      produit: new FormControl(),
       facture: new FormControl(),
       typeLivraison: new FormControl(),
       dateDebut: new FormControl(),
@@ -46,6 +58,8 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   constructor(
     protected reportingService: ReportingService,
     protected societeService: SocieteService,
+    protected clientService: ClientService,
+    protected produitService: ProduitService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
@@ -74,6 +88,8 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.societeService
             .query()
             .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.loadClients();
+    this.loadProduits();
     this.search();
   }
 
@@ -91,6 +107,42 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
       });
   }
 
+  private loadClients(){
+    this.clients$ = concat(
+            of([]), // default items
+            this.clientInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.clientsLoading = true)),
+                switchMap(nom =>
+                    this.clientService
+                        .query({'nom.contains': nom})
+                        .pipe(map((resp: HttpResponse<IClient[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.clientsLoading = false))
+            )
+        );
+  }
+
+  private loadProduits(){
+    this.produits$ = concat(
+            of([]), // default items
+            this.produitInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.produitsLoading = true)),
+                switchMap(nom =>
+                    this.produitService
+                        .query({'code.contains': nom})
+                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.produitsLoading = false))
+            )
+        );
+  }
+
   private buildReportingRequest(): any {
     const reportingRequest = {
       page: this.page,
@@ -99,6 +151,12 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     }
     if(this.reportingForm.get('societe').value){
       reportingRequest['societeId'] = this.reportingForm.get('societe').value.id;
+    }
+    if(this.reportingForm.get('client').value){
+      reportingRequest['clientId'] = this.reportingForm.get('client').value.id;
+    }
+    if(this.reportingForm.get('produit').value){
+      reportingRequest['produitId'] = this.reportingForm.get('produit').value.id;
     }
     if(this.reportingForm.get('typeLivraison').value){
       reportingRequest['typeLivraison'] = this.reportingForm.get('typeLivraison').value;

@@ -21,9 +21,35 @@
                 <div class="col">
                     <label class="form-control-label" for="field_type">Type</label>
                     <select class="form-control" name="typeLivraison" formControlName="typeLivraison" id="field_type">
+                        <option value=""></option>
                         <option value="Transport">{{'logisticaApp.TypeLivraison.Transport' | translate}}</option>
                         <option value="Marchandise">{{'logisticaApp.TypeLivraison.Marchandise' | translate}}</option>
                     </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select id="field_client"
+                               [items]="clients$ | async"
+                               [typeahead]="clientInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_produit">Produit</label>
+                    <ng-select [items]="produits$ | async"
+                               [typeahead]="produitInput$"
+                               bindLabel="code"
+                               [hideSelected]="true"
+                               [loading]="produitsLoading"
+                               formControlName="produit"
+                               name="produit">
+                    </ng-select>
                 </div>
             </div>
             <div class="form-row">

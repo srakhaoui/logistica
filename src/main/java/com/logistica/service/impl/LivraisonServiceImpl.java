@@ -1,18 +1,13 @@
 package com.logistica.service.impl;
 
-import com.logistica.service.CommissionTrajetUndefinedException;
-import com.logistica.service.LivraisonService;
-import com.logistica.service.PriceComputingException;
-import com.logistica.service.TrajetService;
+import com.logistica.domain.Livraison;
+import com.logistica.domain.enumeration.TypeLivraison;
+import com.logistica.repository.LivraisonRepository;
+import com.logistica.service.*;
 import com.logistica.service.dto.*;
 import com.logistica.service.tarif.Pricer;
 import com.logistica.service.tarif.PricerFactory;
 import com.logistica.service.tarif.TypePricer;
-import com.logistica.domain.Livraison;
-import com.logistica.service.dto.RecapitulatifAchat;
-import com.logistica.domain.enumeration.TypeLivraison;
-import com.logistica.repository.LivraisonRepository;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 /**
@@ -53,23 +49,46 @@ public class LivraisonServiceImpl implements LivraisonService {
      */
     @Override
     public Livraison save(Livraison livraison) {
-    	calculerPrixTotaux(livraison);
-    	calculerCommissionTotalTrajet(livraison);
+        validateLivraisonDates(livraison);
+        calculerPrixTotaux(livraison);
+        calculerCommissionTotalTrajet(livraison);
         log.debug("Request to save Livraison : {}", livraison);
         return livraisonRepository.save(livraison);
     }
 
-	private void calculerPrixTotaux(Livraison livraison) {
-		Float prixTotalAchat = 0.0F;
-    	Float prixTotalVente = null;
-    	if(livraison.getType() == TypeLivraison.Marchandise) {
-    		prixTotalAchat = getPrixTotalAchatMarchandise(livraison);
-    		prixTotalVente = getPrixTotalVenteMarchandise(livraison);
-    	}else if(livraison.getType() == TypeLivraison.Transport) {
-    		prixTotalVente = getPrixTransport(livraison);
-    	}
-    	livraison.setPrixTotalAchat(prixTotalAchat);
-		livraison.setPrixTotalVente(prixTotalVente);
+    private void validateLivraisonDates(Livraison livraison) {
+        final LocalDate dateBonCaisse = Optional.ofNullable(livraison.getDateBonCaisse()).orElse(LocalDate.now());
+        final LocalDate dateLivraison = Optional.ofNullable(livraison.getDateBonLivraison()).orElseThrow(() -> new IllegalArgumentException("La date de livraison est obligatoire"));
+        if (dateBonCaisse.isAfter(LocalDate.now())) {
+            throw new DateBonCaisseFutureException();
+        }
+        if (dateLivraison.isAfter(LocalDate.now())) {
+            throw new DateLivraisonFutureException();
+        }
+        if (dateBonCaisse.isBefore(dateLivraison)) {
+            throw new DateBonCaisseAnterieureDateLivraisonException();
+        }
+        Optional.ofNullable(livraison.getDateBonCommande()).ifPresent(dateBonCommande -> {
+            if (dateBonCaisse.isBefore(dateBonCommande)) {
+                throw new DateBonCaisseAnterieureDateCommandeException();
+            }
+            if (dateLivraison.isBefore(dateBonCommande)) {
+                throw new DateLivraisonAnterieureDateCommandeException();
+            }
+        });
+    }
+
+    private void calculerPrixTotaux(Livraison livraison) {
+        Float prixTotalAchat = 0.0F;
+        Float prixTotalVente = null;
+        if (livraison.getType() == TypeLivraison.Marchandise) {
+            prixTotalAchat = getPrixTotalAchatMarchandise(livraison);
+            prixTotalVente = getPrixTotalVenteMarchandise(livraison);
+        } else if (livraison.getType() == TypeLivraison.Transport) {
+            prixTotalVente = getPrixTransport(livraison);
+        }
+        livraison.setPrixTotalAchat(prixTotalAchat);
+        livraison.setPrixTotalVente(prixTotalVente);
 	}
 
 	private Float getPrixTotalAchatMarchandise(Livraison livraison) {

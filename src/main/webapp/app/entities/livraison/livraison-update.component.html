@@ -34,7 +34,34 @@
                         </span>
                     </div>
                 </div>
+                <div class="form-group">
+                    <input type="checkbox" name="facture" id="field_facture"
+                           formControlName="facture"/>
+                    <label class="form-control-label" for="field_facture">Facturée</label>
+                </div>
                 <div class="form-row">
+                    <div class="col">
+                        <label class="form-control-label" jhiTranslate="logisticaApp.livraison.transporteur"
+                               for="field_transporteur">Transporteur</label>
+                        <ng-select [items]="transporteurs$ | async"
+                                   [typeahead]="transporteurInput$"
+                                   bindLabel="description"
+                                   [hideSelected]="true"
+                                   [loading]="transporteursLoading"
+                                   formControlName="transporteur"
+                                   name="transporteur"
+                                   placeholder="Recherchez par nom"
+                                   (change)="onTransporteurChange()">
+                        </ng-select>
+                        <div
+                            *ngIf="editForm.get('transporteur').invalid && (editForm.get('transporteur').dirty || editForm.get('transporteur').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('transporteur').errors.required"
+                                   jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
                     <div class="col">
                         <label class="form-control-label" for="field_societeFacturation">Société Facturation</label>
                         <select class="form-control" id="field_societeFacturation" name="societeFacturation"
@@ -54,11 +81,7 @@
                             </small>
                         </div>
                     </div>
-                    <div class="col">
-                        <input type="checkbox" name="facture" id="field_facture"
-                               formControlName="facture"/>
-                        <label class="form-control-label" for="field_facture">Facturée</label>
-                    </div>
+
                 </div>
                 <div class="form-row">
                     <div class="col">
@@ -103,27 +126,6 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div class="col">
-                        <label class="form-control-label" jhiTranslate="logisticaApp.livraison.transporteur"
-                               for="field_transporteur">Transporteur</label>
-                        <ng-select [items]="transporteurs$ | async"
-                                   [typeahead]="transporteurInput$"
-                                   bindLabel="description"
-                                   [hideSelected]="true"
-                                   [loading]="transporteursLoading"
-                                   formControlName="transporteur"
-                                   name="transporteur"
-                                   placeholder="Recherchez par nom">
-                        </ng-select>
-                        <div
-                            *ngIf="editForm.get('transporteur').invalid && (editForm.get('transporteur').dirty || editForm.get('transporteur').touched)">
-                            <small class="form-text text-danger"
-                                   *ngIf="editForm.get('transporteur').errors.required"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                    </div>
                     <div class="col">
                         <label class="form-control-label" jhiTranslate="logisticaApp.livraison.trajet"
                                for="field_trajet">Trajet</label>
@@ -265,9 +267,12 @@
                                jhiTranslate="logisticaApp.livraison.unite" for="field_uniteVente">Unite</label>
                         <select class="form-control" name="uniteVente" formControlName="uniteVente"
                                 id="field_uniteVente">
-                            <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
-                            <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
-                            <option value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}</option>
+                            <option *ngIf="isMarchandise()" value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}
+                            </option>
+                            <option *ngIf="isMarchandise()" value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
+                            <option *ngIf="!isMarchandise()" value="Voyage">{{'logisticaApp.Unite.Voyage' |
+                                translate}}
+                            </option>
                         </select>
                         <div
                             *ngIf="isMarchandise() && (editForm.get('uniteVente').dirty || editForm.get('uniteVente').touched)">

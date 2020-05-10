@@ -380,11 +380,17 @@ export class LivraisonUpdateComponent implements OnInit {
     return this.editForm.get('type').value === TypeLivraison.Transport;
   }
 
-
   validateTransport(formGroup: FormGroup): ValidationErrors {
     const typeLivraison = formGroup.get('type').value;
     const otherThanTransport: boolean = typeLivraison !== TypeLivraison.Transport;
     const isValid = otherThanTransport || formGroup.get('trajet').value !== undefined;
     return  isValid ? null : {invalidTransport: true};
+  }
+
+  onTransporteurChange(){
+    const transporteur: ITransporteur = this.editForm.get(['transporteur']).value;
+    if(transporteur){
+      this.editForm.get(['societeFacturation']).setValue(transporteur.proprietaire);
+    }
   }
 }

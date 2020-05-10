@@ -7,6 +7,8 @@ import java.time.LocalDate;
 public class RecapitulatifClientRequest {
     private Long societeId;
     private Boolean facture;
+    private Long produitId;
+    private Long clientId;
     private TypeLivraison typeLivraison;
     private LocalDate dateDebut;
     private LocalDate dateFin;
@@ -49,5 +51,21 @@ public class RecapitulatifClientRequest {
 
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public Long getProduitId() {
+        return produitId;
+    }
+
+    public void setProduitId(Long produitId) {
+        this.produitId = produitId;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 }
