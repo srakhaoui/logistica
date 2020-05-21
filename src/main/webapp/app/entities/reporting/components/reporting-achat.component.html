@@ -73,18 +73,30 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th scope="col"  jhiSortBy="dateBonCommande"><span jhiTranslate="logisticaApp.reporting.dateBonCommande">Date Bon Commande</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"><span jhiTranslate="logisticaApp.reporting.numeroBonCommande">N� Bon Commande</span></th>
-            <th scope="col"  jhiSortBy="codeProduit"><span jhiTranslate="logisticaApp.reporting.codeProduit">Code Produit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteAchetee">Total Quantit�e Achet�e</span></th>
-            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalQuantiteConvertie">Total Quantit�e Convertie</span></th>
-            <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalPrixAchat">Total Prix Achat</span></th>
+                <th scope="col" jhiSortBy="dateBonCommande"><span jhiTranslate="logisticaApp.reporting.dateBonCommande">Date Bon Commande</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"><span>N° Bon Commande</span></th>
+                <th scope="col" jhiSortBy="codeProduit"><span jhiTranslate="logisticaApp.reporting.codeProduit">Code Produit</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"><span>Total Quantitée Achetée</span></th>
+                <th scope="col"><span>Total Quantitée Convertie</span></th>
+                <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalPrixAchat">Total Prix Achat</span></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let recapitulatifAchat of recapitulatifAchats ;trackBy: trackId">
                 <td>{{recapitulatifAchat.dateBonCommande | date:'dd MMM yyyy'}}</td>
-                <td>{{recapitulatifAchat.numeroBonCommande}}</td>
+                <td>
+                    <button *ngIf="recapitulatifAchat.hasBonCommande"
+                            (click)="showBonCommande(recapitulatifAchat.livraisonId)" type="button"
+                            class="btn btn-light">{{recapitulatifAchat.numeroBonCommande}}
+                    </button>
+                    <span *ngIf="!recapitulatifAchat.hasBonCommande">
+                        {{recapitulatifAchat.numeroBonCommande}}
+                    </span>
+                </td>
                 <td>{{recapitulatifAchat.codeProduit}}</td>
                 <td>{{recapitulatifAchat.totalQuantiteAchetee}}</td>
                 <td>{{recapitulatifAchat.totalQuantiteConvertie}}</td>

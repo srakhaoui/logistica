@@ -1,8 +1,10 @@
 package com.logistica.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.domain.enumeration.Unite;
+import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -19,6 +21,7 @@ import java.time.LocalDate;
 @Table(name = "livraison")
 @EntityListeners(AuditingEntityListener.class)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@JsonIgnoreProperties({"bonLivraison", "bonCommande", "bonFournisseur"})
 public class Livraison implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -34,6 +37,12 @@ public class Livraison implements Serializable {
     @Column(name = "numero_bon_commande")
     private Integer numeroBonCommande;
 
+    @Column(name = "bon_commande")
+    private byte[] bonCommande;
+
+    @Column(name = "bon_commande_mime_type")
+    private String bonCommandeMimeType;
+
     @NotNull
     @Column(name = "numero_bon_livraison", nullable = false)
     private Integer numeroBonLivraison;
@@ -42,8 +51,20 @@ public class Livraison implements Serializable {
     @Column(name = "date_bon_livraison", nullable = false)
     private LocalDate dateBonLivraison;
 
+    @Column(name = "bon_livraison")
+    private byte[] bonLivraison;
+
+    @Column(name = "bon_livraison_mime_type")
+    private String bonLivraisonMimeType;
+
     @Column(name = "numero_bon_fournisseur")
     private Integer numeroBonFournisseur;
+
+    @Column(name = "bon_fournisseur")
+    private byte[] bonFournisseur;
+
+    @Column(name = "bon_fournisseur_mime_type")
+    private String bonFournisseurMimeType;
 
     @Column(name = "quantite_vendue")
     private Float quantiteVendue;
@@ -558,6 +579,99 @@ public class Livraison implements Serializable {
 
     public void setProduit(Produit produit) {
         this.produit = produit;
+    }
+
+    public Livraison bonCommande(byte[] bonCommande) {
+        this.bonCommande = bonCommande;
+        return this;
+    }
+
+    public byte[] getBonCommande() {
+        return bonCommande;
+    }
+
+    public void setBonCommande(byte[] bonCommande) {
+        this.bonCommande = bonCommande;
+    }
+
+    public Livraison bonLivraison(byte[] bonLivraison) {
+        this.bonLivraison = bonLivraison;
+        return this;
+    }
+
+    public byte[] getBonLivraison() {
+        return bonLivraison;
+    }
+
+    public void setBonLivraison(byte[] bonLivraison) {
+        this.bonLivraison = bonLivraison;
+    }
+
+    public Livraison bonFournisseur(byte[] bonFournisseur) {
+        this.bonFournisseur = bonFournisseur;
+        return this;
+    }
+
+    public byte[] getBonFournisseur() {
+        return bonFournisseur;
+    }
+
+    public void setBonFournisseur(byte[] bonFournisseur) {
+        this.bonFournisseur = bonFournisseur;
+    }
+
+    public Livraison bonCommandeMimeType(String bonCommandeMimeType) {
+        this.bonCommandeMimeType = bonCommandeMimeType;
+        return this;
+    }
+
+    public String getBonCommandeMimeType() {
+        return bonCommandeMimeType;
+    }
+
+    @JsonProperty("hasBonCommande")
+    public Boolean hasBonCommande() {
+        return ArrayUtils.isNotEmpty(this.bonCommande);
+    }
+
+    public void setBonCommandeMimeType(String bonCommandeMimeType) {
+        this.bonCommandeMimeType = bonCommandeMimeType;
+    }
+
+    public Livraison bonLivraisonMimeType(String bonLivraisonMimeType) {
+        this.bonLivraisonMimeType = bonLivraisonMimeType;
+        return this;
+    }
+
+    public String getBonLivraisonMimeType() {
+        return bonLivraisonMimeType;
+    }
+
+    public void setBonLivraisonMimeType(String bonLivraisonMimeType) {
+        this.bonLivraisonMimeType = bonLivraisonMimeType;
+    }
+
+    @JsonProperty("hasBonLivraison")
+    public Boolean hasBonLivraison() {
+        return ArrayUtils.isNotEmpty(this.bonLivraison);
+    }
+
+    public Livraison bonFournisseurMimeType(String bonFournisseurMimeType) {
+        this.bonFournisseurMimeType = bonFournisseurMimeType;
+        return this;
+    }
+
+    public String getBonFournisseurMimeType() {
+        return bonFournisseurMimeType;
+    }
+
+    public void setBonFournisseurMimeType(String bonFournisseurMimeType) {
+        this.bonFournisseurMimeType = bonFournisseurMimeType;
+    }
+
+    @JsonProperty("hasBonFournisseur")
+    public Boolean hasBonFournisseur() {
+        return ArrayUtils.isNotEmpty(this.bonFournisseur);
     }
 
     public Societe getSocieteFacturation() {

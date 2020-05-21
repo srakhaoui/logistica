@@ -123,7 +123,14 @@
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let recapitulatifAchat of recapitulatifAchats ;trackBy: trackId">
-                <td>{{recapitulatifAchat.numeroBonLivraison}}</td>
+                <td>
+                    <button *ngIf="recapitulatifAchat.hasBonLivraison" (click)="showBonLivraison(recapitulatifAchat.id)"
+                            type="button" class="btn btn-light">{{recapitulatifAchat.numeroBonLivraison}}
+                    </button>
+                    <span *ngIf="!recapitulatifAchat.hasBonLivraison">
+                        {{recapitulatifAchat.numeroBonLivraison}}
+                    </span>
+                </td>
                 <td>{{recapitulatifAchat.client.nom}}</td>
                 <td>{{recapitulatifAchat.trajet.depart}}</td>
                 <td>{{recapitulatifAchat.prixTotalAchat}}</td>

@@ -1,7 +1,9 @@
 import { Moment } from 'moment';
 
 export interface IRecapitulatifVenteClient {
+  livraisonId?: number;
   client?: string;
+  hasBonLivraison?: boolean;
   dateBonLivraison?: Moment;
   numeroBonLivraison?: number;
   matricule?: string;

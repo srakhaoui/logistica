@@ -1,24 +1,23 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Subscription, Observable, Subject, of, concat } from 'rxjs';
+import { Observable, Subject, of, concat } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { IRecapitulatifAchat } from 'app/shared/model/recapitulatif-achat.model';
 import { ReportingService } from '../reporting.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ISociete } from 'app/shared/model/societe.model';
-import { IFournisseur } from 'app/shared/model/fournisseur.model';
-import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
+import { IClient } from 'app/shared/model/client.model';
+import { IProduit } from 'app/shared/model/produit.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { ProduitService } from 'app/entities/produit/produit.service';
 import { ClientService } from 'app/entities/client/client.service';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
-import { Livraison, ILivraison } from 'app/shared/model/livraison.model';
 import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
 import * as moment from 'moment';
 import { format } from 'app/shared/util/date-util';
+import { ReportingBonComponent } from 'app/entities/reporting/components/reporting-bon.component';
 
 @Component({
   selector: 'jhi-reporting-vente-client',
@@ -217,5 +216,11 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     for (let i = 0; i < data.length; i++) {
       this.recapitulatifs.push(data[i]);
     }
+  }
+
+  showBonLivraison(livraisonId: number){
+    const modalBonRef = this.modalService.open(ReportingBonComponent);
+    modalBonRef.componentInstance.livraisonId = livraisonId;
+    modalBonRef.componentInstance.bonType = 'Livraison';
   }
 }

@@ -9,10 +9,11 @@ import { ReportingVenteClientComponent } from './components/reporting-vente-clie
 import { ReportingVenteChauffeurComponent } from './components/reporting-vente-chauffeur.component';
 import { ReportingVenteFacturationComponent } from './components/reporting-vente-facturation.component';
 import { ReportingVenteCaCamionComponent } from './components/reporting-vente-ca-camion.component';
+import { ReportingBonComponent } from './components/reporting-bon.component';
 
 @NgModule({
   imports: [LogisticaSharedModule, RouterModule.forChild(reportingRoute)],
-  declarations: [ReportingAchatComponent, ReportingAchatTrajetComponent, ReportingVenteClientComponent, ReportingVenteChauffeurComponent, ReportingVenteFacturationComponent, ReportingVenteCaCamionComponent],
-  entryComponents: [ReportingAchatComponent, ReportingVenteClientComponent, ReportingVenteChauffeurComponent, ReportingVenteFacturationComponent, ReportingVenteCaCamionComponent]
+  declarations: [ReportingAchatComponent, ReportingAchatTrajetComponent, ReportingVenteClientComponent, ReportingVenteChauffeurComponent, ReportingVenteFacturationComponent, ReportingVenteCaCamionComponent, ReportingBonComponent],
+  entryComponents: [ReportingAchatComponent, ReportingVenteClientComponent, ReportingVenteChauffeurComponent, ReportingVenteFacturationComponent, ReportingVenteCaCamionComponent, ReportingBonComponent]
 })
 export class LogisticaReportingModule {}

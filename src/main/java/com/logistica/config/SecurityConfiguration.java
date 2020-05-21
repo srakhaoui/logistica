@@ -1,10 +1,8 @@
 package com.logistica.config;
 
-import com.logistica.security.*;
-import com.logistica.security.jwt.*;
-
-import org.springframework.beans.factory.BeanInitializationException;
-import org.springframework.beans.factory.InitializingBean;
+import com.logistica.security.AuthoritiesConstants;
+import com.logistica.security.jwt.JWTConfigurer;
+import com.logistica.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -74,16 +72,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .frameOptions()
             .deny()
-        .and()
+            .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+            .and()
             .authorizeRequests()
             .antMatchers("/api/authenticate").permitAll()
             .antMatchers("/api/register").permitAll()
             .antMatchers("/api/activate").permitAll()
             .antMatchers("/api/account/reset-password/init").permitAll()
             .antMatchers("/api/account/reset-password/finish").permitAll()
+            .regexMatchers("/api/livraisons/\\d+/bon/[A-Za-z]+").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()
@@ -99,4 +98,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private JWTConfigurer securityConfigurerAdapter() {
         return new JWTConfigurer(tokenProvider);
     }
+
 }

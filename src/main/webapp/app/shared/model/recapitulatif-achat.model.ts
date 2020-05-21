@@ -1,6 +1,8 @@
 import { Moment } from 'moment';
 
 export interface IRecapitulatifAchat {
+  livraisonId?: number;
+  hasBonCommande?: boolean;
   dateBonCommande?: Moment;
   numeroBonCommande?: number;
   codeProduit?: string;

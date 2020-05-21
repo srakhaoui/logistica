@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Subscription, Observable, Subject, of, concat } from 'rxjs';
+import { Observable, Subject, of, concat } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -8,12 +8,9 @@ import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ReportingService } from '../reporting.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
-import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
 import * as moment from 'moment';
-import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
-import { ITransporteur } from 'app/shared/model/transporteur.model';
-import { IRecapitulatifVenteChauffeur } from 'app/shared/model/recapitulatif-vente-chauffeur.model';
 import { format } from 'app/shared/util/date-util';
+import { IProduit } from 'app/shared/model/produit.model';
 import { ISociete } from 'app/shared/model/societe.model';
 import { IClient } from 'app/shared/model/client.model';
 import { IRecapitulatifVenteFacturation } from 'app/shared/model/recapitulatif-vente-facturation.model';

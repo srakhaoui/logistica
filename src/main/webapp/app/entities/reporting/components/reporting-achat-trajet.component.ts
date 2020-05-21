@@ -22,6 +22,7 @@ import { ITrajet } from 'app/shared/model/trajet.model';
 import { ClientService } from 'app/entities/client/client.service';
 import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
 import { TrajetService } from 'app/entities/trajet/trajet.service';
+import { ReportingBonComponent } from 'app/entities/reporting/components/reporting-bon.component';
 
 @Component({
   selector: 'jhi-reporting-achat-trajet',
@@ -295,5 +296,11 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
 
     trackTrajetById(index: number, item: ITrajet) {
       return item.id;
+    }
+
+    showBonLivraison(livraisonId: number){
+      const modalBonRef = this.modalService.open(ReportingBonComponent);
+      modalBonRef.componentInstance.livraisonId = livraisonId;
+      modalBonRef.componentInstance.bonType = 'Livraison';
     }
 }

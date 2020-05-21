@@ -15,6 +15,7 @@ import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
 import { format } from 'app/shared/util/date-util';
+import { ReportingBonComponent } from 'app/entities/reporting/components/reporting-bon.component';
 
 @Component({
   selector: 'jhi-reporting-achat',
@@ -173,5 +174,11 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
                 tap(() => (this.fournisseursLoading = false))
               )
       );
+  }
+
+  showBonCommande(livraisonId: number){
+    const modalBonRef = this.modalService.open(ReportingBonComponent);
+    modalBonRef.componentInstance.livraisonId = livraisonId;
+    modalBonRef.componentInstance.bonType = 'Commande';
   }
 }

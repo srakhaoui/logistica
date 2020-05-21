@@ -81,7 +81,6 @@
                             </small>
                         </div>
                     </div>
-
                 </div>
                 <div class="form-row">
                     <div class="col">
@@ -187,6 +186,11 @@
                             </small>
                         </div>
                     </div>
+                    <div class="col">
+                        <label for="bon_livraison">Bon Livraison</label>
+                        <input type="file" class="form-control-file" id="bon_livraison"
+                               (change)="onBonLivraisonSelected($event)">
+                    </div>
                 </div>
                 <div *ngIf="isMarchandise()" class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
@@ -239,6 +243,11 @@
                                 This field is required.
                             </small>
                         </div>
+                    </div>
+                    <div *ngIf="isMarchandise()" class="col">
+                        <label for="bon_commande">Bon Commande</label>
+                        <input type="file" class="form-control-file" id="bon_commande"
+                               (change)="onBonCommandeSelected($event)">
                     </div>
                 </div>
                 <div class="form-row">

@@ -13,9 +13,14 @@ export interface ILivraison {
   id?: number;
   dateBonCommande?: Moment;
   numeroBonCommande?: number;
+  bonCommande?: any;
+  hasBonCommande?: boolean;
   numeroBonLivraison?: number;
   dateBonLivraison?: Moment;
+  bonLivraison?: any;
+  hasBonLivraison?: boolean;
   numeroBonFournisseur?: number;
+  hasBonFournisseur?: boolean;
   quantiteVendue?: number;
   uniteVente?: Unite;
   prixTotalVente?: number;
@@ -51,8 +56,10 @@ export class Livraison implements ILivraison {
     public id?: number,
     public dateBonCommande?: Moment,
     public numeroBonCommande?: number,
+    public bonCommande?: any,
     public numeroBonLivraison?: number,
     public dateBonLivraison?: Moment,
+    public bonLivraison?: any,
     public numeroBonFournisseur?: number,
     public quantiteVendue?: number,
     public uniteVente?: Unite,

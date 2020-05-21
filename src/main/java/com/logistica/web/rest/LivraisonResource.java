@@ -1,31 +1,40 @@
 package com.logistica.web.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.logistica.domain.Bon;
 import com.logistica.domain.Livraison;
-import com.logistica.service.dto.RecapitulatifAchat;
+import com.logistica.domain.enumeration.TypeBon;
+import com.logistica.service.LivraisonQueryService;
 import com.logistica.service.LivraisonService;
 import com.logistica.service.dto.*;
 import com.logistica.web.rest.errors.BadRequestAlertException;
-import com.logistica.service.LivraisonQueryService;
-
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 /**
  * REST controller for managing {@link com.logistica.domain.Livraison}.
@@ -45,45 +54,80 @@ public class LivraisonResource {
 
     private final LivraisonQueryService livraisonQueryService;
 
-    public LivraisonResource(LivraisonService livraisonService, LivraisonQueryService livraisonQueryService) {
+    private ObjectMapper objectMapper;
+
+    public LivraisonResource(LivraisonService livraisonService, LivraisonQueryService livraisonQueryService, ObjectMapper objectMapper) {
         this.livraisonService = livraisonService;
         this.livraisonQueryService = livraisonQueryService;
+        this.objectMapper = objectMapper;
     }
 
     /**
      * {@code POST  /livraisons} : Create a new livraison.
      *
-     * @param livraison the livraison to create.
+     * @param livraisonAsStr the livraison to create.
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new livraison, or with status {@code 400 (Bad Request)} if the livraison has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/livraisons")
-    public ResponseEntity<Livraison> createLivraison(@Valid @RequestBody Livraison livraison) throws URISyntaxException {
+    @PostMapping(value = "/livraisons")
+    public ResponseEntity<Livraison> createLivraison(@Valid @RequestParam("livraison") String livraisonAsStr, @RequestParam(value = "bon_livraison", required = false) MultipartFile bonLivraisonPart, @RequestParam(value = "bon_commande", required = false) MultipartFile bonCommandePart) throws URISyntaxException, IOException {
+        Livraison livraison = objectMapper.readerFor(Livraison.class).readValue(livraisonAsStr);
         log.debug("REST request to save Livraison : {}", livraison);
         if (livraison.getId() != null) {
             throw new BadRequestAlertException("A new livraison cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        joinBonCommandeToLivraison(livraison, Optional.ofNullable(bonCommandePart));
+        joinBonLivraisonToLivraison(livraison, Optional.ofNullable(bonLivraisonPart));
         Livraison result = livraisonService.save(livraison);
         return ResponseEntity.created(new URI("/api/livraisons/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
 
+    private void joinBonCommandeToLivraison(Livraison livraison, Optional<MultipartFile> bonCommandePart) {
+        byte[] bonCommande = bonCommandePart.map(aBonCommandePart -> Optional.ofNullable(aBonCommandePart).map(getContent()).orElse(null)).orElse(null);
+        String bonCommandeMimeType = bonCommandePart.map(aBonCommandePart -> Optional.ofNullable(aBonCommandePart).map(MultipartFile::getContentType).orElse(null)).orElse(null);
+        if (ArrayUtils.isNotEmpty(bonCommande) && StringUtils.isNotBlank(bonCommandeMimeType)) {
+            livraison.bonCommande(bonCommande).bonCommandeMimeType(bonCommandeMimeType);
+        }
+    }
+
+    private void joinBonLivraisonToLivraison(Livraison livraison, Optional<MultipartFile> bonLivraisonPart) {
+        byte[] bonLivraison = bonLivraisonPart.map(aBonLivraisonPart -> Optional.ofNullable(aBonLivraisonPart).map(getContent()).orElse(null)).orElse(null);
+        String bonLivraisonMimeType = bonLivraisonPart.map(aBonLivraisonPart -> Optional.ofNullable(aBonLivraisonPart).map(MultipartFile::getContentType).orElse(null)).orElse(null);
+        if (ArrayUtils.isNotEmpty(bonLivraison) && StringUtils.isNotBlank(bonLivraisonMimeType)) {
+            livraison.bonLivraison(bonLivraison).bonLivraisonMimeType(bonLivraisonMimeType);
+        }
+    }
+
+    private Function<MultipartFile, byte[]> getContent() {
+        return muliPartFile -> {
+            try {
+                return muliPartFile.getBytes();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        };
+    }
+
     /**
      * {@code PUT  /livraisons} : Updates an existing livraison.
      *
-     * @param livraison the livraison to update.
+     * @param livraisonAsStr the livraison to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated livraison,
      * or with status {@code 400 (Bad Request)} if the livraison is not valid,
      * or with status {@code 500 (Internal Server Error)} if the livraison couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/livraisons")
-    public ResponseEntity<Livraison> updateLivraison(@Valid @RequestBody Livraison livraison) throws URISyntaxException {
+    @PutMapping(value = "/livraisons", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<Livraison> updateLivraison(@Valid @RequestParam("livraison") String livraisonAsStr, @RequestParam(value = "bon_livraison", required = false) MultipartFile bonLivraisonPart, @RequestParam(value = "bon_commande", required = false) MultipartFile bonCommandePart) throws URISyntaxException, IOException {
+        Livraison livraison = objectMapper.readerFor(Livraison.class).readValue(livraisonAsStr);
         log.debug("REST request to update Livraison : {}", livraison);
         if (livraison.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        joinBonCommandeToLivraison(livraison, Optional.ofNullable(bonCommandePart));
+        joinBonLivraisonToLivraison(livraison, Optional.ofNullable(bonLivraisonPart));
         Livraison result = livraisonService.save(livraison);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, livraison.getId().toString()))
@@ -130,6 +174,23 @@ public class LivraisonResource {
         log.debug("REST request to get Livraison : {}", id);
         Optional<Livraison> livraison = livraisonService.findOne(id);
         return ResponseUtil.wrapOrNotFound(livraison);
+    }
+
+    /**
+     * {@code GET  /livraisons/:id} : get the "id" livraison.
+     *
+     * @param id the id of the livraison to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the livraison, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping(value = "/livraisons/{id}/bon/{typeBon}")
+    public void getBon(@PathVariable Long id, @PathVariable TypeBon typeBon, HttpServletResponse response) throws IOException {
+        log.debug("REST request to get Bon : {}", typeBon);
+        final Bon bon = livraisonService.getBon(id, typeBon);
+        IOUtils.copy(new ByteArrayInputStream(bon.getContent()), response.getOutputStream());
+        response.setContentType(bon.getContentType());
+        int contentLength = bon.getContent().length;
+        response.setContentLength(contentLength);
+        response.setStatus(contentLength > 0 ? HttpServletResponse.SC_OK : HttpServletResponse.SC_NO_CONTENT);
     }
 
     /**

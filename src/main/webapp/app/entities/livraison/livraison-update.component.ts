@@ -58,11 +58,14 @@ export class LivraisonUpdateComponent implements OnInit {
 
   editForm = new FormGroup({
     id: new FormControl(),
-    dateBonCommande: new FormControl(),
     numeroBonCommande: new FormControl(),
+    dateBonCommande: new FormControl(),
+    bonCommande: new FormControl(),
     numeroBonLivraison: new FormControl(null, Validators.required),
     dateBonLivraison: new FormControl(null, Validators.required),
+    bonLivraison: new FormControl(),
     numeroBonFournisseur: new FormControl(),
+    bonFournisseur: new FormControl(),
     quantiteVendue: new FormControl(null, Validators.min(0)),
     uniteVente: new FormControl(),
     prixTotalVente: new FormControl(),
@@ -182,8 +185,10 @@ export class LivraisonUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       dateBonCommande: this.editForm.get(['dateBonCommande']).value,
       numeroBonCommande: this.editForm.get(['numeroBonCommande']).value,
+      bonCommande: this.editForm.get(['bonCommande']).value,
       numeroBonLivraison: this.editForm.get(['numeroBonLivraison']).value,
       dateBonLivraison: this.editForm.get(['dateBonLivraison']).value,
+      bonLivraison: this.editForm.get(['bonLivraison']).value,
       numeroBonFournisseur: this.editForm.get(['numeroBonFournisseur']).value,
       quantiteVendue: this.editForm.get(['quantiteVendue']).value,
       uniteVente: this.editForm.get(['uniteVente']).value,
@@ -392,5 +397,15 @@ export class LivraisonUpdateComponent implements OnInit {
     if(transporteur){
       this.editForm.get(['societeFacturation']).setValue(transporteur.proprietaire);
     }
+  }
+
+  onBonLivraisonSelected(event){
+    const bonLivraison = event.target.files[0];
+    this.editForm.get(['bonLivraison']).setValue(bonLivraison);
+  }
+
+  onBonCommandeSelected(event){
+    const bonCommande = event.target.files[0];
+    this.editForm.get(['bonCommande']).setValue(bonCommande);
   }
 }

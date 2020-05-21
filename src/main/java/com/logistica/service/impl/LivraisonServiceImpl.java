@@ -1,6 +1,8 @@
 package com.logistica.service.impl;
 
+import com.logistica.domain.Bon;
 import com.logistica.domain.Livraison;
+import com.logistica.domain.enumeration.TypeBon;
 import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.repository.LivraisonRepository;
 import com.logistica.service.*;
@@ -197,13 +199,19 @@ public class LivraisonServiceImpl implements LivraisonService {
     public Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable){
         Long transporteurId = recapitulatifChauffeurRequest.getIdTransporteur();
         return Optional.ofNullable(transporteurId)
-            .map(aTransporteurId ->  livraisonRepository.getRecapitulatifChauffeur(recapitulatifChauffeurRequest.getDateDebut(), recapitulatifChauffeurRequest.getDateFin(), aTransporteurId, pageable))
+            .map(aTransporteurId -> livraisonRepository.getRecapitulatifChauffeur(recapitulatifChauffeurRequest.getDateDebut(), recapitulatifChauffeurRequest.getDateFin(), aTransporteurId, pageable))
             .orElseGet(() -> livraisonRepository.getRecapitulatifChauffeur(recapitulatifChauffeurRequest.getDateDebut(), recapitulatifChauffeurRequest.getDateFin(), pageable));
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable){
+    public Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable) {
         return livraisonRepository.getRecapitulatifCaCamion(recapitulatifCaCamionRequest, pageable);
+    }
+
+    @Override
+    public Bon getBon(Long id, TypeBon typeBon) {
+        Optional<Livraison> livraison = findOne(id);
+        return livraison.map(aLivraison -> new Bon(typeBon.bonContent(aLivraison), typeBon.bonContentType(aLivraison))).orElse(new Bon());
     }
 }

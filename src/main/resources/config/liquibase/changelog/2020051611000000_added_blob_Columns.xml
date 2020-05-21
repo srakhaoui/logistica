@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="20200516110000-1" author="said.rakhaoui">
+        <addColumn tableName="livraison">
+            <column name="BON_COMMANDE" type="blob"/>
+            <column name="BON_LIVRAISON" type="blob"/>
+            <column name="BON_FOURNISSEUR" type="blob"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20200516110000-2" author="said.rakhaoui">
+        <addColumn tableName="livraison">
+            <column name="BON_COMMANDE_MIME_TYPE" type="varchar(100)"/>
+            <column name="BON_LIVRAISON_MIME_TYPE" type="varchar(100)"/>
+            <column name="BON_FOURNISSEUR_MIME_TYPE" type="varchar(100)"/>
+        </addColumn>
+    </changeSet>
+</databaseChangeLog>

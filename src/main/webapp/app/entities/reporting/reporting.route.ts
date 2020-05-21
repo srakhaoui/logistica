@@ -8,7 +8,6 @@ import { ReportingVenteFacturationComponent } from './components/reporting-vente
 import { ReportingVenteCaCamionComponent } from './components/reporting-vente-ca-camion.component';
 
 export const reportingRoute: Routes = [
-
   {
     path: 'achat',
     component: ReportingAchatComponent,

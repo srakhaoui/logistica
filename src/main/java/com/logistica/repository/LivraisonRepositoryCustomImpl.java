@@ -23,22 +23,22 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 	private EntityManager entityManager;
 
 	public Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable){
-	    final Long societeId = recapitulatifAchatRequest.getSocieteId();
-	    final Long fournisseurId = recapitulatifAchatRequest.getFournisseurId();
-	    final LocalDate dateDebutBonCommande = recapitulatifAchatRequest.getDateDebut();
-	    final LocalDate dateFinBonCommande = recapitulatifAchatRequest.getDateFin();
+        final Long societeId = recapitulatifAchatRequest.getSocieteId();
+        final Long fournisseurId = recapitulatifAchatRequest.getFournisseurId();
+        final LocalDate dateDebutBonCommande = recapitulatifAchatRequest.getDateDebut();
+        final LocalDate dateFinBonCommande = recapitulatifAchatRequest.getDateFin();
 
-		StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifAchat(l.dateBonCommande, l.numeroBonCommande, l.produit.code, sum(l.quantiteAchetee), sum(l.quantiteConvertie), sum(l.prixTotalAchat)) From Livraison l");
-		boolean withSocieteId = societeId != null;
-		boolean withFournisseurId = fournisseurId != null;
-		boolean withDateDebutCommande = dateDebutBonCommande != null;
-		boolean withDateFinCommande = dateFinBonCommande != null;
-		StringBuilder predicate = new StringBuilder(" Where 1=1 ");
-		if(withSocieteId) {
-			predicate.append(" And l.societeFacturation.id = :societeId");
-		}
-		if(withFournisseurId) {
-			predicate.append(" And l.fournisseur.id = :fournisseurId");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifAchat(l.id, l.bonCommandeMimeType, l.dateBonCommande, l.numeroBonCommande, l.produit.code, sum(l.quantiteAchetee), sum(l.quantiteConvertie), sum(l.prixTotalAchat)) From Livraison l");
+        boolean withSocieteId = societeId != null;
+        boolean withFournisseurId = fournisseurId != null;
+        boolean withDateDebutCommande = dateDebutBonCommande != null;
+        boolean withDateFinCommande = dateFinBonCommande != null;
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withSocieteId) {
+            predicate.append(" And l.societeFacturation.id = :societeId");
+        }
+        if (withFournisseurId) {
+            predicate.append(" And l.fournisseur.id = :fournisseurId");
 		}
 		if(withDateDebutCommande){
 		    predicate.append(" And l.dateBonCommande >= :dateDebutBonCommande");
@@ -158,7 +158,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.id, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
         boolean withSocieteId = societeId != null;
         boolean withProduitId = produitId != null;
         boolean withClientId = clientId != null;

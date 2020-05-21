@@ -20,16 +20,22 @@ export class LivraisonService {
   constructor(protected http: HttpClient) {}
 
   create(livraison: ILivraison): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(livraison);
+    const formData = new FormData();
+    formData.append('bon_commande', livraison.bonCommande);
+    formData.append('bon_livraison', livraison.bonLivraison);
+    formData.append('livraison', JSON.stringify(this.convertDateFromClient(livraison)));
     return this.http
-      .post<ILivraison>(this.resourceUrl, copy, { observe: 'response' })
+      .post<ILivraison>(this.resourceUrl, formData, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 
   update(livraison: ILivraison): Observable<EntityResponseType> {
-    const copy = this.convertDateFromClient(livraison);
+    const formData = new FormData();
+    formData.append('bon_commande', livraison.bonCommande);
+    formData.append('bon_livraison', livraison.bonLivraison);
+    formData.append('livraison', JSON.stringify(this.convertDateFromClient(livraison)));
     return this.http
-      .put<ILivraison>(this.resourceUrl, copy, { observe: 'response' })
+      .put<ILivraison>(this.resourceUrl, formData, { observe: 'response' })
       .pipe(map((res: EntityResponseType) => this.convertDateFromServer(res)));
   }
 

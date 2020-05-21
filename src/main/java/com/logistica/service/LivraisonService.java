@@ -1,9 +1,9 @@
 package com.logistica.service;
 
+import com.logistica.domain.Bon;
 import com.logistica.domain.Livraison;
-import com.logistica.service.dto.RecapitulatifAchat;
+import com.logistica.domain.enumeration.TypeBon;
 import com.logistica.service.dto.*;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -56,4 +56,6 @@ public interface LivraisonService {
     Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable);
 
     Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable);
+
+    Bon getBon(Long id, TypeBon typeBon);
 }

@@ -1,5 +1,6 @@
 package com.logistica.web.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.logistica.LogisticaApp;
 import com.logistica.domain.*;
 import com.logistica.domain.enumeration.TypeLivraison;
@@ -183,6 +184,9 @@ public class LivraisonResourceIT {
     @MockBean
     private TrajetService trajetService;
 
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private MockMvc restLivraisonMockMvc;
 
     private Livraison livraison;
@@ -190,7 +194,7 @@ public class LivraisonResourceIT {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final LivraisonResource livraisonResource = new LivraisonResource(livraisonService, livraisonQueryService);
+        final LivraisonResource livraisonResource = new LivraisonResource(livraisonService, livraisonQueryService, objectMapper);
         this.restLivraisonMockMvc = MockMvcBuilders.standaloneSetup(livraisonResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
