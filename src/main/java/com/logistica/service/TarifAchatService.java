@@ -5,7 +5,7 @@ import com.logistica.domain.enumeration.Unite;
 import com.logistica.repository.TarifAchatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,19 @@ public class TarifAchatService {
      */
     public TarifAchat save(TarifAchat tarifAchat) {
         log.debug("Request to save TarifAchat : {}", tarifAchat);
+        boolean isAlreadyExists = isAlreadyExists(tarifAchat);
+        if (isAlreadyExists) {
+            throw new TarifAlreadyExistsException("Tarif d'achat déjà existant");
+        }
         return tarifAchatRepository.save(tarifAchat);
+    }
+
+    private boolean isAlreadyExists(TarifAchat tarifAchat) {
+        TarifAchat tarifAchatExample = new TarifAchat();
+        tarifAchatExample.setFournisseur(tarifAchat.getFournisseur());
+        tarifAchatExample.setProduit(tarifAchat.getProduit());
+        tarifAchatExample.setUnite(tarifAchat.getUnite());
+        return tarifAchatRepository.exists(Example.of(tarifAchatExample));
     }
 
     /**
@@ -73,7 +85,7 @@ public class TarifAchatService {
         log.debug("Request to delete TarifAchat : {}", id);
         tarifAchatRepository.deleteById(id);
     }
-    
+
     public Float findPrixByFournisseurProduitAndUnite(Long fournisseurId, Long produitId, Unite unite) {
     	return tarifAchatRepository.findPrixByFournisseurProduitAndUnite(fournisseurId, produitId, unite);
     }

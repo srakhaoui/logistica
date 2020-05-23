@@ -5,7 +5,7 @@ import com.logistica.domain.enumeration.Unite;
 import com.logistica.repository.TarifVenteRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,19 @@ public class TarifVenteService {
      */
     public TarifVente save(TarifVente tarifVente) {
         log.debug("Request to save TarifVente : {}", tarifVente);
+        boolean isAlreadyExists = isAlreadyExists(tarifVente);
+        if (isAlreadyExists) {
+            throw new TarifAlreadyExistsException("Tarif de vente déjà existant");
+        }
         return tarifVenteRepository.save(tarifVente);
+    }
+
+    private boolean isAlreadyExists(TarifVente tarifVente) {
+        TarifVente tarifVenteExample = new TarifVente();
+        tarifVenteExample.setClient(tarifVente.getClient());
+        tarifVenteExample.setProduit(tarifVente.getProduit());
+        tarifVenteExample.setUnite(tarifVente.getUnite());
+        return tarifVenteRepository.exists(Example.of(tarifVenteExample));
     }
 
     /**
@@ -73,7 +85,7 @@ public class TarifVenteService {
         log.debug("Request to delete TarifVente : {}", id);
         tarifVenteRepository.deleteById(id);
     }
-    
+
     public Float findPrixByClientProduitAndUnite(Long clientId, Long produitId, Unite unite) {
     	return tarifVenteRepository.findPrixByClientProduitAndUnit(clientId, produitId, unite);
     }

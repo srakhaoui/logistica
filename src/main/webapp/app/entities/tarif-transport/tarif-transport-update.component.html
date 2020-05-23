@@ -72,8 +72,10 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.tarifTransport.unite"
                            for="field_unite">Unite</label>
-                    <select class="form-control" name="unite" formControlName="unite" id="field_unite" readOnly>
+                    <select class="form-control" name="unite" formControlName="unite" id="field_unite">
                         <option value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}</option>
+                        <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
+                        <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
                     </select>
                     <div
                         *ngIf="editForm.get('unite').invalid && (editForm.get('unite').dirty || editForm.get('unite').touched)">

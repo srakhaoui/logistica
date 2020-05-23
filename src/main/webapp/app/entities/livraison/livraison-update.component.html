@@ -213,6 +213,19 @@
                 </div>
                 <div class="form-row">
                     <div *ngIf="isMarchandise()" class="col">
+                        <label class="form-control-label" jhiTranslate="logisticaApp.livraison.numeroBonCommande"
+                               for="field_numeroBonCommande">Numero Bon Commande</label>
+                        <input type="number" class="form-control" name="numeroBonCommande" id="field_numeroBonCommande"
+                               formControlName="numeroBonCommande"/>
+                        <div
+                            *ngIf="isMarchandise() && (editForm.get('numeroBonCommande').dirty || editForm.get('numeroBonCommande').touched)">
+                            <small class="form-text text-danger" [hidden]="editForm.get('numeroBonCommande').value"
+                                   jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div *ngIf="isMarchandise()" class="col">
                         <label class="form-control-label" jhiTranslate="logisticaApp.livraison.dateBonCommande"
                                for="field_dateBonCommande">Date Bon Commande</label>
                         <div class="input-group">
@@ -226,19 +239,6 @@
                         <div
                             *ngIf="isMarchandise() && (editForm.get('dateBonCommande').dirty || editForm.get('dateBonCommande').touched)">
                             <small class="form-text text-danger" [hidden]="editForm.get('dateBonCommande').value"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                    </div>
-                    <div *ngIf="isMarchandise()" class="col">
-                        <label class="form-control-label" jhiTranslate="logisticaApp.livraison.numeroBonCommande"
-                               for="field_numeroBonCommande">Numero Bon Commande</label>
-                        <input type="number" class="form-control" name="numeroBonCommande" id="field_numeroBonCommande"
-                               formControlName="numeroBonCommande"/>
-                        <div
-                            *ngIf="isMarchandise() && (editForm.get('numeroBonCommande').dirty || editForm.get('numeroBonCommande').touched)">
-                            <small class="form-text text-danger" [hidden]="editForm.get('numeroBonCommande').value"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
@@ -272,13 +272,12 @@
                     <div class="col">
                         <label *ngIf="isMarchandise()" class="form-control-label" for="field_uniteVente">Unité
                             Vente</label>
-                        <label *ngIf="!isMarchandise()" class="form-control-label"
-                               jhiTranslate="logisticaApp.livraison.unite" for="field_uniteVente">Unite</label>
+                        <label *ngIf="!isMarchandise()" class="form-control-label" for="field_uniteVente">Unité
+                            Transport</label>
                         <select class="form-control" name="uniteVente" formControlName="uniteVente"
                                 id="field_uniteVente">
-                            <option *ngIf="isMarchandise()" value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}
-                            </option>
-                            <option *ngIf="isMarchandise()" value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
+                            <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
+                            <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
                             <option *ngIf="!isMarchandise()" value="Voyage">{{'logisticaApp.Unite.Voyage' |
                                 translate}}
                             </option>

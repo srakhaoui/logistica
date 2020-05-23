@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="20200523180000-1" author="said.rakhaoui">
+        <addUniqueConstraint columnNames="produit_id, client_id, unite"
+                             constraintName="unique_tarif_vente"
+                             tableName="tarif_vente"/>
+        <addUniqueConstraint columnNames="produit_id, fournisseur_id, unite"
+                             constraintName="unique_tarif_achat"
+                             tableName="tarif_achat"/>
+        <addUniqueConstraint columnNames="produit_id, trajet_id, client_id, unite"
+                             constraintName="unique_tarif_transport"
+                             tableName="tarif_transport"/>
+    </changeSet>
+
+</databaseChangeLog>

@@ -202,11 +202,21 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleTarifAlreadyExistsException(TarifAlreadyExistsException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_TARIF_ALREADY_EXISTS)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(CommissionTrajetUndefinedException ex, NativeWebRequest request) {
-    	Problem problem = Problem.builder()
-                .withStatus(Status.BAD_REQUEST)
-                .with(MESSAGE_KEY, ErrorConstants.ERR_COMMISSION_UNDEFINED)
-                .withDetail(ex.getMessage())
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_COMMISSION_UNDEFINED)
+            .withDetail(ex.getMessage())
                 .build();
         return create(ex, problem, request);
     }

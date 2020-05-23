@@ -11,10 +11,11 @@
     "concurrencyFailure": "Another user modified this data at the same time as you. Your changes were rejected.",
     "validation": "Validation error on the server.",
     "livraison.save.dates.invalides": "The shipping dates are invalids",
-    "error.livraison.save.date.caisse.future": "The registering date should not be in the future",
-    "error.livraison.save.date.livraison.future": "The shipping date should not be in the future",
-    "error.livraison.save.date.caisse.sup.date.livraison": "The registering date should not be before the shipping date",
-    "error.livraison.save.date.caisse.ant.date.commande": "The registering date should not be before the command date",
-    "error.livraison.save.date.livraison.ant.date.commande": "The shipping date should not be before the command date"
+    "livraison.save.date.caisse.future": "The registering date should not be in the future",
+    "livraison.save.date.livraison.future": "The shipping date should not be in the future",
+    "livraison.save.date.caisse.sup.date.livraison": "The registering date should not be before the shipping date",
+    "livraison.save.date.caisse.ant.date.commande": "The registering date should not be before the command date",
+    "livraison.save.date.livraison.ant.date.commande": "The shipping date should not be before the command date",
+    "tarif.tarifAlreadyExists": "This pricing has been already saved"
   }
 }

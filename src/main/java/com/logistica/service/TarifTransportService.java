@@ -5,7 +5,7 @@ import com.logistica.domain.enumeration.Unite;
 import com.logistica.repository.TarifTransportRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,20 @@ public class TarifTransportService {
      */
     public TarifTransport save(TarifTransport tarifTransport) {
         log.debug("Request to save TarifTransport : {}", tarifTransport);
+        boolean isAlreadyExists = isAlreadyExists(tarifTransport);
+        if (isAlreadyExists) {
+            throw new TarifAlreadyExistsException("Tarif de transport déjà existant");
+        }
         return tarifTransportRepository.save(tarifTransport);
+    }
+
+    private boolean isAlreadyExists(TarifTransport tarifTransport) {
+        TarifTransport tarifTransportExample = new TarifTransport();
+        tarifTransportExample.setClient(tarifTransport.getClient());
+        tarifTransportExample.setProduit(tarifTransport.getProduit());
+        tarifTransportExample.setTrajet(tarifTransport.getTrajet());
+        tarifTransportExample.setUnite(tarifTransport.getUnite());
+        return tarifTransportRepository.exists(Example.of(tarifTransportExample));
     }
 
     /**
@@ -73,7 +86,7 @@ public class TarifTransportService {
         log.debug("Request to delete TarifTransport : {}", id);
         tarifTransportRepository.deleteById(id);
     }
-    
+
     public Float findPrixByClientProduitUniteAndTrajet(Long clientId, Long produitId, Unite unite, Long trajetId) {
     	return tarifTransportRepository.findPrixByClientProduitUniteAndTrajet(clientId, produitId, unite, trajetId);
     }

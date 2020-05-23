@@ -42,5 +42,7 @@
     <include file="config/liquibase/changelog/20200426160000_added_auditing_Columns.xml"
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2020051611000000_added_blob_Columns.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2020052318020000_added_unique_Constraints.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
