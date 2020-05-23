@@ -6,6 +6,7 @@ public final class ErrorConstants {
 
     public static final String ERR_CONCURRENCY_FAILURE = "error.concurrencyFailure";
     public static final String ERR_PRICING = "error.%s.pricingIssue";
+    public static final String ERR_DUPLICATION = "error.item.duplicated";
     public static final String ERR_VALIDATION = "error.validation";
     public static final String ERR_TRAJET_NOT_FOUND = "error.trajetNotFound";
     public static final String ERR_TARIF_ALREADY_EXISTS = "error.tarif.tarifAlreadyExists";

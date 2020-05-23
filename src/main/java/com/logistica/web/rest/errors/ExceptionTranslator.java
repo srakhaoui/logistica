@@ -4,6 +4,7 @@ import com.logistica.service.*;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -186,6 +187,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         Problem problem = Problem.builder()
             .withStatus(Status.BAD_REQUEST)
             .with(MESSAGE_KEY, String.format(ErrorConstants.ERR_PRICING, ex.getType().name().toLowerCase()))
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleDataIntegrityViolationException(DataIntegrityViolationException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_DUPLICATION)
             .withDetail(ex.getMessage())
             .build();
         return create(ex, problem, request);

@@ -22,6 +22,7 @@
     "livraison.save.date.caisse.sup.date.livraison": "La date du bon de caisse ne peut être antérieure à la date de livraison",
     "livraison.save.date.caisse.ant.date.commande": "La date du bon de caisse ne peut être antérieure à la date du bon de commande",
     "livraison.save.date.livraison.ant.date.commande": "La date de livraison ne peut être antérieure à la date du bon de commande",
-    "tarif.tarifAlreadyExists": "Ce tarif a été déjà saisi"
+    "tarif.tarifAlreadyExists": "Ce tarif a été déjà saisi",
+    "item.duplicated": "L'élément saisi est déjà existant"
   }
 }

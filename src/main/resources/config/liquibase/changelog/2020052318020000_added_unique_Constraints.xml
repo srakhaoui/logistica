@@ -16,4 +16,22 @@
                              tableName="tarif_transport"/>
     </changeSet>
 
+    <changeSet id="20200523180000-2" author="said.rakhaoui">
+        <addUniqueConstraint columnNames="nom"
+                             constraintName="unique_societe"
+                             tableName="societe"/>
+        <addUniqueConstraint columnNames="nom"
+                             constraintName="unique_fournisseur"
+                             tableName="fournisseur"/>
+        <addUniqueConstraint columnNames="code,categorie"
+                             constraintName="unique_produit"
+                             tableName="produit"/>
+        <addUniqueConstraint columnNames="nom"
+                             constraintName="unique_client"
+                             tableName="client"/>
+        <addUniqueConstraint columnNames="depart,destination"
+                             constraintName="unique_trajet"
+                             tableName="trajet"/>
+    </changeSet>
+
 </databaseChangeLog>
