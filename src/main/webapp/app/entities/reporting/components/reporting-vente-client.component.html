@@ -81,15 +81,21 @@
                 <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
             </div>
             <div>
+                <br>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
                     <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
                     <span *ngIf="!isSearching">Rechercher</span>
                     <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
                           aria-hidden="true"></span>
                 </button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-success" (click)="export()">
+                    <span>Exporter</span>
+                </button>
             </div>
         </form>
     </div>
+    <br>
     <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
         <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
     </div>
@@ -98,7 +104,11 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
                 <th scope="col"><span>Client</span></th>
-                <th scope="col"><span>Bon de livraison</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+                <th scope="col"><span>Société facturation</span></th>
+                <th scope="col"><span>Type de livraison</span></th>
+                <th scope="col"><span>Bon de livraison</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col"><span>N&#176; Bon de livraison</span></th>
                 <th scope="col"><span>Matricule</span></th>
                 <th scope="col"><span>Produit</span></th>
@@ -109,6 +119,8 @@
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let recapitulatif of recapitulatifs ;trackBy: trackId">
                 <td>{{recapitulatif.client}}</td>
+                <td>{{recapitulatif.societeFacturation}}</td>
+                <td>{{recapitulatif.typeLivraison}}</td>
                 <td>{{recapitulatif.dateBonLivraison | date:'dd MMM yyyy'}}</td>
                 <td>
                     <button *ngIf="recapitulatif.hasBonLivraison" (click)="showBonLivraison(recapitulatif.livraisonId)"

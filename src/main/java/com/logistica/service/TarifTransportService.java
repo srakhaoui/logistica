@@ -36,9 +36,11 @@ public class TarifTransportService {
      */
     public TarifTransport save(TarifTransport tarifTransport) {
         log.debug("Request to save TarifTransport : {}", tarifTransport);
-        boolean isAlreadyExists = isAlreadyExists(tarifTransport);
-        if (isAlreadyExists) {
-            throw new TarifAlreadyExistsException("Tarif de transport déjà existant");
+        if (tarifTransport.getId() == null) {
+            boolean isAlreadyExists = isAlreadyExists(tarifTransport);
+            if (isAlreadyExists) {
+                throw new TarifAlreadyExistsException("Tarif de transport déjà existant");
+            }
         }
         return tarifTransportRepository.save(tarifTransport);
     }

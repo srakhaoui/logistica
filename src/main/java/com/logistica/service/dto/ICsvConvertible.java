@@ -1,4 +1,6 @@
-package com.logistica.web.rest;
+package com.logistica.service.dto;
 
-public class ICsvConvertible {
+public interface ICsvConvertible {
+
+    String toCsv();
 }

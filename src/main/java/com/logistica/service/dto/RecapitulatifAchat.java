@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
 
-public class RecapitulatifAchat {
+public class RecapitulatifAchat implements ICsvConvertible {
     private Long livraisonId;
     private String bonCommandeMimeType;
     private LocalDate dateBonCommande;
@@ -14,6 +14,9 @@ public class RecapitulatifAchat {
     private Double totalQuantiteAchetee;
     private Double totalQuantiteConvertie;
     private Double totalPrixAchat;
+
+    public RecapitulatifAchat() {
+    }
 
     public RecapitulatifAchat(Long livraisonId, String bonCommandeMimeType, LocalDate dateBonCommande, Integer numeroBonCommande, String codeProduit, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
         this.livraisonId = livraisonId;
@@ -61,5 +64,20 @@ public class RecapitulatifAchat {
     @JsonProperty("hasBonCommande")
     public Boolean hasBonCommande() {
         return StringUtils.isNotBlank(bonCommandeMimeType);
+    }
+
+    public static String csvHeader() {
+        return "dateBonCommande;numeroBonCommande;codeProduit;totalQuantiteAchetee;totalQuantiteConvertie;totalPrixAchat";
+    }
+
+    public String toCsv() {
+        final StringBuilder csv = new StringBuilder();
+        csv.append(dateBonCommande).append(";")
+            .append(numeroBonCommande).append(";")
+            .append(codeProduit).append(";")
+            .append(totalQuantiteAchetee).append(";")
+            .append(totalQuantiteConvertie).append(";")
+            .append(totalPrixAchat);
+        return csv.toString();
     }
 }

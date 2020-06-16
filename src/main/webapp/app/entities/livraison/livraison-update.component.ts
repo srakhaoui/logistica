@@ -23,6 +23,7 @@ import { ProduitService } from 'app/entities/produit/produit.service';
 import { ISociete } from 'app/shared/model/societe.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
+import { Unite } from 'app/shared/model/enumerations/unite.model';
 
 @Component({
   selector: 'jhi-livraison-update',
@@ -67,9 +68,9 @@ export class LivraisonUpdateComponent implements OnInit {
     numeroBonFournisseur: new FormControl(),
     bonFournisseur: new FormControl(),
     quantiteVendue: new FormControl(null, Validators.min(0)),
-    uniteVente: new FormControl(),
+    uniteVente: new FormControl(null, [Validators.required]),
     prixTotalVente: new FormControl(),
-    quantiteAchetee: new FormControl(),
+    quantiteAchetee: new FormControl(null, Validators.min(0)),
     uniteAchat: new FormControl(),
     prixTotalAchat: new FormControl(),
     quantiteConvertie: new FormControl(),
@@ -93,7 +94,7 @@ export class LivraisonUpdateComponent implements OnInit {
     trajet: new FormControl(),
     produit: new FormControl(null, [Validators.required]),
     societeFacturation: new FormControl(null, [Validators.required])
-  }, [this.validateMarchandise, this.validateTransport]);
+  }, [this.validateLivraison]);
 
   constructor(
     protected jhiAlertService: JhiAlertService,
@@ -136,13 +137,13 @@ export class LivraisonUpdateComponent implements OnInit {
       dateBonLivraison: livraison.dateBonLivraison,
       numeroBonFournisseur: livraison.numeroBonFournisseur,
       quantiteVendue: livraison.quantiteVendue,
-      uniteVente: livraison.uniteVente,
+      uniteVente: livraison.id ? livraison.uniteVente : 0,
       prixTotalVente: livraison.prixTotalVente,
-      quantiteAchetee: livraison.quantiteAchetee,
+      quantiteAchetee: livraison.id ? livraison.quantiteAchetee : 0,
       uniteAchat: livraison.uniteAchat,
       prixTotalAchat: livraison.prixTotalAchat,
       quantiteConvertie: livraison.quantiteConvertie,
-      type: livraison.type,
+      type: livraison.id ? livraison.type : TypeLivraison.Transport,
       facture: livraison.facture,
       dateBonCaisse: livraison.id ? livraison.dateBonCaisse: moment(new Date()),
       reparationDivers: livraison.id ? livraison.reparationDivers : 0,
@@ -365,31 +366,31 @@ export class LivraisonUpdateComponent implements OnInit {
     return this.editForm.get('type').value === TypeLivraison.Marchandise;
   }
 
-  validateMarchandise(formGroup: FormGroup): ValidationErrors {
-    const typeLivraison = formGroup.get('type').value;
-    const otherThanMarchandise: boolean = typeLivraison !== TypeLivraison.Marchandise;
-    const isValid = otherThanMarchandise || (
-      formGroup.get('fournisseur').value !== undefined &&
-      formGroup.get('quantiteAchetee').value !== undefined &&
-      formGroup.get('uniteAchat').value !== undefined &&
-      formGroup.get('dateBonCommande').value !== undefined &&
-      formGroup.get('numeroBonCommande').value !== undefined &&
-      formGroup.get('quantiteVendue').value !== undefined &&
-      formGroup.get('uniteVente').value !== undefined &&
-      formGroup.get('quantiteConvertie').value !== undefined
-    );
-    return  isValid ? null : {invalidMarchandise: true};
-  }
-
   private isTransport(): Boolean {
     return this.editForm.get('type').value === TypeLivraison.Transport;
   }
 
-  validateTransport(formGroup: FormGroup): ValidationErrors {
-    const typeLivraison = formGroup.get('type').value;
-    const otherThanTransport: boolean = typeLivraison !== TypeLivraison.Transport;
-    const isValid = otherThanTransport || formGroup.get('trajet').value !== undefined;
-    return  isValid ? null : {invalidTransport: true};
+  validateLivraison(formGroup: FormGroup): ValidationErrors {
+      const typeLivraison = formGroup.get('type').value;
+      if(typeLivraison === TypeLivraison.Marchandise){
+        const otherThanMarchandise: boolean = typeLivraison !== TypeLivraison.Marchandise;
+        const isValid = otherThanMarchandise || (
+            formGroup.get('fournisseur').value !== undefined &&
+            (formGroup.get('uniteAchat').value === Unite.Voyage || (formGroup.get('uniteAchat').value && formGroup.get('uniteAchat').value !== Unite.Voyage && formGroup.get('quantiteAchetee').value !== undefined)) &&
+            formGroup.get('dateBonCommande').value !== undefined &&
+            formGroup.get('numeroBonCommande').value !== undefined &&
+            (formGroup.get('uniteVente').value === Unite.Voyage || (formGroup.get('uniteVente').value && formGroup.get('uniteVente').value !== Unite.Voyage && formGroup.get('quantiteVendue').value !== undefined))
+          );
+        return  isValid ? null : {invalidMarchandise: true};
+      }else if(typeLivraison === TypeLivraison.Transport){
+        const otherThanTransport: boolean = typeLivraison !== TypeLivraison.Transport;
+        const transportValid = formGroup.get('trajet').value !== undefined &&
+        (formGroup.get('uniteVente').value === Unite.Voyage || (formGroup.get('uniteVente').value && formGroup.get('uniteVente').value !== Unite.Voyage && formGroup.get('quantiteVendue').value !== undefined));
+        const isValid = otherThanTransport || transportValid;
+        return  isValid ? null : {invalidTransport: true};
+      }else{
+        return null;
+      }
   }
 
   onTransporteurChange(){

@@ -45,15 +45,20 @@
                 </div>
             </div>
             <div>
+                <br>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
                     <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
                     <span *ngIf="!isSearching">Rechercher</span>
                     <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
                           aria-hidden="true"></span>
-                </button>
+                </button>&nbsp;
+                &nbsp;<button type="button" class="btn btn-success" (click)="export()">
+                <span>Exporter</span>
+            </button>
             </div>
         </form>
     </div>
+    <br>
     <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
         <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
     </div>

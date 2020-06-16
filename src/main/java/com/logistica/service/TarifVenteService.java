@@ -36,9 +36,11 @@ public class TarifVenteService {
      */
     public TarifVente save(TarifVente tarifVente) {
         log.debug("Request to save TarifVente : {}", tarifVente);
-        boolean isAlreadyExists = isAlreadyExists(tarifVente);
-        if (isAlreadyExists) {
-            throw new TarifAlreadyExistsException("Tarif de vente déjà existant");
+        if (tarifVente.getId() == null) {
+            boolean isAlreadyExists = isAlreadyExists(tarifVente);
+            if (isAlreadyExists) {
+                throw new TarifAlreadyExistsException("Tarif de vente déjà existant");
+            }
         }
         return tarifVenteRepository.save(tarifVente);
     }

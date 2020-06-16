@@ -6,7 +6,7 @@
     <jhi-alert></jhi-alert>
     <br/>
     <div>
-        <div name="reportingForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="reportingForm">
+        <div name="reportingForm" role="form" novalidate [formGroup]="reportingForm">
             <div class="form-row">
                 <div class="col">
                     <label class="form-control-label" for="field_societe">Soci&eacute;t&eacute; de facturation</label>
@@ -74,15 +74,22 @@
             </div>
 
             <div>
-                <button type="submit" id="search-reporting" class="btn btn-primary">
+                <br>
+                <button type="button" id="search-reporting" class="btn btn-primary" (click)="search()"
+                        [disabled]="isSearching">
                     <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
                     <span *ngIf="!isSearching">Rechercher</span>
                     <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
                           aria-hidden="true"></span>
                 </button>
+                &nbsp;
+                <button type="button" class="btn btn-success" (click)="export()">
+                    <span>Exporter</span>
+                </button>
             </div>
         </form>
     </div>
+        <br>
     <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
         <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
     </div>

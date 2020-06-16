@@ -1,19 +1,12 @@
 package com.logistica.service.dto;
 
+import com.logistica.domain.enumeration.TypeLivraison;
+import com.logistica.domain.enumeration.Unite;
+import io.github.jhipster.service.Criteria;
+import io.github.jhipster.service.filter.*;
+
 import java.io.Serializable;
 import java.util.Objects;
-import io.github.jhipster.service.Criteria;
-import com.logistica.domain.enumeration.Unite;
-import com.logistica.domain.enumeration.Unite;
-import com.logistica.domain.enumeration.TypeLivraison;
-import io.github.jhipster.service.filter.BooleanFilter;
-import io.github.jhipster.service.filter.DoubleFilter;
-import io.github.jhipster.service.filter.Filter;
-import io.github.jhipster.service.filter.FloatFilter;
-import io.github.jhipster.service.filter.IntegerFilter;
-import io.github.jhipster.service.filter.LongFilter;
-import io.github.jhipster.service.filter.StringFilter;
-import io.github.jhipster.service.filter.LocalDateFilter;
 
 /**
  * Criteria class for the {@link com.logistica.domain.Livraison} entity. This class is used
@@ -68,13 +61,13 @@ public class LivraisonCriteria implements Serializable, Criteria {
 
     private LocalDateFilter dateBonCommande;
 
-    private IntegerFilter numeroBonCommande;
+    private LongFilter numeroBonCommande;
 
-    private IntegerFilter numeroBonLivraison;
+    private LongFilter numeroBonLivraison;
 
     private LocalDateFilter dateBonLivraison;
 
-    private IntegerFilter numeroBonFournisseur;
+    private LongFilter numeroBonFournisseur;
 
     private FloatFilter quantiteVendue;
 
@@ -190,19 +183,19 @@ public class LivraisonCriteria implements Serializable, Criteria {
         this.dateBonCommande = dateBonCommande;
     }
 
-    public IntegerFilter getNumeroBonCommande() {
+    public LongFilter getNumeroBonCommande() {
         return numeroBonCommande;
     }
 
-    public void setNumeroBonCommande(IntegerFilter numeroBonCommande) {
+    public void setNumeroBonCommande(LongFilter numeroBonCommande) {
         this.numeroBonCommande = numeroBonCommande;
     }
 
-    public IntegerFilter getNumeroBonLivraison() {
+    public LongFilter getNumeroBonLivraison() {
         return numeroBonLivraison;
     }
 
-    public void setNumeroBonLivraison(IntegerFilter numeroBonLivraison) {
+    public void setNumeroBonLivraison(LongFilter numeroBonLivraison) {
         this.numeroBonLivraison = numeroBonLivraison;
     }
 
@@ -214,11 +207,11 @@ public class LivraisonCriteria implements Serializable, Criteria {
         this.dateBonLivraison = dateBonLivraison;
     }
 
-    public IntegerFilter getNumeroBonFournisseur() {
+    public LongFilter getNumeroBonFournisseur() {
         return numeroBonFournisseur;
     }
 
-    public void setNumeroBonFournisseur(IntegerFilter numeroBonFournisseur) {
+    public void setNumeroBonFournisseur(LongFilter numeroBonFournisseur) {
         this.numeroBonFournisseur = numeroBonFournisseur;
     }
 

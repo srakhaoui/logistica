@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.ByteArrayInputStream;
@@ -206,12 +207,33 @@ public class LivraisonResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
-    @GetMapping("/livraisons/achat")
+    private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println(csvHeader);
+        page.stream().map(T::toCsv).forEach(csvContent -> {
+            try {
+                outputStream.println(csvContent);
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        });
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
+    }
+
+    @GetMapping(value = "/livraisons/achat")
     public ResponseEntity<List<RecapitulatifAchat>> getAllLivraisons(RecapitulatifAchatRequest recaptulatifAchatRequest, Pageable pageable) {
         log.debug("REST request to get RecapAchat : {}", recaptulatifAchatRequest);
         Page<RecapitulatifAchat> page = livraisonService.getRecapitulatifAchat(recaptulatifAchatRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping(value = "/livraisons/achat/export")
+    public void getAllLivraisons(RecapitulatifAchatRequest recaptulatifAchatRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get RecapAchat : {}", recaptulatifAchatRequest);
+        Page<RecapitulatifAchat> page = livraisonService.getRecapitulatifAchat(recaptulatifAchatRequest, Pageable.unpaged());
+        buildAndSendCsv("export-achat.csv", RecapitulatifAchat.csvHeader(), page.getContent(), httpServletResponse);
     }
 
     @GetMapping("/livraisons/achat/trajet")
@@ -222,12 +244,26 @@ public class LivraisonResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/livraisons/achat/trajet/export")
+    public void getAllLivraisons(SuiviTrajetRequest suiviTrajetRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get SuiviTrajetRequest : {}", suiviTrajetRequest);
+        Page<Livraison> page = livraisonService.getSuiviTrajet(suiviTrajetRequest, Pageable.unpaged());
+        buildAndSendCsv("export-trajet.csv", Livraison.csvHeader(), page.getContent(), httpServletResponse);
+    }
+
     @GetMapping("/livraisons/vente/client")
     public ResponseEntity<List<RecapitulatifClient>> getAllLivraisons(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable) {
         log.debug("REST request to get recapitulatifClientRequest : {}", recapitulatifClientRequest);
         Page<RecapitulatifClient> page = livraisonService.getRecapitulatifClient(recapitulatifClientRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/livraisons/vente/client/export")
+    public void getAllLivraisons(RecapitulatifClientRequest recapitulatifClientRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get recapitulatifClientRequest : {}", recapitulatifClientRequest);
+        Page<RecapitulatifClient> page = livraisonService.getRecapitulatifClient(recapitulatifClientRequest, Pageable.unpaged());
+        buildAndSendCsv("export-client.csv", RecapitulatifClient.csvHeader(), page.getContent(), httpServletResponse);
     }
 
     @GetMapping("/livraisons/vente/chauffeur")
@@ -238,6 +274,12 @@ public class LivraisonResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/livraisons/vente/chauffeur/export")
+    public void getAllLivraisons(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get recapitulatifChauffeurRequest : {}", recapitulatifChauffeurRequest);
+        Page<IRecapitulatifChauffeur> page = livraisonService.getRecapitulatifChauffeur(recapitulatifChauffeurRequest, Pageable.unpaged());
+        buildAndSendCsv("export-chauffeur.csv", IRecapitulatifChauffeur.CSV_HEADER, page.getContent(), httpServletResponse);
+    }
 
     @GetMapping("/livraisons/vente/facturation")
     public ResponseEntity<List<RecapitulatifFacturation>> getAllLivraisons(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable) {
@@ -247,10 +289,23 @@ public class LivraisonResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/livraisons/vente/facturation/export")
+    public void getAllLivraisons(RecapitulatifFacturationRequest recapitulatifFacturationRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get RecapitulatifFacturationRequest : {}", recapitulatifFacturationRequest);
+        Page<RecapitulatifFacturation> page = livraisonService.getRecapitulatifFacturation(recapitulatifFacturationRequest, Pageable.unpaged());
+        buildAndSendCsv("export-facturation.csv", RecapitulatifFacturation.csvHeader(), page.getContent(), httpServletResponse);
+    }
+
     @GetMapping("/livraisons/vente/ca-camion")
     public ResponseEntity<List<RecapitulatifCaCamion>> getAllLivraisons(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable) {
         Page<RecapitulatifCaCamion> page = livraisonService.getRecapitulatifCaCamion(recapitulatifCaCamionRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/livraisons/vente/ca-camion/export")
+    public void getAllLivraisons(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, HttpServletResponse httpServletResponse) throws IOException {
+        Page<RecapitulatifCaCamion> page = livraisonService.getRecapitulatifCaCamion(recapitulatifCaCamionRequest, Pageable.unpaged());
+        buildAndSendCsv("export-ca-camion.csv", RecapitulatifCaCamion.csvHeader(), page.getContent(), httpServletResponse);
     }
 }

@@ -123,6 +123,11 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
         });
   }
 
+  export(){
+    this.reportingService
+        .exportReporting(this.buildReportingRequest(), '/achat/trajet/export');
+  }
+
   private buildReportingRequest(): any {
     const reportingRequest = {
       page: this.page,

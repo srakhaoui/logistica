@@ -142,6 +142,11 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
         );
   }
 
+  export(){
+    this.reportingService
+        .exportReporting(this.buildReportingRequest(), '/vente/client/export');
+  }
+
   private buildReportingRequest(): any {
     const reportingRequest = {
       page: this.page,

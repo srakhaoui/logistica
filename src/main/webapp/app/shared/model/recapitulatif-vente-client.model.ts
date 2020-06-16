@@ -3,6 +3,8 @@ import { Moment } from 'moment';
 export interface IRecapitulatifVenteClient {
   livraisonId?: number;
   client?: string;
+  societeFacturation?: string;
+  type?: string;
   hasBonLivraison?: boolean;
   dateBonLivraison?: Moment;
   numeroBonLivraison?: number;

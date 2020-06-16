@@ -2,13 +2,13 @@ package com.logistica.service.dto;
 
 import com.logistica.domain.enumeration.Unite;
 
-public class RecapitulatifCaCamion {
+public class RecapitulatifCaCamion implements ICsvConvertible {
     private String camion;
     private Unite uniteVente;
     private Double totalQuantiteVendue;
     private Double totalPrixVente;
 
-    public RecapitulatifCaCamion(String camion, Unite uniteVente, Double totalQuantiteVendue, Double totalPrixVente){
+    public RecapitulatifCaCamion(String camion, Unite uniteVente, Double totalQuantiteVendue, Double totalPrixVente) {
         this.camion = camion;
         this.uniteVente = uniteVente;
         this.totalQuantiteVendue = totalQuantiteVendue;
@@ -29,5 +29,19 @@ public class RecapitulatifCaCamion {
 
     public Double getTotalPrixVente() {
         return totalPrixVente;
+    }
+
+    public static String csvHeader() {
+        return "camion;uniteVente;totalQuantiteVendue;totalPrixVente";
+    }
+
+    @Override
+    public String toCsv() {
+        StringBuilder csv = new StringBuilder();
+        csv.append(camion).append(";")
+            .append(uniteVente).append(";")
+            .append(totalQuantiteVendue).append(";")
+            .append(totalPrixVente);
+        return csv.toString();
     }
 }

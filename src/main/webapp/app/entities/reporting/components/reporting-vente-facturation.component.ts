@@ -103,6 +103,10 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
       });
   }
 
+  export(){
+    this.reportingService
+        .exportReporting(this.buildReportingRequest(), '/vente/facturation/export');
+  }
 
   private buildReportingRequest(): any {
     const reportingRequest = {

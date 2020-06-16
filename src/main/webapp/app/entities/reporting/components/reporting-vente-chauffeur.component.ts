@@ -87,6 +87,11 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
       });
   }
 
+  export(){
+    this.reportingService
+        .exportReporting(this.buildReportingRequest(), '/vente/chauffeur/export');
+  }
+
   private buildReportingRequest(): any {
     const reportingRequest = {
       page: this.page,

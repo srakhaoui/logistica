@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.domain.enumeration.Unite;
+import com.logistica.service.dto.ICsvConvertible;
 import org.apache.commons.lang3.ArrayUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -13,6 +14,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Optional;
 
 /**
  * A Livraison.
@@ -22,7 +24,7 @@ import java.time.LocalDate;
 @EntityListeners(AuditingEntityListener.class)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIgnoreProperties({"bonLivraison", "bonCommande", "bonFournisseur"})
-public class Livraison implements Serializable {
+public class Livraison implements ICsvConvertible, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -35,7 +37,7 @@ public class Livraison implements Serializable {
     private LocalDate dateBonCommande;
 
     @Column(name = "numero_bon_commande")
-    private Integer numeroBonCommande;
+    private Long numeroBonCommande;
 
     @Column(name = "bon_commande")
     private byte[] bonCommande;
@@ -43,9 +45,8 @@ public class Livraison implements Serializable {
     @Column(name = "bon_commande_mime_type")
     private String bonCommandeMimeType;
 
-    @NotNull
     @Column(name = "numero_bon_livraison", nullable = false)
-    private Integer numeroBonLivraison;
+    private Long numeroBonLivraison;
 
     @NotNull
     @Column(name = "date_bon_livraison", nullable = false)
@@ -58,7 +59,7 @@ public class Livraison implements Serializable {
     private String bonLivraisonMimeType;
 
     @Column(name = "numero_bon_fournisseur")
-    private Integer numeroBonFournisseur;
+    private Long numeroBonFournisseur;
 
     @Column(name = "bon_fournisseur")
     private byte[] bonFournisseur;
@@ -191,29 +192,29 @@ public class Livraison implements Serializable {
         this.dateBonCommande = dateBonCommande;
     }
 
-    public Integer getNumeroBonCommande() {
+    public Long getNumeroBonCommande() {
         return numeroBonCommande;
     }
 
-    public Livraison numeroBonCommande(Integer numeroBonCommande) {
+    public Livraison numeroBonCommande(Long numeroBonCommande) {
         this.numeroBonCommande = numeroBonCommande;
         return this;
     }
 
-    public void setNumeroBonCommande(Integer numeroBonCommande) {
+    public void setNumeroBonCommande(Long numeroBonCommande) {
         this.numeroBonCommande = numeroBonCommande;
     }
 
-    public Integer getNumeroBonLivraison() {
+    public Long getNumeroBonLivraison() {
         return numeroBonLivraison;
     }
 
-    public Livraison numeroBonLivraison(Integer numeroBonLivraison) {
+    public Livraison numeroBonLivraison(Long numeroBonLivraison) {
         this.numeroBonLivraison = numeroBonLivraison;
         return this;
     }
 
-    public void setNumeroBonLivraison(Integer numeroBonLivraison) {
+    public void setNumeroBonLivraison(Long numeroBonLivraison) {
         this.numeroBonLivraison = numeroBonLivraison;
     }
 
@@ -230,16 +231,16 @@ public class Livraison implements Serializable {
         this.dateBonLivraison = dateBonLivraison;
     }
 
-    public Integer getNumeroBonFournisseur() {
+    public Long getNumeroBonFournisseur() {
         return numeroBonFournisseur;
     }
 
-    public Livraison numeroBonFournisseur(Integer numeroBonFournisseur) {
+    public Livraison numeroBonFournisseur(Long numeroBonFournisseur) {
         this.numeroBonFournisseur = numeroBonFournisseur;
         return this;
     }
 
-    public void setNumeroBonFournisseur(Integer numeroBonFournisseur) {
+    public void setNumeroBonFournisseur(Long numeroBonFournisseur) {
         this.numeroBonFournisseur = numeroBonFournisseur;
     }
 
@@ -735,5 +736,23 @@ public class Livraison implements Serializable {
             ", retenu=" + getRetenu() +
             ", totalComission=" + getTotalComission() +
             "}";
+    }
+
+    public static String csvHeader() {
+        return "numeroBonLivraison;client;depart;prixTotalAchat;fournisseur;destination;matricule;chauffeur";
+    }
+
+    @Override
+    public String toCsv() {
+        StringBuilder csv = new StringBuilder();
+        csv.append(numeroBonLivraison).append(";")
+            .append(Optional.ofNullable(client).map(Client::getNom).orElse("")).append(";")
+            .append(Optional.ofNullable(trajet).map(Trajet::getDepart).orElse("")).append(";")
+            .append(prixTotalAchat).append(";")
+            .append(Optional.ofNullable(fournisseur).map(Fournisseur::getNom).orElse("")).append(";")
+            .append(trajet.getDescription()).append(";")
+            .append(Optional.ofNullable(transporteur).map(Transporteur::getMatricule).orElse("")).append(";")
+            .append(transporteur.getNom() + " " + transporteur.getPrenom());
+        return csv.toString();
     }
 }

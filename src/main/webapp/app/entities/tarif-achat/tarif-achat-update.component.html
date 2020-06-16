@@ -58,6 +58,7 @@
                     <select class="form-control" name="unite" formControlName="unite" id="field_unite">
                         <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
                         <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
+                        <option value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}</option>
                     </select>
                     <div
                         *ngIf="editForm.get('unite').invalid && (editForm.get('unite').dirty || editForm.get('unite').touched)">

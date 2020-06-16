@@ -1,4 +1,4 @@
 package com.logistica.service;
 
-public class ExerciceComptableLivraisonInvalideException {
+public class ExerciceComptableLivraisonInvalideException extends RuntimeException {
 }

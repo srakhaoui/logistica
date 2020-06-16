@@ -251,40 +251,35 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div *ngIf="isMarchandise()" class="col">
-                        <label class="form-control-label" for="field_quantiteVendue">Quantité Vendue</label>
-                        <input type="number" class="form-control" name="quantiteVendue" id="field_quantiteVendue"
-                               formControlName="quantiteVendue"/>
-                        <div
-                            *ngIf="editForm.get('quantiteVendue').invalid && (editForm.get('quantiteVendue').dirty || editForm.get('quantiteVendue').touched)">
-                            <small class="form-text text-danger"
-                                   *ngIf="editForm.get('quantiteVendue').errors.validateMarchandise"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                            <small class="form-text text-danger"
-                                   [hidden]="!editForm.get('quantiteVendue')?.errors?.number"
-                                   jhiTranslate="entity.validation.number">
-                                This field should be a number.
-                            </small>
-                        </div>
-                    </div>
                     <div class="col">
                         <label *ngIf="isMarchandise()" class="form-control-label" for="field_uniteVente">Unité
                             Vente</label>
-                        <label *ngIf="!isMarchandise()" class="form-control-label" for="field_uniteVente">Unité
+                        <label *ngIf="isTransport()" class="form-control-label" for="field_uniteVente">Unité
                             Transport</label>
                         <select class="form-control" name="uniteVente" formControlName="uniteVente"
                                 id="field_uniteVente">
                             <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
                             <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
-                            <option *ngIf="!isMarchandise()" value="Voyage">{{'logisticaApp.Unite.Voyage' |
-                                translate}}
+                            <option *ngIf="isTransport()" value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}
                             </option>
                         </select>
-                        <div
-                            *ngIf="isMarchandise() && (editForm.get('uniteVente').dirty || editForm.get('uniteVente').touched)">
+                        <div *ngIf="(editForm.get('uniteVente').dirty || editForm.get('uniteVente').touched)">
                             <small class="form-text text-danger" [hidden]="editForm.get('uniteVente').value"
+                                   jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col"
+                         *ngIf="isMarchandise() || (isTransport() && editForm.get('uniteVente')?.value !== 'Voyage')">
+                        <label *ngIf="isMarchandise()" class="form-control-label" for="field_quantiteVendue">Quantité
+                            Vendue</label>
+                        <label *ngIf="isTransport()" class="form-control-label" for="field_quantiteVendue">Quantité
+                            transportée</label>
+                        <input type="number" class="form-control" name="quantiteVendue" id="field_quantiteVendue"
+                               formControlName="quantiteVendue"/>
+                        <div *ngIf="editForm.get('quantiteVendue').dirty || editForm.get('quantiteVendue').touched">
+                            <small class="form-text text-danger" [hidden]="editForm.get('quantiteVendue').value"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
@@ -292,18 +287,6 @@
                     </div>
                 </div>
                 <div class="form-row">
-                    <div *ngIf="isMarchandise()" class="col">
-                        <label class="form-control-label" for="field_quantiteAchetee">Quantité Achetée</label>
-                        <input type="number" class="form-control" name="quantiteAchetee" id="field_quantiteAchetee"
-                               formControlName="quantiteAchetee"/>
-                        <div
-                            *ngIf="isMarchandise() && (editForm.get('quantiteAchetee').dirty || editForm.get('quantiteAchetee').touched)">
-                            <small class="form-text text-danger" [hidden]="editForm.get('quantiteAchetee').value"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                    </div>
                     <div *ngIf="isMarchandise()" class="col">
                         <label class="form-control-label" jhiTranslate="logisticaApp.livraison.uniteAchat"
                                for="field_uniteAchat">Unité Achat</label>
@@ -314,9 +297,21 @@
                             <option value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}</option>
                         </select>
                         <div
-                            *ngIf="editForm.get('uniteAchat').invalid && (editForm.get('uniteAchat').dirty || editForm.get('uniteAchat').touched)">
+                            *ngIf="isMarchandise() && (editForm.get('uniteAchat').dirty || editForm.get('uniteAchat').touched)">
                             <small class="form-text text-danger"
-                                   *ngIf="editForm.get('uniteAchat').errors?.invalidMarchandise"
+                                   [hidden]="editForm.get('uniteAchat').value"
+                                   jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div *ngIf="isMarchandise() && editForm.get('uniteAchat')?.value !== 'Voyage'" class="col">
+                        <label class="form-control-label" for="field_quantiteAchetee">Quantité Achetée</label>
+                        <input type="number" class="form-control" name="quantiteAchetee" id="field_quantiteAchetee"
+                               formControlName="quantiteAchetee"/>
+                        <div
+                            *ngIf="isMarchandise() && (editForm.get('quantiteAchetee').dirty || editForm.get('quantiteAchetee').touched)">
+                            <small class="form-text text-danger" [hidden]="editForm.get('quantiteAchetee').value"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>

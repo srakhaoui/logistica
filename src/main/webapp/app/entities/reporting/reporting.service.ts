@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -57,6 +57,12 @@ export class ReportingService {
       .pipe(map((res: IRecapitulatifVenteChauffeurResponseType) => res));
   }
 
+  exportReporting(req?: any, uri: string): void {
+    const options: HttpParams = createRequestOption(req);
+    const url = `${this.resourceUrl}${uri}`;
+    this.buildGetRequest(url, options);
+  }
+
   getReportingVenteFacturation(req?: any): Observable<IRecapitulatifVenteFacturationResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -87,5 +93,20 @@ export class ReportingService {
       });
     }
     return res;
+  }
+
+  private buildGetRequest(url, options){
+    const length = options.keys().length;
+        if(length > 0){
+          url = url.concat('?');
+          let i = 0;
+          options.keys().forEach(key => {
+             url = url.concat(key).concat('=').concat(options.get(key));
+             if(i++ < length-1){
+               url = url.concat('&');
+             }
+          });
+        }
+        window.open(url , '_blank');
   }
 }

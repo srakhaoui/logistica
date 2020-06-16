@@ -23,6 +23,8 @@
     "livraison.save.date.caisse.ant.date.commande": "La date du bon de caisse ne peut être antérieure à la date du bon de commande",
     "livraison.save.date.livraison.ant.date.commande": "La date de livraison ne peut être antérieure à la date du bon de commande",
     "tarif.tarifAlreadyExists": "Ce tarif a été déjà saisi",
-    "item.duplicated": "L'élément saisi est déjà existant"
+    "item.duplicated": "L'élément saisi est déjà existant",
+    "exercice.comptable.livraison": "L'année de la date de livraison ne peut être en dehors de l'exercice comptable en cours",
+    "exercice.comptable.commande": "L'année de la date de commande ne peut être en dehors de l'exercice comptable en cours"
   }
 }

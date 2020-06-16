@@ -223,6 +223,26 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     }
 
     @ExceptionHandler
+    public ResponseEntity<Problem> handleExerciceComptableLivraisonInvalideException(ExerciceComptableLivraisonInvalideException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_EXERCICE_COMPTABLE_LIVRAISON)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleExerciceComptableCommandeInvalideException(ExerciceComptableCommandeInvalideException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_EXERCICE_COMPTABLE_COMMANDE)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<Problem> handleInvalidPasswordException(CommissionTrajetUndefinedException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
             .withStatus(Status.BAD_REQUEST)

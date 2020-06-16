@@ -9,6 +9,43 @@
         <form name="reportingForm" role="form" novalidate (ngSubmit)="loadAll()" [formGroup]="reportingForm">
             <div class="form-row">
                 <div class="col">
+                    <label class="form-control-label" for="field_proprietaire">Société</label>
+                    <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select id="field_client"
+                               [items]="clients$ | async"
+                               [typeahead]="clientInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_produit">Produit</label>
+                    <ng-select [items]="produits$ | async"
+                               [typeahead]="produitInput$"
+                               bindLabel="code"
+                               [hideSelected]="true"
+                               [loading]="produitsLoading"
+                               formControlName="produit"
+                               name="produit">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
                     <label class="form-control-label" for="field_dateDebutBonLivraison">De</label>
                     <div class="input-group">
                         <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut"
@@ -32,15 +69,21 @@
                 </div>
             </div>
             <div>
+                <br>
                 <button type="submit" id="search-reporting" class="btn btn-primary">
                     <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
                     <span *ngIf="!isSearching">Rechercher</span>
                     <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
                           aria-hidden="true"></span>
                 </button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-success" (click)="export()">
+                    <span>Exporter</span>
+                </button>
             </div>
         </form>
     </div>
+    <br>
     <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
         <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
     </div>

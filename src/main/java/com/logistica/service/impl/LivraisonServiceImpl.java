@@ -64,6 +64,9 @@ public class LivraisonServiceImpl implements LivraisonService {
         if (dateBonCaisse.isAfter(LocalDate.now())) {
             throw new DateBonCaisseFutureException();
         }
+        if (dateLivraison.getYear() != LocalDate.now().getYear()) {
+            throw new ExerciceComptableLivraisonInvalideException();
+        }
         if (dateLivraison.isAfter(LocalDate.now())) {
             throw new DateLivraisonFutureException();
         }
@@ -71,6 +74,9 @@ public class LivraisonServiceImpl implements LivraisonService {
             throw new DateBonCaisseAnterieureDateLivraisonException();
         }
         Optional.ofNullable(livraison.getDateBonCommande()).ifPresent(dateBonCommande -> {
+            if (dateBonCommande.getYear() != LocalDate.now().getYear()) {
+                throw new ExerciceComptableCommandeInvalideException();
+            }
             if (dateBonCaisse.isBefore(dateBonCommande)) {
                 throw new DateBonCaisseAnterieureDateCommandeException();
             }
@@ -94,11 +100,11 @@ public class LivraisonServiceImpl implements LivraisonService {
 	}
 
 	private Float getPrixTotalAchatMarchandise(Livraison livraison) {
-		Pricer achatPricer = pricerFactory.getPricer(TypePricer.Achat);
-		Float prixAchat = achatPricer.price(livraison);
-		Optional.ofNullable(prixAchat).orElseThrow(()-> new PriceComputingException(TypePricer.Achat));
-		return livraison.getQuantiteAchetee() * achatPricer.price(livraison);
-	}
+        Pricer achatPricer = pricerFactory.getPricer(TypePricer.Achat);
+        Float prixAchat = achatPricer.price(livraison);
+        Optional.ofNullable(prixAchat).orElseThrow(() -> new PriceComputingException(TypePricer.Achat));
+        return livraison.getUniteAchat().getPrixTotalAchat(livraison, achatPricer.price(livraison));
+    }
 
 	private Float getPrixTotalVenteMarchandise(Livraison livraison) {
 		Pricer ventePricer = pricerFactory.getPricer(TypePricer.Vente);
@@ -108,11 +114,11 @@ public class LivraisonServiceImpl implements LivraisonService {
 	}
 
 	private Float getPrixTransport(Livraison livraison) {
-		Pricer pricer = pricerFactory.getPricer(TypePricer.Transport);
-		Float prixTransport = pricer.price(livraison);
-		Optional.ofNullable(prixTransport).orElseThrow(()-> new PriceComputingException(TypePricer.Transport));
-		return prixTransport;
-	}
+        Pricer pricer = pricerFactory.getPricer(TypePricer.Transport);
+        Float prixTransport = pricer.price(livraison);
+        Optional.ofNullable(prixTransport).orElseThrow(() -> new PriceComputingException(TypePricer.Transport));
+        return livraison.getUniteVente().getPrixTotalVente(livraison, prixTransport);
+    }
 
 	private void calculerCommissionTotalTrajet(Livraison livraison) {
 		Assert.notNull(livraison.getTrajet().getDepart(), "Merci de renseigner le départ du trajet");
