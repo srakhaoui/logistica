@@ -11,7 +11,7 @@ public class RecapitulatifClient implements ICsvConvertible {
     private String client;
     private String bonlivraisonMimeType;
     private LocalDate dateBonLivraison;
-    private Integer numeroBonLivraison;
+    private Long numeroBonLivraison;
     private String matricule;
     private String produit;
     private Double totalQuantiteeVendue;
@@ -19,7 +19,7 @@ public class RecapitulatifClient implements ICsvConvertible {
     private String societeFacturation;
     private TypeLivraison type;
 
-    public RecapitulatifClient(Long livraisonId, String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Integer numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente) {
+    public RecapitulatifClient(Long livraisonId, String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente) {
         this.livraisonId = livraisonId;
         this.societeFacturation = societeFacturation;
         this.type = typeLivraison;
@@ -45,7 +45,7 @@ public class RecapitulatifClient implements ICsvConvertible {
         return dateBonLivraison;
     }
 
-    public Integer getNumeroBonLivraison() {
+    public Long getNumeroBonLivraison() {
         return numeroBonLivraison;
     }
 

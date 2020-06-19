@@ -34,7 +34,7 @@
     <include file="config/liquibase/changelog/20200101112153_added_entity_constraints_TarifVente.xml"
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112154_added_entity_constraints_TarifAchat.xml"
-             relativeToChangelogFile="false"/>
+             relativeToChangelogFiRecapitulatifClientle="false"/>
     <include file="config/liquibase/changelog/20200101112155_added_entity_constraints_TarifTransport.xml"
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112156_added_entity_constraints_Livraison.xml"

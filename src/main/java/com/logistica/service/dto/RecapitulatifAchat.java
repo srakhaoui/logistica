@@ -9,7 +9,7 @@ public class RecapitulatifAchat implements ICsvConvertible {
     private Long livraisonId;
     private String bonCommandeMimeType;
     private LocalDate dateBonCommande;
-    private Integer numeroBonCommande;
+    private Long numeroBonCommande;
     private String codeProduit;
     private Double totalQuantiteAchetee;
     private Double totalQuantiteConvertie;
@@ -18,7 +18,7 @@ public class RecapitulatifAchat implements ICsvConvertible {
     public RecapitulatifAchat() {
     }
 
-    public RecapitulatifAchat(Long livraisonId, String bonCommandeMimeType, LocalDate dateBonCommande, Integer numeroBonCommande, String codeProduit, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
+    public RecapitulatifAchat(Long livraisonId, String bonCommandeMimeType, LocalDate dateBonCommande, Long numeroBonCommande, String codeProduit, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
         this.livraisonId = livraisonId;
         this.bonCommandeMimeType = bonCommandeMimeType;
         this.dateBonCommande = dateBonCommande;
@@ -33,15 +33,15 @@ public class RecapitulatifAchat implements ICsvConvertible {
         return dateBonCommande;
     }
 
-	public Integer getNumeroBonCommande() {
-		return numeroBonCommande;
-	}
+    public Long getNumeroBonCommande() {
+        return numeroBonCommande;
+    }
 
-	public String getCodeProduit() {
-		return codeProduit;
-	}
+    public String getCodeProduit() {
+        return codeProduit;
+    }
 
-	public Double getTotalQuantiteAchetee() {
+    public Double getTotalQuantiteAchetee() {
         return totalQuantiteAchetee;
     }
 
