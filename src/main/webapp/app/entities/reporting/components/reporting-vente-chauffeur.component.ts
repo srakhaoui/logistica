@@ -79,11 +79,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
       .getReportingVenteChauffeur(this.buildReportingRequest())
       .subscribe((res: HttpResponse<IRecapitulatifVenteChauffeur[]>) => {
         this.isSearching = false;
-        this.recapitulatifs = [];
-        const data:IRecapitulatifVenteChauffeur[] = res.body;
-        for (let i = 0; i < data.length; i++) {
-          this.recapitulatifs.push(data[i]);
-        }
+        this.paginateRecapitulatifs(res.body, res.headers);
       });
   }
 
@@ -113,12 +109,12 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
   reset() {
     this.page = 0;
     this.recapitulatifs = [];
-    this.loadAll();
+    this.search();
   }
 
   loadPage(page) {
     this.page = page;
-    this.loadAll();
+    this.search();
   }
 
   ngOnInit() {

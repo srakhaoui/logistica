@@ -37,7 +37,7 @@ export class TarifAchatComponent implements OnInit, OnDestroy {
       last: 0
     };
     this.predicate = 'id';
-    this.reverse = true;
+    this.reverse = false;
   }
 
   loadAll() {

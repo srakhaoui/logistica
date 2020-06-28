@@ -98,11 +98,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
       .getReportingVenteClient(this.buildReportingRequest())
       .subscribe((res: HttpResponse<IRecapitulatifVenteClient[]>) => {
         this.isSearching = false;
-        this.recapitulatifs = [];
-        const data:IRecapitulatifVenteClient[] = res.body;
-        for (let i = 0; i < data.length; i++) {
-          this.recapitulatifs.push(data[i]);
-        }
+        this.paginateRecapitulatifs(res.body, res.headers);
       });
   }
 
@@ -180,12 +176,12 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   reset() {
     this.page = 0;
     this.recapitulatifs = [];
-    this.loadAll();
+    this.search();
   }
 
   loadPage(page) {
     this.page = page;
-    this.loadAll();
+    this.search();
   }
 
   ngOnInit() {

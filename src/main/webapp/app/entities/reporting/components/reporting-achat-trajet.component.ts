@@ -115,11 +115,7 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
         .getReportingAchatTrajet(this.buildReportingRequest())
         .subscribe((res: HttpResponse<ILivraison[]>) => {
           this.isSearching = false;
-          this.recapitulatifAchats = [];
-          const data:ILivraison[] = res.body;
-          for (let i = 0; i < data.length; i++) {
-            this.recapitulatifAchats.push(data[i]);
-          }
+          this.paginateRecapitulatifAchats(res.body, res.headers);
         });
   }
 
@@ -161,12 +157,12 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
   reset() {
     this.page = 0;
     this.recapitulatifAchats = [];
-    this.loadAll();
+    this.search();
   }
 
   loadPage(page) {
     this.page = page;
-    this.loadAll();
+    this.search();
   }
 
   ngOnInit() {

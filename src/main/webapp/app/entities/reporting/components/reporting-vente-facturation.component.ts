@@ -95,11 +95,7 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
       .getReportingVenteFacturation(this.buildReportingRequest())
       .subscribe((res: HttpResponse<IRecapitulatifVenteFacturation[]>) => {
         this.isSearching = false;
-        this.recapitulatifs = [];
-        const data:IRecapitulatifVenteFacturation[] = res.body;
-        for (let i = 0; i < data.length; i++) {
-          this.recapitulatifs.push(data[i]);
-        }
+        this.paginateRecapitulatifs(res.body, res.headers);
       });
   }
 
@@ -138,12 +134,12 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
   reset() {
     this.page = 0;
     this.recapitulatifs = [];
-    this.loadAll();
+    this.search();
   }
 
   loadPage(page) {
     this.page = page;
-    this.loadAll();
+    this.search();
   }
 
   ngOnInit() {

@@ -1,13 +1,89 @@
 <div>
     <h2 id="page-heading">
         <span jhiTranslate="logisticaApp.livraison.home.title">Livraisons</span>
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-livraison" [routerLink]="['/livraison/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-livraison"
+                [routerLink]="['/livraison/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span  jhiTranslate="logisticaApp.livraison.home.createLabel">
+            <span jhiTranslate="logisticaApp.livraison.home.createLabel">
             Create a new Livraison
             </span>
         </button>
     </h2>
+    <div>
+        <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_societe">Soci&eacute;t&eacute; de facturation</label>
+                    <select class="form-control" id="field_societe" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('societe').value?.id ? reportingForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
+                           for="field_client">Client</label>
+                    <ng-select [items]="clients$ | async"
+                               [typeahead]="clientInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_produit">Produit</label>
+                    <ng-select [items]="produits$ | async"
+                               [typeahead]="produitInput$"
+                               bindLabel="code"
+                               [hideSelected]="true"
+                               [loading]="produitsLoading"
+                               formControlName="produit"
+                               name="produit">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label col-form-label" for="field_dateDebutBonCaisse">De</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutBonCaisse" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-control-label col-form-label" for="field_dateFinBonCaisse">à</label>
+                    <div class="input-group">
+                        <input id="field_dateFinBonCaisse" type="text" class="form-control" name="dateFin" ngbDatepicker
+                               #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <br>
+                <button type="submit" id="search-reporting" class="btn btn-primary" [disabled]="isSearching">
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </div>
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
     <br/>
@@ -18,45 +94,122 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-            <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="dateBonCommande"><span jhiTranslate="logisticaApp.livraison.dateBonCommande">Date Bon Commande</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="numeroBonCommande"><span jhiTranslate="logisticaApp.livraison.numeroBonCommande">Numero Bon Commande</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="numeroBonLivraison"><span jhiTranslate="logisticaApp.livraison.numeroBonLivraison">Numero Bon Livraison</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="dateBonLivraison"><span jhiTranslate="logisticaApp.livraison.dateBonLivraison">Date Bon Livraison</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="numeroBonFournisseur"><span jhiTranslate="logisticaApp.livraison.numeroBonFournisseur">Numero Bon Fournisseur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="quantiteVendue"><span jhiTranslate="logisticaApp.livraison.quantiteVendue">Quantite Vendue</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="uniteVente"><span jhiTranslate="logisticaApp.livraison.uniteVente">Unite Vente</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="prixTotalVente"><span jhiTranslate="logisticaApp.livraison.prixTotalVente">Prix Total Vente</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="quantiteAchetee"><span jhiTranslate="logisticaApp.livraison.quantiteAchetee">Quantite Achetee</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="uniteAchat"><span jhiTranslate="logisticaApp.livraison.uniteAchat">Unite Achat</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="prixTotalAchat"><span jhiTranslate="logisticaApp.livraison.prixTotalAchat">Prix Total Achat</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="quantiteConvertie"><span jhiTranslate="logisticaApp.livraison.quantiteConvertie">Quantite Convertie</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="type"><span jhiTranslate="logisticaApp.livraison.type">Type</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="facture"><span jhiTranslate="logisticaApp.livraison.facture">Facture</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="dateBonCaisse"><span jhiTranslate="logisticaApp.livraison.dateBonCaisse">Date Bon Caisse</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="reparationDivers"><span jhiTranslate="logisticaApp.livraison.reparationDivers">Reparation Divers</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="trax"><span jhiTranslate="logisticaApp.livraison.trax">Trax</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="balance"><span jhiTranslate="logisticaApp.livraison.balance">Balance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="avance"><span jhiTranslate="logisticaApp.livraison.avance">Avance</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="autoroute"><span jhiTranslate="logisticaApp.livraison.autoroute">Autoroute</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="dernierEtat"><span jhiTranslate="logisticaApp.livraison.dernierEtat">Dernier Etat</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="penaliteEse"><span jhiTranslate="logisticaApp.livraison.penaliteEse">Penalite Ese</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="penaliteChfrs"><span jhiTranslate="logisticaApp.livraison.penaliteChfrs">Penalite Chfrs</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="fraisEspece"><span jhiTranslate="logisticaApp.livraison.fraisEspece">Frais Espece</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="retenu"><span jhiTranslate="logisticaApp.livraison.retenu">Retenu</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="totalComission"><span jhiTranslate="logisticaApp.livraison.totalComission">Total Comission</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="fournisseur.nom"><span jhiTranslate="logisticaApp.livraison.fournisseur">Fournisseur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="client.nom"><span jhiTranslate="logisticaApp.livraison.client">Client</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="transporteur.nom"><span jhiTranslate="logisticaApp.livraison.transporteur">Transporteur</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="trajet.description"><span jhiTranslate="logisticaApp.livraison.trajet">Trajet</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="produit.code"><span jhiTranslate="logisticaApp.livraison.produit">Produit</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="societeFacturation.nom"><span jhiTranslate="logisticaApp.livraison.societeFacturation">Societe Facturation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"></th>
+                <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="dateBonCaisse"><span jhiTranslate="logisticaApp.livraison.dateBonCaisse">Date Bon Caisse</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="dateBonCommande"><span jhiTranslate="logisticaApp.livraison.dateBonCommande">Date Bon Commande</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="numeroBonCommande"><span
+                    jhiTranslate="logisticaApp.livraison.numeroBonCommande">Numero Bon Commande</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="numeroBonLivraison"><span
+                    jhiTranslate="logisticaApp.livraison.numeroBonLivraison">Numero Bon Livraison</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="dateBonLivraison"><span
+                    jhiTranslate="logisticaApp.livraison.dateBonLivraison">Date Bon Livraison</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="numeroBonFournisseur"><span
+                    jhiTranslate="logisticaApp.livraison.numeroBonFournisseur">Numero Bon Fournisseur</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="quantiteVendue"><span jhiTranslate="logisticaApp.livraison.quantiteVendue">Quantite Vendue</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="uniteVente"><span jhiTranslate="logisticaApp.livraison.uniteVente">Unite Vente</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixTotalVente"><span jhiTranslate="logisticaApp.livraison.prixTotalVente">Prix Total Vente</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="quantiteAchetee"><span jhiTranslate="logisticaApp.livraison.quantiteAchetee">Quantite Achetee</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="uniteAchat"><span jhiTranslate="logisticaApp.livraison.uniteAchat">Unite Achat</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixTotalAchat"><span jhiTranslate="logisticaApp.livraison.prixTotalAchat">Prix Total Achat</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="quantiteConvertie"><span
+                    jhiTranslate="logisticaApp.livraison.quantiteConvertie">Quantite Convertie</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="type"><span jhiTranslate="logisticaApp.livraison.type">Type</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="facture"><span jhiTranslate="logisticaApp.livraison.facture">Facture</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="reparationDivers"><span
+                    jhiTranslate="logisticaApp.livraison.reparationDivers">Reparation Divers</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="trax"><span jhiTranslate="logisticaApp.livraison.trax">Trax</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="balance"><span jhiTranslate="logisticaApp.livraison.balance">Balance</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="avance"><span jhiTranslate="logisticaApp.livraison.avance">Avance</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="autoroute"><span
+                    jhiTranslate="logisticaApp.livraison.autoroute">Autoroute</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="dernierEtat"><span jhiTranslate="logisticaApp.livraison.dernierEtat">Dernier Etat</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="penaliteEse"><span jhiTranslate="logisticaApp.livraison.penaliteEse">Penalite Ese</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="penaliteChfrs"><span jhiTranslate="logisticaApp.livraison.penaliteChfrs">Penalite Chfrs</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="fraisEspece"><span jhiTranslate="logisticaApp.livraison.fraisEspece">Frais Espece</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="retenu"><span jhiTranslate="logisticaApp.livraison.retenu">Retenu</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="totalComission"><span jhiTranslate="logisticaApp.livraison.totalComission">Total Comission</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="fournisseur.nom"><span jhiTranslate="logisticaApp.livraison.fournisseur">Fournisseur</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="client.nom"><span jhiTranslate="logisticaApp.livraison.client">Client</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="transporteur.nom"><span jhiTranslate="logisticaApp.livraison.transporteur">Transporteur</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="trajet.description"><span
+                    jhiTranslate="logisticaApp.livraison.trajet">Trajet</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="produit.code"><span
+                    jhiTranslate="logisticaApp.livraison.produit">Produit</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="societeFacturation.nom"><span
+                    jhiTranslate="logisticaApp.livraison.societeFacturation">Societe Facturation</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
-            <tr *ngFor="let livraison of livraisons ;trackBy: trackId">
+            <tr *ngFor="let livraison of livraisons; trackBy: trackId">
                 <td><a [routerLink]="['/livraison', livraison.id, 'view' ]">{{livraison.id}}</a></td>
+                <td>{{livraison.dateBonCaisse | date:'mediumDate'}}</td>
                 <td>{{livraison.dateBonCommande | date:'mediumDate'}}</td>
                 <td>{{livraison.numeroBonCommande}}</td>
                 <td>{{livraison.numeroBonLivraison}}</td>
@@ -71,7 +224,6 @@
                 <td>{{livraison.quantiteConvertie}}</td>
                 <td jhiTranslate="{{'logisticaApp.TypeLivraison.' + livraison.type}}">{{livraison.type}}</td>
                 <td>{{livraison.facture}}</td>
-                <td>{{livraison.dateBonCaisse | date:'mediumDate'}}</td>
                 <td>{{livraison.reparationDivers}}</td>
                 <td>{{livraison.trax}}</td>
                 <td>{{livraison.balance}}</td>
