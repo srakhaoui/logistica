@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="2020061618020000-1" author="said.rakhaoui">
+        <modifyDataType columnName="numero_bon_livraison"
+                        newDataType="bigint"
+                        tableName="livraison"/>
+        <modifyDataType columnName="numero_bon_fournisseur"
+                        newDataType="bigint"
+                        tableName="livraison"/>
+        <modifyDataType columnName="numero_bon_commande"
+                        newDataType="bigint"
+                        tableName="livraison"/>
+        <createIndex indexName="idx_date_bon_cmd"
+                     tableName="livraison"
+                     unique="false">
+            <column descending="true" name="date_bon_commande"/>
+        </createIndex>
+        <createIndex indexName="idx_date_bon_lvr"
+                     tableName="livraison"
+                     unique="false">
+            <column descending="true" name="date_bon_livraison"/>
+        </createIndex>
+        <createIndex indexName="idx_date_bon_css"
+                     tableName="livraison"
+                     unique="false">
+            <column descending="true" name="date_bon_caisse"/>
+        </createIndex>
+    </changeSet>
+
+</databaseChangeLog>

@@ -158,7 +158,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.id, l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente), l.facture) From Livraison l");
         boolean withSocieteId = societeId != null;
         boolean withProduitId = produitId != null;
         boolean withClientId = clientId != null;
@@ -220,13 +220,22 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final LocalDate dateDebutLivraison = recapitulatifFacturationRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifFacturationRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifFacturation(month(l.dateBonLivraison), l.produit.code, l.uniteVente, sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l");
         boolean withSocieteId = societeId != null;
         boolean withIsFacturee = isFacturee != null;
         boolean withClientId = clientId != null;
         boolean withProduitId = produitId != null;
         boolean withDateDebutLivraison = dateDebutLivraison != null;
         boolean withDateFinLivraison = dateFinLivraison != null;
+
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifFacturation(month(l.dateBonLivraison),");
+        if (withSocieteId) {
+            query.append("l.societeFacturation.nom,");
+        }
+        query.append("l.produit.code, l.uniteVente,");
+        if (withClientId) {
+            query.append("l.client.nom,");
+        }
+        query.append("sum(l.quantiteVendue), sum(l.prixTotalVente), l.facture) From Livraison l");
 
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withSocieteId) {
@@ -247,7 +256,15 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
-        String queryAsStr = query.append(predicate.toString()).append(" Group by MONTH(l.dateBonLivraison), l.produit.code, l.uniteVente").toString();
+        StringBuilder groupBy = new StringBuilder(" Group by MONTH(l.dateBonLivraison),");
+        if (withSocieteId) {
+            groupBy.append("l.societeFacturation.nom,");
+        }
+        groupBy.append("l.produit.code, l.uniteVente");
+        if (withClientId) {
+            groupBy.append(",l.client.nom");
+        }
+        String queryAsStr = query.append(predicate.toString()).append(groupBy).toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifFacturation.class);
 
         Optional.ofNullable(societeId).ifPresent(aSocieteId -> entityQuery.setParameter("societeId", aSocieteId));
@@ -257,7 +274,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         Optional.ofNullable(dateDebutLivraison).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
         Optional.ofNullable(dateFinLivraison).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
 
-        if(pageable.isPaged()) {
+        if (pageable.isPaged()) {
             entityQuery.setFirstResult((int) pageable.getOffset());
             entityQuery.setMaxResults(pageable.getPageSize());
         }

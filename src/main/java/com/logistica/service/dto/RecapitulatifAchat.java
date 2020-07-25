@@ -75,9 +75,9 @@ public class RecapitulatifAchat implements ICsvConvertible {
         csv.append(dateBonCommande).append(";")
             .append(numeroBonCommande).append(";")
             .append(codeProduit).append(";")
-            .append(totalQuantiteAchetee).append(";")
-            .append(totalQuantiteConvertie).append(";")
-            .append(totalPrixAchat);
+            .append(StringUtils.replaceChars(Double.toString(totalQuantiteAchetee), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(totalQuantiteConvertie), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(totalPrixAchat), '.', ','));
         return csv.toString();
     }
 }

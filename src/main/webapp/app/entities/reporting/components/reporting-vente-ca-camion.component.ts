@@ -72,10 +72,9 @@ export class ReportingVenteCaCamionComponent implements OnInit, OnDestroy {
   }
 
   private initForm(){
-    const defaultDateDebut = moment(new Date());
-    defaultDateDebut.set("day", -7);
+    const defaultDateDebut = moment(new Date()).startOf('month');
     this.reportingForm.get('dateDebut').setValue(defaultDateDebut);
-    const defaultDateFin = moment(new Date());
+    const defaultDateFin = moment(new Date()).endOf('month');
     this.reportingForm.get('dateFin').setValue(defaultDateFin);
   }
 
@@ -161,6 +160,10 @@ export class ReportingVenteCaCamionComponent implements OnInit, OnDestroy {
       reportingRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
     return reportingRequest;
+  }
+
+  trackSocieteById(index: number, item: ISociete) {
+    return item.id;
   }
 
   reset() {

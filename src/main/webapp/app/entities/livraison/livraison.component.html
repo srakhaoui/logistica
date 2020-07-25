@@ -13,6 +13,18 @@
         <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
             <div class="form-row">
                 <div class="col">
+                    <label for="id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" type="number"/>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_numeroBonLivraison">Numero Bon Livraison</label>
+                    <input type="number" class="form-control" name="numeroBonLivraison"
+                           id="field_numeroBonLivraison"
+                           formControlName="numeroBonLivraison"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
                     <label class="form-control-label" for="field_societe">Soci&eacute;t&eacute; de facturation</label>
                     <select class="form-control" id="field_societe" name="societe" formControlName="societe">
                         <option [ngValue]="null"></option>
@@ -50,9 +62,9 @@
             </div>
             <div class="form-row">
                 <div class="col">
-                    <label class="form-control-label col-form-label" for="field_dateDebutBonCaisse">De</label>
+                    <label class="form-control-label col-form-label" for="field_dateDebutBonLivraison">De</label>
                     <div class="input-group">
-                        <input id="field_dateDebutBonCaisse" type="text" class="form-control" name="dateDebut"
+                        <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut"
                                ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
                         <span class="input-group-append">
                             <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
@@ -61,9 +73,10 @@
                     </div>
                 </div>
                 <div class="col">
-                    <label class="form-control-label col-form-label" for="field_dateFinBonCaisse">à</label>
+                    <label class="form-control-label col-form-label" for="field_dateFinBonLivraison">à</label>
                     <div class="input-group">
-                        <input id="field_dateFinBonCaisse" type="text" class="form-control" name="dateFin" ngbDatepicker
+                        <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin"
+                               ngbDatepicker
                                #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
                         <span class="input-group-append">
                             <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon

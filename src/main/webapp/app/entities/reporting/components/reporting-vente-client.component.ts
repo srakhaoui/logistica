@@ -76,10 +76,9 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   }
 
   private initForm(){
-    const defaultDateDebut = moment(new Date());
-    defaultDateDebut.set("day", -7);
+    const defaultDateDebut = moment(new Date()).startOf('month');
     this.reportingForm.get('dateDebut').setValue(defaultDateDebut);
-    const defaultDateFin = moment(new Date());
+    const defaultDateFin = moment(new Date()).endOf('month');
     this.reportingForm.get('dateFin').setValue(defaultDateFin);
   }
 
@@ -161,7 +160,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     if(this.reportingForm.get('typeLivraison').value){
       reportingRequest['typeLivraison'] = this.reportingForm.get('typeLivraison').value;
     }
-    if(this.reportingForm.get('facture').value){
+    if(this.reportingForm.get('facture').value !== null){
       reportingRequest['facture'] = this.reportingForm.get('facture').value;
     }
     if(this.reportingForm.get('dateDebut').value){

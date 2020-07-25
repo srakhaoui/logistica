@@ -144,7 +144,7 @@ export class LivraisonUpdateComponent implements OnInit {
       prixTotalAchat: livraison.prixTotalAchat,
       quantiteConvertie: livraison.quantiteConvertie,
       type: livraison.id ? livraison.type : TypeLivraison.Transport,
-      facture: livraison.facture,
+      facture: livraison.id ? livraison.facture : true,
       dateBonCaisse: livraison.id ? livraison.dateBonCaisse: moment(new Date()),
       reparationDivers: livraison.id ? livraison.reparationDivers : 0,
       trax: livraison.id ?livraison.trax : 0,
@@ -362,11 +362,11 @@ export class LivraisonUpdateComponent implements OnInit {
         );
   }
 
-  private isMarchandise(): Boolean {
+  public isMarchandise(): Boolean {
     return this.editForm.get('type').value === TypeLivraison.Marchandise;
   }
 
-  private isTransport(): Boolean {
+  public isTransport(): Boolean {
     return this.editForm.get('type').value === TypeLivraison.Transport;
   }
 

@@ -1,5 +1,7 @@
 package com.logistica.service.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
 public interface IRecapitulatifChauffeur extends ICsvConvertible {
     Long getId();
 
@@ -38,16 +40,16 @@ public interface IRecapitulatifChauffeur extends ICsvConvertible {
         csv.append(getPrenomChauffeur()).append(";")
             .append(getNomChauffeur()).append(";")
             .append(getNombreTrajets()).append(";")
-            .append(getCommissionTrajet()).append(";")
-            .append(getReparationDivers()).append(";")
-            .append(getTrax()).append(";")
-            .append(getBalance()).append(";")
-            .append(getAvance()).append(";")
-            .append(getPenaliteEse()).append(";")
-            .append(getPenaliteChfrs()).append(";")
-            .append(getFraisEspece()).append(";")
-            .append(getRetenu()).append(";")
-            .append(getTotalComission());
+            .append(StringUtils.replaceChars(Double.toString(getCommissionTrajet()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getReparationDivers()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getTrax()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getBalance()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getAvance()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getPenaliteEse()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getPenaliteChfrs()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getFraisEspece()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getRetenu()), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(getTotalComission()), '.', ','));
         return csv.toString();
     }
 }

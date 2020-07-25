@@ -77,8 +77,12 @@
                 </div>
             </div>
             <div class="form-group">
-                <input id="field_facture" type="checkbox" name="facture" formControlName="facture"/>
                 <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
+                <select class="form-control" id="field_facture" name="facture" formControlName="facture">
+                    <option [ngValue]="null"></option>
+                    <option [ngValue]="true">Oui</option>
+                    <option [ngValue]="false">Non</option>
+                </select>
             </div>
             <div>
                 <br>

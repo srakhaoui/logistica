@@ -57,7 +57,7 @@ export class ReportingService {
       .pipe(map((res: IRecapitulatifVenteChauffeurResponseType) => res));
   }
 
-  exportReporting(req?: any, uri: string): void {
+  exportReporting(req?: any, uri?: string): void {
     const options: HttpParams = createRequestOption(req);
     const url = `${this.resourceUrl}${uri}`;
     this.buildGetRequest(url, options);

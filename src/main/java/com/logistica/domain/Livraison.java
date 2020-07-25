@@ -6,6 +6,7 @@ import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.domain.enumeration.Unite;
 import com.logistica.service.dto.ICsvConvertible;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -748,7 +749,7 @@ public class Livraison implements ICsvConvertible, Serializable {
         csv.append(numeroBonLivraison).append(";")
             .append(Optional.ofNullable(client).map(Client::getNom).orElse("")).append(";")
             .append(Optional.ofNullable(trajet).map(Trajet::getDepart).orElse("")).append(";")
-            .append(prixTotalAchat).append(";")
+            .append(StringUtils.replaceChars(Double.toString(prixTotalAchat), '.', ',')).append(";")
             .append(Optional.ofNullable(fournisseur).map(Fournisseur::getNom).orElse("")).append(";")
             .append(trajet.getDescription()).append(";")
             .append(Optional.ofNullable(transporteur).map(Transporteur::getMatricule).orElse("")).append(";")

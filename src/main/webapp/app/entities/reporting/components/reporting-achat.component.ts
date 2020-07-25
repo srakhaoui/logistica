@@ -141,6 +141,10 @@ export class ReportingAchatComponent implements OnInit, OnDestroy {
     return item.dateBonCommande.unix + '' + item.numeroBonCommande + item.codeProduit;
   }
 
+  trackSocieteById(index: number, item: ISociete) {
+    return item.id;
+  }
+
   sort() {
     const result = [this.predicate + ',' + (this.reverse ? 'asc' : 'desc')];
     result.push('numeroBonCommande,asc');

@@ -46,6 +46,8 @@ export class LivraisonComponent implements OnInit, OnDestroy {
   isSearching: Boolean = false;
 
   reportingForm = new FormGroup({
+        id: new FormControl(),
+        numeroBonLivraison: new FormControl(),
         societe: new FormControl(),
         client: new FormControl(),
         produit: new FormControl(),
@@ -95,8 +97,11 @@ export class LivraisonComponent implements OnInit, OnDestroy {
       size: this.itemsPerPage,
       sort: this.sort()
     }
-    if(this.reportingForm.get('societe').value){
-      reportingRequest['societeFacturationId.equals'] = this.reportingForm.get('societe').value.id;
+    if(this.reportingForm.get('id').value){
+      reportingRequest['id.equals'] = this.reportingForm.get('id').value;
+    }
+    if(this.reportingForm.get('numeroBonLivraison').value){
+      reportingRequest['numeroBonLivraison.equals'] = this.reportingForm.get('numeroBonLivraison').value;
     }
     if(this.reportingForm.get('client').value){
       reportingRequest['clientId.equals'] = this.reportingForm.get('client').value.id;
@@ -105,10 +110,10 @@ export class LivraisonComponent implements OnInit, OnDestroy {
       reportingRequest['produitId.equals'] = this.reportingForm.get('produit').value.id;
     }
     if(this.reportingForm.get('dateDebut').value){
-      reportingRequest['dateBonCaisse.greaterThanOrEqual'] = format(this.reportingForm.get('dateDebut').value);
+      reportingRequest['dateBonLivraison.greaterThanOrEqual'] = format(this.reportingForm.get('dateDebut').value);
     }
     if(this.reportingForm.get('dateFin').value){
-      reportingRequest['dateBonCaisse.lessThanOrEqual'] = format(this.reportingForm.get('dateFin').value);
+      reportingRequest['dateBonLivraison.lessThanOrEqual'] = format(this.reportingForm.get('dateFin').value);
     }
     this.isSearching = true;
     this.livraisonService
@@ -140,6 +145,10 @@ export class LivraisonComponent implements OnInit, OnDestroy {
   }
 
   trackId(index: number, item: ILivraison) {
+    return item.id;
+  }
+
+  trackSocieteById(index: number, item: ISociete) {
     return item.id;
   }
 

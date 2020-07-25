@@ -1,6 +1,7 @@
 package com.logistica.service.dto;
 
 import com.logistica.domain.enumeration.Unite;
+import org.apache.commons.lang3.StringUtils;
 
 public class RecapitulatifCaCamion implements ICsvConvertible {
     private String camion;
@@ -40,8 +41,8 @@ public class RecapitulatifCaCamion implements ICsvConvertible {
         StringBuilder csv = new StringBuilder();
         csv.append(camion).append(";")
             .append(uniteVente).append(";")
-            .append(totalQuantiteVendue).append(";")
-            .append(totalPrixVente);
+            .append(StringUtils.replaceChars(Double.toString(totalQuantiteVendue), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(totalPrixVente), '.', ','));
         return csv.toString();
     }
 }

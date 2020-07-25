@@ -1,8 +1,11 @@
+import { IAudit } from 'app/shared/model/audit.model';
+
 export interface IFournisseur {
   id?: number;
   nom?: string;
   adresse?: string;
   telephone?: string;
+  audit?: IAudit;
 }
 
 export class Fournisseur implements IFournisseur {

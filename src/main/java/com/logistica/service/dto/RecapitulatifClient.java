@@ -7,10 +7,10 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 
 public class RecapitulatifClient implements ICsvConvertible {
-    private Long livraisonId;
     private String client;
     private String bonlivraisonMimeType;
     private LocalDate dateBonLivraison;
+    private boolean facture;
     private Long numeroBonLivraison;
     private String matricule;
     private String produit;
@@ -19,8 +19,7 @@ public class RecapitulatifClient implements ICsvConvertible {
     private String societeFacturation;
     private TypeLivraison type;
 
-    public RecapitulatifClient(Long livraisonId, String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente) {
-        this.livraisonId = livraisonId;
+    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture) {
         this.societeFacturation = societeFacturation;
         this.type = typeLivraison;
         this.client = client;
@@ -31,10 +30,7 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.produit = produit;
         this.totalQuantiteeVendue = totalQuantiteeVendue;
         this.totalPrixVente = totalPrixVente;
-    }
-
-    public Long getLivraisonId() {
-        return livraisonId;
+        this.facture = facture;
     }
 
     public String getClient() {
@@ -86,8 +82,16 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.type = typeLivraison;
     }
 
+    public boolean isFacture() {
+        return facture;
+    }
+
+    public void setFacture(boolean facture) {
+        this.facture = facture;
+    }
+
     public static String csvHeader() {
-        return "client;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;totalPrixVente;societeFacturation;type";
+        return "client;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;totalPrixVente;societeFacturation;facture;type";
     }
 
     @Override
@@ -98,9 +102,10 @@ public class RecapitulatifClient implements ICsvConvertible {
             .append(numeroBonLivraison).append(";")
             .append(matricule).append(";")
             .append(produit).append(";")
-            .append(totalQuantiteeVendue).append(";")
-            .append(totalPrixVente).append(";")
+            .append(StringUtils.replaceChars(Double.toString(totalQuantiteeVendue), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(totalPrixVente), '.', ',')).append(";")
             .append(societeFacturation).append(";")
+            .append(facture).append(";")
             .append(type);
 
         return csv.toString();
