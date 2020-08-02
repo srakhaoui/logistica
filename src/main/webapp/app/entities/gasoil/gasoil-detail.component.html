@@ -1,0 +1,65 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="gasoil">
+            <h2><span jhiTranslate="logisticaApp.gasoil.detail.title">Gasoil</span> {{gasoil.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="logisticaApp.gasoil.societe">Societe</span></dt>
+                <dd>
+                    <span>{{gasoil.societe}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span></dt>
+                <dd>
+                    <span>{{gasoil.numeroBonGasoil}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.matricule">Matricule</span></dt>
+                <dd>
+                    <span>{{gasoil.matricule}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.quantiteEnLitre">Quantite En Litre</span></dt>
+                <dd>
+                    <span>{{gasoil.quantiteEnLitre}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.prixDuLitre">Prix Du Litre</span></dt>
+                <dd>
+                    <span>{{gasoil.prixDuLitre}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.prixTotalGasoil">Prix Total Gasoil</span></dt>
+                <dd>
+                    <span>{{gasoil.prixTotalGasoil}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.kilometrageInitial">Kilometrage Initial</span></dt>
+                <dd>
+                    <span>{{gasoil.kilometrageInitial}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.kilometrageFinal">Kilometrage Final</span></dt>
+                <dd>
+                    <span>{{gasoil.kilometrageFinal}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.kilometrageParcouru">Kilometrage Parcouru</span></dt>
+                <dd>
+                    <span>{{gasoil.kilometrageParcouru}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.transporteur">Transporteur</span></dt>
+                <dd>
+                    <div *ngIf="gasoil.transporteur">
+                        <a [routerLink]="['/transporteur', gasoil.transporteur?.id, 'view']">{{gasoil.transporteur?.matricule}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/gasoil', gasoil.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

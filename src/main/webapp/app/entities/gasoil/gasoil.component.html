@@ -1,0 +1,105 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.gasoil.home.title">Gasoils</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gasoil"
+                [routerLink]="['/gasoil/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span jhiTranslate="logisticaApp.gasoil.home.createLabel">
+            Create a new Gasoil
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="gasoils?.length === 0">
+        <span jhiTranslate="logisticaApp.gasoil.home.notFound">No gasoils found</span>
+    </div>
+    <div class="table-responsive" *ngIf="gasoils?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="societe"><span jhiTranslate="logisticaApp.gasoil.societe">Societe</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="numeroBonGasoil"><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="matricule"><span
+                    jhiTranslate="logisticaApp.gasoil.matricule">Matricule</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="quantiteEnLitre"><span jhiTranslate="logisticaApp.gasoil.quantiteEnLitre">Quantite En Litre</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixDuLitre"><span jhiTranslate="logisticaApp.gasoil.prixDuLitre">Prix Du Litre</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixTotalGasoil"><span jhiTranslate="logisticaApp.gasoil.prixTotalGasoil">Prix Total Gasoil</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="kilometrageInitial"><span
+                    jhiTranslate="logisticaApp.gasoil.kilometrageInitial">Kilometrage Initial</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="kilometrageFinal"><span jhiTranslate="logisticaApp.gasoil.kilometrageFinal">Kilometrage Final</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="kilometrageParcouru"><span
+                    jhiTranslate="logisticaApp.gasoil.kilometrageParcouru">Kilometrage Parcouru</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="transporteur.matricule"><span
+                    jhiTranslate="logisticaApp.gasoil.transporteur">Transporteur</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
+            <tr *ngFor="let gasoil of gasoils ;trackBy: trackId">
+                <td><a [routerLink]="['/gasoil', gasoil.id, 'view' ]">{{gasoil.id}}</a></td>
+                <td>{{gasoil.societe}}</td>
+                <td>{{gasoil.numeroBonGasoil}}</td>
+                <td>{{gasoil.matricule}}</td>
+                <td>{{gasoil.quantiteEnLitre}}</td>
+                <td>{{gasoil.prixDuLitre}}</td>
+                <td>{{gasoil.prixTotalGasoil}}</td>
+                <td>{{gasoil.kilometrageInitial}}</td>
+                <td>{{gasoil.kilometrageFinal}}</td>
+                <td>{{gasoil.kilometrageParcouru}}</td>
+                <td>
+                    <div *ngIf="gasoil.transporteur">
+                        <a [routerLink]="['/transporteur', gasoil.transporteur?.id, 'view' ]">{{gasoil.transporteur?.matricule}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/gasoil', gasoil.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/gasoil', gasoil.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(gasoil)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

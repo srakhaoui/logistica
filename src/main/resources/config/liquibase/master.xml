@@ -28,6 +28,7 @@
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112156_added_entity_Livraison.xml"
              relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200802081255_added_entity_Gasoil.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200101112148_added_entity_constraints_Transporteur.xml"
              relativeToChangelogFile="false"/>
@@ -45,6 +46,8 @@
     <include file="config/liquibase/changelog/2020052318020000_added_unique_Constraints.xml"
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2020061618020000_change_numBon_dataType.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200802081255_added_entity_constraints_Gasoil.xml"
              relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

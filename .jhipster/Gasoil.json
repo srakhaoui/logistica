@@ -1,0 +1,75 @@
+{
+  "name": "Gasoil",
+  "fields": [
+    {
+      "fieldName": "societe",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "numeroBonGasoil",
+      "fieldType": "Long",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "matricule",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "quantiteEnLitre",
+      "fieldType": "Float",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "prixDuLitre",
+      "fieldType": "Float",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "prixTotalGasoil",
+      "fieldType": "Float"
+    },
+    {
+      "fieldName": "kilometrageInitial",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "kilometrageFinal",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "kilometrageParcouru",
+      "fieldType": "Integer"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "transporteur",
+      "otherEntityRelationshipName": "gasoil",
+      "relationshipName": "transporteur",
+      "otherEntityField": "matricule"
+    }
+  ],
+  "changelogDate": "20200802081255",
+  "entityTableName": "gasoil",
+  "dto": "no",
+  "pagination": "infinite-scroll",
+  "service": "serviceImpl",
+  "jpaMetamodelFiltering": true,
+  "fluentMethods": true,
+  "readOnly": false,
+  "clientRootFolder": "",
+  "applications": "*"
+}

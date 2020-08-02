@@ -1,0 +1,31 @@
+{
+  "logisticaApp": {
+    "gasoil": {
+      "home": {
+        "title": "Gasoils",
+        "createLabel": "Créer un nouveau Gasoil",
+        "createOrEditLabel": "Créer ou éditer un Gasoil",
+        "notFound": "Aucun Gasoil trouvé"
+      },
+      "created": "Un nouveau Gasoil a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Gasoil avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Gasoil avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Gasoil {{ id }} ?"
+      },
+      "detail": {
+        "title": "Gasoil"
+      },
+      "societe": "Societe",
+      "numeroBonGasoil": "Numero Bon Gasoil",
+      "matricule": "Matricule",
+      "quantiteEnLitre": "Quantite En Litre",
+      "prixDuLitre": "Prix Du Litre",
+      "prixTotalGasoil": "Prix Total Gasoil",
+      "kilometrageInitial": "Kilometrage Initial",
+      "kilometrageFinal": "Kilometrage Final",
+      "kilometrageParcouru": "Kilometrage Parcouru",
+      "transporteur": "Transporteur"
+    }
+  }
+}

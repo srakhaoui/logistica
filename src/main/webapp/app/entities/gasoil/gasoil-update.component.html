@@ -1,0 +1,145 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-gasoil-heading" jhiTranslate="logisticaApp.gasoil.home.createOrEditLabel">Create or edit a
+                Gasoil</h2>
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id"
+                           readonly/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_transporteur">Matricule</label>
+                    <ng-select id="field_transporteur"
+                               [items]="transporteurs$ | async"
+                               [typeahead]="transporteurInput$"
+                               bindLabel="description"
+                               [hideSelected]="true"
+                               [loading]="transporteursLoading"
+                               formControlName="transporteur"
+                               name="transporteur"
+                               placeholder="Chercher par nom"
+                               (change)="onTransporteurChange()">
+                    </ng-select>
+                    <div
+                        *ngIf="editForm.get('transporteur').invalid && (editForm.get('transporteur').dirty || editForm.get('transporteur').touched)">
+                        <small class="form-text text-danger" *ngIf="editForm.get('transporteur').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" for="field_societe">Société</label>
+                    <select class="form-control" id="field_societe" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === editForm.get('societe').value?.id ? editForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                    <div
+                        *ngIf="editForm.get('societe').invalid && (editForm.get('societe').dirty || editForm.get('societe').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('societe').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.numeroBonGasoil"
+                           for="field_numeroBonGasoil">Numero Bon Gasoil</label>
+                    <input type="number" class="form-control" name="numeroBonGasoil" id="field_numeroBonGasoil"
+                           formControlName="numeroBonGasoil"/>
+                    <div
+                        *ngIf="editForm.get('numeroBonGasoil').invalid && (editForm.get('numeroBonGasoil').dirty || editForm.get('numeroBonGasoil').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('numeroBonGasoil').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.get('numeroBonGasoil')?.errors?.number"
+                               jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.quantiteEnLitre"
+                           for="field_quantiteEnLitre">Quantite En Litre</label>
+                    <input type="number" class="form-control" name="quantiteEnLitre" id="field_quantiteEnLitre"
+                           formControlName="quantiteEnLitre"/>
+                    <div
+                        *ngIf="editForm.get('quantiteEnLitre').invalid && (editForm.get('quantiteEnLitre').dirty || editForm.get('quantiteEnLitre').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('quantiteEnLitre').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.get('quantiteEnLitre')?.errors?.number"
+                               jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.prixDuLitre"
+                           for="field_prixDuLitre">Prix Du Litre</label>
+                    <input type="number" class="form-control" name="prixDuLitre" id="field_prixDuLitre"
+                           formControlName="prixDuLitre"/>
+                    <div
+                        *ngIf="editForm.get('prixDuLitre').invalid && (editForm.get('prixDuLitre').dirty || editForm.get('prixDuLitre').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('prixDuLitre').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               [hidden]="!editForm.get('prixDuLitre')?.errors?.number"
+                               jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.prixTotalGasoil"
+                           for="field_prixTotalGasoil">Prix Total Gasoil</label>
+                    <input type="number" class="form-control" name="prixTotalGasoil" id="field_prixTotalGasoil"
+                           formControlName="prixTotalGasoil"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.kilometrageInitial"
+                           for="field_kilometrageInitial">Kilometrage Initial</label>
+                    <input type="number" class="form-control" name="kilometrageInitial" id="field_kilometrageInitial"
+                           formControlName="kilometrageInitial"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.kilometrageFinal"
+                           for="field_kilometrageFinal">Kilometrage Final</label>
+                    <input type="number" class="form-control" name="kilometrageFinal" id="field_kilometrageFinal"
+                           formControlName="kilometrageFinal"/>
+                </div>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.kilometrageParcouru"
+                           for="field_kilometrageParcouru">Kilometrage Parcouru</label>
+                    <input type="number" class="form-control" name="kilometrageParcouru" id="field_kilometrageParcouru"
+                           formControlName="kilometrageParcouru"/>
+                </div>
+            </div>
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving"
+                        class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
