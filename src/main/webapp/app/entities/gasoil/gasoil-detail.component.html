@@ -9,13 +9,15 @@
                 <dd>
                     <span>{{gasoil.societe}}</span>
                 </dd>
+                <dt><span>Matricule</span></dt>
+                <dd>
+                    <div *ngIf="gasoil.transporteur">
+                        <a [routerLink]="['/transporteur', gasoil.transporteur?.id, 'view']">{{gasoil.transporteur?.matricule}}</a>
+                    </div>
+                </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span></dt>
                 <dd>
                     <span>{{gasoil.numeroBonGasoil}}</span>
-                </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoil.matricule">Matricule</span></dt>
-                <dd>
-                    <span>{{gasoil.matricule}}</span>
                 </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoil.quantiteEnLitre">Quantite En Litre</span></dt>
                 <dd>
@@ -40,12 +42,6 @@
                 <dt><span jhiTranslate="logisticaApp.gasoil.kilometrageParcouru">Kilometrage Parcouru</span></dt>
                 <dd>
                     <span>{{gasoil.kilometrageParcouru}}</span>
-                </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoil.transporteur">Transporteur</span></dt>
-                <dd>
-                    <div *ngIf="gasoil.transporteur">
-                        <a [routerLink]="['/transporteur', gasoil.transporteur?.id, 'view']">{{gasoil.transporteur?.matricule}}</a>
-                    </div>
                 </dd>
             </dl>
 

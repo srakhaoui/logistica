@@ -93,9 +93,6 @@ public class GasoilQueryService extends QueryService<Gasoil> {
             if (criteria.getNumeroBonGasoil() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getNumeroBonGasoil(), Gasoil_.numeroBonGasoil));
             }
-            if (criteria.getMatricule() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getMatricule(), Gasoil_.matricule));
-            }
             if (criteria.getQuantiteEnLitre() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getQuantiteEnLitre(), Gasoil_.quantiteEnLitre));
             }

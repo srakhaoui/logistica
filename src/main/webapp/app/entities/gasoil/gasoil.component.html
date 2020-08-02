@@ -4,9 +4,7 @@
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gasoil"
                 [routerLink]="['/gasoil/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span jhiTranslate="logisticaApp.gasoil.home.createLabel">
-            Create a new Gasoil
-            </span>
+            <span>Gasoil</span>
         </button>
     </h2>
     <jhi-alert-error></jhi-alert-error>
@@ -52,8 +50,7 @@
                     jhiTranslate="logisticaApp.gasoil.kilometrageParcouru">Kilometrage Parcouru</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="transporteur.matricule"><span
-                    jhiTranslate="logisticaApp.gasoil.transporteur">Transporteur</span>
+                <th scope="col" jhiSortBy="transporteur.matricule"><span>Matricule</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col"></th>

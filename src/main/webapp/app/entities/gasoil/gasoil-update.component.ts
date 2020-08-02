@@ -97,7 +97,7 @@ export class GasoilUpdateComponent implements OnInit {
     return {
       ...new Gasoil(),
       id: this.editForm.get(['id']).value,
-      societe: this.editForm.get(['societe']).value,
+      societe: this.editForm.get(['societe']).value.nom,
       numeroBonGasoil: this.editForm.get(['numeroBonGasoil']).value,
       quantiteEnLitre: this.editForm.get(['quantiteEnLitre']).value,
       prixDuLitre: this.editForm.get(['prixDuLitre']).value,

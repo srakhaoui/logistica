@@ -33,7 +33,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_societe">Société</label>
-                    <select class="form-control" id="field_societe" name="societe" formControlName="societe">
+                    <select class="form-control" id="field_societe" name="societe" formControlName="societe" readonly>
                         <option [ngValue]="null"></option>
                         <option
                             [ngValue]="societeOption.id === editForm.get('societe').value?.id ? editForm.get('societe').value : societeOption"
