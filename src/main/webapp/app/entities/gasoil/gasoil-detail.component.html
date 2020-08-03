@@ -5,14 +5,16 @@
             <hr>
             <jhi-alert-error></jhi-alert-error>
             <dl class="row-md jh-entity-details">
-                <dt><span jhiTranslate="logisticaApp.gasoil.societe">Societe</span></dt>
-                <dd>
-                    <span>{{gasoil.societe}}</span>
-                </dd>
                 <dt><span>Matricule</span></dt>
                 <dd>
                     <div *ngIf="gasoil.transporteur">
                         <a [routerLink]="['/transporteur', gasoil.transporteur?.id, 'view']">{{gasoil.transporteur?.matricule}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoil.societeFacturation">Societe Facturation</span></dt>
+                <dd>
+                    <div *ngIf="gasoil.societeFacturation">
+                        <a [routerLink]="['/societe', gasoil.societeFacturation?.id, 'view']">{{gasoil.societeFacturation?.nom}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span></dt>

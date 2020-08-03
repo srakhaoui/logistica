@@ -2,6 +2,7 @@ package com.logistica.web.rest;
 
 import com.logistica.LogisticaApp;
 import com.logistica.domain.Gasoil;
+import com.logistica.domain.Societe;
 import com.logistica.domain.Transporteur;
 import com.logistica.repository.GasoilRepository;
 import com.logistica.service.GasoilQueryService;
@@ -41,9 +42,6 @@ public class GasoilResourceIT {
     private static final Long DEFAULT_NUMERO_BON_GASOIL = 1L;
     private static final Long UPDATED_NUMERO_BON_GASOIL = 2L;
     private static final Long SMALLER_NUMERO_BON_GASOIL = 1L - 1L;
-
-    private static final String DEFAULT_MATRICULE = "AAAAAAAAAA";
-    private static final String UPDATED_MATRICULE = "BBBBBBBBBB";
 
     private static final Float DEFAULT_QUANTITE_EN_LITRE = 1F;
     private static final Float UPDATED_QUANTITE_EN_LITRE = 2F;
@@ -111,13 +109,12 @@ public class GasoilResourceIT {
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Gasoil createEntity(EntityManager em) {
         Gasoil gasoil = new Gasoil()
-            .societe(DEFAULT_SOCIETE)
             .numeroBonGasoil(DEFAULT_NUMERO_BON_GASOIL)
             .quantiteEnLitre(DEFAULT_QUANTITE_EN_LITRE)
             .prixDuLitre(DEFAULT_PRIX_DU_LITRE)
@@ -127,16 +124,14 @@ public class GasoilResourceIT {
             .kilometrageParcouru(DEFAULT_KILOMETRAGE_PARCOURU);
         return gasoil;
     }
-
     /**
      * Create an updated entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
     public static Gasoil createUpdatedEntity(EntityManager em) {
         Gasoil gasoil = new Gasoil()
-            .societe(UPDATED_SOCIETE)
             .numeroBonGasoil(UPDATED_NUMERO_BON_GASOIL)
             .quantiteEnLitre(UPDATED_QUANTITE_EN_LITRE)
             .prixDuLitre(UPDATED_PRIX_DU_LITRE)
@@ -167,7 +162,6 @@ public class GasoilResourceIT {
         List<Gasoil> gasoilList = gasoilRepository.findAll();
         assertThat(gasoilList).hasSize(databaseSizeBeforeCreate + 1);
         Gasoil testGasoil = gasoilList.get(gasoilList.size() - 1);
-        assertThat(testGasoil.getSociete()).isEqualTo(DEFAULT_SOCIETE);
         assertThat(testGasoil.getNumeroBonGasoil()).isEqualTo(DEFAULT_NUMERO_BON_GASOIL);
         assertThat(testGasoil.getQuantiteEnLitre()).isEqualTo(DEFAULT_QUANTITE_EN_LITRE);
         assertThat(testGasoil.getPrixDuLitre()).isEqualTo(DEFAULT_PRIX_DU_LITRE);
@@ -202,8 +196,6 @@ public class GasoilResourceIT {
     public void checkSocieteIsRequired() throws Exception {
         int databaseSizeBeforeTest = gasoilRepository.findAll().size();
         // set the field null
-        gasoil.setSociete(null);
-
         // Create the Gasoil, which fails.
 
         restGasoilMockMvc.perform(post("/api/gasoils")
@@ -221,23 +213,6 @@ public class GasoilResourceIT {
         int databaseSizeBeforeTest = gasoilRepository.findAll().size();
         // set the field null
         gasoil.setNumeroBonGasoil(null);
-
-        // Create the Gasoil, which fails.
-
-        restGasoilMockMvc.perform(post("/api/gasoils")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(gasoil)))
-            .andExpect(status().isBadRequest());
-
-        List<Gasoil> gasoilList = gasoilRepository.findAll();
-        assertThat(gasoilList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkMatriculeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = gasoilRepository.findAll().size();
-        // set the field null
 
         // Create the Gasoil, which fails.
 
@@ -299,7 +274,6 @@ public class GasoilResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(gasoil.getId().intValue())))
             .andExpect(jsonPath("$.[*].societe").value(hasItem(DEFAULT_SOCIETE)))
             .andExpect(jsonPath("$.[*].numeroBonGasoil").value(hasItem(DEFAULT_NUMERO_BON_GASOIL.intValue())))
-            .andExpect(jsonPath("$.[*].matricule").value(hasItem(DEFAULT_MATRICULE)))
             .andExpect(jsonPath("$.[*].quantiteEnLitre").value(hasItem(DEFAULT_QUANTITE_EN_LITRE.doubleValue())))
             .andExpect(jsonPath("$.[*].prixDuLitre").value(hasItem(DEFAULT_PRIX_DU_LITRE.doubleValue())))
             .andExpect(jsonPath("$.[*].prixTotalGasoil").value(hasItem(DEFAULT_PRIX_TOTAL_GASOIL.doubleValue())))
@@ -321,7 +295,6 @@ public class GasoilResourceIT {
             .andExpect(jsonPath("$.id").value(gasoil.getId().intValue()))
             .andExpect(jsonPath("$.societe").value(DEFAULT_SOCIETE))
             .andExpect(jsonPath("$.numeroBonGasoil").value(DEFAULT_NUMERO_BON_GASOIL.intValue()))
-            .andExpect(jsonPath("$.matricule").value(DEFAULT_MATRICULE))
             .andExpect(jsonPath("$.quantiteEnLitre").value(DEFAULT_QUANTITE_EN_LITRE.doubleValue()))
             .andExpect(jsonPath("$.prixDuLitre").value(DEFAULT_PRIX_DU_LITRE.doubleValue()))
             .andExpect(jsonPath("$.prixTotalGasoil").value(DEFAULT_PRIX_TOTAL_GASOIL.doubleValue()))
@@ -531,85 +504,6 @@ public class GasoilResourceIT {
 
         // Get all the gasoilList where numeroBonGasoil is greater than SMALLER_NUMERO_BON_GASOIL
         defaultGasoilShouldBeFound("numeroBonGasoil.greaterThan=" + SMALLER_NUMERO_BON_GASOIL);
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllGasoilsByMatriculeIsEqualToSomething() throws Exception {
-        // Initialize the database
-        gasoilRepository.saveAndFlush(gasoil);
-
-        // Get all the gasoilList where matricule equals to DEFAULT_MATRICULE
-        defaultGasoilShouldBeFound("matricule.equals=" + DEFAULT_MATRICULE);
-
-        // Get all the gasoilList where matricule equals to UPDATED_MATRICULE
-        defaultGasoilShouldNotBeFound("matricule.equals=" + UPDATED_MATRICULE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllGasoilsByMatriculeIsNotEqualToSomething() throws Exception {
-        // Initialize the database
-        gasoilRepository.saveAndFlush(gasoil);
-
-        // Get all the gasoilList where matricule not equals to DEFAULT_MATRICULE
-        defaultGasoilShouldNotBeFound("matricule.notEquals=" + DEFAULT_MATRICULE);
-
-        // Get all the gasoilList where matricule not equals to UPDATED_MATRICULE
-        defaultGasoilShouldBeFound("matricule.notEquals=" + UPDATED_MATRICULE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllGasoilsByMatriculeIsInShouldWork() throws Exception {
-        // Initialize the database
-        gasoilRepository.saveAndFlush(gasoil);
-
-        // Get all the gasoilList where matricule in DEFAULT_MATRICULE or UPDATED_MATRICULE
-        defaultGasoilShouldBeFound("matricule.in=" + DEFAULT_MATRICULE + "," + UPDATED_MATRICULE);
-
-        // Get all the gasoilList where matricule equals to UPDATED_MATRICULE
-        defaultGasoilShouldNotBeFound("matricule.in=" + UPDATED_MATRICULE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllGasoilsByMatriculeIsNullOrNotNull() throws Exception {
-        // Initialize the database
-        gasoilRepository.saveAndFlush(gasoil);
-
-        // Get all the gasoilList where matricule is not null
-        defaultGasoilShouldBeFound("matricule.specified=true");
-
-        // Get all the gasoilList where matricule is null
-        defaultGasoilShouldNotBeFound("matricule.specified=false");
-    }
-
-    @Test
-    @Transactional
-    public void getAllGasoilsByMatriculeContainsSomething() throws Exception {
-        // Initialize the database
-        gasoilRepository.saveAndFlush(gasoil);
-
-        // Get all the gasoilList where matricule contains DEFAULT_MATRICULE
-        defaultGasoilShouldBeFound("matricule.contains=" + DEFAULT_MATRICULE);
-
-        // Get all the gasoilList where matricule contains UPDATED_MATRICULE
-        defaultGasoilShouldNotBeFound("matricule.contains=" + UPDATED_MATRICULE);
-    }
-
-    @Test
-    @Transactional
-    public void getAllGasoilsByMatriculeNotContainsSomething() throws Exception {
-        // Initialize the database
-        gasoilRepository.saveAndFlush(gasoil);
-
-        // Get all the gasoilList where matricule does not contain DEFAULT_MATRICULE
-        defaultGasoilShouldNotBeFound("matricule.doesNotContain=" + DEFAULT_MATRICULE);
-
-        // Get all the gasoilList where matricule does not contain UPDATED_MATRICULE
-        defaultGasoilShouldBeFound("matricule.doesNotContain=" + UPDATED_MATRICULE);
     }
 
 
@@ -1262,6 +1156,26 @@ public class GasoilResourceIT {
         defaultGasoilShouldNotBeFound("transporteurId.equals=" + (transporteurId + 1));
     }
 
+
+    @Test
+    @Transactional
+    public void getAllGasoilsBySocieteFacturationIsEqualToSomething() throws Exception {
+        // Initialize the database
+        gasoilRepository.saveAndFlush(gasoil);
+        Societe societeFacturation = SocieteResourceIT.createEntity(em);
+        em.persist(societeFacturation);
+        em.flush();
+        gasoil.setSocieteFacturation(societeFacturation);
+        gasoilRepository.saveAndFlush(gasoil);
+        Long societeFacturationId = societeFacturation.getId();
+
+        // Get all the gasoilList where societeFacturation equals to societeFacturationId
+        defaultGasoilShouldBeFound("societeFacturationId.equals=" + societeFacturationId);
+
+        // Get all the gasoilList where societeFacturation equals to societeFacturationId + 1
+        defaultGasoilShouldNotBeFound("societeFacturationId.equals=" + (societeFacturationId + 1));
+    }
+
     /**
      * Executes the search, and checks that the default entity is returned.
      */
@@ -1272,7 +1186,6 @@ public class GasoilResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(gasoil.getId().intValue())))
             .andExpect(jsonPath("$.[*].societe").value(hasItem(DEFAULT_SOCIETE)))
             .andExpect(jsonPath("$.[*].numeroBonGasoil").value(hasItem(DEFAULT_NUMERO_BON_GASOIL.intValue())))
-            .andExpect(jsonPath("$.[*].matricule").value(hasItem(DEFAULT_MATRICULE)))
             .andExpect(jsonPath("$.[*].quantiteEnLitre").value(hasItem(DEFAULT_QUANTITE_EN_LITRE.doubleValue())))
             .andExpect(jsonPath("$.[*].prixDuLitre").value(hasItem(DEFAULT_PRIX_DU_LITRE.doubleValue())))
             .andExpect(jsonPath("$.[*].prixTotalGasoil").value(hasItem(DEFAULT_PRIX_TOTAL_GASOIL.doubleValue())))
@@ -1326,7 +1239,6 @@ public class GasoilResourceIT {
         // Disconnect from session so that the updates on updatedGasoil are not directly saved in db
         em.detach(updatedGasoil);
         updatedGasoil
-            .societe(UPDATED_SOCIETE)
             .numeroBonGasoil(UPDATED_NUMERO_BON_GASOIL)
             .quantiteEnLitre(UPDATED_QUANTITE_EN_LITRE)
             .prixDuLitre(UPDATED_PRIX_DU_LITRE)
@@ -1344,7 +1256,6 @@ public class GasoilResourceIT {
         List<Gasoil> gasoilList = gasoilRepository.findAll();
         assertThat(gasoilList).hasSize(databaseSizeBeforeUpdate);
         Gasoil testGasoil = gasoilList.get(gasoilList.size() - 1);
-        assertThat(testGasoil.getSociete()).isEqualTo(UPDATED_SOCIETE);
         assertThat(testGasoil.getNumeroBonGasoil()).isEqualTo(UPDATED_NUMERO_BON_GASOIL);
         assertThat(testGasoil.getQuantiteEnLitre()).isEqualTo(UPDATED_QUANTITE_EN_LITRE);
         assertThat(testGasoil.getPrixDuLitre()).isEqualTo(UPDATED_PRIX_DU_LITRE);

@@ -18,14 +18,14 @@
       },
       "societe": "Societe",
       "numeroBonGasoil": "Numero Bon Gasoil",
-      "matricule": "Matricule",
       "quantiteEnLitre": "Quantite En Litre",
       "prixDuLitre": "Prix Du Litre",
       "prixTotalGasoil": "Prix Total Gasoil",
       "kilometrageInitial": "Kilometrage Initial",
       "kilometrageFinal": "Kilometrage Final",
       "kilometrageParcouru": "Kilometrage Parcouru",
-      "transporteur": "Transporteur"
+      "transporteur": "Transporteur",
+      "societeFacturation": "Societe Facturation"
     }
   }
 }

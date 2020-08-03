@@ -25,8 +25,6 @@ public class GasoilCriteria implements Serializable, Criteria {
 
     private LongFilter numeroBonGasoil;
 
-    private StringFilter matricule;
-
     private FloatFilter quantiteEnLitre;
 
     private FloatFilter prixDuLitre;
@@ -41,6 +39,8 @@ public class GasoilCriteria implements Serializable, Criteria {
 
     private LongFilter transporteurId;
 
+    private LongFilter societeFacturationId;
+
     public GasoilCriteria() {
     }
 
@@ -48,7 +48,6 @@ public class GasoilCriteria implements Serializable, Criteria {
         this.id = other.id == null ? null : other.id.copy();
         this.societe = other.societe == null ? null : other.societe.copy();
         this.numeroBonGasoil = other.numeroBonGasoil == null ? null : other.numeroBonGasoil.copy();
-        this.matricule = other.matricule == null ? null : other.matricule.copy();
         this.quantiteEnLitre = other.quantiteEnLitre == null ? null : other.quantiteEnLitre.copy();
         this.prixDuLitre = other.prixDuLitre == null ? null : other.prixDuLitre.copy();
         this.prixTotalGasoil = other.prixTotalGasoil == null ? null : other.prixTotalGasoil.copy();
@@ -56,6 +55,7 @@ public class GasoilCriteria implements Serializable, Criteria {
         this.kilometrageFinal = other.kilometrageFinal == null ? null : other.kilometrageFinal.copy();
         this.kilometrageParcouru = other.kilometrageParcouru == null ? null : other.kilometrageParcouru.copy();
         this.transporteurId = other.transporteurId == null ? null : other.transporteurId.copy();
+        this.societeFacturationId = other.societeFacturationId == null ? null : other.societeFacturationId.copy();
     }
 
     @Override
@@ -85,14 +85,6 @@ public class GasoilCriteria implements Serializable, Criteria {
 
     public void setNumeroBonGasoil(LongFilter numeroBonGasoil) {
         this.numeroBonGasoil = numeroBonGasoil;
-    }
-
-    public StringFilter getMatricule() {
-        return matricule;
-    }
-
-    public void setMatricule(StringFilter matricule) {
-        this.matricule = matricule;
     }
 
     public FloatFilter getQuantiteEnLitre() {
@@ -151,6 +143,14 @@ public class GasoilCriteria implements Serializable, Criteria {
         this.transporteurId = transporteurId;
     }
 
+    public LongFilter getSocieteFacturationId() {
+        return societeFacturationId;
+    }
+
+    public void setSocieteFacturationId(LongFilter societeFacturationId) {
+        this.societeFacturationId = societeFacturationId;
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -165,14 +165,14 @@ public class GasoilCriteria implements Serializable, Criteria {
             Objects.equals(id, that.id) &&
                 Objects.equals(societe, that.societe) &&
                 Objects.equals(numeroBonGasoil, that.numeroBonGasoil) &&
-                Objects.equals(matricule, that.matricule) &&
                 Objects.equals(quantiteEnLitre, that.quantiteEnLitre) &&
                 Objects.equals(prixDuLitre, that.prixDuLitre) &&
                 Objects.equals(prixTotalGasoil, that.prixTotalGasoil) &&
                 Objects.equals(kilometrageInitial, that.kilometrageInitial) &&
                 Objects.equals(kilometrageFinal, that.kilometrageFinal) &&
                 Objects.equals(kilometrageParcouru, that.kilometrageParcouru) &&
-                Objects.equals(transporteurId, that.transporteurId);
+                Objects.equals(transporteurId, that.transporteurId) &&
+                Objects.equals(societeFacturationId, that.societeFacturationId);
     }
 
     @Override
@@ -181,14 +181,14 @@ public class GasoilCriteria implements Serializable, Criteria {
             id,
             societe,
             numeroBonGasoil,
-            matricule,
             quantiteEnLitre,
             prixDuLitre,
             prixTotalGasoil,
             kilometrageInitial,
             kilometrageFinal,
             kilometrageParcouru,
-            transporteurId
+            transporteurId,
+            societeFacturationId
         );
     }
 
@@ -198,7 +198,6 @@ public class GasoilCriteria implements Serializable, Criteria {
             (id != null ? "id=" + id + ", " : "") +
             (societe != null ? "societe=" + societe + ", " : "") +
             (numeroBonGasoil != null ? "numeroBonGasoil=" + numeroBonGasoil + ", " : "") +
-            (matricule != null ? "matricule=" + matricule + ", " : "") +
             (quantiteEnLitre != null ? "quantiteEnLitre=" + quantiteEnLitre + ", " : "") +
             (prixDuLitre != null ? "prixDuLitre=" + prixDuLitre + ", " : "") +
             (prixTotalGasoil != null ? "prixTotalGasoil=" + prixTotalGasoil + ", " : "") +
@@ -206,6 +205,7 @@ public class GasoilCriteria implements Serializable, Criteria {
             (kilometrageFinal != null ? "kilometrageFinal=" + kilometrageFinal + ", " : "") +
             (kilometrageParcouru != null ? "kilometrageParcouru=" + kilometrageParcouru + ", " : "") +
             (transporteurId != null ? "transporteurId=" + transporteurId + ", " : "") +
+            (societeFacturationId != null ? "societeFacturationId=" + societeFacturationId + ", " : "") +
             "}";
     }
 

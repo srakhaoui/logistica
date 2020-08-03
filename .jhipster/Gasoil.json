@@ -16,13 +16,6 @@
       ]
     },
     {
-      "fieldName": "matricule",
-      "fieldType": "String",
-      "fieldValidateRules": [
-        "required"
-      ]
-    },
-    {
       "fieldName": "quantiteEnLitre",
       "fieldType": "Float",
       "fieldValidateRules": [
@@ -60,6 +53,13 @@
       "otherEntityRelationshipName": "gasoil",
       "relationshipName": "transporteur",
       "otherEntityField": "matricule"
+    },
+    {
+      "relationshipType": "many-to-one",
+      "otherEntityName": "societe",
+      "otherEntityRelationshipName": "gasoil",
+      "relationshipName": "societeFacturation",
+      "otherEntityField": "nom"
     }
   ],
   "changelogDate": "20200802081255",

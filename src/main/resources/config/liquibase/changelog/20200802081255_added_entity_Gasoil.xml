@@ -13,9 +13,6 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="societe" type="varchar(255)">
-                <constraints nullable="false"/>
-            </column>
             <column name="numero_bon_gasoil" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -38,6 +35,9 @@
                 <constraints nullable="true"/>
             </column>
             <column name="transporteur_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+            <column name="societe_facturation_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
@@ -63,7 +63,6 @@
             separator=";"
             tableName="gasoil">
             <column name="id" type="numeric"/>
-            <column name="societe" type="string"/>
             <column name="numero_bon_gasoil" type="numeric"/>
             <column name="quantite_en_litre" type="numeric"/>
             <column name="prix_du_litre" type="numeric"/>

@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="transporteur"/>
 
+        <addForeignKeyConstraint baseColumnNames="societe_facturation_id"
+                                 baseTableName="gasoil"
+                                 constraintName="fk_gasoil_societe_facturation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="societe"/>
+
     </changeSet>
 </databaseChangeLog>

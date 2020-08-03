@@ -20,14 +20,14 @@
                 <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="societe"><span jhiTranslate="logisticaApp.gasoil.societe">Societe</span>
+                <th scope="col" jhiSortBy="transporteur.matricule"><span>Matricule</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="societeFacturation.nom"><span
+                    jhiTranslate="logisticaApp.gasoil.societeFacturation">Societe Facturation</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col" jhiSortBy="numeroBonGasoil"><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span>
-                    <fa-icon [icon]="'sort'"></fa-icon>
-                </th>
-                <th scope="col" jhiSortBy="matricule"><span
-                    jhiTranslate="logisticaApp.gasoil.matricule">Matricule</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col" jhiSortBy="quantiteEnLitre"><span jhiTranslate="logisticaApp.gasoil.quantiteEnLitre">Quantite En Litre</span>
@@ -50,9 +50,6 @@
                     jhiTranslate="logisticaApp.gasoil.kilometrageParcouru">Kilometrage Parcouru</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="transporteur.matricule"><span>Matricule</span>
-                    <fa-icon [icon]="'sort'"></fa-icon>
-                </th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -60,20 +57,23 @@
                    [infiniteScrollDistance]="0">
             <tr *ngFor="let gasoil of gasoils ;trackBy: trackId">
                 <td><a [routerLink]="['/gasoil', gasoil.id, 'view' ]">{{gasoil.id}}</a></td>
-                <td>{{gasoil.societe}}</td>
+                <td>
+                    <div *ngIf="gasoil.transporteur">
+                        <a [routerLink]="['/transporteur', gasoil.transporteur?.id, 'view' ]">{{gasoil.transporteur?.matricule}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="gasoil.societeFacturation">
+                        <a [routerLink]="['/societe', gasoil.societeFacturation?.id, 'view' ]">{{gasoil.societeFacturation?.nom}}</a>
+                    </div>
+                </td>
                 <td>{{gasoil.numeroBonGasoil}}</td>
-                <td>{{gasoil.matricule}}</td>
                 <td>{{gasoil.quantiteEnLitre}}</td>
                 <td>{{gasoil.prixDuLitre}}</td>
                 <td>{{gasoil.prixTotalGasoil}}</td>
                 <td>{{gasoil.kilometrageInitial}}</td>
                 <td>{{gasoil.kilometrageFinal}}</td>
                 <td>{{gasoil.kilometrageParcouru}}</td>
-                <td>
-                    <div *ngIf="gasoil.transporteur">
-                        <a [routerLink]="['/transporteur', gasoil.transporteur?.id, 'view' ]">{{gasoil.transporteur?.matricule}}</a>
-                    </div>
-                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

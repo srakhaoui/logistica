@@ -24,10 +24,6 @@ public class Gasoil implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "societe", nullable = false)
-    private String societe;
-
-    @NotNull
     @Column(name = "numero_bon_gasoil", nullable = false)
     private Long numeroBonGasoil;
 
@@ -55,6 +51,10 @@ public class Gasoil implements Serializable {
     @JsonIgnoreProperties("gasoils")
     private Transporteur transporteur;
 
+    @ManyToOne
+    @JsonIgnoreProperties("gasoils")
+    private Societe societeFacturation;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -62,19 +62,6 @@ public class Gasoil implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getSociete() {
-        return societe;
-    }
-
-    public Gasoil societe(String societe) {
-        this.societe = societe;
-        return this;
-    }
-
-    public void setSociete(String societe) {
-        this.societe = societe;
     }
 
     public Long getNumeroBonGasoil() {
@@ -180,6 +167,19 @@ public class Gasoil implements Serializable {
     public void setTransporteur(Transporteur transporteur) {
         this.transporteur = transporteur;
     }
+
+    public Societe getSocieteFacturation() {
+        return societeFacturation;
+    }
+
+    public Gasoil societeFacturation(Societe societe) {
+        this.societeFacturation = societe;
+        return this;
+    }
+
+    public void setSocieteFacturation(Societe societe) {
+        this.societeFacturation = societe;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -202,7 +202,6 @@ public class Gasoil implements Serializable {
     public String toString() {
         return "Gasoil{" +
             "id=" + getId() +
-            ", societe='" + getSociete() + "'" +
             ", numeroBonGasoil=" + getNumeroBonGasoil() +
             ", quantiteEnLitre=" + getQuantiteEnLitre() +
             ", prixDuLitre=" + getPrixDuLitre() +

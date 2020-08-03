@@ -14,6 +14,7 @@ import { TransporteurService } from 'app/entities/transporteur/transporteur.serv
 import { ISociete } from 'app/shared/model/societe.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
 
+
 @Component({
   selector: 'jhi-gasoil-update',
   templateUrl: './gasoil-update.component.html'
@@ -21,15 +22,14 @@ import { SocieteService } from 'app/entities/societe/societe.service';
 export class GasoilUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  societes: ISociete[];
-
   transporteurs$: Observable<ITransporteur[]>;
   transporteurInput$ = new Subject<string>();
   transporteursLoading:Boolean = false;
 
+  societes: ISociete[];
+
   editForm = this.fb.group({
     id: [],
-    societe: [null, [Validators.required]],
     numeroBonGasoil: [null, [Validators.required]],
     quantiteEnLitre: [null, [Validators.required]],
     prixDuLitre: [null, [Validators.required]],
@@ -37,14 +37,15 @@ export class GasoilUpdateComponent implements OnInit {
     kilometrageInitial: [],
     kilometrageFinal: [],
     kilometrageParcouru: [],
-    transporteur: [null, [Validators.required]]
+    transporteur: [null, [Validators.required]],
+    societeFacturation: [null, [Validators.required]]
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected gasoilService: GasoilService,
-    protected societeService: SocieteService,
     protected transporteurService: TransporteurService,
+    protected societeService: SocieteService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -56,8 +57,8 @@ export class GasoilUpdateComponent implements OnInit {
     });
     this.loadTransporteurs();
     this.societeService
-          .query()
-          .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+      .query()
+      .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
     if(this.editForm.get('transporteur').value) {
       const transporteur: ITransporteur = this.editForm.get('transporteur').value;
       transporteur.description = `${transporteur.nom} - ${transporteur.prenom} - ${transporteur.matricule}`;
@@ -67,7 +68,6 @@ export class GasoilUpdateComponent implements OnInit {
   updateForm(gasoil: IGasoil) {
     this.editForm.patchValue({
       id: gasoil.id,
-      societe: gasoil.societe,
       numeroBonGasoil: gasoil.numeroBonGasoil,
       quantiteEnLitre: gasoil.quantiteEnLitre,
       prixDuLitre: gasoil.prixDuLitre,
@@ -75,7 +75,8 @@ export class GasoilUpdateComponent implements OnInit {
       kilometrageInitial: gasoil.kilometrageInitial,
       kilometrageFinal: gasoil.kilometrageFinal,
       kilometrageParcouru: gasoil.kilometrageParcouru,
-      transporteur: gasoil.transporteur
+      transporteur: gasoil.transporteur,
+      societeFacturation: gasoil.societeFacturation
     });
   }
 
@@ -97,7 +98,6 @@ export class GasoilUpdateComponent implements OnInit {
     return {
       ...new Gasoil(),
       id: this.editForm.get(['id']).value,
-      societe: this.editForm.get(['societe']).value.nom,
       numeroBonGasoil: this.editForm.get(['numeroBonGasoil']).value,
       quantiteEnLitre: this.editForm.get(['quantiteEnLitre']).value,
       prixDuLitre: this.editForm.get(['prixDuLitre']).value,
@@ -105,7 +105,8 @@ export class GasoilUpdateComponent implements OnInit {
       kilometrageInitial: this.editForm.get(['kilometrageInitial']).value,
       kilometrageFinal: this.editForm.get(['kilometrageFinal']).value,
       kilometrageParcouru: this.editForm.get(['kilometrageParcouru']).value,
-      transporteur: this.editForm.get(['transporteur']).value
+      transporteur: this.editForm.get(['transporteur']).value,
+      societeFacturation: this.editForm.get(['societeFacturation']).value
     };
   }
 
@@ -159,14 +160,14 @@ export class GasoilUpdateComponent implements OnInit {
                 ),
                 tap(() => (this.transporteursLoading = false))
             )
-        );
+    );
   }
 
 
   onTransporteurChange(){
     const transporteur: ITransporteur = this.editForm.get(['transporteur']).value;
     if(transporteur){
-      this.editForm.get(['societe']).setValue(transporteur.proprietaire);
+      this.editForm.get(['societeFacturation']).setValue(transporteur.proprietaire);
     }
   }
 }

@@ -2,6 +2,7 @@ package com.logistica.service;
 
 import com.logistica.domain.Gasoil;
 import com.logistica.domain.Gasoil_;
+import com.logistica.domain.Societe_;
 import com.logistica.domain.Transporteur_;
 import com.logistica.repository.GasoilRepository;
 import com.logistica.service.dto.GasoilCriteria;
@@ -37,7 +38,6 @@ public class GasoilQueryService extends QueryService<Gasoil> {
 
     /**
      * Return a {@link List} of {@link Gasoil} which matches the criteria from the database.
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -64,7 +64,6 @@ public class GasoilQueryService extends QueryService<Gasoil> {
 
     /**
      * Return the number of matching entities in the database.
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
@@ -77,7 +76,6 @@ public class GasoilQueryService extends QueryService<Gasoil> {
 
     /**
      * Function to convert {@link GasoilCriteria} to a {@link Specification}
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
@@ -114,6 +112,10 @@ public class GasoilQueryService extends QueryService<Gasoil> {
             if (criteria.getTransporteurId() != null) {
                 specification = specification.and(buildSpecification(criteria.getTransporteurId(),
                     root -> root.join(Gasoil_.transporteur, JoinType.LEFT).get(Transporteur_.id)));
+            }
+            if (criteria.getSocieteFacturationId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSocieteFacturationId(),
+                    root -> root.join(Gasoil_.societeFacturation, JoinType.LEFT).get(Societe_.id)));
             }
         }
         return specification;
