@@ -4,6 +4,7 @@ import com.logistica.domain.Bon;
 import com.logistica.domain.Livraison;
 import com.logistica.domain.enumeration.TypeBon;
 import com.logistica.domain.enumeration.TypeLivraison;
+import com.logistica.domain.enumeration.Unite;
 import com.logistica.repository.LivraisonRepository;
 import com.logistica.service.*;
 import com.logistica.service.dto.*;
@@ -51,11 +52,18 @@ public class LivraisonServiceImpl implements LivraisonService {
      */
     @Override
     public Livraison save(Livraison livraison) {
+        defaultFields(livraison);
         validateLivraisonDates(livraison);
         calculerPrixTotaux(livraison);
         calculerCommissionTotalTrajet(livraison);
         log.debug("Request to save Livraison : {}", livraison);
         return livraisonRepository.save(livraison);
+    }
+
+    private void defaultFields(Livraison livraison) {
+        if (livraison.getType() == TypeLivraison.Transport && livraison.getUniteVente() == Unite.Voyage) {
+            livraison.setQuantiteVendue(0.0F);
+        }
     }
 
     private void validateLivraisonDates(Livraison livraison) {

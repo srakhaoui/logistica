@@ -5,6 +5,7 @@ import com.logistica.domain.enumeration.TypeLivraison;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class RecapitulatifClient implements ICsvConvertible {
     private String client;
@@ -96,18 +97,22 @@ public class RecapitulatifClient implements ICsvConvertible {
 
     @Override
     public String toCsv() {
-        StringBuilder csv = new StringBuilder();
-        csv.append(client).append(";")
-            .append(dateBonLivraison).append(";")
-            .append(numeroBonLivraison).append(";")
-            .append(matricule).append(";")
-            .append(produit).append(";")
-            .append(StringUtils.replaceChars(Double.toString(totalQuantiteeVendue), '.', ',')).append(";")
-            .append(StringUtils.replaceChars(Double.toString(totalPrixVente), '.', ',')).append(";")
-            .append(societeFacturation).append(";")
-            .append(facture).append(";")
-            .append(type);
+        try {
+            StringBuilder csv = new StringBuilder();
+            csv.append(Optional.ofNullable(client).orElse("Undefined")).append(";")
+                .append(dateBonLivraison).append(";")
+                .append(numeroBonLivraison).append(";")
+                .append(Optional.ofNullable(matricule).orElse("Undefined")).append(";")
+                .append(Optional.ofNullable(produit).orElse("Undefined")).append(";")
+                .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalQuantiteeVendue).orElse(0.0)), '.', ',')).append(";")
+                .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixVente).orElse(0.0)), '.', ',')).append(";")
+                .append(Optional.ofNullable(societeFacturation).orElse("Undefined")).append(";")
+                .append(facture).append(";")
+                .append(type);
 
-        return csv.toString();
+            return csv.toString();
+        } catch (Exception ex) {
+            return "error;error;error;error;error;error;error;error;error;error";
+        }
     }
 }
