@@ -189,7 +189,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
-        String queryAsStr = query.append(predicate.toString()).append(" Group by l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code").toString();
+        String queryAsStr = query.append(predicate.toString()).append(" Group by l.societeFacturation.nom, l.type, l.client.nom, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifClient.class);
 
         Optional.ofNullable(societeId).ifPresent(aSocieteId -> entityQuery.setParameter("societeId", aSocieteId));
