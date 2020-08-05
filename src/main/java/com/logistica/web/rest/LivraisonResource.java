@@ -208,6 +208,8 @@ public class LivraisonResource {
     }
 
     private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
         ServletOutputStream outputStream = reponse.getOutputStream();
         outputStream.println(csvHeader);
         page.stream().map(T::toCsv).forEach(csvContent -> {
@@ -217,8 +219,6 @@ public class LivraisonResource {
                 log.error("Failed to generate csv file", e);
             }
         });
-        reponse.setContentType("text/csv");
-        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
     }
 
     @GetMapping(value = "/livraisons/achat")

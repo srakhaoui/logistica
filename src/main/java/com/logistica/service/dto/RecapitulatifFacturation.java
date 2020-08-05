@@ -91,15 +91,19 @@ public class RecapitulatifFacturation implements ICsvConvertible {
 
     @Override
     public String toCsv() {
-        StringBuilder csv = new StringBuilder();
-        csv.append(moisBonLivraison).append(";")
-            .append(Optional.ofNullable(societe).orElse("-")).append(";")
-            .append(produit).append(";")
-            .append(uniteVente).append(";")
-            .append(Optional.ofNullable(client).orElse("-")).append(";")
-            .append(facture).append(";")
-            .append(StringUtils.replaceChars(Double.toString(totalQuantiteeVendue), '.', ',')).append(";")
-            .append(StringUtils.replaceChars(Double.toString(totalPrixVente), '.', ','));
-        return csv.toString();
+        try {
+            StringBuilder csv = new StringBuilder();
+            csv.append(moisBonLivraison).append(";")
+                .append(Optional.ofNullable(societe).orElse("-")).append(";")
+                .append(Optional.ofNullable(produit).orElse("-")).append(";")
+                .append(uniteVente).append(";")
+                .append(Optional.ofNullable(client).orElse("-")).append(";")
+                .append(facture).append(";")
+                .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalQuantiteeVendue).orElse(0.0)), '.', ',')).append(";")
+                .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixVente).orElse(0.0)), '.', ','));
+            return csv.toString();
+        } catch (Exception ex) {
+            return "error;error;error;error;error;error;error;error";
+        }
     }
 }
