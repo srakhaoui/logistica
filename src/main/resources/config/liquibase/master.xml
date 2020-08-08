@@ -6,6 +6,8 @@
 
     <property name="now" value="now()" dbms="h2"/>
     <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="toDay" value="current_date()" dbms="h2"/>
+    <property name="toDay" value="current_date()" dbms="postgresql"/>
 
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql, mariadb"/>
@@ -15,7 +17,8 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112147_added_entity_Societe.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20200101112148_added_entity_Transporteur.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20200101112148_added_entity_Transporteur.xml"
+             relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112149_added_entity_Fournisseur.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112150_added_entity_Produit.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20200101112151_added_entity_Client.xml" relativeToChangelogFile="false"/>

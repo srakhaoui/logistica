@@ -3,12 +3,17 @@ package com.logistica.service.impl;
 import com.logistica.domain.Gasoil;
 import com.logistica.repository.GasoilRepository;
 import com.logistica.service.GasoilService;
+import com.logistica.service.LivraisonService;
+import com.logistica.service.dto.RecapitulatifChargeGasoil;
+import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.Optional;
 
@@ -22,6 +27,9 @@ public class GasoilServiceImpl implements GasoilService {
     private final Logger log = LoggerFactory.getLogger(GasoilServiceImpl.class);
 
     private final GasoilRepository gasoilRepository;
+
+    @Autowired
+    private LivraisonService livraisonService;
 
     public GasoilServiceImpl(GasoilRepository gasoilRepository) {
         this.gasoilRepository = gasoilRepository;
@@ -77,5 +85,21 @@ public class GasoilServiceImpl implements GasoilService {
     public void delete(Long id) {
         log.debug("Request to delete Gasoil : {}", id);
         gasoilRepository.deleteById(id);
+    }
+
+    @Override
+    public Page<RecapitulatifChargeGasoil> getRecapitulatifChargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable) {
+        Assert.notNull(recapitulatifChargeGasoilRequest.getDateDebut(), "Date de début non renseignée");
+        Assert.notNull(recapitulatifChargeGasoilRequest.getDateFin(), "Date de fin non renseignée");
+        Page<RecapitulatifChargeGasoil> recapitulatifChargeGasoilPage = gasoilRepository.getRecapitulatifChargeGasoil(recapitulatifChargeGasoilRequest, pageable);
+        calculerMargeGasoil(recapitulatifChargeGasoilRequest, recapitulatifChargeGasoilPage);
+        return recapitulatifChargeGasoilPage;
+    }
+
+    private void calculerMargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Page<RecapitulatifChargeGasoil> recapitulatifChargeGasoilPage) {
+        recapitulatifChargeGasoilPage.getContent().stream().forEach(recapitulatifChargeGasoil -> {
+            final Double totalPrixVente = livraisonService.getTotalPrixVenteBySocieteFacturation(recapitulatifChargeGasoil.getSocieteId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
+            recapitulatifChargeGasoil.setMargeGasoil((totalPrixVente - recapitulatifChargeGasoil.getTotalPrixGasoil()) / recapitulatifChargeGasoil.getTotalPrixGasoil());
+        });
     }
 }

@@ -85,8 +85,9 @@ public class GasoilQueryService extends QueryService<Gasoil> {
             if (criteria.getId() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getId(), Gasoil_.id));
             }
-            if (criteria.getSociete() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getSociete(), Gasoil_.societe));
+            if (criteria.getSocieteFacturationId() != null) {
+                specification = specification.and(buildSpecification(criteria.getSocieteFacturationId(),
+                    root -> root.join(Gasoil_.societeFacturation, JoinType.LEFT).get(Societe_.id)));
             }
             if (criteria.getNumeroBonGasoil() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getNumeroBonGasoil(), Gasoil_.numeroBonGasoil));

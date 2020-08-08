@@ -44,6 +44,24 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="20200807214000" author="said.rakhaoui">
+        <addColumn tableName="gasoil">
+            <column name="date_saisie" type="date" defaultValueComputed="${toDay}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+    </changeSet>
+
     <changeSet id="20200802081255-1-relations" author="jhipster">
 
     </changeSet>

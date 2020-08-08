@@ -1,6 +1,8 @@
 package com.logistica.service;
 
 import com.logistica.domain.Gasoil;
+import com.logistica.service.dto.RecapitulatifChargeGasoil;
+import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -42,4 +44,6 @@ public interface GasoilService {
      * @param id the id of the entity.
      */
     void delete(Long id);
+
+    Page<RecapitulatifChargeGasoil> getRecapitulatifChargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable);
 }

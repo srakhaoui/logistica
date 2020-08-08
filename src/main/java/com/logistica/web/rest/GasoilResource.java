@@ -4,6 +4,8 @@ import com.logistica.domain.Gasoil;
 import com.logistica.service.GasoilQueryService;
 import com.logistica.service.GasoilService;
 import com.logistica.service.dto.GasoilCriteria;
+import com.logistica.service.dto.RecapitulatifChargeGasoil;
+import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -140,5 +142,13 @@ public class GasoilResource {
         log.debug("REST request to delete Gasoil : {}", id);
         gasoilService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping(value = "/gasoils/charges")
+    public ResponseEntity<List<RecapitulatifChargeGasoil>> getAllLivraisons(@Valid RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable) {
+        log.debug("REST request to get RecapitulatifChargeGasoilRequest : {}", recapitulatifChargeGasoilRequest);
+        Page<RecapitulatifChargeGasoil> page = gasoilService.getRecapitulatifChargeGasoil(recapitulatifChargeGasoilRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

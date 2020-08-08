@@ -3,16 +3,19 @@ package com.logistica.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * A Gasoil.
  */
 @Entity
 @Table(name = "gasoil")
+@EntityListeners(AuditingEntityListener.class)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Gasoil implements Serializable {
 
@@ -54,6 +57,12 @@ public class Gasoil implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("gasoils")
     private Societe societeFacturation;
+
+    @Column(name = "date_saisie", nullable = false)
+    private LocalDate dateSaisie = LocalDate.now();
+
+    @Embedded
+    private Audit audit = new Audit();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -179,6 +188,14 @@ public class Gasoil implements Serializable {
 
     public void setSocieteFacturation(Societe societe) {
         this.societeFacturation = societe;
+    }
+
+    public Audit getAudit() {
+        return audit;
+    }
+
+    public void setAudit(Audit audit) {
+        this.audit = audit;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

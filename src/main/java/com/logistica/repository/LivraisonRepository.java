@@ -25,4 +25,7 @@ public interface LivraisonRepository extends JpaRepository<Livraison, Long>, Jpa
 
     @Query("Select l.transporteur.id as id, l.transporteur.prenom as prenomChauffeur, l.transporteur.nom as nomChauffeur, l.trajet.description as description, count(l.trajet.id) as nombreTrajets, sum(l.trajet.commission) as commissionTrajet, sum(l.reparationDivers) as reparationDivers, sum(l.trax) as trax, sum(l.balance) as balance, sum(l.avance) as avance, sum(l.penaliteEse) as penaliteEse, sum(l.penaliteChfrs) as penaliteChfrs, sum(l.fraisEspece) as fraisEspece, sum(l.retenu) as retenu, sum(l.totalComission) as totalComission From Livraison l where l.dateBonCaisse >= :dateDebut And l.dateBonCaisse <= :dateFin And l.transporteur.id = :idTransporteur Group By l.transporteur.prenom, l.transporteur.nom, l.trajet.description")
     Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(@Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin, @Param("idTransporteur") Long idTransporteur, Pageable pageable);
+
+    @Query("Select sum(l.prixTotalVente) from Livraison l where l.societeFacturation.id = :societeFacturationId and l.dateBonLivraison >= :dateDebut and l.dateBonLivraison <= :dateFin")
+    Double getTotalPrixVenteBySocieteFacturation(@Param("societeFacturationId") Long societeFacturationId, @Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
 }

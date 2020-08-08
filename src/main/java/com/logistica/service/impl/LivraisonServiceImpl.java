@@ -220,4 +220,10 @@ public class LivraisonServiceImpl implements LivraisonService {
         Optional<Livraison> livraison = findOne(id);
         return livraison.map(aLivraison -> new Bon(typeBon.bonContent(aLivraison), typeBon.bonContentType(aLivraison))).orElse(new Bon());
     }
+
+    @Override
+    public Double getTotalPrixVenteBySocieteFacturation(Long societeId, LocalDate dateDebut, LocalDate dateFin) {
+        Assert.notNull(societeId, "Merci de fournir l'id de la société de facturation");
+        return livraisonRepository.getTotalPrixVenteBySocieteFacturation(societeId, dateDebut, dateFin);
+    }
 }
