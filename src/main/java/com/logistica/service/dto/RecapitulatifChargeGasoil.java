@@ -1,5 +1,8 @@
 package com.logistica.service.dto;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class RecapitulatifChargeGasoil {
     private final Long societeId;
     private final String societe;
@@ -14,10 +17,14 @@ public class RecapitulatifChargeGasoil {
         this.societeId = societeId;
         this.societe = societe;
         this.matricule = matricule;
-        this.totalQuantiteEnLitre = totalQuantiteEnLitre;
-        this.moyennePrixDuLitre = moyennePrixDuLitre;
-        this.totalPrixGasoil = totalPrixGasoil;
+        this.totalQuantiteEnLitre = round(totalQuantiteEnLitre);
+        this.moyennePrixDuLitre = round(moyennePrixDuLitre);
+        this.totalPrixGasoil = round(totalPrixGasoil);
         this.kilometrageParcouru = kilometrageParcouru;
+    }
+
+    private double round(Double totalQuantiteEnLitre) {
+        return BigDecimal.valueOf(totalQuantiteEnLitre).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
     }
 
     public Long getSocieteId() {

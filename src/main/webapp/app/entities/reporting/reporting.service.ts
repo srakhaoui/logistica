@@ -14,6 +14,7 @@ import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-
 import { IRecapitulatifVenteChauffeur } from 'app/shared/model/recapitulatif-vente-chauffeur.model';
 import { IRecapitulatifVenteFacturation } from 'app/shared/model/recapitulatif-vente-facturation.model';
 import { IRecapitulatifVenteCaCamion } from 'app/shared/model/recapitulatif-vente-ca-camion.model';
+import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gasoil-charges.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
@@ -21,10 +22,13 @@ type IRecapitulatifVenteClientResponseType = HttpResponse<IRecapitulatifVenteCli
 type IRecapitulatifVenteChauffeurResponseType = HttpResponse<IRecapitulatifVenteChauffeur[]>;
 type IRecapitulatifVenteFacturationResponseType = HttpResponse<IRecapitulatifVenteFacturation[]>;
 type IRecapitulatifVenteCaCamionResponseType = HttpResponse<IRecapitulatifVenteCaCamion[]>;
+type IRecapitulatifGasoilChargesResponseType = HttpResponse<IRecapitulatifChargesGasoil[]>;
+
 
 @Injectable({ providedIn: 'root' })
 export class ReportingService {
   public resourceUrl = SERVER_API_URL + 'api/livraisons';
+  public resourceUrlGasoil = SERVER_API_URL + 'api/gasoils';
 
   constructor(protected http: HttpClient) {}
 
@@ -75,6 +79,13 @@ export class ReportingService {
     return this.http
       .get<IRecapitulatifVenteCaCamion[]>(`${this.resourceUrl}/vente/ca-camion`, { params: options, observe: 'response' })
       .pipe(map((res: IRecapitulatifVenteCaCamionResponseType) => res));
+  }
+
+  getReportingGasoilCharges(req?: any): Observable<IRecapitulatifGasoilChargesResponseType> {
+      const options = createRequestOption(req);
+      return this.http
+        .get<IRecapitulatifChargesGasoil[]>(`${this.resourceUrlGasoil}/charges`, { params: options, observe: 'response' })
+        .pipe(map((res: IRecapitulatifGasoilChargesResponseType) => res));
   }
 
   protected convertDateArrayFromServer(res: IRecapitulatifAchatsResponseType): IRecapitulatifAchatsResponseType {

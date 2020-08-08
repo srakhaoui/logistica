@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Optional;
 
 /**
@@ -99,7 +101,9 @@ public class GasoilServiceImpl implements GasoilService {
     private void calculerMargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Page<RecapitulatifChargeGasoil> recapitulatifChargeGasoilPage) {
         recapitulatifChargeGasoilPage.getContent().stream().forEach(recapitulatifChargeGasoil -> {
             final Double totalPrixVente = livraisonService.getTotalPrixVenteBySocieteFacturation(recapitulatifChargeGasoil.getSocieteId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
-            recapitulatifChargeGasoil.setMargeGasoil((totalPrixVente - recapitulatifChargeGasoil.getTotalPrixGasoil()) / recapitulatifChargeGasoil.getTotalPrixGasoil());
+            double margeGasoil = (totalPrixVente - recapitulatifChargeGasoil.getTotalPrixGasoil()) / recapitulatifChargeGasoil.getTotalPrixGasoil();
+            margeGasoil = BigDecimal.valueOf(margeGasoil).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+            recapitulatifChargeGasoil.setMargeGasoil(margeGasoil);
         });
     }
 }
