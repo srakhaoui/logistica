@@ -234,4 +234,10 @@ public class LivraisonServiceImpl implements LivraisonService {
         Assert.notNull(societeId, "Merci de fournir l'id de la société de facturation");
         return livraisonRepository.getTotalPrixVenteBySocieteFacturation(societeId, dateDebut, dateFin);
     }
+
+    @Override
+    public Double getTotalCommissionByChauffeur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin) {
+        Assert.notNull(transporteurId, "Merci de fournir l'id du transporteur");
+        return livraisonRepository.getTotalCommissionByChauffeur(transporteurId, dateDebut, dateFin);
+    }
 }

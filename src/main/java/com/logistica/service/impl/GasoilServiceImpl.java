@@ -102,8 +102,15 @@ public class GasoilServiceImpl implements GasoilService {
         recapitulatifChargeGasoilPage.getContent().stream().forEach(recapitulatifChargeGasoil -> {
             final Double totalPrixVente = livraisonService.getTotalPrixVenteBySocieteFacturation(recapitulatifChargeGasoil.getSocieteId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
             double margeGasoil = (totalPrixVente - recapitulatifChargeGasoil.getTotalPrixGasoil()) / recapitulatifChargeGasoil.getTotalPrixGasoil();
-            margeGasoil = BigDecimal.valueOf(margeGasoil).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+            margeGasoil = round(margeGasoil);
             recapitulatifChargeGasoil.setMargeGasoil(margeGasoil);
+            Double totalCommissionChauffeur = livraisonService.getTotalCommissionByChauffeur(recapitulatifChargeGasoil.getTransporteurId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
+            totalCommissionChauffeur = round(totalCommissionChauffeur);
+            recapitulatifChargeGasoil.setTotalCommissionChauffeur(totalCommissionChauffeur);
         });
+    }
+
+    private double round(Double montant) {
+        return BigDecimal.valueOf(montant).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
     }
 }

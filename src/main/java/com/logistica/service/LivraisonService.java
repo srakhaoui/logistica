@@ -61,4 +61,6 @@ public interface LivraisonService {
     Bon getBon(Long id, TypeBon typeBon);
 
     Double getTotalPrixVenteBySocieteFacturation(Long societeId, LocalDate dateDebut, LocalDate dateFin);
+
+    Double getTotalCommissionByChauffeur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin);
 }

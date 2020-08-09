@@ -8,13 +8,14 @@ import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ReportingService } from '../reporting.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ISociete } from 'app/shared/model/societe.model';
-import { IProduit } from 'app/shared/model/produit.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
-import { ProduitService } from 'app/entities/produit/produit.service';
 
 import * as moment from 'moment';
 import { format } from 'app/shared/util/date-util';
 import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gasoil-charges.model';
+
+import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
+import { ITransporteur } from 'app/shared/model/transporteur.model';
 
 @Component({
   selector: 'jhi-reporting-gasoil-charges',
@@ -23,13 +24,13 @@ import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gaso
 export class ReportingGasoilChargesComponent implements OnInit, OnDestroy {
   societes: ISociete[];
 
-  produits$: Observable<IProduit[]>;
-  produitInput$ = new Subject<string>();
-  produitsLoading:Boolean = false;
+  transporteurs$: Observable<ITransporteur[]>;
+  transporteurInput$ = new Subject<string>();
+  transporteursLoading:Boolean = false;
 
   reportingForm = new FormGroup({
       societe: new FormControl(),
-      produit: new FormControl(),
+      transporteur: new FormControl(),
       dateDebut: new FormControl(),
       dateFin: new FormControl()
     });
@@ -46,7 +47,7 @@ export class ReportingGasoilChargesComponent implements OnInit, OnDestroy {
 
   constructor(
     protected societeService: SocieteService,
-    protected produitService: ProduitService,
+    protected transporteurService: TransporteurService,
     protected reportingService: ReportingService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
@@ -74,7 +75,7 @@ export class ReportingGasoilChargesComponent implements OnInit, OnDestroy {
     this.societeService
               .query()
               .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.loadProduits();
+    this.loadTransporteurs();
     this.search();
   }
 
@@ -86,24 +87,6 @@ export class ReportingGasoilChargesComponent implements OnInit, OnDestroy {
         this.isSearching = false;
         this.paginateRecapitulatifs(res.body, res.headers);
       });
-  }
-
-  private loadProduits(){
-    this.produits$ = concat(
-            of([]), // default items
-            this.produitInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.produitsLoading = true)),
-                switchMap(nom =>
-                    this.produitService
-                        .query({'code.contains': nom})
-                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.produitsLoading = false))
-            )
-        );
   }
 
   export(){
@@ -120,8 +103,8 @@ export class ReportingGasoilChargesComponent implements OnInit, OnDestroy {
     if(this.reportingForm.get('societe').value){
       reportingRequest['societeId'] = this.reportingForm.get('societe').value.id;
     }
-    if(this.reportingForm.get('produit').value){
-      reportingRequest['produitId'] = this.reportingForm.get('produit').value.id;
+    if(this.reportingForm.get('transporteur').value){
+      reportingRequest['transporteurId'] = this.reportingForm.get('transporteur').value.id;
     }
     if(this.reportingForm.get('dateDebut').value){
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
@@ -172,5 +155,34 @@ export class ReportingGasoilChargesComponent implements OnInit, OnDestroy {
     for (let i = 0; i < data.length; i++) {
       this.recapitulatifs.push(data[i]);
     }
+  }
+
+  private loadTransporteurs(){
+      this.transporteurs$ = concat(
+        of([]), // default items
+        this.transporteurInput$.pipe(
+            startWith(''),
+            debounceTime(500),
+            distinctUntilChanged(),
+            tap(() => (this.transporteursLoading = true)),
+            switchMap(nom =>
+                this.transporteurService
+                    .query({'nom.contains': nom})
+                    .pipe(
+                      map((resp: HttpResponse<ITransporteur[]>) => resp.body),
+                      catchError(() => of([])),
+                      map((transporteurs: ITransporteur[]) => {
+                        const enriched:ITransporteur[] = [];
+                        transporteurs.forEach(transporteur => {
+                          transporteur.description = `${transporteur.nom} | ${transporteur.prenom} | ${transporteur.matricule}`
+                          enriched.push(transporteur);
+                        });
+                        return enriched;
+                      })
+                      )
+            ),
+            tap(() => (this.transporteursLoading = false))
+        )
+    );
   }
 }

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 public class RecapitulatifChargeGasoilRequest {
 
     private Long societeId;
+    private Long transporteurId;
     @NotNull
     private LocalDate dateDebut;
     @NotNull
@@ -17,6 +18,14 @@ public class RecapitulatifChargeGasoilRequest {
 
     public void setSocieteId(Long societeId) {
         this.societeId = societeId;
+    }
+
+    public Long getTransporteurId() {
+        return transporteurId;
+    }
+
+    public void setTransporteurId(Long transporteurId) {
+        this.transporteurId = transporteurId;
     }
 
     public LocalDate getDateDebut() {

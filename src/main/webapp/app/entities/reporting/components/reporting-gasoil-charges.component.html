@@ -19,18 +19,18 @@
                     </select>
                 </div>
             </div>
-            <div class="form-row">
-                <div class="col">
-                    <label class="form-control-label" for="field_produit">Produit</label>
-                    <ng-select [items]="produits$ | async"
-                               [typeahead]="produitInput$"
-                               bindLabel="code"
-                               [hideSelected]="true"
-                               [loading]="produitsLoading"
-                               formControlName="produit"
-                               name="produit">
-                    </ng-select>
-                </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_transporteur">Transporteur</label>
+                <ng-select id="field_transporteur"
+                           [items]="transporteurs$ | async"
+                           [typeahead]="transporteurInput$"
+                           bindLabel="description"
+                           [hideSelected]="true"
+                           [loading]="transporteursLoading"
+                           formControlName="transporteur"
+                           name="transporteur"
+                           placeholder="Recherchez par nom">
+                </ng-select>
             </div>
             <div class="form-row">
                 <div class="col">
@@ -80,24 +80,30 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
                 <th scope="col"><span>Société</span></th>
+                <th scope="col"><span>Nom Transporteur</span></th>
+                <th scope="col"><span>Prénom Transporteur</span></th>
                 <th scope="col"><span>Matricule</span></th>
                 <th scope="col"><span>Total Quantité En Litre</span></th>
                 <th scope="col"><span>Moyenne Prix Du Litre</span></th>
                 <th scope="col"><span>Total Prix Gasoil</span></th>
                 <th scope="col"><span>Kilométrage Parcouru</span></th>
                 <th scope="col"><span>Marge Gasoil</span></th>
+                <th scope="col"><span>Total Commission Chauffeur</span></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
                    [infiniteScrollDistance]="0">
             <tr *ngFor="let recapitulatif of recapitulatifs">
                 <td>{{recapitulatif.societe}}</td>
+                <td>{{recapitulatif.nomTransporteur}}</td>
+                <td>{{recapitulatif.prenomTransporteur}}</td>
                 <td>{{recapitulatif.matricule}}</td>
                 <td>{{recapitulatif.totalQuantiteEnLitre}}</td>
                 <td>{{recapitulatif.moyennePrixDuLitre}}</td>
                 <td>{{recapitulatif.totalPrixGasoil}}</td>
                 <td>{{recapitulatif.kilometrageParcouru}}</td>
                 <td>{{recapitulatif.margeGasoil}}</td>
+                <td>{{recapitulatif.totalCommissionChauffeur}}</td>
             </tr>
             </tbody>
         </table>

@@ -6,16 +6,23 @@ import java.math.RoundingMode;
 public class RecapitulatifChargeGasoil {
     private final Long societeId;
     private final String societe;
+    private final Long transporteurId;
+    private final String nomTransporteur;
+    private final String prenomTransporteur;
     private final String matricule;
     private final Double totalQuantiteEnLitre;
     private final Double moyennePrixDuLitre;
     private final Double totalPrixGasoil;
     private final Long kilometrageParcouru;
     private Double margeGasoil;
+    private Double totalCommissionChauffeur;
 
-    public RecapitulatifChargeGasoil(Long societeId, String societe, String matricule, Double totalQuantiteEnLitre, Double moyennePrixDuLitre, Double totalPrixGasoil, Long kilometrageParcouru) {
+    public RecapitulatifChargeGasoil(Long societeId, String societe, Long transporteurId, String nomTransporteur, String prenomTransporteur, String matricule, Double totalQuantiteEnLitre, Double moyennePrixDuLitre, Double totalPrixGasoil, Long kilometrageParcouru) {
         this.societeId = societeId;
         this.societe = societe;
+        this.transporteurId = transporteurId;
+        this.nomTransporteur = nomTransporteur;
+        this.prenomTransporteur = prenomTransporteur;
         this.matricule = matricule;
         this.totalQuantiteEnLitre = round(totalQuantiteEnLitre);
         this.moyennePrixDuLitre = round(moyennePrixDuLitre);
@@ -55,12 +62,32 @@ public class RecapitulatifChargeGasoil {
         return kilometrageParcouru;
     }
 
+    public Long getTransporteurId() {
+        return transporteurId;
+    }
+
     public Double getMargeGasoil() {
         return margeGasoil;
     }
 
     public void setMargeGasoil(Double margeGasoil) {
         this.margeGasoil = margeGasoil;
+    }
+
+    public Double getTotalCommissionChauffeur() {
+        return totalCommissionChauffeur;
+    }
+
+    public void setTotalCommissionChauffeur(Double totalCommissionChauffeur) {
+        this.totalCommissionChauffeur = totalCommissionChauffeur;
+    }
+
+    public String getNomTransporteur() {
+        return nomTransporteur;
+    }
+
+    public String getPrenomTransporteur() {
+        return prenomTransporteur;
     }
 }
 

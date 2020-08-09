@@ -23,16 +23,21 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
     @Override
     public Page<RecapitulatifChargeGasoil> getRecapitulatifChargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable) {
         final Long societeId = recapitulatifChargeGasoilRequest.getSocieteId();
+        final Long transporteurId = recapitulatifChargeGasoilRequest.getTransporteurId();
         final LocalDate dateDebut = recapitulatifChargeGasoilRequest.getDateDebut();
         final LocalDate dateFin = recapitulatifChargeGasoilRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifChargeGasoil(g.societeFacturation.id, g.societeFacturation.nom, g.transporteur.matricule, sum(g.quantiteEnLitre), avg(g.prixDuLitre), sum(g.prixTotalGasoil), sum(g.kilometrageParcouru)) From Gasoil g");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifChargeGasoil(g.societeFacturation.id, g.societeFacturation.nom, g.transporteur.id, g.transporteur.nom, g.transporteur.prenom, g.transporteur.matricule, sum(g.quantiteEnLitre), avg(g.prixDuLitre), sum(g.prixTotalGasoil), sum(g.kilometrageParcouru)) From Gasoil g");
         boolean withSocieteId = societeId != null;
+        boolean withTransporteurId = transporteurId != null;
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withSocieteId) {
             predicate.append(" And g.societeFacturation.id = :societeId");
+        }
+        if (withTransporteurId) {
+            predicate.append(" And g.transporteur.id = :transporteurId");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateSaisie >= :dateDebut");
@@ -40,10 +45,13 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         if (withDateFin) {
             predicate.append(" And g.dateSaisie <= :dateFin");
         }
-        String queryAsStr = query.append(predicate.toString()).append(" Group by g.societeFacturation.id, g.societeFacturation.nom, g.transporteur.matricule").toString();
+        String queryAsStr = query.append(predicate.toString()).append(" Group by g.societeFacturation.id, g.societeFacturation.nom, g.transporteur.id, g.transporteur.nom, g.transporteur.prenom, g.transporteur.matricule").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifChargeGasoil.class);
         if (withSocieteId) {
             entityQuery.setParameter("societeId", societeId);
+        }
+        if (withTransporteurId) {
+            entityQuery.setParameter("transporteurId", transporteurId);
         }
         if (withDateDebut) {
             entityQuery.setParameter("dateDebut", dateDebut);
