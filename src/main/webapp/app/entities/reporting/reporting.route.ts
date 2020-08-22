@@ -4,6 +4,7 @@ import { ReportingAchatTrajetComponent } from './components/reporting-achat-traj
 import { Routes } from '@angular/router';
 import { ReportingVenteClientComponent } from './components/reporting-vente-client.component';
 import { ReportingVenteChauffeurComponent } from './components/reporting-vente-chauffeur.component';
+import { ReportingVenteEfficaciteChauffeurComponent } from './components/reporting-vente-efficacite-chauffeur.component';
 import { ReportingVenteFacturationComponent } from './components/reporting-vente-facturation.component';
 import { ReportingVenteCaCamionComponent } from './components/reporting-vente-ca-camion.component';
 import { ReportingGasoilChargesComponent } from './components/reporting-gasoil-charges.component';
@@ -39,6 +40,15 @@ export const reportingRoute: Routes = [
   {
     path: 'vente/chauffeur',
     component: ReportingVenteChauffeurComponent,
+    data: {
+      authorities: ['ROLE_USER'],
+      pageTitle: 'logisticaApp.reporting.home.title'
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'vente/chauffeur/efficacite',
+    component: ReportingVenteEfficaciteChauffeurComponent,
     data: {
       authorities: ['ROLE_USER'],
       pageTitle: 'logisticaApp.reporting.home.title'

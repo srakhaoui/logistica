@@ -281,6 +281,22 @@ public class LivraisonResource {
         buildAndSendCsv("export-chauffeur.csv", IRecapitulatifChauffeur.CSV_HEADER, page.getContent(), httpServletResponse);
     }
 
+    @GetMapping("/livraisons/vente/chauffeur/efficacite")
+    public ResponseEntity<List<RecapitulatifEfficaciteChauffeur>> getAllLivraisons(RecapitulatifEfficaciteChauffeurRequest recapitulatifEfficaciteChauffeurRequest, Pageable pageable) {
+        log.debug("REST request to get recapitulatifEfficaciteChauffeurRequest : {}", recapitulatifEfficaciteChauffeurRequest);
+        Page<RecapitulatifEfficaciteChauffeur> page = livraisonService.getRecapitulatifEfficaciteChauffeur(recapitulatifEfficaciteChauffeurRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/livraisons/vente/chauffeur/efficacite/export")
+    public void getAllLivraisons(RecapitulatifEfficaciteChauffeurRequest recapitulatifEfficaciteChauffeurRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get recapitulatifEfficaciteChauffeurRequest : {}", recapitulatifEfficaciteChauffeurRequest);
+        Page<RecapitulatifEfficaciteChauffeur> page = livraisonService.getRecapitulatifEfficaciteChauffeur(recapitulatifEfficaciteChauffeurRequest, Pageable.unpaged());
+        buildAndSendCsv("export-efficacite-chauffeur.csv", RecapitulatifEfficaciteChauffeur.CSV_HEADER, page.getContent(), httpServletResponse);
+    }
+
+
     @GetMapping("/livraisons/vente/facturation")
     public ResponseEntity<List<RecapitulatifFacturation>> getAllLivraisons(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable) {
         log.debug("REST request to get RecapitulatifFacturationRequest : {}", recapitulatifFacturationRequest);

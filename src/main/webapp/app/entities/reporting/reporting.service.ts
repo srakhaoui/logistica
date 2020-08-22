@@ -12,6 +12,7 @@ import { ILivraison } from 'app/shared/model/livraison.model';
 import { IRecapitulatifAchat } from 'app/shared/model/recapitulatif-achat.model';
 import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
 import { IRecapitulatifVenteChauffeur } from 'app/shared/model/recapitulatif-vente-chauffeur.model';
+import { IRecapitulatifVenteEfficaciteChauffeur } from 'app/shared/model/recapitulatif-vente-efficacite-chauffeur.model';
 import { IRecapitulatifVenteFacturation } from 'app/shared/model/recapitulatif-vente-facturation.model';
 import { IRecapitulatifVenteCaCamion } from 'app/shared/model/recapitulatif-vente-ca-camion.model';
 import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gasoil-charges.model';
@@ -20,6 +21,7 @@ type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
 type IRecapitulatifVenteClientResponseType = HttpResponse<IRecapitulatifVenteClient[]>;
 type IRecapitulatifVenteChauffeurResponseType = HttpResponse<IRecapitulatifVenteChauffeur[]>;
+type IRecapitulatifVenteEfficaciteChauffeurResponseType = HttpResponse<IRecapitulatifVenteEfficaciteChauffeur[]>;
 type IRecapitulatifVenteFacturationResponseType = HttpResponse<IRecapitulatifVenteFacturation[]>;
 type IRecapitulatifVenteCaCamionResponseType = HttpResponse<IRecapitulatifVenteCaCamion[]>;
 type IRecapitulatifGasoilChargesResponseType = HttpResponse<IRecapitulatifChargesGasoil[]>;
@@ -60,6 +62,13 @@ export class ReportingService {
       .get<IRecapitulatifVenteChauffeur[]>(`${this.resourceUrl}/vente/chauffeur`, { params: options, observe: 'response' })
       .pipe(map((res: IRecapitulatifVenteChauffeurResponseType) => res));
   }
+
+  getReportingVenteEfficaciteChauffeur(req?: any): Observable<IRecapitulatifVenteEfficaciteChauffeurResponseType> {
+      const options = createRequestOption(req);
+      return this.http
+        .get<IRecapitulatifVenteEfficaciteChauffeur[]>(`${this.resourceUrl}/vente/chauffeur/efficacite`, { params: options, observe: 'response' })
+        .pipe(map((res: IRecapitulatifVenteEfficaciteChauffeurResponseType) => res));
+    }
 
   exportReporting(req?: any, uri?: string): void {
     const options: HttpParams = createRequestOption(req);

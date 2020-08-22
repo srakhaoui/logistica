@@ -91,10 +91,9 @@ export class ReportingAchatTrajetComponent implements OnInit, OnDestroy {
   }
 
   private initForm(){
-    const defaultDateDebut = moment(new Date());
-    defaultDateDebut.set("day", -7);
+    const defaultDateDebut = moment(new Date()).startOf('month');
     this.reportingAchatForm.get('dateDebut').setValue(defaultDateDebut);
-    const defaultDateFin = moment(new Date());
+    const defaultDateFin = moment(new Date()).endOf('month');
     this.reportingAchatForm.get('dateFin').setValue(defaultDateFin);
   }
 

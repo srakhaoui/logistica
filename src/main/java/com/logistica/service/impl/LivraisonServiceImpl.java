@@ -210,11 +210,19 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     @Transactional(readOnly = true)
-    public Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable){
+    public Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable) {
         Long transporteurId = recapitulatifChauffeurRequest.getIdTransporteur();
         return Optional.ofNullable(transporteurId)
             .map(aTransporteurId -> livraisonRepository.getRecapitulatifChauffeur(recapitulatifChauffeurRequest.getDateDebut(), recapitulatifChauffeurRequest.getDateFin(), aTransporteurId, pageable))
             .orElseGet(() -> livraisonRepository.getRecapitulatifChauffeur(recapitulatifChauffeurRequest.getDateDebut(), recapitulatifChauffeurRequest.getDateFin(), pageable));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<RecapitulatifEfficaciteChauffeur> getRecapitulatifEfficaciteChauffeur(RecapitulatifEfficaciteChauffeurRequest recapitulatifEfficaciteChauffeurRequest, Pageable pageable) {
+        Assert.notNull(recapitulatifEfficaciteChauffeurRequest.getDateDebut(), "Date de début est obligatoire pour le rapport efficacité chauffeur");
+        Assert.notNull(recapitulatifEfficaciteChauffeurRequest.getDateFin(), "Date de fin est obligatoire pour le rapport efficacité chauffeur");
+        return livraisonRepository.getRecapitulatifEfficaciteChauffeur(recapitulatifEfficaciteChauffeurRequest, pageable);
     }
 
     @Override

@@ -326,4 +326,49 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             return entityManager.createQuery(countQuery).getFirstResult();
         });
     }
+
+    @Override
+    public Page<RecapitulatifEfficaciteChauffeur> getRecapitulatifEfficaciteChauffeur(RecapitulatifEfficaciteChauffeurRequest recapitulatifEfficaciteChauffeurRequest, Pageable pageable) {
+        final Long transporteurId = recapitulatifEfficaciteChauffeurRequest.getTransporteurId();
+        final LocalDate dateDebutBonCaisse = recapitulatifEfficaciteChauffeurRequest.getDateDebut();
+        final LocalDate dateFinBonCaisse = recapitulatifEfficaciteChauffeurRequest.getDateFin();
+
+        boolean withTransporteurId = transporteurId != null;
+        boolean withDateDebutBonCaisse = dateDebutBonCaisse != null;
+        boolean withDateFinBonCaisse = dateFinBonCaisse != null;
+
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withTransporteurId) {
+            predicate.append(" And l.transporteur.id = :transporteurId");
+        }
+        if (withDateDebutBonCaisse) {
+            predicate.append(" And l.dateBonCaisse >= :dateDebut");
+        }
+        if (withDateFinBonCaisse) {
+            predicate.append(" And l.dateBonCaisse <= :dateFin");
+        }
+
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifEfficaciteChauffeur(l.transporteur.proprietaire.nom, l.transporteur.id, l.transporteur.prenom, l.transporteur.nom, count(l.trajet.id), sum(l.totalComission), sum(l.prixTotalVente)) From Livraison l ").append(predicate).append(" Group By l.transporteur.id");
+        Query entityQuery = entityManager.createQuery(query.toString());
+
+        if (withTransporteurId) {
+            entityQuery.setParameter("transporteurId", transporteurId);
+        }
+        if (withDateDebutBonCaisse) {
+            entityQuery.setParameter("dateDebut", dateDebutBonCaisse);
+        }
+        if (withDateFinBonCaisse) {
+            entityQuery.setParameter("dateFin", dateFinBonCaisse);
+        }
+
+        if (pageable.isPaged()) {
+            entityQuery.setFirstResult((int) pageable.getOffset());
+            entityQuery.setMaxResults(pageable.getPageSize());
+        }
+
+        return PageableExecutionUtils.getPage(entityQuery.getResultList(), pageable, () -> {
+            String countQuery = new StringBuilder("Select count(id) From Livraison l ").append(predicate).toString();
+            return entityManager.createQuery(countQuery).getFirstResult();
+        });
+    }
 }

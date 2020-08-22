@@ -12,14 +12,14 @@ import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-
 import * as moment from 'moment';
 import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
 import { ITransporteur } from 'app/shared/model/transporteur.model';
-import { IRecapitulatifVenteChauffeur } from 'app/shared/model/recapitulatif-vente-chauffeur.model';
+import { IRecapitulatifEfficaciteChauffeur } from 'app/shared/model/recapitulatif-vente-efficacite-chauffeur.model';
 import { format } from 'app/shared/util/date-util';
 
 @Component({
-  selector: 'jhi-reporting-vente-chauffeur',
-  templateUrl: './reporting-vente-chauffeur.component.html'
+  selector: 'jhi-reporting-vente-efficacite-chauffeur',
+  templateUrl: './reporting-vente-efficacite-chauffeur.component.html'
 })
-export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
+export class ReportingVenteEfficaciteChauffeurComponent implements OnInit, OnDestroy {
 
   transporteurs$: Observable<ITransporteur[]>;
   transporteurInput$ = new Subject<string>();
@@ -31,7 +31,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
       dateFin: new FormControl()
     });
 
-  recapitulatifs: IRecapitulatifVenteChauffeur[];
+  recapitulatifs: IRecapitulatifVenteEfficaciteChauffeur[];
   itemsPerPage: number;
   links: any;
   page: any;
@@ -75,8 +75,8 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
   search(){
     this.isSearching = true;
     this.reportingService
-      .getReportingVenteChauffeur(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<IRecapitulatifVenteChauffeur[]>) => {
+      .getReportingVenteEfficaciteChauffeur(this.buildReportingRequest())
+      .subscribe((res: HttpResponse<IRecapitulatifVenteEfficaciteChauffeur[]>) => {
         this.isSearching = false;
         this.paginateRecapitulatifs(res.body, res.headers);
       });
@@ -84,7 +84,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
 
   export(){
     this.reportingService
-        .exportReporting(this.buildReportingRequest(), '/vente/chauffeur/export');
+        .exportReporting(this.buildReportingRequest(), '/vente/chauffeur/efficacite/export');
   }
 
   private buildReportingRequest(): any {
@@ -94,7 +94,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
       sort: this.sort()
     }
     if(this.reportingForm.get('transporteur').value){
-      reportingRequest['idTransporteur'] = this.reportingForm.get('transporteur').value.id;
+      reportingRequest['transporteurId'] = this.reportingForm.get('transporteur').value.id;
     }
     if(this.reportingForm.get('dateDebut').value){
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
@@ -123,8 +123,8 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
   }
 
-  trackId(index: number, item: IRecapitulatifVenteChauffeur) {
-    return item.nomChauffeur + '|' + item.prenomChauffeur;
+  trackId(index: number, item: IRecapitulatifVenteEfficaciteChauffeur) {
+    return item.id;
   }
 
   sort() {
@@ -139,7 +139,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  protected paginateRecapitulatifs(data: IRecapitulatifVenteChauffeur[], headers: HttpHeaders) {
+  protected paginateRecapitulatifs(data: IRecapitulatifVenteEfficaciteChauffeur[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     for (let i = 0; i < data.length; i++) {
