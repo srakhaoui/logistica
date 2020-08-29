@@ -324,4 +324,11 @@ public class LivraisonResource {
         Page<RecapitulatifCaCamion> page = livraisonService.getRecapitulatifCaCamion(recapitulatifCaCamionRequest, Pageable.unpaged());
         buildAndSendCsv("export-ca-camion.csv", RecapitulatifCaCamion.csvHeader(), page.getContent(), httpServletResponse);
     }
+
+    @GetMapping("/livraisons/client/chantiers")
+    public ResponseEntity<List<String>> getAllChantiers(ChantiersByClientRequest chantiersByClientRequest) {
+        log.debug("REST request to get chantiersByClientRequest : {}", chantiersByClientRequest);
+        List<String> chantiers = livraisonService.getChantiersByClient(chantiersByClientRequest);
+        return ResponseEntity.ok().body(chantiers);
+    }
 }

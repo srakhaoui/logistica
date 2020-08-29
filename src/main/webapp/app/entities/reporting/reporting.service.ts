@@ -25,6 +25,7 @@ type IRecapitulatifVenteEfficaciteChauffeurResponseType = HttpResponse<IRecapitu
 type IRecapitulatifVenteFacturationResponseType = HttpResponse<IRecapitulatifVenteFacturation[]>;
 type IRecapitulatifVenteCaCamionResponseType = HttpResponse<IRecapitulatifVenteCaCamion[]>;
 type IRecapitulatifGasoilChargesResponseType = HttpResponse<IRecapitulatifChargesGasoil[]>;
+type IChantiersResponseType = HttpResponse<string[]>;
 
 
 @Injectable({ providedIn: 'root' })
@@ -33,7 +34,6 @@ export class ReportingService {
   public resourceUrlGasoil = SERVER_API_URL + 'api/gasoils';
 
   constructor(protected http: HttpClient) {}
-
 
   getReportingAchat(req?: any): Observable<IRecapitulatifAchatsResponseType> {
     const options = createRequestOption(req);
@@ -76,6 +76,12 @@ export class ReportingService {
     this.buildGetRequest(url, options);
   }
 
+  exportGasoilReporting(req?: any, uri?: string): void {
+    const options: HttpParams = createRequestOption(req);
+    const url = `${this.resourceUrlGasoil}${uri}`;
+    this.buildGetRequest(url, options);
+  }
+
   getReportingVenteFacturation(req?: any): Observable<IRecapitulatifVenteFacturationResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -95,6 +101,13 @@ export class ReportingService {
       return this.http
         .get<IRecapitulatifChargesGasoil[]>(`${this.resourceUrlGasoil}/charges`, { params: options, observe: 'response' })
         .pipe(map((res: IRecapitulatifGasoilChargesResponseType) => res));
+  }
+
+  getChantiersByClient(req?: any): Observable<IChantiersResponseType> {
+      const options = createRequestOption(req);
+      return this.http
+        .get<string[]>(`${this.resourceUrl}/client/chantiers`, { params: options, observe: 'response' })
+        .pipe(map((res: IChantiersResponseType) => res));
   }
 
   protected convertDateArrayFromServer(res: IRecapitulatifAchatsResponseType): IRecapitulatifAchatsResponseType {

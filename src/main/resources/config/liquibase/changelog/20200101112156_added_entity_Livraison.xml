@@ -104,13 +104,19 @@
                 <constraints nullable="true" />
             </column>
             <column name="produit_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="societe_facturation_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+    </changeSet>
+
+    <changeSet id="20200829101800-1" author="said.rakhaoui">
+        <addColumn tableName="livraison">
+            <column name="chantier" type="varchar(255)"/>
+        </addColumn>
     </changeSet>
 
     <changeSet id="20200101112156-1-relations" author="jhipster">

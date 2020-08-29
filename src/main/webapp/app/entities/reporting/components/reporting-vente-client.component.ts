@@ -30,6 +30,9 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   clientInput$ = new Subject<string>();
   clientsLoading:Boolean = false;
 
+  chantiers: string[] = [];
+  chantiersLoading:Boolean = false;
+
   produits$: Observable<IProduit[]>;
   produitInput$ = new Subject<string>();
   produitsLoading:Boolean = false;
@@ -40,6 +43,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
       produit: new FormControl(),
       facture: new FormControl(),
       typeLivraison: new FormControl(),
+      chantier: new FormControl(),
       dateDebut: new FormControl(),
       dateFin: new FormControl()
     });
@@ -163,6 +167,9 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     if(this.reportingForm.get('facture').value !== null){
       reportingRequest['facture'] = this.reportingForm.get('facture').value;
     }
+    if(this.reportingForm.get('chantier').value){
+      reportingRequest['chantier'] = this.reportingForm.get('chantier').value;
+    }
     if(this.reportingForm.get('dateDebut').value){
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
     }
@@ -222,5 +229,32 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     const modalBonRef = this.modalService.open(ReportingBonComponent);
     modalBonRef.componentInstance.livraisonId = livraisonId;
     modalBonRef.componentInstance.bonType = 'Livraison';
+  }
+
+  onClientChange(){
+    const client: IClient = this.reportingForm.get(['client']).value;
+    if(client){
+      this.chantiers = [];
+      this.chantiersLoading = true;
+      this.reportingService
+            .getChantiersByClient(this.buildChantiersRequest(client.id))
+            .subscribe((res: HttpResponse<string[]>) => {
+              this.chantiersLoading = false;
+              this.chantiers = Array.from(res.body);
+            });
+    }
+  }
+
+  private buildChantiersRequest(clientIdParam: number): any{
+    const chantiersRequest = {
+      clientId: clientIdParam
+    }
+    if(this.reportingForm.get('dateDebut').value){
+      chantiersRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
+    }
+    if(this.reportingForm.get('dateFin').value){
+      chantiersRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
+    }
+    return chantiersRequest;
   }
 }

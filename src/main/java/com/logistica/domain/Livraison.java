@@ -136,6 +136,9 @@ public class Livraison implements ICsvConvertible, Serializable {
     @Column(name = "total_comission")
     private Float totalComission;
 
+    @Column(name = "chantier")
+    private String chantier;
+
     @ManyToOne
     @JsonIgnoreProperties("livraisons")
     private Fournisseur fournisseur;
@@ -651,6 +654,14 @@ public class Livraison implements ICsvConvertible, Serializable {
 
     public void setBonLivraisonMimeType(String bonLivraisonMimeType) {
         this.bonLivraisonMimeType = bonLivraisonMimeType;
+    }
+
+    public String getChantier() {
+        return chantier;
+    }
+
+    public void setChantier(String chantier) {
+        this.chantier = chantier;
     }
 
     @JsonProperty("hasBonLivraison")

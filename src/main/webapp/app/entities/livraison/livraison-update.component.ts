@@ -93,7 +93,8 @@ export class LivraisonUpdateComponent implements OnInit {
     transporteur: new FormControl(null, [Validators.required]),
     trajet: new FormControl(),
     produit: new FormControl(null, [Validators.required]),
-    societeFacturation: new FormControl(null, [Validators.required])
+    societeFacturation: new FormControl(null, [Validators.required]),
+    chantier: new FormControl()
   }, [this.validateLivraison]);
 
   constructor(
@@ -162,7 +163,8 @@ export class LivraisonUpdateComponent implements OnInit {
       transporteur: livraison.transporteur,
       trajet: livraison.trajet,
       produit: livraison.produit,
-      societeFacturation: livraison.societeFacturation
+      societeFacturation: livraison.societeFacturation,
+      chantier: livraison.chantier
     });
   }
 
@@ -217,7 +219,8 @@ export class LivraisonUpdateComponent implements OnInit {
       transporteur: this.editForm.get(['transporteur']).value,
       trajet: this.editForm.get(['trajet']).value,
       produit: this.editForm.get(['produit']).value,
-      societeFacturation: this.editForm.get(['societeFacturation']).value
+      societeFacturation: this.editForm.get(['societeFacturation']).value,
+      chantier: this.editForm.get(['chantier']).value
     };
   }
 

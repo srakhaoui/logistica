@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.List;
 
 
 /**
@@ -31,4 +32,7 @@ public interface LivraisonRepository extends JpaRepository<Livraison, Long>, Jpa
 
     @Query("Select sum(l.totalComission) from Livraison l where l.transporteur.id = :transporteurId and l.dateBonCaisse >= :dateDebut and l.dateBonCaisse <= :dateFin")
     Double getTotalCommissionByChauffeur(@Param("transporteurId") Long transporteurId, @Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
+
+    @Query("Select distinct l.chantier From Livraison l Where l.chantier is not null And l.client.id = :clientId And l.dateBonLivraison >= :dateDebut and l.dateBonLivraison <= :dateFin")
+    List<String> getChantiersByClient(@Param("clientId") Long clientId, @Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
 }

@@ -3,9 +3,7 @@ package com.logistica.web.rest;
 import com.logistica.domain.Gasoil;
 import com.logistica.service.GasoilQueryService;
 import com.logistica.service.GasoilService;
-import com.logistica.service.dto.GasoilCriteria;
-import com.logistica.service.dto.RecapitulatifChargeGasoil;
-import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
+import com.logistica.service.dto.*;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -20,7 +18,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -150,5 +151,26 @@ public class GasoilResource {
         Page<RecapitulatifChargeGasoil> page = gasoilService.getRecapitulatifChargeGasoil(recapitulatifChargeGasoilRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping("/gasoils/charges/export")
+    public void getAllLivraisons(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get recapitulatifChargeGasoilRequest : {}", recapitulatifChargeGasoilRequest);
+        Page<RecapitulatifChargeGasoil> page = gasoilService.getRecapitulatifChargeGasoil(recapitulatifChargeGasoilRequest, Pageable.unpaged());
+        buildAndSendCsv("export-gasoil.csv", RecapitulatifClient.csvHeader(), page.getContent(), httpServletResponse);
+    }
+
+    private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println(csvHeader);
+        page.stream().map(T::toCsv).forEach(csvContent -> {
+            try {
+                outputStream.println(csvContent);
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        });
     }
 }

@@ -10,6 +10,7 @@ public class RecapitulatifClientRequest {
     private Long produitId;
     private Long clientId;
     private TypeLivraison typeLivraison;
+    private String chantier;
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
@@ -67,5 +68,13 @@ public class RecapitulatifClientRequest {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public String getChantier() {
+        return chantier;
+    }
+
+    public void setChantier(String chantier) {
+        this.chantier = chantier;
     }
 }

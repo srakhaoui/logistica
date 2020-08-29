@@ -1,9 +1,12 @@
 package com.logistica.service.dto;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Optional;
 
-public class RecapitulatifChargeGasoil {
+public class RecapitulatifChargeGasoil implements ICsvConvertible {
     private final Long societeId;
     private final String societe;
     private final Long transporteurId;
@@ -88,6 +91,27 @@ public class RecapitulatifChargeGasoil {
 
     public String getPrenomTransporteur() {
         return prenomTransporteur;
+    }
+
+    public static String csvHeader() {
+        return "societe;nomTransporteur;prenomTransporteur;matricule;totalQuantiteEnLitre;moyennePrixDuLitre;totalPrixGasoil;kilometrageParcouru;margeGasoil;totalCommissionChauffeur";
+    }
+
+    @Override
+    public String toCsv() {
+        StringBuilder csv = new StringBuilder();
+        csv.append(Optional.ofNullable(societe).orElse("Undefined")).append(";")
+            .append(Optional.ofNullable(nomTransporteur).orElse("Undefined")).append(";")
+            .append(Optional.ofNullable(prenomTransporteur).orElse("Undefined")).append(";")
+            .append(Optional.ofNullable(matricule).orElse("Undefined")).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalQuantiteEnLitre).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(moyennePrixDuLitre).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixGasoil).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(kilometrageParcouru).orElse(0L)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(margeGasoil).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalCommissionChauffeur).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixGasoil).orElse(0.0)), '.', ','));
+        return csv.toString();
     }
 }
 

@@ -18,20 +18,6 @@
                         </option>
                     </select>
                 </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
-                           for="field_client">Client</label>
-                    <ng-select [items]="clients$ | async"
-                               [typeahead]="clientInput$"
-                               bindLabel="nom"
-                               [hideSelected]="true"
-                               [loading]="clientsLoading"
-                               formControlName="client"
-                               name="client">
-                    </ng-select>
-                </div>
                 <div class="col">
                     <label class="form-control-label" for="field_produit">Produit</label>
                     <ng-select [items]="produits$ | async"
@@ -41,6 +27,31 @@
                                [loading]="produitsLoading"
                                formControlName="produit"
                                name="produit">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select [items]="clients$ | async"
+                               [typeahead]="clientInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsLoading"
+                               formControlName="client"
+                               name="client"
+                               (change)="onClientChange($event)">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_chantier">Chantier</label>
+                    <ng-select id="field_chantier"
+                               [items]="chantiers"
+                               [hideSelected]="true"
+                               [loading]="chantiersLoading"
+                               formControlName="chantier"
+                               name="chantier"
+                               placeholder="Les chantiers du client pendant la période sélectionnée">
                     </ng-select>
                 </div>
             </div>

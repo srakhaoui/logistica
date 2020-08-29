@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -247,5 +248,10 @@ public class LivraisonServiceImpl implements LivraisonService {
     public Double getTotalCommissionByChauffeur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin) {
         Assert.notNull(transporteurId, "Merci de fournir l'id du transporteur");
         return livraisonRepository.getTotalCommissionByChauffeur(transporteurId, dateDebut, dateFin);
+    }
+
+    @Override
+    public List<String> getChantiersByClient(ChantiersByClientRequest chantiersByClientRequest) {
+        return livraisonRepository.getChantiersByClient(chantiersByClientRequest.getClientId(), chantiersByClientRequest.getDateDebut(), chantiersByClientRequest.getDateFin());
     }
 }

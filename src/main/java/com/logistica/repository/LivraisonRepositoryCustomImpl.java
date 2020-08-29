@@ -3,6 +3,7 @@ package com.logistica.repository;
 import com.logistica.domain.Livraison;
 import com.logistica.domain.enumeration.TypeLivraison;
 import com.logistica.service.dto.*;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -155,6 +156,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final Long clientId = recapitulatifClientRequest.getClientId();
         final Boolean isFacturee = recapitulatifClientRequest.isFacture();
         final TypeLivraison typeLivraison = recapitulatifClientRequest.getTypeLivraison();
+        final String chantier = recapitulatifClientRequest.getChantier();
         final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
 
@@ -164,6 +166,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         boolean withClientId = clientId != null;
         boolean withIsFacturee = isFacturee != null;
         boolean withTypeLivraison = typeLivraison != null;
+        boolean withChantier = StringUtils.isNotBlank(chantier);
         boolean withDateDebutLivraison = dateDebutLivraison != null;
         boolean withDateFinLivraison = dateFinLivraison != null;
 
@@ -179,6 +182,9 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         }
         if (withIsFacturee) {
             predicate.append(" And l.facture = :facture ");
+        }
+        if (withChantier) {
+            predicate.append(" And l.chantier = :chantier");
         }
         if (withTypeLivraison) {
             predicate.append(" And l.type = :type");
@@ -197,6 +203,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         Optional.ofNullable(clientId).ifPresent(aClientId -> entityQuery.setParameter("clientId", aClientId));
         Optional.ofNullable(isFacturee).ifPresent(aFacture -> entityQuery.setParameter("facture", aFacture));
         Optional.ofNullable(typeLivraison).ifPresent(aTypeLivraison -> entityQuery.setParameter("type", aTypeLivraison));
+        Optional.ofNullable(chantier).ifPresent(aChantier -> entityQuery.setParameter("chantier", chantier));
         Optional.ofNullable(dateDebutLivraison).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
         Optional.ofNullable(dateFinLivraison).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
 
@@ -217,6 +224,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final Boolean isFacturee = recapitulatifFacturationRequest.getFacture();
         final Long clientId = recapitulatifFacturationRequest.getClientId();
         final Long produitId = recapitulatifFacturationRequest.getProduitId();
+        final String chantier = recapitulatifFacturationRequest.getChantier();
         final LocalDate dateDebutLivraison = recapitulatifFacturationRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifFacturationRequest.getDateFin();
 
@@ -224,6 +232,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         boolean withIsFacturee = isFacturee != null;
         boolean withClientId = clientId != null;
         boolean withProduitId = produitId != null;
+        boolean withChantier = chantier != null;
         boolean withDateDebutLivraison = dateDebutLivraison != null;
         boolean withDateFinLivraison = dateFinLivraison != null;
 
@@ -256,6 +265,9 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
+        if (withChantier) {
+            predicate.append(" And l.chantier = :chantier");
+        }
         StringBuilder groupBy = new StringBuilder(" Group by MONTH(l.dateBonLivraison),");
         if (withSocieteId) {
             groupBy.append("l.societeFacturation.nom,");
@@ -271,6 +283,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         Optional.ofNullable(produitId).ifPresent(aProduitId -> entityQuery.setParameter("produitId", aProduitId));
         Optional.ofNullable(isFacturee).ifPresent(aFacture -> entityQuery.setParameter("facture", aFacture));
         Optional.ofNullable(clientId).ifPresent(aClientId -> entityQuery.setParameter("clientId", aClientId));
+        Optional.ofNullable(chantier).ifPresent(aChantier -> entityQuery.setParameter("chantier", chantier));
         Optional.ofNullable(dateDebutLivraison).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
         Optional.ofNullable(dateFinLivraison).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
 

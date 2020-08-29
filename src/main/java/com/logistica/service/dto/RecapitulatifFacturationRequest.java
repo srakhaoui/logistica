@@ -7,6 +7,7 @@ public class RecapitulatifFacturationRequest {
     private Long produitId;
     private Boolean facture;
     private Long clientId;
+    private String chantier;
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
@@ -56,5 +57,13 @@ public class RecapitulatifFacturationRequest {
 
     public void setProduitId(Long produitId) {
         this.produitId = produitId;
+    }
+
+    public String getChantier() {
+        return chantier;
+    }
+
+    public void setChantier(String chantier) {
+        this.chantier = chantier;
     }
 }

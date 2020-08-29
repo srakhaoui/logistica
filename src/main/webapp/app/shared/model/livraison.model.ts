@@ -49,6 +49,7 @@ export interface ILivraison {
   produit?: IProduit;
   societeFacturation?: ISociete;
   audit?: IAudit;
+  chantier?: string;
 }
 
 export class Livraison implements ILivraison {
@@ -87,7 +88,8 @@ export class Livraison implements ILivraison {
     public transporteur?: ITransporteur,
     public trajet?: ITrajet,
     public produit?: IProduit,
-    public societeFacturation?: ISociete
+    public societeFacturation?: ISociete,
+    public chantier?: string
   ) {
     this.facture = this.facture || false;
   }

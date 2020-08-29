@@ -104,8 +104,14 @@
                         </div>
                     </div>
                     <div class="col">
-                        <label class="form-control-label" jhiTranslate="logisticaApp.livraison.produit"
-                               for="field_produit">Produit</label>
+                        <label class="form-control-label" for="field_chantier">Chantier</label>
+                        <input type="text" class="form-control" name="chantier" id="field_chantier"
+                               formControlName="chantier"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label class="form-control-label" for="field_produit">Produit</label>
                         <ng-select [items]="produits$ | async"
                                    [typeahead]="produitInput$"
                                    bindLabel="code"
@@ -123,8 +129,6 @@
                             </small>
                         </div>
                     </div>
-                </div>
-                <div class="form-row">
                     <div class="col">
                         <label class="form-control-label" jhiTranslate="logisticaApp.livraison.trajet"
                                for="field_trajet">Trajet</label>

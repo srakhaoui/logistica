@@ -195,6 +195,9 @@
                 <th scope="col" jhiSortBy="totalComission"><span jhiTranslate="logisticaApp.livraison.totalComission">Total Comission</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col" jhiSortBy="chantier"><span>Chantier</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col" jhiSortBy="fournisseur.nom"><span jhiTranslate="logisticaApp.livraison.fournisseur">Fournisseur</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
@@ -248,6 +251,7 @@
                 <td>{{livraison.fraisEspece}}</td>
                 <td>{{livraison.retenu}}</td>
                 <td>{{livraison.totalComission}}</td>
+                <td>{{livraison.chantier}}</td>
                 <td>
                     <div *ngIf="livraison.fournisseur">
                         <a [routerLink]="['/fournisseur', livraison.fournisseur?.id, 'view' ]" >{{livraison.fournisseur?.nom}}</a>

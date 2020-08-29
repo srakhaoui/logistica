@@ -30,18 +30,22 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
   clientInput$ = new Subject<string>();
   clientsLoading:Boolean = false;
 
+  chantiers: string[] = [];
+  chantiersLoading:Boolean = false;
+
   produits$: Observable<IProduit[]>;
   produitInput$ = new Subject<string>();
   produitsLoading:Boolean = false;
 
   reportingForm = new FormGroup({
-      societe: new FormControl(),
-      client: new FormControl(),
-      produit: new FormControl(),
-      facture: new FormControl(),
-      dateDebut: new FormControl(),
-      dateFin: new FormControl()
-    });
+    societe: new FormControl(),
+    client: new FormControl(),
+    chantier: new FormControl(),
+    produit: new FormControl(),
+    facture: new FormControl(),
+    dateDebut: new FormControl(),
+    dateFin: new FormControl()
+  });
 
   recapitulatifs: IRecapitulatifVenteFacturation[];
   itemsPerPage: number;
@@ -115,6 +119,9 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
     if(this.reportingForm.get('client').value){
       reportingRequest['clientId'] = this.reportingForm.get('client').value.id;
     }
+    if(this.reportingForm.get('chantier').value){
+      reportingRequest['chantier'] = this.reportingForm.get('chantier').value;
+    }
     if(this.reportingForm.get('produit').value){
       reportingRequest['produitId'] = this.reportingForm.get('produit').value.id;
     }
@@ -162,6 +169,33 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
 
   protected onError(errorMessage: string) {
     this.jhiAlertService.error(errorMessage, null, null);
+  }
+
+  onClientChange(){
+    const client: IClient = this.reportingForm.get(['client']).value;
+    if(client){
+      this.chantiers = [];
+      this.chantiersLoading = true;
+      this.reportingService
+            .getChantiersByClient(this.buildChantiersRequest(client.id))
+            .subscribe((res: HttpResponse<string[]>) => {
+              this.chantiersLoading = false;
+              this.chantiers = Array.from(res.body);
+            });
+    }
+  }
+
+  private buildChantiersRequest(clientIdParam: number): any{
+    const chantiersRequest = {
+      clientId: clientIdParam
+    }
+    if(this.reportingForm.get('dateDebut').value){
+      chantiersRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
+    }
+    if(this.reportingForm.get('dateFin').value){
+      chantiersRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
+    }
+    return chantiersRequest;
   }
 
   protected paginateRecapitulatifs(data: IRecapitulatifVenteFacturation[], headers: HttpHeaders) {
