@@ -16,6 +16,8 @@
     "livraison.save.date.caisse.sup.date.livraison": "The registering date should not be before the shipping date",
     "livraison.save.date.caisse.ant.date.commande": "The registering date should not be before the command date",
     "livraison.save.date.livraison.ant.date.commande": "The shipping date should not be before the command date",
-    "tarif.tarifAlreadyExists": "This pricing has been already saved"
+    "tarif.tarifAlreadyExists": "This pricing has been already saved",
+    "km.invalide": "The initial number of KMs could not be greater than the final number",
+    "periode.invalide": "The end date could not be before the start date"
   }
 }

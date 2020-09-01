@@ -248,7 +248,27 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .withStatus(Status.BAD_REQUEST)
             .with(MESSAGE_KEY, ErrorConstants.ERR_COMMISSION_UNDEFINED)
             .withDetail(ex.getMessage())
-                .build();
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleKilometrageInvalideException(KilometrageInvalideException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_KM_INVALIDE)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handlePeriodeInvalideException(PeriodeInvalideException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_PERIODE_INVALIDE)
+            .withDetail(ex.getMessage())
+            .build();
         return create(ex, problem, request);
     }
 

@@ -146,32 +146,32 @@ export class ReportingVenteEfficaciteChauffeurComponent implements OnInit, OnDes
     }
   }
 
-    private loadTransporteurs(){
-      this.transporteurs$ = concat(
-        of([]), // default items
-        this.transporteurInput$.pipe(
-            startWith(''),
-            debounceTime(500),
-            distinctUntilChanged(),
-            tap(() => (this.transporteursLoading = true)),
-            switchMap(nom =>
-                this.transporteurService
-                    .query({'nom.contains': nom})
-                    .pipe(
-                      map((resp: HttpResponse<ITransporteur[]>) => resp.body),
-                      catchError(() => of([])),
-                      map((transporteurs: ITransporteur[]) => {
-                        const enriched:ITransporteur[] = [];
-                        transporteurs.forEach(transporteur => {
-                          transporteur.description = `${transporteur.nom} | ${transporteur.prenom} | ${transporteur.matricule}`
-                          enriched.push(transporteur);
-                        });
-                        return enriched;
-                      })
-                      )
-            ),
-            tap(() => (this.transporteursLoading = false))
-        )
+  private loadTransporteurs(){
+    this.transporteurs$ = concat(
+      of([]), // default items
+      this.transporteurInput$.pipe(
+          startWith(''),
+          debounceTime(500),
+          distinctUntilChanged(),
+          tap(() => (this.transporteursLoading = true)),
+          switchMap(nom =>
+              this.transporteurService
+                  .query({'nom.contains': nom})
+                  .pipe(
+                    map((resp: HttpResponse<ITransporteur[]>) => resp.body),
+                    catchError(() => of([])),
+                    map((transporteurs: ITransporteur[]) => {
+                      const enriched:ITransporteur[] = [];
+                      transporteurs.forEach(transporteur => {
+                        transporteur.description = `${transporteur.nom} | ${transporteur.prenom} | ${transporteur.matricule}`
+                        enriched.push(transporteur);
+                      });
+                      return enriched;
+                    })
+                    )
+          ),
+          tap(() => (this.transporteursLoading = false))
+      )
     );
   }
 }

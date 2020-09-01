@@ -60,7 +60,8 @@
                     <label class="form-control-label col-form-label" for="field_dateDebutBonCaisse">De</label>
                     <div class="input-group">
                         <input id="field_dateDebutBonCaisse" type="text" class="form-control" name="dateDebut"
-                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"
+                               (ngModelChange)="onClientChange($event)"/>
                         <span class="input-group-append">
                             <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
                                 [icon]="'calendar-alt'"></fa-icon></button>
@@ -71,7 +72,8 @@
                     <label class="form-control-label col-form-label" for="field_dateFinBonCaisse">à</label>
                     <div class="input-group">
                         <input id="field_dateFinBonCaisse" type="text" class="form-control" name="dateFin" ngbDatepicker
-                               #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                               #dateFinDp="ngbDatepicker" formControlName="dateFin"
+                               (ngModelChange)="onClientChange($event)"/>
                         <span class="input-group-append">
                             <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
                                 [icon]="'calendar-alt'"></fa-icon></button>

@@ -188,7 +188,7 @@ public class LivraisonServiceImpl implements LivraisonService {
     @Override
     @Transactional(readOnly = true)
     public Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable) {
-    	return livraisonRepository.getRecapitulatifAchat(recapitulatifAchatRequest, pageable);
+        return livraisonRepository.getRecapitulatifAchat(recapitulatifAchatRequest, pageable);
     }
 
     @Override
@@ -239,18 +239,21 @@ public class LivraisonServiceImpl implements LivraisonService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Double getTotalPrixVenteBySocieteFacturation(Long societeId, LocalDate dateDebut, LocalDate dateFin) {
         Assert.notNull(societeId, "Merci de fournir l'id de la société de facturation");
         return livraisonRepository.getTotalPrixVenteBySocieteFacturation(societeId, dateDebut, dateFin);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Double getTotalCommissionByChauffeur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin) {
         Assert.notNull(transporteurId, "Merci de fournir l'id du transporteur");
         return livraisonRepository.getTotalCommissionByChauffeur(transporteurId, dateDebut, dateFin);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<String> getChantiersByClient(ChantiersByClientRequest chantiersByClientRequest) {
         return livraisonRepository.getChantiersByClient(chantiersByClientRequest.getClientId(), chantiersByClientRequest.getDateDebut(), chantiersByClientRequest.getDateFin());
     }

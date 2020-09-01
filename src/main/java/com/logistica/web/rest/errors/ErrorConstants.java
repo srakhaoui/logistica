@@ -4,6 +4,8 @@ import java.net.URI;
 
 public final class ErrorConstants {
 
+    public static final String ERR_KM_INVALIDE = "error.km.invalide";
+    public static final String ERR_PERIODE_INVALIDE = "error.periode.invalide";
     public static final String ERR_CONCURRENCY_FAILURE = "error.concurrencyFailure";
     public static final String ERR_EXERCICE_COMPTABLE_LIVRAISON = "error.exercice.comptable.livraison";
     public static final String ERR_EXERCICE_COMPTABLE_COMMANDE = "error.exercice.comptable.commande";

@@ -3,6 +3,7 @@ package com.logistica.service.impl;
 import com.logistica.domain.Gasoil;
 import com.logistica.repository.GasoilRepository;
 import com.logistica.service.GasoilService;
+import com.logistica.service.KilometrageInvalideException;
 import com.logistica.service.LivraisonService;
 import com.logistica.service.dto.RecapitulatifChargeGasoil;
 import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
@@ -46,6 +47,9 @@ public class GasoilServiceImpl implements GasoilService {
     @Override
     public Gasoil save(Gasoil gasoil) {
         log.debug("Request to save Gasoil : {}", gasoil);
+        if (gasoil.getKilometrageFinal().compareTo(gasoil.getKilometrageInitial()) <= 0) {
+            throw new KilometrageInvalideException();
+        }
         gasoil.setPrixTotalGasoil(gasoil.getPrixDuLitre() * gasoil.getQuantiteEnLitre());
         gasoil.setKilometrageParcouru(gasoil.getKilometrageFinal() - gasoil.getKilometrageInitial());
         return gasoilRepository.save(gasoil);

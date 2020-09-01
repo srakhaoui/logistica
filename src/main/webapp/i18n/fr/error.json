@@ -15,6 +15,8 @@
     "vente.pricingIssue": "Aucun tarif de vente n'a été trouvé pour le client, le produit et l'unité de vente fournis",
     "transport.pricingIssue": "Aucun tarif de transport n'a été trouvé pour le client, le produit et l'unité fournis",
     "error.trajetNotFound": "Aucun trajet n'a été trouvé pour la description fournie",
+    "km.invalide": "Le kilométrage initial ne peut être supérieur au kilométrage final",
+    "periode.invalide": "La date de début ne peut être postérieure à la date de fin",
     "error.trajetWithCommissionUndefined": "Le trajet sélectionné n'a pas de commission de définie",
     "error.trajetManyCommission": "Plusieurs commissions ont été trouvées pour le trajet sélectionné",
     "livraison.save.date.caisse.future": "La date du bon de caisse ne peut être dans le future",

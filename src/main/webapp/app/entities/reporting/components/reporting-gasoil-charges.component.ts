@@ -91,7 +91,7 @@ export class ReportingGasoilChargesComponent implements OnInit, OnDestroy {
 
   export(){
     this.reportingService
-        .exportReporting(this.buildReportingRequest(), '/gasoils/charges/export');
+        .exportGasoilReporting(this.buildReportingRequest(), '/charges/export');
   }
 
   private buildReportingRequest(): any {
