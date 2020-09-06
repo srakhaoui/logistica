@@ -113,12 +113,6 @@
         </createTable>
     </changeSet>
 
-    <changeSet id="20200829101800-1" author="said.rakhaoui">
-        <addColumn tableName="livraison">
-            <column name="chantier" type="varchar(255)"/>
-        </addColumn>
-    </changeSet>
-
     <changeSet id="20200101112156-1-relations" author="jhipster">
 
     </changeSet>

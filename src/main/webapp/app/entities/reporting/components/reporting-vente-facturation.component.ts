@@ -171,7 +171,7 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  onClientChange(){
+  onClientChange(event){
     const client: IClient = this.reportingForm.get(['client']).value;
     if(client){
       this.chantiers = [];

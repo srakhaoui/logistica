@@ -231,7 +231,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     modalBonRef.componentInstance.bonType = 'Livraison';
   }
 
-  onClientChange(){
+  onClientChange(event){
     const client: IClient = this.reportingForm.get(['client']).value;
     if(client){
       this.chantiers = [];
