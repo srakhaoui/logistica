@@ -137,7 +137,7 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: logistica@localhost
+    from: rakhaoui7@gmail.com
   swagger:
     default-include-pattern: /api/.*
     title: logistica API

@@ -6,9 +6,9 @@
 
     <changeSet id="20200516110000-1" author="said.rakhaoui">
         <addColumn tableName="livraison">
-            <column name="BON_COMMANDE" type="blob"/>
-            <column name="BON_LIVRAISON" type="blob"/>
-            <column name="BON_FOURNISSEUR" type="blob"/>
+            <column name="BON_COMMANDE" type="${blobType}"/>
+            <column name="BON_LIVRAISON" type="${blobType}"/>
+            <column name="BON_FOURNISSEUR" type="${blobType}"/>
         </addColumn>
     </changeSet>
 

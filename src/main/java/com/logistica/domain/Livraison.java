@@ -9,7 +9,6 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -41,9 +40,7 @@ public class Livraison implements ICsvConvertible, Serializable {
     @Column(name = "numero_bon_commande")
     private Long numeroBonCommande;
 
-    @Lob
     @Column(name = "bon_commande")
-    @Type(type = "org.hibernate.type.PrimitiveByteArrayBlobType")
     private byte[] bonCommande;
 
     @Column(name = "bon_commande_mime_type")
@@ -56,9 +53,7 @@ public class Livraison implements ICsvConvertible, Serializable {
     @Column(name = "date_bon_livraison", nullable = false)
     private LocalDate dateBonLivraison;
 
-    @Lob
     @Column(name = "bon_livraison")
-    @Type(type = "org.hibernate.type.PrimitiveByteArrayBlobType")
     private byte[] bonLivraison;
 
     @Column(name = "bon_livraison_mime_type")
@@ -67,9 +62,7 @@ public class Livraison implements ICsvConvertible, Serializable {
     @Column(name = "numero_bon_fournisseur")
     private Long numeroBonFournisseur;
 
-    @Lob
     @Column(name = "bon_fournisseur")
-    @Type(type = "org.hibernate.type.PrimitiveByteArrayBlobType")
     private byte[] bonFournisseur;
 
     @Column(name = "bon_fournisseur_mime_type")
