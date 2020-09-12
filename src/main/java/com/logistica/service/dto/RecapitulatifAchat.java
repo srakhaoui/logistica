@@ -6,7 +6,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 
 public class RecapitulatifAchat implements ICsvConvertible {
-    private Long livraisonId;
     private String bonCommandeMimeType;
     private LocalDate dateBonCommande;
     private Long numeroBonCommande;
@@ -18,8 +17,7 @@ public class RecapitulatifAchat implements ICsvConvertible {
     public RecapitulatifAchat() {
     }
 
-    public RecapitulatifAchat(Long livraisonId, String bonCommandeMimeType, LocalDate dateBonCommande, Long numeroBonCommande, String codeProduit, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
-        this.livraisonId = livraisonId;
+    public RecapitulatifAchat(String bonCommandeMimeType, LocalDate dateBonCommande, Long numeroBonCommande, String codeProduit, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
         this.bonCommandeMimeType = bonCommandeMimeType;
         this.dateBonCommande = dateBonCommande;
         this.numeroBonCommande = numeroBonCommande;
@@ -51,10 +49,6 @@ public class RecapitulatifAchat implements ICsvConvertible {
 
     public Double getTotalPrixAchat() {
         return totalPrixAchat;
-    }
-
-    public Long getLivraisonId() {
-        return livraisonId;
     }
 
     public String getBonCommandeMimeType() {

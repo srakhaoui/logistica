@@ -16,28 +16,48 @@ public class RecapitulatifFacturation implements ICsvConvertible {
     private String societe;
     private String client;
 
-    public RecapitulatifFacturation(Integer moisBonLivraison, String produit, Unite uniteVente, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture) {
+    public RecapitulatifFacturation(Integer moisBonLivraison, String produit, Unite uniteVente, Double totalQuantiteeVendue, Double totalPrixVente) {
         this.moisBonLivraison = moisBonLivraison;
         this.produit = produit;
         this.uniteVente = uniteVente;
         this.totalQuantiteeVendue = totalQuantiteeVendue;
         this.totalPrixVente = totalPrixVente;
+    }
+
+    public RecapitulatifFacturation(Integer moisBonLivraison, String produit, Unite uniteVente, boolean facture, Double totalQuantiteeVendue, Double totalPrixVente) {
+        this(moisBonLivraison, produit, uniteVente, totalQuantiteeVendue, totalPrixVente);
         this.facture = facture;
     }
 
-    public RecapitulatifFacturation(Integer moisBonLivraison, String societe, String produit, Unite uniteVente, String client, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture) {
-        this(moisBonLivraison, produit, uniteVente, totalQuantiteeVendue, totalPrixVente, facture);
+    public RecapitulatifFacturation(Integer moisBonLivraison, String societe, String produit, Unite uniteVente, String client, boolean facture, Double totalQuantiteeVendue, Double totalPrixVente) {
+        this(moisBonLivraison, produit, uniteVente, facture, totalQuantiteeVendue, totalPrixVente);
         this.societe = societe;
         this.client = client;
     }
 
-    public RecapitulatifFacturation(Integer moisBonLivraison, String societe, String produit, Unite uniteVente, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture) {
-        this(moisBonLivraison, produit, uniteVente, totalQuantiteeVendue, totalPrixVente, facture);
+    public RecapitulatifFacturation(Integer moisBonLivraison, String societe, String produit, Unite uniteVente, String client, Double totalQuantiteeVendue, Double totalPrixVente) {
+        this(moisBonLivraison, produit, uniteVente, totalQuantiteeVendue, totalPrixVente);
+        this.societe = societe;
+        this.client = client;
+    }
+
+    public RecapitulatifFacturation(Integer moisBonLivraison, String societe, String produit, Unite uniteVente, boolean facture, Double totalQuantiteeVendue, Double totalPrixVente) {
+        this(moisBonLivraison, produit, uniteVente, facture, totalQuantiteeVendue, totalPrixVente);
         this.societe = societe;
     }
 
-    public RecapitulatifFacturation(Integer moisBonLivraison, String produit, Unite uniteVente, String client, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture) {
-        this(moisBonLivraison, produit, uniteVente, totalQuantiteeVendue, totalPrixVente, facture);
+    public RecapitulatifFacturation(Integer moisBonLivraison, String societe, String produit, Unite uniteVente, Double totalQuantiteeVendue, Double totalPrixVente) {
+        this(moisBonLivraison, produit, uniteVente, totalQuantiteeVendue, totalPrixVente);
+        this.societe = societe;
+    }
+
+    public RecapitulatifFacturation(Integer moisBonLivraison, String produit, Unite uniteVente, String client, Double totalQuantiteeVendue, Double totalPrixVente) {
+        this(moisBonLivraison, produit, uniteVente, totalQuantiteeVendue, totalPrixVente);
+        this.client = client;
+    }
+
+    public RecapitulatifFacturation(Integer moisBonLivraison, String produit, Unite uniteVente, String client, boolean facture, Double totalQuantiteeVendue, Double totalPrixVente) {
+        this(moisBonLivraison, produit, uniteVente, facture, totalQuantiteeVendue, totalPrixVente);
         this.client = client;
     }
 
