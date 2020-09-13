@@ -3,7 +3,10 @@ package com.logistica.web.rest;
 import com.logistica.domain.Gasoil;
 import com.logistica.service.GasoilQueryService;
 import com.logistica.service.GasoilService;
-import com.logistica.service.dto.*;
+import com.logistica.service.dto.GasoilCriteria;
+import com.logistica.service.dto.ICsvConvertible;
+import com.logistica.service.dto.RecapitulatifChargeGasoil;
+import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -157,7 +160,7 @@ public class GasoilResource {
     public void getAllLivraisons(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, HttpServletResponse httpServletResponse) throws IOException {
         log.debug("REST request to get recapitulatifChargeGasoilRequest : {}", recapitulatifChargeGasoilRequest);
         Page<RecapitulatifChargeGasoil> page = gasoilService.getRecapitulatifChargeGasoil(recapitulatifChargeGasoilRequest, Pageable.unpaged());
-        buildAndSendCsv("export-gasoil.csv", RecapitulatifClient.csvHeader(), page.getContent(), httpServletResponse);
+        buildAndSendCsv("export-gasoil.csv", RecapitulatifChargeGasoil.csvHeader(), page.getContent(), httpServletResponse);
     }
 
     private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
