@@ -28,6 +28,8 @@ export class GasoilUpdateComponent implements OnInit {
 
   societes: ISociete[];
 
+  kilometrageInitialReadOnly;
+
   editForm = this.fb.group({
     id: [],
     numeroBonGasoil: [null, [Validators.required]],
@@ -52,6 +54,7 @@ export class GasoilUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.isSaving = false;
+    this.kilometrageInitialReadOnly = false;
     this.activatedRoute.data.subscribe(({ gasoil }) => {
       this.updateForm(gasoil);
     });
@@ -144,14 +147,14 @@ export class GasoilUpdateComponent implements OnInit {
                 tap(() => (this.transporteursLoading = true)),
                 switchMap(nom =>
                     this.transporteurService
-                        .query({'nom.contains': nom})
+                        .query({'matricule.contains': nom})
                         .pipe(
                           map((resp: HttpResponse<ITransporteur[]>) => resp.body),
                           catchError(() => of([])),
                           map((transporteurs: ITransporteur[]) => {
                             const enriched:ITransporteur[] = [];
                             transporteurs.forEach(transporteur => {
-                              transporteur.description = `${transporteur.nom} - ${transporteur.prenom} - ${transporteur.matricule}`
+                              transporteur.description = `${transporteur.matricule} - ${transporteur.nom} - ${transporteur.prenom}`
                               enriched.push(transporteur);
                             });
                             return enriched;
@@ -168,6 +171,12 @@ export class GasoilUpdateComponent implements OnInit {
     const transporteur: ITransporteur = this.editForm.get(['transporteur']).value;
     if(transporteur){
       this.editForm.get(['societeFacturation']).setValue(transporteur.proprietaire);
+      const req = {matricule: transporteur.matricule}
+      this.gasoilService.getKilometrageFinal(req).subscribe(kilometrageFinal => {
+        this.kilometrageInitialReadOnly = true;
+        this.editForm.get(['kilometrageInitial']).setValue(kilometrageFinal.body);
+      },
+       () => this.onSaveError());
     }
   }
 }

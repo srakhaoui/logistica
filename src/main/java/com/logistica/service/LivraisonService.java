@@ -67,5 +67,7 @@ public interface LivraisonService {
 
     Double getTotalCommissionByChauffeur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin);
 
+    Double getTotalVenteByTransporteur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin);
+
     List<String> getChantiersByClient(ChantiersByClientRequest chantiersByClientRequest);
 }

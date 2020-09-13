@@ -173,4 +173,11 @@ public class GasoilResource {
             }
         });
     }
+
+    @GetMapping(value = "/gasoils/kilometrage/final")
+    public ResponseEntity<Integer> getKilometrageFinal(@RequestParam("matricule") String matricule) {
+        log.debug("REST request to getKilometrageFinal : {}", matricule);
+        Integer kilometrageFinal = gasoilService.getKilometrageFinal(matricule);
+        return ResponseEntity.ok().body(kilometrageFinal);
+    }
 }

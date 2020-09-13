@@ -20,7 +20,7 @@
                                [loading]="transporteursLoading"
                                formControlName="transporteur"
                                name="transporteur"
-                               placeholder="Chercher par nom"
+                               placeholder="Chercher par matricule"
                                (change)="onTransporteurChange()">
                     </ng-select>
                     <div
@@ -117,7 +117,8 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.kilometrageInitial"
                            for="field_kilometrageInitial">Kilometrage Initial</label>
-                    <input type="number" class="form-control" name="kilometrageInitial" id="field_kilometrageInitial"
+                    <input [readonly]="kilometrageInitialReadOnly" type="number" class="form-control"
+                           name="kilometrageInitial" id="field_kilometrageInitial"
                            formControlName="kilometrageInitial"/>
                 </div>
                 <div class="form-group">

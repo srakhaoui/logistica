@@ -46,4 +46,6 @@ public interface GasoilService {
     void delete(Long id);
 
     Page<RecapitulatifChargeGasoil> getRecapitulatifChargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable);
+
+    Integer getKilometrageFinal(String matricule);
 }

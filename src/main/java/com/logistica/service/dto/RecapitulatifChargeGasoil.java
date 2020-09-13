@@ -19,6 +19,7 @@ public class RecapitulatifChargeGasoil implements ICsvConvertible {
     private final Long kilometrageParcouru;
     private Double margeGasoil;
     private Double totalCommissionChauffeur;
+    private Double totalVenteTransporteur;
 
     public RecapitulatifChargeGasoil(Long societeId, String societe, Long transporteurId, String nomTransporteur, String prenomTransporteur, String matricule, Double totalQuantiteEnLitre, Double moyennePrixDuLitre, Double totalPrixGasoil, Long kilometrageParcouru) {
         this.societeId = societeId;
@@ -93,8 +94,16 @@ public class RecapitulatifChargeGasoil implements ICsvConvertible {
         return prenomTransporteur;
     }
 
+    public Double getTotalVenteTransporteur() {
+        return totalVenteTransporteur;
+    }
+
+    public void setTotalVenteTransporteur(Double totalVenteTransporteur) {
+        this.totalVenteTransporteur = totalVenteTransporteur;
+    }
+
     public static String csvHeader() {
-        return "societe;nomTransporteur;prenomTransporteur;matricule;totalQuantiteEnLitre;moyennePrixDuLitre;totalPrixGasoil;kilometrageParcouru;margeGasoil;totalCommissionChauffeur";
+        return "societe;nomTransporteur;prenomTransporteur;matricule;totalQuantiteEnLitre;moyennePrixDuLitre;totalPrixGasoil;kilometrageParcouru;margeGasoil;totalCommissionChauffeur;totalVenteTransporteur";
     }
 
     @Override
@@ -110,7 +119,8 @@ public class RecapitulatifChargeGasoil implements ICsvConvertible {
             .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(kilometrageParcouru).orElse(0L)), '.', ',')).append(";")
             .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(margeGasoil).orElse(0.0)), '.', ',')).append(";")
             .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalCommissionChauffeur).orElse(0.0)), '.', ',')).append(";")
-            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixGasoil).orElse(0.0)), '.', ','));
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixGasoil).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalVenteTransporteur).orElse(0.0)), '.', ','));
         return csv.toString();
     }
 }

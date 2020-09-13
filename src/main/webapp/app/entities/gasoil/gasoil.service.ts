@@ -8,6 +8,7 @@ import { IGasoil } from 'app/shared/model/gasoil.model';
 
 type EntityResponseType = HttpResponse<IGasoil>;
 type EntityArrayResponseType = HttpResponse<IGasoil[]>;
+type IntegerResponseType = HttpResponse<number>;
 
 @Injectable({ providedIn: 'root' })
 export class GasoilService {
@@ -30,6 +31,11 @@ export class GasoilService {
   query(req?: any): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http.get<IGasoil[]>(this.resourceUrl, { params: options, observe: 'response' });
+  }
+
+  getKilometrageFinal(req?: any): Observable<IntegerResponseType> {
+    const options = createRequestOption(req);
+    return this.http.get<number>(`${this.resourceUrl}/kilometrage/final`, { params: options, observe: 'response' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {

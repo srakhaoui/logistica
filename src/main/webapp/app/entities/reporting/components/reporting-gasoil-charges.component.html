@@ -89,6 +89,7 @@
                 <th scope="col"><span>Kilométrage Parcouru</span></th>
                 <th scope="col"><span>Marge Gasoil</span></th>
                 <th scope="col"><span>Total Commission Chauffeur</span></th>
+                <th scope="col"><span>Total Vente Transporteur</span></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
@@ -104,6 +105,7 @@
                 <td>{{recapitulatif.kilometrageParcouru}}</td>
                 <td>{{recapitulatif.margeGasoil}}</td>
                 <td>{{recapitulatif.totalCommissionChauffeur}}</td>
+                <td>{{recapitulatif.totalVenteTransporteur}}</td>
             </tr>
             </tbody>
         </table>

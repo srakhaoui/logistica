@@ -111,10 +111,19 @@ public class GasoilServiceImpl implements GasoilService {
             Double totalCommissionChauffeur = livraisonService.getTotalCommissionByChauffeur(recapitulatifChargeGasoil.getTransporteurId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
             totalCommissionChauffeur = round(totalCommissionChauffeur);
             recapitulatifChargeGasoil.setTotalCommissionChauffeur(totalCommissionChauffeur);
+            Double totalVenteByTransporteur = livraisonService.getTotalVenteByTransporteur(recapitulatifChargeGasoil.getTransporteurId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
+            recapitulatifChargeGasoil.setTotalVenteTransporteur(totalVenteByTransporteur);
         });
     }
 
     private double round(Double montant) {
         return BigDecimal.valueOf(montant).setScale(2, RoundingMode.HALF_EVEN).doubleValue();
+    }
+
+    @Override
+    public Integer getKilometrageFinal(String matricule) {
+        Assert.notNull(matricule, "gasoilRepository.getKilometrageFinal: Le matricule est obligatoire");
+        Integer kilometrageFinal = gasoilRepository.getkilometrageFinalByMatricule(matricule);
+        return Optional.ofNullable(kilometrageFinal).orElse(0);
     }
 }

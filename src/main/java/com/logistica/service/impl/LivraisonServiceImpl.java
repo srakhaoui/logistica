@@ -254,6 +254,13 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     @Transactional(readOnly = true)
+    public Double getTotalVenteByTransporteur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin) {
+        Assert.notNull(transporteurId, "Merci de fournir l'id du transporteur");
+        return livraisonRepository.getTotalVenteByTransporteur(transporteurId, dateDebut, dateFin);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<String> getChantiersByClient(ChantiersByClientRequest chantiersByClientRequest) {
         return livraisonRepository.getChantiersByClient(chantiersByClientRequest.getClientId(), chantiersByClientRequest.getDateDebut(), chantiersByClientRequest.getDateFin());
     }
