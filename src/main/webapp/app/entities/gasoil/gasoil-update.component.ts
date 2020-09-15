@@ -173,8 +173,9 @@ export class GasoilUpdateComponent implements OnInit {
       this.editForm.get(['societeFacturation']).setValue(transporteur.proprietaire);
       const req = {matricule: transporteur.matricule}
       this.gasoilService.getKilometrageFinal(req).subscribe(kilometrageFinal => {
-        this.kilometrageInitialReadOnly = true;
-        this.editForm.get(['kilometrageInitial']).setValue(kilometrageFinal.body);
+        const kilometrageFinalValue = kilometrageFinal.body;
+        this.kilometrageInitialReadOnly = kilometrageFinalValue !== 0;
+        this.editForm.get(['kilometrageInitial']).setValue(kilometrageFinalValue);
       },
        () => this.onSaveError());
     }
