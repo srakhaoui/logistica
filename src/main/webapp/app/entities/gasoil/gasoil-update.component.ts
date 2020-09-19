@@ -40,7 +40,9 @@ export class GasoilUpdateComponent implements OnInit {
     kilometrageFinal: [],
     kilometrageParcouru: [],
     transporteur: [null, [Validators.required]],
-    societeFacturation: [null, [Validators.required]]
+    societeFacturation: [null, [Validators.required]],
+    dateBonGasoil: [null, [Validators.required]],
+    dateSaisie: []
   });
 
   constructor(
@@ -79,7 +81,9 @@ export class GasoilUpdateComponent implements OnInit {
       kilometrageFinal: gasoil.kilometrageFinal,
       kilometrageParcouru: gasoil.kilometrageParcouru,
       transporteur: gasoil.transporteur,
-      societeFacturation: gasoil.societeFacturation
+      societeFacturation: gasoil.societeFacturation,
+      dateBonGasoil: gasoil.dateBonGasoil,
+      dateSaisie: gasoil.dateSaisie
     });
   }
 
@@ -109,7 +113,8 @@ export class GasoilUpdateComponent implements OnInit {
       kilometrageFinal: this.editForm.get(['kilometrageFinal']).value,
       kilometrageParcouru: this.editForm.get(['kilometrageParcouru']).value,
       transporteur: this.editForm.get(['transporteur']).value,
-      societeFacturation: this.editForm.get(['societeFacturation']).value
+      societeFacturation: this.editForm.get(['societeFacturation']).value,
+      dateBonGasoil: this.editForm.get(['dateBonGasoil']).value
     };
   }
 

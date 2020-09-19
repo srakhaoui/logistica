@@ -71,6 +71,32 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" for="field_dateBonGasoil">Date Bon Gasoil</label>
+                    <div class="input-group">
+                        <input id="field_dateBonGasoil" type="text" class="form-control" name="dateBonGasoil"
+                               ngbDatepicker #dateBonGasoilDp="ngbDatepicker"
+                               formControlName="dateBonGasoil"/>
+                        <span class="input-group-append">
+                                <button type="button" class="btn btn-secondary" (click)="dateBonGasoilDp.toggle()"><fa-icon
+                                    [icon]="'calendar-alt'"></fa-icon></button>
+                            </span>
+                    </div>
+                    <div
+                        *ngIf="editForm.get('dateBonGasoil').invalid && (editForm.get('dateBonGasoil').dirty || editForm.get('dateBonGasoil').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dateBonGasoil').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group" [hidden]="!editForm.get('id').value">
+                    <label class="form-control-label" for="field_dateSaisie">Date Saisie</label>
+                    <input id="field_dateSaisie" type="text" class="form-control" name="dateSaisie"
+                           formControlName="dateSaisie"
+                           readonly/>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.quantiteEnLitre"
                            for="field_quantiteEnLitre">Quantite En Litre</label>
                     <input type="number" class="form-control" name="quantiteEnLitre" id="field_quantiteEnLitre"

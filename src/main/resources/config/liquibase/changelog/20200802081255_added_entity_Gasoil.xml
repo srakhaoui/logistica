@@ -62,6 +62,14 @@
         </addColumn>
     </changeSet>
 
+    <changeSet id="20200919103000-1" author="said.rakhaoui">
+        <addColumn tableName="gasoil">
+            <column name="date_bon_gasoil" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
     <changeSet id="20200802081255-1-relations" author="jhipster">
 
     </changeSet>

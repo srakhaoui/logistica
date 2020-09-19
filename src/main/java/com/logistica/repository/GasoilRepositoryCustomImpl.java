@@ -40,10 +40,10 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
             predicate.append(" And g.transporteur.id = :transporteurId");
         }
         if (withDateDebut) {
-            predicate.append(" And g.dateSaisie >= :dateDebut");
+            predicate.append(" And g.dateBonGasoil >= :dateDebut");
         }
         if (withDateFin) {
-            predicate.append(" And g.dateSaisie <= :dateFin");
+            predicate.append(" And g.dateBonGasoil <= :dateFin");
         }
         String queryAsStr = query.append(predicate.toString()).append(" Group by g.societeFacturation.id, g.societeFacturation.nom, g.transporteur.id, g.transporteur.nom, g.transporteur.prenom, g.transporteur.matricule").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifChargeGasoil.class);

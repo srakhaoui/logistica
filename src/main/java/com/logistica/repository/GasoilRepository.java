@@ -15,6 +15,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface GasoilRepository extends JpaRepository<Gasoil, Long>, JpaSpecificationExecutor<Gasoil>, GasoilRepositoryCustom {
 
-    @Query("Select kilometrageFinal From Gasoil Where transporteur.matricule = :matricule")
+    @Query("Select kilometrageFinal From Gasoil Where transporteur.matricule = :matricule And dateBonGasoil = (Select max(g.dateBonGasoil) From Gasoil g where g.transporteur.matricule = transporteur.matricule)")
     Integer getkilometrageFinalByMatricule(@Param("matricule") String matricule);
 }

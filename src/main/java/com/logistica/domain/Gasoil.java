@@ -61,6 +61,9 @@ public class Gasoil implements Serializable {
     @Column(name = "date_saisie", nullable = false)
     private LocalDate dateSaisie = LocalDate.now();
 
+    @Column(name = "date_bon_gasoil", nullable = false)
+    private LocalDate dateBonGasoil;
+
     @Embedded
     private Audit audit = new Audit();
 
@@ -188,6 +191,22 @@ public class Gasoil implements Serializable {
 
     public void setSocieteFacturation(Societe societe) {
         this.societeFacturation = societe;
+    }
+
+    public LocalDate getDateSaisie() {
+        return dateSaisie;
+    }
+
+    public void setDateSaisie(LocalDate dateSaisie) {
+        this.dateSaisie = dateSaisie;
+    }
+
+    public LocalDate getDateBonGasoil() {
+        return dateBonGasoil;
+    }
+
+    public void setDateBonGasoil(LocalDate dateBonGasoil) {
+        this.dateBonGasoil = dateBonGasoil;
     }
 
     public Audit getAudit() {

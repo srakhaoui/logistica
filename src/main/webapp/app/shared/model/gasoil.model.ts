@@ -1,5 +1,6 @@
 import { ITransporteur } from 'app/shared/model/transporteur.model';
 import { ISociete } from 'app/shared/model/societe.model';
+import { Moment } from 'moment';
 
 export interface IGasoil {
   id?: number;
@@ -12,6 +13,8 @@ export interface IGasoil {
   kilometrageParcouru?: number;
   transporteur?: ITransporteur;
   societeFacturation?: ISociete;
+  dateBonGasoil?: Moment;
+  dateSaisie?: Moment;
 }
 
 export class Gasoil implements IGasoil {
@@ -25,6 +28,8 @@ export class Gasoil implements IGasoil {
     public kilometrageFinal?: number,
     public kilometrageParcouru?: number,
     public transporteur?: ITransporteur,
-    public societeFacturation?: ISociete
+    public societeFacturation?: ISociete,
+    public dateBonGasoil?: Moment,
+    public dateSaisie?: Moment
   ) {}
 }

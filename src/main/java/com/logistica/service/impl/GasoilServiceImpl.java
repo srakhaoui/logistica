@@ -104,14 +104,14 @@ public class GasoilServiceImpl implements GasoilService {
 
     private void calculerMargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Page<RecapitulatifChargeGasoil> recapitulatifChargeGasoilPage) {
         recapitulatifChargeGasoilPage.getContent().stream().forEach(recapitulatifChargeGasoil -> {
-            final Double totalPrixVente = livraisonService.getTotalPrixVenteBySocieteFacturation(recapitulatifChargeGasoil.getSocieteId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
+            final Double totalPrixVente = Optional.ofNullable(livraisonService.getTotalPrixVenteBySocieteFacturation(recapitulatifChargeGasoil.getSocieteId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin())).orElse(0.0);
             double margeGasoil = (totalPrixVente - recapitulatifChargeGasoil.getTotalPrixGasoil()) / recapitulatifChargeGasoil.getTotalPrixGasoil();
             margeGasoil = round(margeGasoil);
             recapitulatifChargeGasoil.setMargeGasoil(margeGasoil);
-            Double totalCommissionChauffeur = livraisonService.getTotalCommissionByChauffeur(recapitulatifChargeGasoil.getTransporteurId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
+            Double totalCommissionChauffeur = Optional.ofNullable(livraisonService.getTotalCommissionByChauffeur(recapitulatifChargeGasoil.getTransporteurId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin())).orElse(0.0);
             totalCommissionChauffeur = round(totalCommissionChauffeur);
             recapitulatifChargeGasoil.setTotalCommissionChauffeur(totalCommissionChauffeur);
-            Double totalVenteByTransporteur = livraisonService.getTotalVenteByTransporteur(recapitulatifChargeGasoil.getTransporteurId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin());
+            Double totalVenteByTransporteur = Optional.ofNullable(livraisonService.getTotalVenteByTransporteur(recapitulatifChargeGasoil.getTransporteurId(), recapitulatifChargeGasoilRequest.getDateDebut(), recapitulatifChargeGasoilRequest.getDateFin())).orElse(0.0);
             recapitulatifChargeGasoil.setTotalVenteTransporteur(totalVenteByTransporteur);
         });
     }

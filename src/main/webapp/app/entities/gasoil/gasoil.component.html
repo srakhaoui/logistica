@@ -30,6 +30,12 @@
                 <th scope="col" jhiSortBy="numeroBonGasoil"><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col" jhiSortBy="dateBonGasoil"><span >Date Bon Gasoil</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="dateSaisie"><span >Date Saisie</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col" jhiSortBy="quantiteEnLitre"><span jhiTranslate="logisticaApp.gasoil.quantiteEnLitre">Quantite En Litre</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
@@ -68,6 +74,8 @@
                     </div>
                 </td>
                 <td>{{gasoil.numeroBonGasoil}}</td>
+                <td>{{gasoil.dateBonGasoil | date:'dd MMM yyyy'}}</td>
+                <td>{{gasoil.dateSaisie | date:'dd MMM yyyy'}}</td>
                 <td>{{gasoil.quantiteEnLitre}}</td>
                 <td>{{gasoil.prixDuLitre}}</td>
                 <td>{{gasoil.prixTotalGasoil}}</td>
