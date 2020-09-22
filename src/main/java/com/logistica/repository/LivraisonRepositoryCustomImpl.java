@@ -67,9 +67,9 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
 		}
 
 		return PageableExecutionUtils.getPage(entityQuery.getResultList(), pageable, () -> {
-			String countQuery = new StringBuilder("Select count(id) From Livraison ").append(predicate).toString();
-			return entityManager.createQuery(countQuery).getFirstResult();
-		});
+            String countQuery = new StringBuilder("Select count(id) From Livraison l ").append(predicate).toString();
+            return entityManager.createQuery(countQuery).getFirstResult();
+        });
 	}
 
     @Override
@@ -299,7 +299,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         }
 
         return PageableExecutionUtils.getPage(entityQuery.getResultList(), pageable, () -> {
-            String countQuery = new StringBuilder("Select count(id) From Livraison ").append(predicate).toString();
+            String countQuery = new StringBuilder("Select count(id) From Livraison l ").append(predicate).toString();
             return entityManager.createQuery(countQuery).getFirstResult();
         });
     }
@@ -341,7 +341,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         }
 
         return PageableExecutionUtils.getPage(entityQuery.getResultList(), pageable, () -> {
-            String countQuery = new StringBuilder("Select count(id) From Livraison ").append(predicate).toString();
+            String countQuery = new StringBuilder("Select count(id) From Livraison l ").append(predicate).toString();
             return entityManager.createQuery(countQuery).getFirstResult();
         });
     }
