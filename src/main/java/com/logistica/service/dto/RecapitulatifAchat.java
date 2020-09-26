@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class RecapitulatifAchat implements ICsvConvertible {
     private String bonCommandeMimeType;
@@ -68,10 +69,10 @@ public class RecapitulatifAchat implements ICsvConvertible {
         final StringBuilder csv = new StringBuilder();
         csv.append(dateBonCommande).append(";")
             .append(numeroBonCommande).append(";")
-            .append(codeProduit).append(";")
-            .append(StringUtils.replaceChars(Double.toString(totalQuantiteAchetee), '.', ',')).append(";")
-            .append(StringUtils.replaceChars(Double.toString(totalQuantiteConvertie), '.', ',')).append(";")
-            .append(StringUtils.replaceChars(Double.toString(totalPrixAchat), '.', ','));
+            .append(Optional.ofNullable(codeProduit).orElse("Undefined")).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalQuantiteAchetee).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalQuantiteConvertie).orElse(0.0)), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixAchat).orElse(0.0)), '.', ','));
         return csv.toString();
     }
 }
