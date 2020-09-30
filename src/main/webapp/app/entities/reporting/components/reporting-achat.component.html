@@ -83,9 +83,15 @@
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col"><span>N° Bon Commande</span></th>
+                <th scope="col" jhiSortBy="dateBonLivraison"><span>Date Bon Livraison</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"><span>N° Bon Livraison</span></th>
+                <th scope="col"><span>Fournisseur</span></th>
                 <th scope="col" jhiSortBy="codeProduit"><span jhiTranslate="logisticaApp.reporting.codeProduit">Code Produit</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col"><span>Matricule</span></th>
                 <th scope="col"><span>Total Quantitée Achetée</span></th>
                 <th scope="col"><span>Total Quantitée Convertie</span></th>
                 <th scope="col"><span jhiTranslate="logisticaApp.reporting.totalPrixAchat">Total Prix Achat</span></th>
@@ -103,7 +109,11 @@
                         {{recapitulatifAchat.numeroBonCommande}}
                     </span>
                 </td>
+                <td>{{recapitulatifAchat.dateBonLivraison | date:'dd MMM yyyy'}}</td>
+                <td>{{recapitulatifAchat.numeroBonLivraison}}</td>
+                <td>{{recapitulatifAchat.nomFournisseur}}</td>
                 <td>{{recapitulatifAchat.codeProduit}}</td>
+                <td>{{recapitulatifAchat.matricule}}</td>
                 <td>{{recapitulatifAchat.totalQuantiteAchetee}}</td>
                 <td>{{recapitulatifAchat.totalQuantiteConvertie}}</td>
                 <td>{{recapitulatifAchat.totalPrixAchat}}</td>

@@ -29,7 +29,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final LocalDate dateDebutBonCommande = recapitulatifAchatRequest.getDateDebut();
         final LocalDate dateFinBonCommande = recapitulatifAchatRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifAchat(l.bonCommandeMimeType, l.dateBonCommande, l.numeroBonCommande, l.produit.code, sum(l.quantiteAchetee), sum(l.quantiteConvertie), sum(l.prixTotalAchat)) From Livraison l");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifAchat(l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.bonCommandeMimeType, l.dateBonCommande, l.numeroBonCommande, l.fournisseur.nom, l.produit.code, l.transporteur.matricule, sum(l.quantiteAchetee), sum(l.quantiteConvertie), sum(l.prixTotalAchat)) From Livraison l");
         boolean withSocieteId = societeId != null;
         boolean withFournisseurId = fournisseurId != null;
         boolean withDateDebutCommande = dateDebutBonCommande != null;
@@ -47,7 +47,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withDateFinCommande) {
             predicate.append(" And l.dateBonCommande <= :dateFinBonCommande");
         }
-        String queryAsStr = query.append(predicate.toString()).append(" Group by l.bonCommandeMimeType, l.dateBonCommande, l.numeroBonCommande, l.produit.code").toString();
+        String queryAsStr = query.append(predicate.toString()).append(" Group by l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.bonCommandeMimeType, l.dateBonCommande, l.numeroBonCommande, l.fournisseur.nom, l.produit.code, l.transporteur.matricule").toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifAchat.class);
         if (withSocieteId) {
             entityQuery.setParameter("societeId", societeId);

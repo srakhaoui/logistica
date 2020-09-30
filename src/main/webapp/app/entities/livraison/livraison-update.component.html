@@ -266,6 +266,7 @@
                             <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
                             <option *ngIf="isTransport()" value="Voyage">{{'logisticaApp.Unite.Voyage' | translate}}
                             </option>
+                            <option *ngIf="isTransport()" value="Km">{{'logisticaApp.Unite.Km' | translate}}</option>
                         </select>
                         <div *ngIf="(editForm.get('uniteVente').dirty || editForm.get('uniteVente').touched)">
                             <small class="form-text text-danger" [hidden]="editForm.get('uniteVente').value"

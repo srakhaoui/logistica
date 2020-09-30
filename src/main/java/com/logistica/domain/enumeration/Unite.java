@@ -34,7 +34,18 @@ public enum Unite {
 
         @Override
         public Float getPrixTotalAchat(Livraison livraison, Float prixUnitaire) {
-            return prixUnitaire;
+            throw new UnsupportedOperationException("Prix achat en voyage n'est pas supporté");
+        }
+    },
+    Km {
+        @Override
+        public Float getPrixTotalVente(Livraison livraison, Float prixUnitaire) {
+            return livraison.getQuantiteVendue() * prixUnitaire;
+        }
+
+        @Override
+        public Float getPrixTotalAchat(Livraison livraison, Float prixUnitaire) {
+            throw new UnsupportedOperationException("Prix achat en kilométrage n'est pas supporté");
         }
     };
 
