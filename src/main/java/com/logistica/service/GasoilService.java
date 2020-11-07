@@ -1,6 +1,7 @@
 package com.logistica.service;
 
 import com.logistica.domain.Gasoil;
+import com.logistica.service.dto.GasoilPriceResponse;
 import com.logistica.service.dto.RecapitulatifChargeGasoil;
 import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
 import org.springframework.data.domain.Page;
@@ -48,4 +49,6 @@ public interface GasoilService {
     Page<RecapitulatifChargeGasoil> getRecapitulatifChargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable);
 
     Integer getKilometrageFinal(String matricule);
+
+    GasoilPriceResponse getLastPrixGasoil();
 }

@@ -8,6 +8,7 @@ import { Subject, Observable, of, concat } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, startWith } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { IGasoil, Gasoil } from 'app/shared/model/gasoil.model';
+import { IGasoilPrice } from 'app/shared/model/gasoil-price.model';
 import { GasoilService } from './gasoil.service';
 import { ITransporteur } from 'app/shared/model/transporteur.model';
 import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
@@ -29,6 +30,7 @@ export class GasoilUpdateComponent implements OnInit {
   societes: ISociete[];
 
   kilometrageInitialReadOnly;
+  loadingPrice;
 
   editForm = this.fb.group({
     id: [],
@@ -68,6 +70,7 @@ export class GasoilUpdateComponent implements OnInit {
       const transporteur: ITransporteur = this.editForm.get('transporteur').value;
       transporteur.description = `${transporteur.nom} - ${transporteur.prenom} - ${transporteur.matricule}`;
     }
+    this.setLatestGasoilPrice();
   }
 
   updateForm(gasoil: IGasoil) {
@@ -183,6 +186,21 @@ export class GasoilUpdateComponent implements OnInit {
         this.editForm.get(['kilometrageInitial']).setValue(kilometrageFinalValue);
       },
        () => this.onSaveError());
+    }
+  }
+
+  private setLatestGasoilPrice(){
+    const newGasoil = this.editForm.get('id').value === undefined;
+    if(newGasoil){
+      this.loadingPrice = true;
+      this.gasoilService
+          .getLatestGasoilPrice()
+          .subscribe((res: IGasoilPrice) => {
+              this.editForm.get(['prixDuLitre']).setValue(res.price);
+              this.loadingPrice = false;
+            },
+              (res: HttpErrorResponse) => this.onError(res.message)
+           );
     }
   }
 }

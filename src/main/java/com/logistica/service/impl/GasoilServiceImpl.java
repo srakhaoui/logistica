@@ -5,6 +5,7 @@ import com.logistica.repository.GasoilRepository;
 import com.logistica.service.GasoilService;
 import com.logistica.service.KilometrageInvalideException;
 import com.logistica.service.LivraisonService;
+import com.logistica.service.dto.GasoilPriceResponse;
 import com.logistica.service.dto.RecapitulatifChargeGasoil;
 import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
 import org.slf4j.Logger;
@@ -125,5 +126,11 @@ public class GasoilServiceImpl implements GasoilService {
         Assert.notNull(matricule, "gasoilRepository.getKilometrageFinal: Le matricule est obligatoire");
         Integer kilometrageFinal = gasoilRepository.getkilometrageFinalByMatricule(matricule);
         return Optional.ofNullable(kilometrageFinal).orElse(0);
+    }
+
+    @Override
+    public GasoilPriceResponse getLastPrixGasoil() {
+        final Float latestGasoilPrice = gasoilRepository.getLastPrixGasoil();
+        return new GasoilPriceResponse(latestGasoilPrice);
     }
 }

@@ -3,10 +3,7 @@ package com.logistica.web.rest;
 import com.logistica.domain.Gasoil;
 import com.logistica.service.GasoilQueryService;
 import com.logistica.service.GasoilService;
-import com.logistica.service.dto.GasoilCriteria;
-import com.logistica.service.dto.ICsvConvertible;
-import com.logistica.service.dto.RecapitulatifChargeGasoil;
-import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
+import com.logistica.service.dto.*;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -182,5 +179,12 @@ public class GasoilResource {
         log.debug("REST request to getKilometrageFinal : {}", matricule);
         Integer kilometrageFinal = gasoilService.getKilometrageFinal(matricule);
         return ResponseEntity.ok().body(kilometrageFinal);
+    }
+
+    @GetMapping(value = "/gasoils/prix/latest")
+    public ResponseEntity<GasoilPriceResponse> getLastPrixGasoil() {
+        log.debug("REST request to getLastPrixGasoil");
+        GasoilPriceResponse latestPrice = gasoilService.getLastPrixGasoil();
+        return ResponseEntity.ok().body(latestPrice);
     }
 }

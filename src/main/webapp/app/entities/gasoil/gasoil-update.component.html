@@ -118,8 +118,9 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.prixDuLitre"
                            for="field_prixDuLitre">Prix Du Litre</label>
-                    <input type="number" class="form-control" name="prixDuLitre" id="field_prixDuLitre"
-                           formControlName="prixDuLitre"/>
+                    <input [readonly]="loadingPrice" type="number" class="form-control" name="prixDuLitre"
+                           id="field_prixDuLitre" formControlName="prixDuLitre"
+                           [placeholder]="loadingPrice ? 'Récupération du prix du gasoil...':''"/>
                     <div
                         *ngIf="editForm.get('prixDuLitre').invalid && (editForm.get('prixDuLitre').dirty || editForm.get('prixDuLitre').touched)">
                         <small class="form-text text-danger"

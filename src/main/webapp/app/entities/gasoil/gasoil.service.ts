@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { SERVER_API_URL } from 'app/app.constants';
 import { createRequestOption } from 'app/shared/util/request-util';
 import { IGasoil } from 'app/shared/model/gasoil.model';
+import { IGasoilPrice } from 'app/shared/model/gasoil-price.model';
 
 type EntityResponseType = HttpResponse<IGasoil>;
 type EntityArrayResponseType = HttpResponse<IGasoil[]>;
@@ -36,6 +37,10 @@ export class GasoilService {
   getKilometrageFinal(req?: any): Observable<IntegerResponseType> {
     const options = createRequestOption(req);
     return this.http.get<number>(`${this.resourceUrl}/kilometrage/final`, { params: options, observe: 'response' });
+  }
+
+  getLatestGasoilPrice(): Observable<IGasoilPrice> {
+    return this.http.get<IGasoilPrice>(`${this.resourceUrl}/prix/latest`, { observe: 'body' });
   }
 
   delete(id: number): Observable<HttpResponse<any>> {
