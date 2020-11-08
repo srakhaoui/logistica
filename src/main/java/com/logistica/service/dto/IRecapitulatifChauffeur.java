@@ -33,12 +33,13 @@ public interface IRecapitulatifChauffeur extends ICsvConvertible {
 
     Double getTotalComission();
 
-    String CSV_HEADER = "prenomChauffeur;nomChauffeur;nombreTrajets;commissionTrajet;reparationDivers;trax;balance;avance;penaliteEse;penaliteChfrs;fraisEspece;retenu;totalComission";
+    String CSV_HEADER = "prenomChauffeur;nomChauffeur;description;nombreTrajets;commissionTrajet;reparationDivers;trax;balance;avance;penaliteEse;penaliteChfrs;fraisEspece;retenu;totalComission";
 
     default String toCsv() {
         StringBuilder csv = new StringBuilder();
         csv.append(getPrenomChauffeur()).append(";")
             .append(getNomChauffeur()).append(";")
+            .append(getDescription()).append(";")
             .append(getNombreTrajets()).append(";")
             .append(StringUtils.replaceChars(Double.toString(getCommissionTrajet()), '.', ',')).append(";")
             .append(StringUtils.replaceChars(Double.toString(getReparationDivers()), '.', ',')).append(";")

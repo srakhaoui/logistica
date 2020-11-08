@@ -21,6 +21,7 @@ public final class ErrorConstants {
     public static final String ERR_DATE_BON_CAISSE_SUP_DATE_LIVRAISON = "error.livraison.save.date.caisse.sup.date.livraison";
     public static final String ERR_DATE_BON_CAISSE_ANT_DATE_CMD = "error.livraison.save.date.caisse.ant.date.commande";
     public static final String ERR_DATE_BON_LIVRAISON_ANT_DATE_CMD = "error.livraison.save.date.livraison.ant.date.commande";
+    public static final String ERR_BL_CLIENT_EXIST = "error.bl.client.exist";
     public static final String PROBLEM_BASE_URL = "https://www.jhipster.tech/problem";
     public static final URI DEFAULT_TYPE = URI.create(PROBLEM_BASE_URL + "/problem-with-message");
     public static final URI CONSTRAINT_VIOLATION_TYPE = URI.create(PROBLEM_BASE_URL + "/constraint-violation");

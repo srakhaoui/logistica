@@ -18,6 +18,7 @@
     "livraison.save.date.livraison.ant.date.commande": "The shipping date should not be before the command date",
     "tarif.tarifAlreadyExists": "This pricing has been already saved",
     "km.invalide": "The initial number of KMs could not be greater than the final number",
-    "periode.invalide": "The end date could not be before the start date"
+    "periode.invalide": "The end date could not be before the start date",
+    "bl.client.exist": "The BL number is already registered for this client"
   }
 }

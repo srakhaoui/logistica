@@ -27,6 +27,7 @@
     "tarif.tarifAlreadyExists": "Ce tarif a été déjà saisi",
     "item.duplicated": "L'élément saisi est déjà existant",
     "exercice.comptable.livraison": "L'année de la date de livraison ne peut être en dehors de l'exercice comptable en cours",
-    "exercice.comptable.commande": "L'année de la date de commande ne peut être en dehors de l'exercice comptable en cours"
+    "exercice.comptable.commande": "L'année de la date de commande ne peut être en dehors de l'exercice comptable en cours",
+    "bl.client.exist": "Le N° du bon de livraison a été déjà saisi pour le client choisi"
   }
 }

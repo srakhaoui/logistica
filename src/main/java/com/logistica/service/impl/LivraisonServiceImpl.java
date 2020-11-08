@@ -54,7 +54,7 @@ public class LivraisonServiceImpl implements LivraisonService {
     @Override
     public Livraison save(Livraison livraison) {
         defaultFields(livraison);
-        validateLivraisonDates(livraison);
+        validateLivraison(livraison);
         calculerPrixTotaux(livraison);
         calculerCommissionTotalTrajet(livraison);
         log.debug("Request to save Livraison : {}", livraison);
@@ -67,7 +67,7 @@ public class LivraisonServiceImpl implements LivraisonService {
         }
     }
 
-    private void validateLivraisonDates(Livraison livraison) {
+    private void validateLivraison(Livraison livraison) {
         final LocalDate dateBonCaisse = Optional.ofNullable(livraison.getDateBonCaisse()).orElse(LocalDate.now());
         final LocalDate dateLivraison = Optional.ofNullable(livraison.getDateBonLivraison()).orElseThrow(() -> new IllegalArgumentException("La date de livraison est obligatoire"));
         if (dateBonCaisse.isAfter(LocalDate.now())) {
@@ -93,6 +93,10 @@ public class LivraisonServiceImpl implements LivraisonService {
                 throw new DateLivraisonAnterieureDateCommandeException();
             }
         });
+        final boolean blAndClientAlreadyExist = livraisonRepository.existsLivraisonByNumeroBonLivraisonAndClientId(livraison.getNumeroBonLivraison(), livraison.getClient().getId());
+        if (blAndClientAlreadyExist) {
+            throw new NumeroBlAndClientAlreadyExistException();
+        }
     }
 
     private void calculerPrixTotaux(Livraison livraison) {

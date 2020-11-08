@@ -281,4 +281,14 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .build();
         return create(ex, problem, request);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleNumeroBlAndClientAlreadyExistException(NumeroBlAndClientAlreadyExistException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_BL_CLIENT_EXIST)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
 }
