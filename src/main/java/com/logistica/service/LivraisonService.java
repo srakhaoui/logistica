@@ -70,4 +70,6 @@ public interface LivraisonService {
     Double getTotalVenteByTransporteur(Long transporteurId, LocalDate dateDebut, LocalDate dateFin);
 
     List<String> getChantiersByClient(ChantiersByClientRequest chantiersByClientRequest);
+
+    StatistiquesChiffreAffaire getStatistiquesChiffreAffaire(EvolutionChiffreAffaireRequest evolutionChiffreAffaireRequest);
 }

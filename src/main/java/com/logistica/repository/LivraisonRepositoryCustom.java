@@ -5,6 +5,8 @@ import com.logistica.service.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface LivraisonRepositoryCustom {
 
     Page<RecapitulatifAchat> getRecapitulatifAchat(RecapitulatifAchatRequest recapitulatifAchatRequest, Pageable pageable);
@@ -18,4 +20,10 @@ public interface LivraisonRepositoryCustom {
     Page<RecapitulatifCaCamion> getRecapitulatifCaCamion(RecapitulatifCaCamionRequest recapitulatifCaCamionRequest, Pageable pageable);
 
     Page<RecapitulatifEfficaciteChauffeur> getRecapitulatifEfficaciteChauffeur(RecapitulatifEfficaciteChauffeurRequest recapitulatifEfficaciteChauffeurRequest, Pageable pageable);
+
+    List<IChiffreAffaireParMois> getEvolutionChiffreAffaireParMois(EvolutionChiffreAffaireRequest evolutionCARequest);
+
+    List<IRepartitionChiffreAffaire> getRepartitionChiffreAffairePar(EvolutionChiffreAffaireRequest evolutionCARequest, UniteRepartition uniteRepartition);
+
+    Float getTotalChiffreAffaire(EvolutionChiffreAffaireRequest evolutionCARequest);
 }

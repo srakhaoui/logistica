@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom {
@@ -389,5 +390,209 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             String countQuery = new StringBuilder("Select count(id) From Livraison l ").append(predicate).toString();
             return entityManager.createQuery(countQuery).getFirstResult();
         });
+    }
+
+    @Override
+    public List<IChiffreAffaireParMois> getEvolutionChiffreAffaireParMois(EvolutionChiffreAffaireRequest evolutionCARequest) {
+        final Long societeId = evolutionCARequest.getSocieteId();
+        final Long produitId = evolutionCARequest.getProduitId();
+        final Long trajetId = evolutionCARequest.getTrajetId();
+        final TypeLivraison typeLivraison = evolutionCARequest.getTypeLivraison();
+        final String matricule = evolutionCARequest.getMatricule();
+        final LocalDate dateDebutBonLivraison = evolutionCARequest.getDateDebut();
+        final LocalDate dateFinBonLivraison = evolutionCARequest.getDateFin();
+
+        boolean withSocieteId = societeId != null;
+        boolean withProduitId = produitId != null;
+        boolean withTrajetId = trajetId != null;
+        boolean withTypeLivraison = typeLivraison != null;
+        boolean withMatricule = matricule != null;
+        boolean withDateDebutBonLivraison = dateDebutBonLivraison != null;
+        boolean withDateFinBonLivraison = dateFinBonLivraison != null;
+
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withSocieteId) {
+            predicate.append(" And l.societeFacturation.id = :societeId");
+        }
+        if (withProduitId) {
+            predicate.append(" And l.produit.id = :produitId");
+        }
+        if (withTrajetId) {
+            predicate.append(" And l.trajet.id = :trajetId");
+        }
+        if (withTypeLivraison) {
+            predicate.append(" And l.type = :type");
+        }
+        if (withMatricule) {
+            predicate.append(" And l.matricule = :matricule");
+        }
+        if (withDateDebutBonLivraison) {
+            predicate.append(" And l.dateBonLivraison >= :dateDebut");
+        }
+        if (withDateFinBonLivraison) {
+            predicate.append(" And l.dateBonLivraison <= :dateFin");
+        }
+
+        StringBuilder query = new StringBuilder("Select month(dateBonLivraison) as mois, sum(prixTotalVente) as chiffreAffaire From Livraison").append(predicate).append(" Group By month(dateBonLivraison)");
+        Query entityQuery = entityManager.createQuery(query.toString());
+
+        if (withSocieteId) {
+            entityQuery.setParameter("societeId", societeId);
+        }
+        if (withProduitId) {
+            entityQuery.setParameter("produitId", produitId);
+        }
+        if (withTrajetId) {
+            entityQuery.setParameter("trajetId", trajetId);
+        }
+        if (withTypeLivraison) {
+            entityQuery.setParameter("type", typeLivraison);
+        }
+        if (withMatricule) {
+            entityQuery.setParameter("matricule", matricule);
+        }
+        if (withDateDebutBonLivraison) {
+            entityQuery.setParameter("dateDebut", dateDebutBonLivraison);
+        }
+        if (withDateFinBonLivraison) {
+            entityQuery.setParameter("dateFin", dateFinBonLivraison);
+        }
+        return entityQuery.getResultList();
+    }
+
+    @Override
+    public List<IRepartitionChiffreAffaire> getRepartitionChiffreAffairePar(EvolutionChiffreAffaireRequest evolutionCARequest, UniteRepartition uniteRepartition) {
+        final Long societeId = evolutionCARequest.getSocieteId();
+        final Long produitId = evolutionCARequest.getProduitId();
+        final Long trajetId = evolutionCARequest.getTrajetId();
+        final TypeLivraison typeLivraison = evolutionCARequest.getTypeLivraison();
+        final String matricule = evolutionCARequest.getMatricule();
+        final LocalDate dateDebutBonLivraison = evolutionCARequest.getDateDebut();
+        final LocalDate dateFinBonLivraison = evolutionCARequest.getDateFin();
+
+        boolean withSocieteId = societeId != null;
+        boolean withProduitId = produitId != null;
+        boolean withTrajetId = trajetId != null;
+        boolean withTypeLivraison = typeLivraison != null;
+        boolean withMatricule = matricule != null;
+        boolean withDateDebutBonLivraison = dateDebutBonLivraison != null;
+        boolean withDateFinBonLivraison = dateFinBonLivraison != null;
+
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withSocieteId) {
+            predicate.append(" And l.societeFacturation.id = :societeId");
+        }
+        if (withProduitId) {
+            predicate.append(" And l.produit.id = :produitId");
+        }
+        if (withTrajetId) {
+            predicate.append(" And l.trajet.id = :trajetId");
+        }
+        if (withTypeLivraison) {
+            predicate.append(" And l.type = :type");
+        }
+        if (withMatricule) {
+            predicate.append(" And l.matricule = :matricule");
+        }
+        if (withDateDebutBonLivraison) {
+            predicate.append(" And l.dateBonLivraison >= :dateDebut");
+        }
+        if (withDateFinBonLivraison) {
+            predicate.append(" And l.dateBonLivraison <= :dateFin");
+        }
+
+        StringBuilder query = new StringBuilder("Select " + uniteRepartition.getter() + " as elementRepartition, sum(prixTotalVente) as chiffreAffaire From Livraison").append(predicate).append(" Group By ").append(uniteRepartition.getter());
+        Query entityQuery = entityManager.createQuery(query.toString());
+
+        if (withSocieteId) {
+            entityQuery.setParameter("societeId", societeId);
+        }
+        if (withProduitId) {
+            entityQuery.setParameter("produitId", produitId);
+        }
+        if (withTrajetId) {
+            entityQuery.setParameter("trajetId", trajetId);
+        }
+        if (withTypeLivraison) {
+            entityQuery.setParameter("type", typeLivraison);
+        }
+        if (withMatricule) {
+            entityQuery.setParameter("matricule", matricule);
+        }
+        if (withDateDebutBonLivraison) {
+            entityQuery.setParameter("dateDebut", dateDebutBonLivraison);
+        }
+        if (withDateFinBonLivraison) {
+            entityQuery.setParameter("dateFin", dateFinBonLivraison);
+        }
+        return entityQuery.getResultList();
+    }
+
+    @Override
+    public Float getTotalChiffreAffaire(EvolutionChiffreAffaireRequest evolutionCARequest) {
+        final Long societeId = evolutionCARequest.getSocieteId();
+        final Long produitId = evolutionCARequest.getProduitId();
+        final Long trajetId = evolutionCARequest.getTrajetId();
+        final TypeLivraison typeLivraison = evolutionCARequest.getTypeLivraison();
+        final String matricule = evolutionCARequest.getMatricule();
+        final LocalDate dateDebutBonLivraison = evolutionCARequest.getDateDebut();
+        final LocalDate dateFinBonLivraison = evolutionCARequest.getDateFin();
+
+        boolean withSocieteId = societeId != null;
+        boolean withProduitId = produitId != null;
+        boolean withTrajetId = trajetId != null;
+        boolean withTypeLivraison = typeLivraison != null;
+        boolean withMatricule = matricule != null;
+        boolean withDateDebutBonLivraison = dateDebutBonLivraison != null;
+        boolean withDateFinBonLivraison = dateFinBonLivraison != null;
+
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withSocieteId) {
+            predicate.append(" And l.societeFacturation.id = :societeId");
+        }
+        if (withProduitId) {
+            predicate.append(" And l.produit.id = :produitId");
+        }
+        if (withTrajetId) {
+            predicate.append(" And l.trajet.id = :trajetId");
+        }
+        if (withTypeLivraison) {
+            predicate.append(" And l.type = :type");
+        }
+        if (withMatricule) {
+            predicate.append(" And l.matricule = :matricule");
+        }
+        if (withDateDebutBonLivraison) {
+            predicate.append(" And l.dateBonLivraison >= :dateDebut");
+        }
+        if (withDateFinBonLivraison) {
+            predicate.append(" And l.dateBonLivraison <= :dateFin");
+        }
+
+        StringBuilder query = new StringBuilder("Select sum(prixTotalVente) as chiffreAffaire From Livraison").append(predicate);
+        Query entityQuery = entityManager.createQuery(query.toString());
+
+        if (withSocieteId) {
+            entityQuery.setParameter("societeId", societeId);
+        }
+        if (withProduitId) {
+            entityQuery.setParameter("produitId", produitId);
+        }
+        if (withTrajetId) {
+            entityQuery.setParameter("trajetId", trajetId);
+        }
+        if (withTypeLivraison) {
+            entityQuery.setParameter("type", typeLivraison);
+        }
+        if (withMatricule) {
+            entityQuery.setParameter("matricule", matricule);
+        }
+        if (withDateDebutBonLivraison) {
+            entityQuery.setParameter("dateDebut", dateDebutBonLivraison);
+        }
+        if (withDateFinBonLivraison) {
+            entityQuery.setParameter("dateFin", dateFinBonLivraison);
+        }
+        return (Float) entityQuery.getSingleResult();
     }
 }

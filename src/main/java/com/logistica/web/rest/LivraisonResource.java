@@ -331,4 +331,11 @@ public class LivraisonResource {
         List<String> chantiers = livraisonService.getChantiersByClient(chantiersByClientRequest);
         return ResponseEntity.ok().body(chantiers);
     }
+
+    @GetMapping("/livraisons/stats/chiffre-affaire")
+    public ResponseEntity<StatistiquesChiffreAffaire> getStatistiquesChiffreAffaire(EvolutionChiffreAffaireRequest evolutionChiffreAffaireRequest) {
+        log.debug("REST request to get evolutionChiffreAffaireRequest : {}", evolutionChiffreAffaireRequest);
+        StatistiquesChiffreAffaire statistiquesChiffreAffaire = livraisonService.getStatistiquesChiffreAffaire(evolutionChiffreAffaireRequest);
+        return ResponseEntity.ok(statistiquesChiffreAffaire);
+    }
 }
