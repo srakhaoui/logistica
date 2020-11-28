@@ -393,7 +393,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     }
 
     @Override
-    public List<IChiffreAffaireParMois> getEvolutionChiffreAffaireParMois(EvolutionChiffreAffaireRequest evolutionCARequest) {
+    public List<IChiffreAffaireParMois> getEvolutionChiffreAffaireParMois(StatistiquesChiffreAffaireRequest evolutionCARequest) {
         final Long societeId = evolutionCARequest.getSocieteId();
         final Long produitId = evolutionCARequest.getProduitId();
         final Long trajetId = evolutionCARequest.getTrajetId();
@@ -433,7 +433,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             predicate.append(" And l.dateBonLivraison <= :dateFin");
         }
 
-        StringBuilder query = new StringBuilder("Select month(dateBonLivraison) as mois, sum(prixTotalVente) as chiffreAffaire From Livraison").append(predicate).append(" Group By month(dateBonLivraison)");
+        StringBuilder query = new StringBuilder("Select month(dateBonLivraison) as mois, sum(prixTotalVente) as chiffreAffaire From Livraison l").append(predicate).append(" Group By month(dateBonLivraison)");
         Query entityQuery = entityManager.createQuery(query.toString());
 
         if (withSocieteId) {
@@ -461,7 +461,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     }
 
     @Override
-    public List<IRepartitionChiffreAffaire> getRepartitionChiffreAffairePar(EvolutionChiffreAffaireRequest evolutionCARequest, UniteRepartition uniteRepartition) {
+    public List<IRepartitionChiffreAffaire> getRepartitionChiffreAffairePar(StatistiquesChiffreAffaireRequest evolutionCARequest, UniteRepartition uniteRepartition) {
         final Long societeId = evolutionCARequest.getSocieteId();
         final Long produitId = evolutionCARequest.getProduitId();
         final Long trajetId = evolutionCARequest.getTrajetId();
@@ -501,7 +501,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             predicate.append(" And l.dateBonLivraison <= :dateFin");
         }
 
-        StringBuilder query = new StringBuilder("Select " + uniteRepartition.getter() + " as elementRepartition, sum(prixTotalVente) as chiffreAffaire From Livraison").append(predicate).append(" Group By ").append(uniteRepartition.getter());
+        StringBuilder query = new StringBuilder("Select " + uniteRepartition.getter() + " as elementRepartition, sum(prixTotalVente) as chiffreAffaire From Livraison l").append(predicate).append(" Group By ").append(uniteRepartition.getter());
         Query entityQuery = entityManager.createQuery(query.toString());
 
         if (withSocieteId) {
@@ -529,7 +529,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     }
 
     @Override
-    public Float getTotalChiffreAffaire(EvolutionChiffreAffaireRequest evolutionCARequest) {
+    public Float getTotalChiffreAffaire(StatistiquesChiffreAffaireRequest evolutionCARequest) {
         final Long societeId = evolutionCARequest.getSocieteId();
         final Long produitId = evolutionCARequest.getProduitId();
         final Long trajetId = evolutionCARequest.getTrajetId();
@@ -569,7 +569,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             predicate.append(" And l.dateBonLivraison <= :dateFin");
         }
 
-        StringBuilder query = new StringBuilder("Select sum(prixTotalVente) as chiffreAffaire From Livraison").append(predicate);
+        StringBuilder query = new StringBuilder("Select sum(prixTotalVente) as chiffreAffaire From Livraison l").append(predicate);
         Query entityQuery = entityManager.createQuery(query.toString());
 
         if (withSocieteId) {

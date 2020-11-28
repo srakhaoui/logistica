@@ -23,6 +23,7 @@ import org.springframework.util.Assert;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
  * Service Implementation for managing {@link Livraison}.
@@ -271,26 +272,22 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     @Transactional(readOnly = true)
-    public StatistiquesChiffreAffaire getStatistiquesChiffreAffaire(EvolutionChiffreAffaireRequest evolutionChiffreAffaireRequest) {
-        Float totalChiffreAffaire = livraisonRepository.getTotalChiffreAffaire(evolutionChiffreAffaireRequest);
-        Courbe<String, Float> evolutionChiffreAffaire = getEvolutionChiffreAffaire(evolutionChiffreAffaireRequest);
-        Courbe<String, Float> repartitionParTypeLivraison = getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(evolutionChiffreAffaireRequest, UniteRepartition.TypeLivraison));
-        Courbe<String, Float> repartitionParSocieteFacturation = getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(evolutionChiffreAffaireRequest, UniteRepartition.SocieteFacturation));
-        Courbe<String, Float> repartitionParProduit = getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(evolutionChiffreAffaireRequest, UniteRepartition.Produit));
-        Courbe<String, Float> repartitionParTrajet = getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(evolutionChiffreAffaireRequest, UniteRepartition.Trajet));
-        Courbe<String, Float> repartitionParMatricule = getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(evolutionChiffreAffaireRequest, UniteRepartition.Matricule));
-        return new StatistiquesChiffreAffaire()
-            .totalChiffreAffaire(totalChiffreAffaire)
-            .evolution(evolutionChiffreAffaire)
-            .typeLivraison(repartitionParTypeLivraison)
-            .societeFacturation(repartitionParSocieteFacturation)
-            .produit(repartitionParProduit)
-            .trajet(repartitionParTrajet)
-            .matricule(repartitionParMatricule);
+    public StatistiquesChiffreAffaire getStatistiquesChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
+        StatistiquesChiffreAffaire statistiquesChiffreAffaire = new StatistiquesChiffreAffaire();
+        if (statistiquesChiffreAffaireRequest.isWithTotalChiffreAffaire()) {
+            statistiquesChiffreAffaire.totalChiffreAffaire(livraisonRepository.getTotalChiffreAffaire(statistiquesChiffreAffaireRequest));
+        }
+        setStatistiques(statistiquesChiffreAffaireRequest.isWithEvolutionChiffreAffaire(), statistiquesChiffreAffaire::evolution, getEvolutionChiffreAffaire(statistiquesChiffreAffaireRequest));
+        setStatistiques(statistiquesChiffreAffaireRequest.isWithRepartitionParTypeLivraison(), statistiquesChiffreAffaire::typeLivraison, getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(statistiquesChiffreAffaireRequest, UniteRepartition.TypeLivraison)));
+        setStatistiques(statistiquesChiffreAffaireRequest.isWithRepartitionParSocieteFacturation(), statistiquesChiffreAffaire::societeFacturation, getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(statistiquesChiffreAffaireRequest, UniteRepartition.SocieteFacturation)));
+        setStatistiques(statistiquesChiffreAffaireRequest.isWithRepartitionParProduit(), statistiquesChiffreAffaire::produit, getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(statistiquesChiffreAffaireRequest, UniteRepartition.Produit)));
+        setStatistiques(statistiquesChiffreAffaireRequest.isWithRepartitionParTrajet(), statistiquesChiffreAffaire::trajet, getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(statistiquesChiffreAffaireRequest, UniteRepartition.Trajet)));
+        setStatistiques(statistiquesChiffreAffaireRequest.isWithRepartitionParMatricule(), statistiquesChiffreAffaire::matricule, getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(statistiquesChiffreAffaireRequest, UniteRepartition.Matricule)));
+        return statistiquesChiffreAffaire;
     }
 
-    private Courbe<String, Float> getEvolutionChiffreAffaire(EvolutionChiffreAffaireRequest evolutionChiffreAffaireRequest) {
-        final List<IChiffreAffaireParMois> chiffresAffaireParMois = livraisonRepository.getEvolutionChiffreAffaireParMois(evolutionChiffreAffaireRequest);
+    private Courbe<String, Float> getEvolutionChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
+        final List<IChiffreAffaireParMois> chiffresAffaireParMois = livraisonRepository.getEvolutionChiffreAffaireParMois(statistiquesChiffreAffaireRequest);
         Courbe<String, Float> courbe = new Courbe<>();
         chiffresAffaireParMois.stream().forEach(chiffreAffaireParMois -> {
             courbe.getAbscisses().add(chiffreAffaireParMois.getMois());
@@ -306,5 +303,11 @@ public class LivraisonServiceImpl implements LivraisonService {
             courbe.getOrdonnees().add(iRepartitionChiffreAffaire.getChiffreAffaire());
         });
         return courbe;
+    }
+
+    private void setStatistiques(boolean isToExport, Consumer<Courbe<String, Float>> setter, Courbe<String, Float> courbe) {
+        if (isToExport) {
+            setter.accept(courbe);
+        }
     }
 }

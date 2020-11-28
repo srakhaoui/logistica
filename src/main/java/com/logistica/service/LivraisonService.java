@@ -71,5 +71,5 @@ public interface LivraisonService {
 
     List<String> getChantiersByClient(ChantiersByClientRequest chantiersByClientRequest);
 
-    StatistiquesChiffreAffaire getStatistiquesChiffreAffaire(EvolutionChiffreAffaireRequest evolutionChiffreAffaireRequest);
+    StatistiquesChiffreAffaire getStatistiquesChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest);
 }

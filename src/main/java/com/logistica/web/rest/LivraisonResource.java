@@ -333,9 +333,35 @@ public class LivraisonResource {
     }
 
     @GetMapping("/livraisons/stats/chiffre-affaire")
-    public ResponseEntity<StatistiquesChiffreAffaire> getStatistiquesChiffreAffaire(EvolutionChiffreAffaireRequest evolutionChiffreAffaireRequest) {
-        log.debug("REST request to get evolutionChiffreAffaireRequest : {}", evolutionChiffreAffaireRequest);
-        StatistiquesChiffreAffaire statistiquesChiffreAffaire = livraisonService.getStatistiquesChiffreAffaire(evolutionChiffreAffaireRequest);
+    public ResponseEntity<StatistiquesChiffreAffaire> getStatistiquesChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
+        log.debug("REST request to get evolutionChiffreAffaireRequest : {}", statistiquesChiffreAffaireRequest);
+        StatistiquesChiffreAffaire statistiquesChiffreAffaire = livraisonService.getStatistiquesChiffreAffaire(statistiquesChiffreAffaireRequest);
         return ResponseEntity.ok(statistiquesChiffreAffaire);
+    }
+
+    @GetMapping("/livraisons/stats/repartition-ca/{repartition}/export")
+    public void exportStatistiquesChiffreAffaire(@PathVariable("repartition") String repartition, StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get evolutionChiffreAffaireRequest : {}", statistiquesChiffreAffaireRequest);
+        TypeRepartition typeRepartition = TypeRepartition.fromValue(repartition);
+        statistiquesChiffreAffaireRequest.defaultAllRepartionTypeTo(false);
+        typeRepartition.statsSetter().accept(statistiquesChiffreAffaireRequest);
+
+        StatistiquesChiffreAffaire statistiquesChiffreAffaire = livraisonService.getStatistiquesChiffreAffaire(statistiquesChiffreAffaireRequest);
+        Courbe<String, Float> courbe = typeRepartition.statsGetter().apply(statistiquesChiffreAffaire);
+        buildAndSendCsv(repartition, repartition + ";chiffre-affaire", courbe, httpServletResponse);
+    }
+
+    private void buildAndSendCsv(String filename, String csvHeader, Courbe<String, Float> courbe, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println(csvHeader);
+        for (int i = 0; i < courbe.getAbscisses().size(); i++) {
+            try {
+                outputStream.println(courbe.getAbscisses().get(i) + ";" + courbe.getOrdonnees().get(i));
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        }
     }
 }
