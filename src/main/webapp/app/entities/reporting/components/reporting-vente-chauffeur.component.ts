@@ -147,7 +147,7 @@ export class ReportingVenteChauffeurComponent implements OnInit, OnDestroy {
     }
   }
 
-    private loadTransporteurs(){
+  private loadTransporteurs(){
       this.transporteurs$ = concat(
         of([]), // default items
         this.transporteurInput$.pipe(

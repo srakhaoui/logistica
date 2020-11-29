@@ -100,7 +100,8 @@ public enum TypeRepartition {
         public String repartition() {
             return "mois";
         }
-    };
+    },
+    ;
 
     public abstract Function<StatistiquesChiffreAffaire, Courbe<String, Float>> statsGetter();
 
