@@ -6,7 +6,7 @@
     <jhi-alert></jhi-alert>
     <br/>
     <div>
-        <form name="statsForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="statsForm">
+        <form name="statsForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="statsForm">
             <div class="form-row">
                 <div class="col">
                     <label class="form-control-label" for="field_proprietaire">Société</label>
@@ -69,8 +69,7 @@
                     <label class="form-control-label" for="field_dateDebutBonLivraison">Date de début</label>
                     <div class="input-group">
                         <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut"
-                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"
-                               (ngModelChange)="onClientChange($event)"/>
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
                         <span class="input-group-append">
                         <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
                             [icon]="'calendar-alt'"></fa-icon></button>
@@ -81,8 +80,7 @@
                     <label class="form-control-label" for="field_dateFinBonLivraison">Date de fin</label>
                     <div class="input-group">
                         <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin"
-                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"
-                               (ngModelChange)="onClientChange($event)"/>
+                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
                         <span class="input-group-append">
                         <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
                             [icon]="'calendar-alt'"></fa-icon></button>
@@ -102,10 +100,16 @@
         </form>
     </div>
     <br>
-    <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
-        <span>No statistics found</span>
-    </div>
-    <div class="table-responsive" *ngIf="recapitulatifs?.length > 0">
-        Your result is displayed here
+    <div class="table-responsive">
+        <div class="chart-wrapper">
+            <canvas baseChart width="400" height="100"
+                    [datasets]="evolutionCAChartData"
+                    [options]="lineChartOptions"
+                    [labels]="evolutionCAChartLabels"
+                    [legend]="evolutionLegend"
+                    [chartType]="evolutionChartType"
+                    [colors]="evolutionColors">
+            </canvas>
+        </div>
     </div>
 </div>

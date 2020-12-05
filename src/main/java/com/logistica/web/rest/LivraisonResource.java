@@ -333,7 +333,7 @@ public class LivraisonResource {
     }
 
     @PostMapping("/livraisons/stats/chiffre-affaire")
-    public ResponseEntity<StatistiquesChiffreAffaire> getStatistiquesChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
+    public ResponseEntity<StatistiquesChiffreAffaire> getStatistiquesChiffreAffaire(@RequestBody StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
         log.debug("REST request to get evolutionChiffreAffaireRequest : {}", statistiquesChiffreAffaireRequest);
         StatistiquesChiffreAffaire statistiquesChiffreAffaire = livraisonService.getStatistiquesChiffreAffaire(statistiquesChiffreAffaireRequest);
         return ResponseEntity.ok(statistiquesChiffreAffaire);

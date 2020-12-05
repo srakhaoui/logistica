@@ -1,10 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ChartDataSets, ChartOptions } from 'chart.js';
+import { Color, Label } from 'ng2-charts';
 import { Observable, Subject, of, concat } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ISociete } from 'app/shared/model/societe.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
@@ -43,6 +45,7 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
         societe: new FormControl(),
         trajet: new FormControl(),
         produit: new FormControl(),
+        transporteur: new FormControl(),
         typeLivraison: new FormControl(),
         dateDebut: new FormControl(),
         dateFin: new FormControl()
@@ -50,7 +53,14 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
 
     isSearching: Boolean = false;
 
-    statistiquesChiffreAffaire: IStatistiquesChiffreAffaire;
+    statsChiffreAffaire: IStatistiquesChiffreAffaire;
+
+    evolutionCAChartData: ChartDataSets[] = [{ data: [], label: "Evolution du chiffre d'affaire" } ];
+    evolutionCAChartLabels: Label[] = [];
+    evolutionLegend: Boolean = true;
+    evolutionChartType = 'bar';
+    evolutionColors: Color[] = [ { borderColor: 'black', backgroundColor: 'rgba(255,0,0,0.3)' }];
+    public lineChartOptions: ChartOptions = { responsive: true };
 
     constructor(
       protected statsService: StatsService,
@@ -61,16 +71,25 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       protected jhiAlertService: JhiAlertService,
       protected eventManager: JhiEventManager,
       protected modalService: NgbModal,
-      protected parseLinks: JhiParseLinks
+      protected parseLinks: JhiParseLinks,
+      private fb: FormBuilder
     ) {
       this.initForm();
     }
 
     private initForm(){
       const defaultDateDebut = moment(new Date()).startOf('month');
+      defaultDateDebut.set("month", -12);
       this.statsForm.get('dateDebut').setValue(defaultDateDebut);
       const defaultDateFin = moment(new Date()).endOf('month');
       this.statsForm.get('dateFin').setValue(defaultDateFin);
+    }
+
+    ngOnInit() {
+      this.loadAll();
+    }
+
+    ngOnDestroy() {
     }
 
     loadAll() {
@@ -80,6 +99,7 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       this.loadTransporteurs();
       this.loadProduits();
       this.loadTrajets();
+      this.search();
     }
 
     search(){
@@ -88,9 +108,14 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
         .getStatistiquesChiffreAffaire(this.buildStatsRequest())
         .subscribe((statsChiffreAffaire: IStatistiquesChiffreAffaire) => {
           this.isSearching = false;
-          this.statistiquesChiffreAffaire = statsChiffreAffaire;
-          alert(statsChiffreAffaire);
+          this.updateCharts(statsChiffreAffaire);
         });
+    }
+
+    private updateCharts(aStatsChiffreAffaire: IStatistiquesChiffreAffaire){
+      this.statsChiffreAffaire = aStatsChiffreAffaire;
+      this.evolutionCAChartData[0].data = this.statsChiffreAffaire.evolution.ordonnees;
+      this.evolutionCAChartLabels = this.statsChiffreAffaire.evolution.abscisses;
     }
 
     private loadProduits(){
@@ -133,8 +158,8 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       if(this.statsForm.get('typeLivraison').value){
         statsRequest['typeLivraison'] = this.statsForm.get('typeLivraison').value;
       }
-      if(this.statsForm.get('matricule').value){
-        statsRequest['matricule'] = this.statsForm.get('matricule').value;
+      if(this.statsForm.get('transporteur').value){
+        statsRequest['matricule'] = this.statsForm.get('transporteur').value.matricule;
       }
       if(this.statsForm.get('dateDebut').value){
         statsRequest['dateDebut'] = format(this.statsForm.get('dateDebut').value);
@@ -143,13 +168,6 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
         statsRequest['dateFin'] = format(this.statsForm.get('dateFin').value);
       }
       return statsRequest;
-    }
-
-    ngOnInit() {
-      this.loadAll();
-    }
-
-    ngOnDestroy() {
     }
 
     trackSocieteById(index: number, item: ISociete) {

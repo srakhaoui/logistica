@@ -21,9 +21,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Livraison}.
@@ -41,6 +46,8 @@ public class LivraisonServiceImpl implements LivraisonService {
     private TrajetService trajetService;
 
     private final LivraisonRepository livraisonRepository;
+    public static final DateTimeFormatter MONTH_AS_NUMBER_FORMAT = DateTimeFormatter.ofPattern("M");
+    public static final DateTimeFormatter MONTH_AS_STRING_FORMAT = DateTimeFormatter.ofPattern("MMM");
 
     public LivraisonServiceImpl(LivraisonRepository livraisonRepository) {
         this.livraisonRepository = livraisonRepository;
@@ -275,7 +282,8 @@ public class LivraisonServiceImpl implements LivraisonService {
     public StatistiquesChiffreAffaire getStatistiquesChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
         StatistiquesChiffreAffaire statistiquesChiffreAffaire = new StatistiquesChiffreAffaire();
         if (statistiquesChiffreAffaireRequest.isWithTotalChiffreAffaire()) {
-            statistiquesChiffreAffaire.totalChiffreAffaire(livraisonRepository.getTotalChiffreAffaire(statistiquesChiffreAffaireRequest));
+            Float totalChiffreAffaire = Optional.ofNullable(livraisonRepository.getTotalChiffreAffaire(statistiquesChiffreAffaireRequest)).map(Double::floatValue).orElse(0.0F);
+            statistiquesChiffreAffaire.totalChiffreAffaire(totalChiffreAffaire);
         }
         setStatistiques(statistiquesChiffreAffaireRequest.isWithEvolutionChiffreAffaire(), statistiquesChiffreAffaire::evolution, getEvolutionChiffreAffaire(statistiquesChiffreAffaireRequest));
         setStatistiques(statistiquesChiffreAffaireRequest.isWithRepartitionParTypeLivraison(), statistiquesChiffreAffaire::typeLivraison, getCourbe(livraisonRepository.getRepartitionChiffreAffairePar(statistiquesChiffreAffaireRequest, UniteRepartition.TypeLivraison)));
@@ -287,20 +295,36 @@ public class LivraisonServiceImpl implements LivraisonService {
     }
 
     private Courbe<String, Float> getEvolutionChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
-        final List<IChiffreAffaireParMois> chiffresAffaireParMois = livraisonRepository.getEvolutionChiffreAffaireParMois(statistiquesChiffreAffaireRequest);
+        final List<ChiffreAffaireParMois> chiffresAffaireParMois = livraisonRepository.getEvolutionChiffreAffaireParMois(statistiquesChiffreAffaireRequest);
+        Map<String, Float> chiffreAffaireByYearMonthMap = chiffresAffaireParMois.stream()
+            .collect(Collectors.toMap(cAParMois -> getMoisAnneeAsStr(cAParMois.getAnnee(), cAParMois.getMois()), ChiffreAffaireParMois::getChiffreAffaireAsFloat));
+        Long durationInMonths = ChronoUnit.MONTHS.between(statistiquesChiffreAffaireRequest.getDateDebut(), statistiquesChiffreAffaireRequest.getDateFin());
+        for (int i = 0; i <= durationInMonths; i++) {
+            LocalDate entryDate = statistiquesChiffreAffaireRequest.getDateDebut().plusMonths(i);
+            String moisAnneeAsStr = getMoisAnneeAsStr(entryDate.getYear(), entryDate.getMonthValue());
+            if (!chiffreAffaireByYearMonthMap.containsKey(moisAnneeAsStr)) {
+                chiffreAffaireByYearMonthMap.put(moisAnneeAsStr, 0.0F);
+            }
+        }
         Courbe<String, Float> courbe = new Courbe<>();
-        chiffresAffaireParMois.stream().forEach(chiffreAffaireParMois -> {
-            courbe.getAbscisses().add(chiffreAffaireParMois.getMois());
-            courbe.getOrdonnees().add(chiffreAffaireParMois.getChiffreAffaire());
+        chiffreAffaireByYearMonthMap.entrySet().stream().forEach(chiffreAffaireParMois -> {
+            courbe.getAbscisses().add(chiffreAffaireParMois.getKey());
+            courbe.getOrdonnees().add(chiffreAffaireParMois.getValue());
         });
         return courbe;
     }
 
-    private Courbe<String, Float> getCourbe(List<IRepartitionChiffreAffaire> repartitionChiffreAffairesParTypeLivraison) {
+    private String getMoisAnneeAsStr(Integer year, Integer month) {
+        TemporalAccessor monthAsNumber = MONTH_AS_NUMBER_FORMAT.parse(month.toString());
+        String monthAsStr = MONTH_AS_STRING_FORMAT.format(monthAsNumber);
+        return monthAsStr + year;
+    }
+
+    private Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitionChiffreAffairesParTypeLivraison) {
         Courbe<String, Float> courbe = new Courbe<>();
-        repartitionChiffreAffairesParTypeLivraison.stream().forEach(iRepartitionChiffreAffaire -> {
-            courbe.getAbscisses().add(iRepartitionChiffreAffaire.getElementRepartition());
-            courbe.getOrdonnees().add(iRepartitionChiffreAffaire.getChiffreAffaire());
+        repartitionChiffreAffairesParTypeLivraison.stream().forEach(chiffreAffaireParRepartition -> {
+            courbe.getAbscisses().add(chiffreAffaireParRepartition.getElementRepartition());
+            courbe.getOrdonnees().add(chiffreAffaireParRepartition.getChiffreAffaire().floatValue());
         });
         return courbe;
     }

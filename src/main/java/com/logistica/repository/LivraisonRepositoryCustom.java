@@ -21,9 +21,9 @@ public interface LivraisonRepositoryCustom {
 
     Page<RecapitulatifEfficaciteChauffeur> getRecapitulatifEfficaciteChauffeur(RecapitulatifEfficaciteChauffeurRequest recapitulatifEfficaciteChauffeurRequest, Pageable pageable);
 
-    List<IChiffreAffaireParMois> getEvolutionChiffreAffaireParMois(StatistiquesChiffreAffaireRequest evolutionCARequest);
+    List<ChiffreAffaireParMois> getEvolutionChiffreAffaireParMois(StatistiquesChiffreAffaireRequest evolutionCARequest);
 
-    List<IRepartitionChiffreAffaire> getRepartitionChiffreAffairePar(StatistiquesChiffreAffaireRequest evolutionCARequest, UniteRepartition uniteRepartition);
+    List<ChiffreAffaireParRepartition> getRepartitionChiffreAffairePar(StatistiquesChiffreAffaireRequest evolutionCARequest, UniteRepartition uniteRepartition);
 
-    Float getTotalChiffreAffaire(StatistiquesChiffreAffaireRequest evolutionCARequest);
+    Double getTotalChiffreAffaire(StatistiquesChiffreAffaireRequest evolutionCARequest);
 }
