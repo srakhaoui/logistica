@@ -320,9 +320,9 @@ public class LivraisonServiceImpl implements LivraisonService {
         return monthAsStr + year;
     }
 
-    private Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitionChiffreAffairesParTypeLivraison) {
+    private Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitions) {
         Courbe<String, Float> courbe = new Courbe<>();
-        repartitionChiffreAffairesParTypeLivraison.stream().forEach(chiffreAffaireParRepartition -> {
+        repartitions.stream().forEach(chiffreAffaireParRepartition -> {
             courbe.getAbscisses().add(chiffreAffaireParRepartition.getElementRepartition());
             courbe.getOrdonnees().add(chiffreAffaireParRepartition.getChiffreAffaire().floatValue());
         });

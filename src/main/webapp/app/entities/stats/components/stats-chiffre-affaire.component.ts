@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ChartDataSets, ChartOptions } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { SingleDataSet, Color, Label, monkeyPatchChartJsLegend, monkeyPatchChartJsTooltip } from 'ng2-charts';
 import { Observable, Subject, of, concat } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -23,7 +23,8 @@ import { format } from 'app/shared/util/date-util';
 
 @Component({
   selector: 'jhi-stats',
-  templateUrl: './stats-chiffre-affaire.component.html'
+  templateUrl: './stats-chiffre-affaire.component.html',
+  styleUrls: ['stats-chiffre-affaire.component.scss']
 })
 export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
 
@@ -55,12 +56,35 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
 
     statsChiffreAffaire: IStatistiquesChiffreAffaire;
 
-    evolutionCAChartData: ChartDataSets[] = [{ data: [], label: "Evolution du chiffre d'affaire" } ];
+    public lineChartOptions: ChartOptions = { responsive: true };
+    evolutionCAChartData: ChartDataSets[] = [{data: [], label: "Evolution du chiffre d'affaire"}];
     evolutionCAChartLabels: Label[] = [];
     evolutionLegend: Boolean = true;
     evolutionChartType = 'bar';
     evolutionColors: Color[] = [ { borderColor: 'black', backgroundColor: 'rgba(255,0,0,0.3)' }];
-    public lineChartOptions: ChartOptions = { responsive: true };
+
+    public pieChartOptions: ChartOptions = {responsive: true };
+    public pieChartLegend = true;
+
+    chiffreAffaireParTypeChartData: SingleDataSet = [];
+    chiffreAffaireParTypeChartLabels: Label[] = [''];
+    chiffreAffaireParTypeChartType = 'pie';
+
+    chiffreAffaireParSocieteChartData: SingleDataSet = [];
+    chiffreAffaireParSocieteChartLabels: Label[] = [''];
+    chiffreAffaireParSocieteChartType = 'pie';
+
+    chiffreAffaireParProduitChartData: SingleDataSet = [];
+    chiffreAffaireParProduitChartLabels: Label[] = [''];
+    chiffreAffaireParProduitChartType = 'pie';
+
+    chiffreAffaireParTrajetChartData: SingleDataSet = [];
+    chiffreAffaireParTrajetChartLabels: Label[] = [''];
+    chiffreAffaireParTrajetChartType = 'pie';
+
+    chiffreAffaireParMatriculeChartData: SingleDataSet = [];
+    chiffreAffaireParMatriculeChartLabels: Label[] = [''];
+    chiffreAffaireParMatriculeChartType = 'pie';
 
     constructor(
       protected statsService: StatsService,
@@ -75,6 +99,8 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       private fb: FormBuilder
     ) {
       this.initForm();
+      monkeyPatchChartJsTooltip();
+      monkeyPatchChartJsLegend();
     }
 
     private initForm(){
@@ -106,16 +132,54 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       this.isSearching = true;
       this.statsService
         .getStatistiquesChiffreAffaire(this.buildStatsRequest())
-        .subscribe((statsChiffreAffaire: IStatistiquesChiffreAffaire) => {
+        .subscribe((aStatsChiffreAffaire: IStatistiquesChiffreAffaire) => {
           this.isSearching = false;
-          this.updateCharts(statsChiffreAffaire);
+          this.statsChiffreAffaire = aStatsChiffreAffaire;
+          this.updateCharts();
         });
     }
 
-    private updateCharts(aStatsChiffreAffaire: IStatistiquesChiffreAffaire){
-      this.statsChiffreAffaire = aStatsChiffreAffaire;
+    private updateCharts(){
+      this.updateEvolutionCaChart();
+      this.updatePieCharts();
+    }
+
+    private updatePieCharts(){
+      this.updateRepartitionParTypeLivraisonChart();
+      this.updateRepartitionParSocieteChart();
+      this.updateRepartitionParProduitChart();
+      this.updateRepartitionParTrajetChart();
+      this.updateRepartitionParMatriculeChart();
+    }
+
+    private updateEvolutionCaChart(){
       this.evolutionCAChartData[0].data = this.statsChiffreAffaire.evolution.ordonnees;
       this.evolutionCAChartLabels = this.statsChiffreAffaire.evolution.abscisses;
+    }
+
+    private updateRepartitionParTypeLivraisonChart(){
+      this.chiffreAffaireParTypeChartData = this.statsChiffreAffaire.chiffreAffaireParType.ordonnees;
+      this.chiffreAffaireParTypeChartLabels = this.statsChiffreAffaire.chiffreAffaireParType.abscisses;
+    }
+
+    private updateRepartitionParSocieteChart(){
+      this.chiffreAffaireParSocieteChartData = this.statsChiffreAffaire.chiffreAffaireParSociete.ordonnees;
+      this.chiffreAffaireParSocieteChartLabels = this.statsChiffreAffaire.chiffreAffaireParSociete.abscisses;
+    }
+
+    private updateRepartitionParProduitChart(){
+      this.chiffreAffaireParProduitChartData = this.statsChiffreAffaire.chiffreAffaireParProduit.ordonnees;
+      this.chiffreAffaireParProduitChartLabels = this.statsChiffreAffaire.chiffreAffaireParProduit.abscisses;
+    }
+
+    private updateRepartitionParTrajetChart(){
+      this.chiffreAffaireParTrajetChartData = this.statsChiffreAffaire.chiffreAffaireParTrajet.ordonnees;
+      this.chiffreAffaireParTrajetChartLabels = this.statsChiffreAffaire.chiffreAffaireParTrajet.abscisses;
+    }
+
+    private updateRepartitionParMatriculeChart(){
+      this.chiffreAffaireParMatriculeChartData = this.statsChiffreAffaire.chiffreAffaireParMatricule.ordonnees;
+      this.chiffreAffaireParMatriculeChartLabels = this.statsChiffreAffaire.chiffreAffaireParMatricule.abscisses;
     }
 
     private loadProduits(){
@@ -225,4 +289,7 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
         );
   }
 
+  public exportStats(repartition: string){
+    this.statsService.exportStats(repartition, this.buildStatsRequest());
+  }
 }

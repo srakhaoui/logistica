@@ -27,30 +27,32 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_transporteur">Matricule</label>
-                <ng-select id="field_transporteur"
-                           [items]="transporteurs$ | async"
-                           [typeahead]="transporteurInput$"
-                           bindLabel="description"
-                           [hideSelected]="true"
-                           [loading]="transporteursLoading"
-                           formControlName="transporteur"
-                           name="transporteur"
-                           placeholder="Chercher par matricule">
-                </ng-select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_produit">Produit</label>
-                <ng-select id="field_produit"
-                           [items]="produits$ | async"
-                           [typeahead]="produitInput$"
-                           bindLabel="code"
-                           [hideSelected]="true"
-                           [loading]="produitsLoading"
-                           formControlName="produit"
-                           name="produit">
-                </ng-select>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_produit">Produit</label>
+                    <ng-select id="field_produit"
+                               [items]="produits$ | async"
+                               [typeahead]="produitInput$"
+                               bindLabel="code"
+                               [hideSelected]="true"
+                               [loading]="produitsLoading"
+                               formControlName="produit"
+                               name="produit">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_transporteur">Matricule</label>
+                    <ng-select id="field_transporteur"
+                               [items]="transporteurs$ | async"
+                               [typeahead]="transporteurInput$"
+                               bindLabel="description"
+                               [hideSelected]="true"
+                               [loading]="transporteursLoading"
+                               formControlName="transporteur"
+                               name="transporteur"
+                               placeholder="Chercher par matricule">
+                    </ng-select>
+                </div>
             </div>
             <div class="form-group">
                 <label class="form-control-label" jhiTranslate="logisticaApp.livraison.trajet"
@@ -100,16 +102,80 @@
         </form>
     </div>
     <br>
-    <div class="table-responsive">
-        <div class="chart-wrapper">
-            <canvas baseChart width="400" height="100"
-                    [datasets]="evolutionCAChartData"
-                    [options]="lineChartOptions"
-                    [labels]="evolutionCAChartLabels"
-                    [legend]="evolutionLegend"
-                    [chartType]="evolutionChartType"
-                    [colors]="evolutionColors">
+    <div class="chart-wrapper">
+        <div class="charts-header-evolution">
+            <span class="charts-title-evolution">Evolution du chiffre d'affaire</span>
+            <div class="export-icon-evolution" title="Exporter" (click)="exportStats('mois')">
+            </div>
+        </div>
+        <canvas baseChart width="400" height="100"
+                [datasets]="evolutionCAChartData"
+                [options]="lineChartOptions"
+                [labels]="evolutionCAChartLabels"
+                [legend]="evolutionLegend"
+                [chartType]="evolutionChartType"
+                [colors]="evolutionColors">
+        </canvas>
+    </div>
+    <br>
+    <div class="pie-charts">
+        <div>
+            <div class="charts-header-pie">
+                <span class="charts-title-pie">Par type</span>
+                <div class="export-icon-pie" title="Exporter" (click)="exportStats('type-livraison')"></div>
+            </div>
+            <canvas baseChart *ngIf="!isSearching"
+                    [data]="chiffreAffaireParTypeChartData"
+                    [labels]="chiffreAffaireParTypeChartLabels"
+                    [chartType]="chiffreAffaireParTypeChartType"
+                    [options]="pieChartOptions"
+                    [legend]="pieChartLegend">
+            </canvas>
+        </div>
+        <div>
+            <div class="charts-header-pie">
+                <span class="charts-title-pie">Par Société</span>
+                <div class="export-icon-pie" title="Exporter" (click)="exportStats('societe-facturation')"></div>
+            </div>
+            <canvas baseChart *ngIf="!isSearching"
+                    [data]="chiffreAffaireParSocieteChartData"
+                    [labels]="chiffreAffaireParSocieteChartLabels"
+                    [chartType]="chiffreAffaireParSocieteChartType">
+            </canvas>
+        </div>
+        <div>
+            <div class="charts-header-pie">
+                <span class="charts-title-pie">Par Produit</span>
+                <div class="export-icon-pie" title="Exporter" (click)="exportStats('produit')"></div>
+            </div>
+            <canvas baseChart *ngIf="!isSearching"
+                    [data]="chiffreAffaireParProduitChartData"
+                    [labels]="chiffreAffaireParProduitChartLabels"
+                    [chartType]="chiffreAffaireParProduitChartType">
+            </canvas>
+        </div>
+        <div>
+            <div class="charts-header-pie">
+                <span class="charts-title-pie">Par Trajet</span>
+                <div class="export-icon-pie" title="Exporter" (click)="exportStats('trajet')"></div>
+            </div>
+            <canvas baseChart *ngIf="!isSearching"
+                    [data]="chiffreAffaireParTrajetChartData"
+                    [labels]="chiffreAffaireParTrajetChartLabels"
+                    [chartType]="chiffreAffaireParTrajetChartType">
+            </canvas>
+        </div>
+        <div>
+            <div class="charts-header-pie">
+                <span class="charts-title-pie">Par Matricule</span>
+                <div class="export-icon-pie" title="Exporter" (click)="exportStats('matricule')"></div>
+            </div>
+            <canvas baseChart *ngIf="!isSearching"
+                    [data]="chiffreAffaireParMatriculeChartData"
+                    [labels]="chiffreAffaireParMatriculeChartLabels"
+                    [chartType]="chiffreAffaireParMatriculeChartType">
             </canvas>
         </div>
     </div>
+
 </div>

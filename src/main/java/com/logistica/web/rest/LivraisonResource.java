@@ -353,7 +353,7 @@ public class LivraisonResource {
 
     private void buildAndSendCsv(String filename, String csvHeader, Courbe<String, Float> courbe, HttpServletResponse reponse) throws IOException {
         reponse.setContentType("text/csv");
-        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s.csv", filename));
         ServletOutputStream outputStream = reponse.getOutputStream();
         outputStream.println(csvHeader);
         for (int i = 0; i < courbe.getAbscisses().size(); i++) {
