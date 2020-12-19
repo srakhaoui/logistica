@@ -207,20 +207,6 @@ public class LivraisonResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
     }
 
-    private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
-        reponse.setContentType("text/csv");
-        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
-        ServletOutputStream outputStream = reponse.getOutputStream();
-        outputStream.println(csvHeader);
-        page.stream().map(T::toCsv).forEach(csvContent -> {
-            try {
-                outputStream.println(csvContent);
-            } catch (IOException e) {
-                log.error("Failed to generate csv file", e);
-            }
-        });
-    }
-
     @GetMapping(value = "/livraisons/achat")
     public ResponseEntity<List<RecapitulatifAchat>> getAllLivraisons(RecapitulatifAchatRequest recaptulatifAchatRequest, Pageable pageable) {
         log.debug("REST request to get RecapAchat : {}", recaptulatifAchatRequest);
@@ -348,12 +334,12 @@ public class LivraisonResource {
 
         StatistiquesChiffreAffaire statistiquesChiffreAffaire = livraisonService.getStatistiquesChiffreAffaire(statistiquesChiffreAffaireRequest);
         Courbe<String, Float> courbe = typeRepartition.statsGetter().apply(statistiquesChiffreAffaire);
-        buildAndSendCsv(repartition, repartition + ";chiffre-affaire", courbe, httpServletResponse);
+        buildAndSendCsv(repartition + ".csv", repartition + ";chiffre-affaire", courbe, httpServletResponse);
     }
 
     private void buildAndSendCsv(String filename, String csvHeader, Courbe<String, Float> courbe, HttpServletResponse reponse) throws IOException {
         reponse.setContentType("text/csv");
-        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s.csv", filename));
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
         ServletOutputStream outputStream = reponse.getOutputStream();
         outputStream.println(csvHeader);
         for (int i = 0; i < courbe.getAbscisses().size(); i++) {
@@ -363,5 +349,19 @@ public class LivraisonResource {
                 log.error("Failed to generate csv file", e);
             }
         }
+    }
+
+    private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println(csvHeader);
+        page.stream().map(T::toCsv).forEach(csvContent -> {
+            try {
+                outputStream.println(csvContent);
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        });
     }
 }
