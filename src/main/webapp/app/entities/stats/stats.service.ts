@@ -7,6 +7,8 @@ import { createRequestOption } from 'app/shared/util/request-util';
 import { SERVER_API_URL } from 'app/app.constants';
 import { IStatistiquesChiffreAffaire } from 'app/shared/model/statistiques-chiffre-affaire.stats.model';
 import { IStatistiquesChiffreAffaireRequest } from 'app/shared/model/statistiques-chiffre-affaire-request.stats.model';
+import { IStatistiquesTauxRentabilite } from 'app/shared/model/statistiques-taux-rentabilite.stats.model';
+import { IStatistiquesTauxRentabiliteRequest } from 'app/shared/model/statistiques-taux-rentabilite-request.stats.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatsService {
@@ -18,11 +20,14 @@ export class StatsService {
     return this.http.post<IStatistiquesChiffreAffaire>(`${this.resourceUrl}/chiffre-affaire`, statistiquesChiffreAffaireRequest, { observe: 'body' });
   }
 
-  // /livraisons/stats/repartition-ca/{repartition}/export
   exportStats(repartition: string, req?: any): void {
     const options: HttpParams = createRequestOption(req);
     const url = `${this.resourceUrl}/repartition-ca/${repartition}/export`;
     this.buildGetRequest(url, options);
+  }
+
+  getStatistiquesTauxRentabilite(statistiquesTauxRentabiliteRequest: IStatistiquesTauxRentabiliteRequest): Observable<IStatistiquesTauxRentabilite> {
+      return this.http.post<IStatistiquesTauxRentabilite>(`${this.resourceUrl}/taux-rentabilite`, statistiquesTauxRentabiliteRequest, { observe: 'body' });
   }
 
   private buildGetRequest(url, options){

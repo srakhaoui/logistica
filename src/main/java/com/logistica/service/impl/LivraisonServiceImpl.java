@@ -21,14 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalAccessor;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
@@ -47,10 +40,10 @@ public class LivraisonServiceImpl implements LivraisonService {
     @Autowired
     private TrajetService trajetService;
 
+    @Autowired
+    private GasoilService gasoilService;
+
     private final LivraisonRepository livraisonRepository;
-    public static final DateTimeFormatter MONTH_AS_NUMBER_FORMAT = DateTimeFormatter.ofPattern("M");
-    public static final DateTimeFormatter MONTH_AS_STRING_FORMAT = DateTimeFormatter.ofPattern("MMM");
-    public static final DateTimeFormatter MONTH_YEAR_AS_STRING_FORMAT = DateTimeFormatter.ofPattern("MMMyyyy");
 
     public LivraisonServiceImpl(LivraisonRepository livraisonRepository) {
         this.livraisonRepository = livraisonRepository;
@@ -297,69 +290,6 @@ public class LivraisonServiceImpl implements LivraisonService {
         return statistiquesChiffreAffaire;
     }
 
-    private Courbe<String, Float> getEvolutionChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest) {
-        final List<ChiffreAffaireParMois> chiffresAffaireParMois = livraisonRepository.getEvolutionChiffreAffaireParMois(statistiquesChiffreAffaireRequest);
-        Map<String, Float> chiffreAffaireByYearMonthMap = indexByYearAndMonth(chiffresAffaireParMois);
-        completeMissingDates(statistiquesChiffreAffaireRequest, chiffreAffaireByYearMonthMap);
-        Map<String, Float> chiffreAffaireTrieParDateMap = sortByYearAndMonth(chiffreAffaireByYearMonthMap);
-        Courbe<String, Float> courbe = new Courbe<>();
-        chiffreAffaireTrieParDateMap.entrySet().forEach(chiffreAffaireParMois -> {
-            courbe.getAbscisses().add(chiffreAffaireParMois.getKey());
-            courbe.getOrdonnees().add(chiffreAffaireParMois.getValue());
-        });
-        return courbe;
-    }
-
-    private int getYearMonthComparator(String startDateAsStr, String endDateAsStr) {
-        TemporalAccessor startDate = MONTH_YEAR_AS_STRING_FORMAT.parse(startDateAsStr);
-        TemporalAccessor endDate = MONTH_YEAR_AS_STRING_FORMAT.parse(endDateAsStr);
-        int compraison = 0;
-        int yearOfStartDate = startDate.get(ChronoField.YEAR);
-        int yearOfEndDate = endDate.get(ChronoField.YEAR);
-        if (yearOfStartDate > yearOfEndDate) {
-            compraison = 1;
-        } else if (yearOfStartDate < yearOfEndDate) {
-            compraison = -1;
-        } else {
-            int monthOfStartDate = startDate.get(ChronoField.MONTH_OF_YEAR);
-            int monthOfEndDate = endDate.get(ChronoField.MONTH_OF_YEAR);
-            if (monthOfStartDate > monthOfEndDate) {
-                compraison = 1;
-            } else if (monthOfStartDate < monthOfEndDate) {
-                compraison = -1;
-            }
-        }
-        return compraison;
-    }
-
-    private Map<String, Float> indexByYearAndMonth(List<ChiffreAffaireParMois> chiffresAffaireParMois) {
-        return chiffresAffaireParMois.stream()
-            .collect(Collectors.toMap(cAParMois -> getMoisAnneeAsStr(cAParMois.getAnnee(), cAParMois.getMois()), ChiffreAffaireParMois::getChiffreAffaireAsFloat));
-    }
-
-    private void completeMissingDates(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest, Map<String, Float> chiffreAffaireByYearMonthMap) {
-        long durationInMonths = ChronoUnit.MONTHS.between(statistiquesChiffreAffaireRequest.getDateDebut(), statistiquesChiffreAffaireRequest.getDateFin());
-        for (int i = 0; i <= durationInMonths; i++) {
-            LocalDate entryDate = statistiquesChiffreAffaireRequest.getDateDebut().plusMonths(i);
-            String moisAnneeAsStr = getMoisAnneeAsStr(entryDate.getYear(), entryDate.getMonthValue());
-            if (!chiffreAffaireByYearMonthMap.containsKey(moisAnneeAsStr)) {
-                chiffreAffaireByYearMonthMap.put(moisAnneeAsStr, 0.0F);
-            }
-        }
-    }
-
-    private Map<String, Float> sortByYearAndMonth(Map<String, Float> chiffreAffaireByYearMonthMap) {
-        Map<String, Float> chiffreAffaireTrieParDateMap = new TreeMap<>(this::getYearMonthComparator);
-        chiffreAffaireTrieParDateMap.putAll(chiffreAffaireByYearMonthMap);
-        return chiffreAffaireTrieParDateMap;
-    }
-
-    private String getMoisAnneeAsStr(Integer year, Integer month) {
-        TemporalAccessor monthAsNumber = MONTH_AS_NUMBER_FORMAT.parse(month.toString());
-        String monthAsStr = MONTH_AS_STRING_FORMAT.format(monthAsNumber);
-        return monthAsStr + year;
-    }
-
     private Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitions) {
         Courbe<String, Float> courbe = new Courbe<>();
         repartitions.forEach(chiffreAffaireParRepartition -> {
@@ -369,9 +299,110 @@ public class LivraisonServiceImpl implements LivraisonService {
         return courbe;
     }
 
+    private Courbe<String, Float> getEvolutionChiffreAffaire(StatistiquesChiffreAffaireRequest chiffreAffaireRequest) {
+        final List<ChiffreAffaireParMois> chiffresAffaireParMois = livraisonRepository.getEvolutionChiffreAffaireParMois(chiffreAffaireRequest);
+        Map<String, Float> chiffreAffaireByYearMonthMap = chiffresAffaireParMois.stream()
+            .collect(Collectors.toMap(cAParMois -> StatsUtils.getMoisAnneeAsStr(cAParMois.getAnnee(), cAParMois.getMois()), ChiffreAffaireParMois::getChiffreAffaireAsFloat));
+        return StatsUtils.mapToCourbe(chiffreAffaireRequest.getDateDebut(), chiffreAffaireRequest.getDateFin(), chiffreAffaireByYearMonthMap);
+    }
+
     private void setStatistiques(boolean isToExport, Consumer<Courbe<String, Float>> setter, Courbe<String, Float> courbe) {
         if (isToExport) {
             setter.accept(courbe);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public StatistiquesTauxRentabilite getStatistiquesTauxRentabilite(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {
+        StatistiquesChiffreAffaireRequest chiffreAffaireRequest = mapChiffreAffaireRequestFrom(tauxRentabiliteRequest);
+        Courbe<String, Float> evolutionChiffreAffaire = getEvolutionChiffreAffaire(chiffreAffaireRequest);
+        Float chiffreAffaireTotal = evolutionChiffreAffaire.getOrdonnees().stream().reduce(0.0F, Float::sum);
+        Courbe<String, Float> evolutionChargeGasoil = getEvolutionChargeGasoil(tauxRentabiliteRequest);
+        Float chargeGasoilTotal = evolutionChargeGasoil.getOrdonnees().stream().reduce(0.0F, Float::sum);
+        Courbe<String, Float> evolutionTauxRentabilite = calculerTauxRentabilite(evolutionChiffreAffaire, evolutionChargeGasoil);
+        Float tauxRentabilite = calculerTauxRentabilite(chiffreAffaireTotal, chargeGasoilTotal);
+        Courbe<String, Float> tauxRentabiliteParMatricule = getTauxRentabiliteParMatricule(tauxRentabiliteRequest, chiffreAffaireRequest);
+
+        return new StatistiquesTauxRentabilite()
+            .chiffreAffaireTotal(chiffreAffaireTotal)
+            .evolutionChiffreAffaire(evolutionChiffreAffaire)
+            .chargeGasoilTotal(chargeGasoilTotal)
+            .evolutionChargeGasoil(evolutionChargeGasoil)
+            .tauxRentabilite(tauxRentabilite)
+            .evolutionTauxRentabilite(evolutionTauxRentabilite)
+            .tauxRentabiliteParMatricule(tauxRentabiliteParMatricule);
+    }
+
+    private Courbe<String, Float> getTauxRentabiliteParMatricule(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest, StatistiquesChiffreAffaireRequest chiffreAffaireRequest) {
+        List<ChiffreAffaireParRepartition> chiffresAffaireParMatricule = livraisonRepository.getRepartitionChiffreAffairePar(chiffreAffaireRequest, UniteRepartition.Matricule);
+        List<ChargeGasoilParMatricule> chargesGasoilParMatricule = gasoilService.getRepartitionChargeGasoilParMatricule(getChargeGasoilRequestFrom(tauxRentabiliteRequest));
+        List<TauxRentabiliteParMatricule> tauxRentabiliteParMatriculeList = new ArrayList<>();
+        chiffresAffaireParMatricule.forEach(chiffreAffaireParMatricule ->
+            chargesGasoilParMatricule.forEach(chargeGasoilParMatricule -> {
+                if (chargeGasoilParMatricule.getMatricule().equalsIgnoreCase(chiffreAffaireParMatricule.getElementRepartition())) {
+                    tauxRentabiliteParMatriculeList.add(new TauxRentabiliteParMatricule(chargeGasoilParMatricule.getMatricule(), calculerTauxRentabilite(chiffreAffaireParMatricule.getChiffreAffaire().floatValue(), chargeGasoilParMatricule.getCharge().floatValue())));
+                }
+            })
+        );
+        Collections.sort(tauxRentabiliteParMatriculeList);
+        Courbe<String, Float> tauxRentabiliteParMatriculeCourbe = new Courbe<>();
+        tauxRentabiliteParMatriculeList.forEach(tauxRentabiliteParMatricule -> {
+            tauxRentabiliteParMatriculeCourbe.getAbscisses().add(tauxRentabiliteParMatricule.getMatricule());
+            tauxRentabiliteParMatriculeCourbe.getOrdonnees().add(tauxRentabiliteParMatricule.getTauxRentabilite());
+        });
+        return tauxRentabiliteParMatriculeCourbe;
+    }
+
+    private Courbe<String, Float> calculerTauxRentabilite(Courbe<String, Float> evolutionChiffreAffaire, Courbe<String, Float> evolutionChargeGasoil) {
+        Courbe<String, Float> evolutionTauxRentabilite = new Courbe<>();
+        evolutionTauxRentabilite.getAbscisses().addAll(evolutionChiffreAffaire.getAbscisses());
+        for (int i = 0; i < evolutionTauxRentabilite.getAbscisses().size(); i++) {
+            Float chiffreAffaire = evolutionChiffreAffaire.getOrdonnees().get(i);
+            Float chargeGasoil = evolutionChargeGasoil.getOrdonnees().get(i);
+            evolutionTauxRentabilite.getOrdonnees().add(calculerTauxRentabilite(chiffreAffaire, chargeGasoil));
+        }
+
+        return evolutionTauxRentabilite;
+    }
+
+    private Float calculerTauxRentabilite(Float unChiffreAffaire, Float uneChargeGasoil) {
+        float tauxRentabilite;
+        float chiffreAffaire = Optional.ofNullable(unChiffreAffaire).orElse(0.0F);
+        if (chiffreAffaire == 0.0) {
+            tauxRentabilite = 0.0F;
+        } else {
+            tauxRentabilite = (chiffreAffaire + uneChargeGasoil) / chiffreAffaire;
+        }
+        return tauxRentabilite;
+    }
+
+    private Courbe<String, Float> getEvolutionChargeGasoil(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {
+        List<ChargeGasoilParMois> evolutionChargeGasoil = gasoilService.getEvolutionChargeGasoilParMois(getChargeGasoilRequestFrom(tauxRentabiliteRequest));
+        Map<String, Float> chargeGasoilByYearMonthMap = indexByYearAndMonth(evolutionChargeGasoil);
+        return StatsUtils.mapToCourbe(tauxRentabiliteRequest.getDateDebut(), tauxRentabiliteRequest.getDateFin(), chargeGasoilByYearMonthMap);
+    }
+
+    private ChargeGasoilRequest getChargeGasoilRequestFrom(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {
+        ChargeGasoilRequest evolutionChargeGasoilRequest = new ChargeGasoilRequest();
+        evolutionChargeGasoilRequest.setSocieteId(tauxRentabiliteRequest.getSocieteId());
+        evolutionChargeGasoilRequest.setMatricule(tauxRentabiliteRequest.getMatricule());
+        evolutionChargeGasoilRequest.setDateDebut(tauxRentabiliteRequest.getDateDebut());
+        evolutionChargeGasoilRequest.setDateFin(tauxRentabiliteRequest.getDateFin());
+        return evolutionChargeGasoilRequest;
+    }
+
+    private StatistiquesChiffreAffaireRequest mapChiffreAffaireRequestFrom(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {
+        StatistiquesChiffreAffaireRequest chiffreAffaireRequest = new StatistiquesChiffreAffaireRequest();
+        chiffreAffaireRequest.setMatricule(tauxRentabiliteRequest.getMatricule());
+        chiffreAffaireRequest.setSocieteId(tauxRentabiliteRequest.getSocieteId());
+        chiffreAffaireRequest.setDateDebut(tauxRentabiliteRequest.getDateDebut());
+        chiffreAffaireRequest.setDateFin(tauxRentabiliteRequest.getDateFin());
+        return chiffreAffaireRequest;
+    }
+
+    private Map<String, Float> indexByYearAndMonth(List<ChargeGasoilParMois> chargeGasoilParMoisMap) {
+        return chargeGasoilParMoisMap.stream()
+            .collect(Collectors.toMap(chargeGasoilParMois -> StatsUtils.getMoisAnneeAsStr(chargeGasoilParMois.getAnnee(), chargeGasoilParMois.getMois()), ChargeGasoilParMois::getChargeGasoilAsFloat));
     }
 }

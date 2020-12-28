@@ -1,12 +1,11 @@
 package com.logistica.service;
 
 import com.logistica.domain.Gasoil;
-import com.logistica.service.dto.GasoilPriceResponse;
-import com.logistica.service.dto.RecapitulatifChargeGasoil;
-import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
+import com.logistica.service.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -51,4 +50,8 @@ public interface GasoilService {
     Integer getKilometrageFinal(String matricule);
 
     GasoilPriceResponse getLastPrixGasoil();
+
+    List<ChargeGasoilParMois> getEvolutionChargeGasoilParMois(ChargeGasoilRequest chargeGasoilRequest);
+
+    List<ChargeGasoilParMatricule> getRepartitionChargeGasoilParMatricule(ChargeGasoilRequest chargeGasoilRequest);
 }

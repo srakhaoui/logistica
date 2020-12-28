@@ -325,6 +325,13 @@ public class LivraisonResource {
         return ResponseEntity.ok(statistiquesChiffreAffaire);
     }
 
+    @PostMapping("/livraisons/stats/taux-rentabilite")
+    public ResponseEntity<StatistiquesTauxRentabilite> getStatistiquesTauxRentabilite(@RequestBody StatistiquesTauxRentabiliteRequest statistiquesTauxRentabiliteRequest) {
+        log.debug("REST request to get statistiquesTauxRentabiliteRequest : {}", statistiquesTauxRentabiliteRequest);
+        StatistiquesTauxRentabilite statistiquesTauxRentabilite = livraisonService.getStatistiquesTauxRentabilite(statistiquesTauxRentabiliteRequest);
+        return ResponseEntity.ok(statistiquesTauxRentabilite);
+    }
+
     @GetMapping("/livraisons/stats/repartition-ca/{repartition}/export")
     public void exportStatistiquesChiffreAffaire(@PathVariable("repartition") String repartition, StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest, HttpServletResponse httpServletResponse) throws IOException {
         log.debug("REST request to get evolutionChiffreAffaireRequest : {}", statistiquesChiffreAffaireRequest);

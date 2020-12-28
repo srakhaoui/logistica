@@ -1,0 +1,43 @@
+
+%charts-header {
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+%charts-title {
+    text-align: right;
+    font-weight: 300;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-size: 1.063rem;
+    color: #343a40;
+    line-height: 1.5;
+}
+
+%export-icon {
+    cursor: pointer;
+    background: url('../../../../content/images/export.svg') no-repeat center top;
+    background-size: contain;
+}
+
+.charts-header-evolution {
+    @extend %charts-header;
+    justify-content: space-between;
+}
+
+.charts-title-evolution {
+    @extend %charts-title;
+}
+
+.export-icon-evolution {
+    @extend %export-icon;
+    height: 25px;
+    width: 25px;
+}
+
+.evolutionTauxRentabilite {
+  margin-top: 20px;
+}
+
+.classementTauxRentabilite {
+  margin-top: 20px;
+}

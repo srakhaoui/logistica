@@ -501,7 +501,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             predicate.append(" And l.dateBonLivraison <= :dateFin");
         }
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.ChiffreAffaireParRepartition(str(" + uniteRepartition.getter() + "), sum(prixTotalVente)) From Livraison l").append(predicate).append(" Group By ").append(uniteRepartition.getter());
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.ChiffreAffaireParRepartition(str(" + uniteRepartition.getter() + "), sum(prixTotalVente)) From Livraison l").append(predicate).append(" Group By ").append(uniteRepartition.getter()).append(" Order by sum(prixTotalVente) desc");
         Query entityQuery = entityManager.createQuery(query.toString());
 
         if (withSocieteId) {

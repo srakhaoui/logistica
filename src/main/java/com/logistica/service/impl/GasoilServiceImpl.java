@@ -5,9 +5,7 @@ import com.logistica.repository.GasoilRepository;
 import com.logistica.service.GasoilService;
 import com.logistica.service.KilometrageInvalideException;
 import com.logistica.service.LivraisonService;
-import com.logistica.service.dto.GasoilPriceResponse;
-import com.logistica.service.dto.RecapitulatifChargeGasoil;
-import com.logistica.service.dto.RecapitulatifChargeGasoilRequest;
+import com.logistica.service.dto.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -95,6 +94,7 @@ public class GasoilServiceImpl implements GasoilService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Page<RecapitulatifChargeGasoil> getRecapitulatifChargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable) {
         Assert.notNull(recapitulatifChargeGasoilRequest.getDateDebut(), "Date de début non renseignée");
         Assert.notNull(recapitulatifChargeGasoilRequest.getDateFin(), "Date de fin non renseignée");
@@ -122,6 +122,7 @@ public class GasoilServiceImpl implements GasoilService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Integer getKilometrageFinal(String matricule) {
         Assert.notNull(matricule, "gasoilRepository.getKilometrageFinal: Le matricule est obligatoire");
         Integer kilometrageFinal = gasoilRepository.getkilometrageFinalByMatricule(matricule);
@@ -129,8 +130,21 @@ public class GasoilServiceImpl implements GasoilService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public GasoilPriceResponse getLastPrixGasoil() {
         final Float latestGasoilPrice = gasoilRepository.getLastPrixGasoil();
         return new GasoilPriceResponse(latestGasoilPrice);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ChargeGasoilParMois> getEvolutionChargeGasoilParMois(ChargeGasoilRequest chargeGasoilRequest) {
+        return gasoilRepository.getEvolutionChargeGasoilParMois(chargeGasoilRequest);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ChargeGasoilParMatricule> getRepartitionChargeGasoilParMatricule(ChargeGasoilRequest chargeGasoilRequest) {
+        return gasoilRepository.getRepartitionChargeGasoilParMatricule(chargeGasoilRequest);
     }
 }
