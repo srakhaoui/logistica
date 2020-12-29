@@ -121,6 +121,10 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
 
     private buildStatsRequest(): any {
       const statsRequest = {
+          withEvolutionChiffreAffaire: true,
+          withEvolutionChargeGasoil: true,
+          withEvolutionTauxRentabilite: true,
+          withTauxRentabiliteParMatricule: true
       }
       if(this.statsForm.get('societe').value){
         statsRequest['societeId'] = this.statsForm.get('societe').value.id;
@@ -174,7 +178,7 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
       );
     }
 
-  public exportStats(repartition: string){
-    this.statsService.exportStats(repartition, this.buildStatsRequest());
+  public exportStats(){
+    this.statsService.exportStatsRentabilite(this.buildStatsRequest());
   }
 }

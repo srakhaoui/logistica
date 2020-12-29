@@ -1,6 +1,6 @@
 <div>
     <h2 id="page-heading">
-        <span>Statistiques / Chiffre d'affaire</span>
+        <span>Statistiques / Rentabilité</span>
     </h2>
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
@@ -18,8 +18,6 @@
                         </option>
                     </select>
                 </div>
-            </div>
-            <div class="form-row">
                 <div class="col">
                     <label class="form-control-label" for="field_transporteur">Matricule</label>
                     <ng-select id="field_transporteur"
@@ -71,9 +69,12 @@
     </div>
     <br>
     <div>
+        <span>Chiffre d'affaire total: <strong>{{statsTauxRentabilite.chiffreAffaireTotal}}</strong></span>
+        <br>
+        <span>Charges gasoil totales: <strong>{{statsTauxRentabilite.chargeGasoilTotal}}</strong></span>
         <div class="charts-header-evolution">
             <span class="charts-title-evolution"></span>
-            <div class="export-icon-evolution" title="Exporter" (click)="">
+            <div class="export-icon-evolution" title="Exporter" (click)="exportStats()">
             </div>
         </div>
         <canvas baseChart width="400" height="100"
@@ -86,6 +87,7 @@
         </canvas>
     </div>
     <div class="evolutionTauxRentabilite">
+        <span>Taux de rentabilité global: <strong>{{statsTauxRentabilite.tauxRentabilite}}</strong></span>
         <canvas baseChart width="400" height="100"
                 [datasets]="evolutionTauxRentabiliteChartData"
                 [options]="lineChartOptions"

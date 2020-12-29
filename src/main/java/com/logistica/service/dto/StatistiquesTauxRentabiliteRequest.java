@@ -8,6 +8,10 @@ public class StatistiquesTauxRentabiliteRequest {
     private String matricule;
     private LocalDate dateDebut;
     private LocalDate dateFin;
+    private boolean withEvolutionChiffreAffaire;
+    private boolean withEvolutionChargeGasoil;
+    private boolean withEvolutionTauxRentabilite;
+    private boolean withTauxRentabiliteParMatricule;
 
     public Long getSocieteId() {
         return societeId;
@@ -39,5 +43,37 @@ public class StatistiquesTauxRentabiliteRequest {
 
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public boolean isWithEvolutionChiffreAffaire() {
+        return withEvolutionChiffreAffaire;
+    }
+
+    public void setWithEvolutionChiffreAffaire(boolean withEvolutionChiffreAffaire) {
+        this.withEvolutionChiffreAffaire = withEvolutionChiffreAffaire;
+    }
+
+    public boolean isWithEvolutionChargeGasoil() {
+        return withEvolutionChargeGasoil;
+    }
+
+    public void setWithEvolutionChargeGasoil(boolean withEvolutionChargeGasoil) {
+        this.withEvolutionChargeGasoil = withEvolutionChargeGasoil;
+    }
+
+    public boolean isWithEvolutionTauxRentabilite() {
+        return withEvolutionTauxRentabilite;
+    }
+
+    public void setWithEvolutionTauxRentabilite(boolean withEvolutionTauxRentabilite) {
+        this.withEvolutionTauxRentabilite = withEvolutionTauxRentabilite;
+    }
+
+    public boolean isWithTauxRentabiliteParMatricule() {
+        return withTauxRentabiliteParMatricule;
+    }
+
+    public void setWithTauxRentabiliteParMatricule(boolean withTauxRentabiliteParMatricule) {
+        this.withTauxRentabiliteParMatricule = withTauxRentabiliteParMatricule;
     }
 }

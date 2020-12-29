@@ -332,6 +332,33 @@ public class LivraisonResource {
         return ResponseEntity.ok(statistiquesTauxRentabilite);
     }
 
+    @GetMapping("/livraisons/stats/taux-rentabilite/export")
+    public void exportStatistiquesTauxRentabilite(StatistiquesTauxRentabiliteRequest statistiquesTauxRentabiliteRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get statistiquesTauxRentabiliteRequest : {}", statistiquesTauxRentabiliteRequest);
+        statistiquesTauxRentabiliteRequest.setWithEvolutionChargeGasoil(true);
+        statistiquesTauxRentabiliteRequest.setWithEvolutionChiffreAffaire(true);
+        statistiquesTauxRentabiliteRequest.setWithEvolutionTauxRentabilite(false);
+        statistiquesTauxRentabiliteRequest.setWithTauxRentabiliteParMatricule(false);
+        StatistiquesTauxRentabilite statistiquesTauxRentabilite = livraisonService.getStatistiquesTauxRentabilite(statistiquesTauxRentabiliteRequest);
+        Courbe<String, Float> evolutionChargeGasoil = statistiquesTauxRentabilite.getEvolutionChargeGasoil();
+        Courbe<String, Float> evolutionChiffreAffaire = statistiquesTauxRentabilite.getEvolutionChiffreAffaire();
+        buildAndSendTauxRentabiliteCsv(evolutionChargeGasoil, evolutionChiffreAffaire, httpServletResponse);
+    }
+
+    private void buildAndSendTauxRentabiliteCsv(Courbe<String, Float> courbeChargeGasoil, Courbe<String, Float> courbeChiffreAffaire, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", "attachment; filename=rentabilite.csv");
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println("mois;charge-gasoil;chiffre-affaire");
+        for (int i = 0; i < courbeChargeGasoil.getAbscisses().size(); i++) {
+            try {
+                outputStream.println(courbeChargeGasoil.getAbscisses().get(i) + ";" + courbeChargeGasoil.getOrdonnees().get(i) + ";" + courbeChiffreAffaire.getOrdonnees().get(i));
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        }
+    }
+
     @GetMapping("/livraisons/stats/repartition-ca/{repartition}/export")
     public void exportStatistiquesChiffreAffaire(@PathVariable("repartition") String repartition, StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest, HttpServletResponse httpServletResponse) throws IOException {
         log.debug("REST request to get evolutionChiffreAffaireRequest : {}", statistiquesChiffreAffaireRequest);

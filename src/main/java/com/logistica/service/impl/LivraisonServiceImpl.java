@@ -316,22 +316,41 @@ public class LivraisonServiceImpl implements LivraisonService {
     @Transactional(readOnly = true)
     public StatistiquesTauxRentabilite getStatistiquesTauxRentabilite(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {
         StatistiquesChiffreAffaireRequest chiffreAffaireRequest = mapChiffreAffaireRequestFrom(tauxRentabiliteRequest);
-        Courbe<String, Float> evolutionChiffreAffaire = getEvolutionChiffreAffaire(chiffreAffaireRequest);
-        Float chiffreAffaireTotal = evolutionChiffreAffaire.getOrdonnees().stream().reduce(0.0F, Float::sum);
-        Courbe<String, Float> evolutionChargeGasoil = getEvolutionChargeGasoil(tauxRentabiliteRequest);
-        Float chargeGasoilTotal = evolutionChargeGasoil.getOrdonnees().stream().reduce(0.0F, Float::sum);
-        Courbe<String, Float> evolutionTauxRentabilite = calculerTauxRentabilite(evolutionChiffreAffaire, evolutionChargeGasoil);
-        Float tauxRentabilite = calculerTauxRentabilite(chiffreAffaireTotal, chargeGasoilTotal);
-        Courbe<String, Float> tauxRentabiliteParMatricule = getTauxRentabiliteParMatricule(tauxRentabiliteRequest, chiffreAffaireRequest);
+        StatistiquesTauxRentabilite statistiquesTauxRentabilite = new StatistiquesTauxRentabilite();
+        Courbe<String, Float> evolutionChiffreAffaire = new Courbe<>();
+        float chiffreAffaireTotal = 0.0F;
+        if (tauxRentabiliteRequest.isWithEvolutionChiffreAffaire()) {
+            evolutionChiffreAffaire = getEvolutionChiffreAffaire(chiffreAffaireRequest);
+            chiffreAffaireTotal = round(evolutionChiffreAffaire.getOrdonnees().stream().reduce(0.0F, Float::sum));
+            statistiquesTauxRentabilite
+                .chiffreAffaireTotal(chiffreAffaireTotal)
+                .evolutionChiffreAffaire(evolutionChiffreAffaire);
+        }
+        Courbe<String, Float> evolutionChargeGasoil = new Courbe<>();
+        float chargeGasoilTotal = 0.0f;
+        if (tauxRentabiliteRequest.isWithEvolutionChargeGasoil()) {
+            evolutionChargeGasoil = getEvolutionChargeGasoil(tauxRentabiliteRequest);
+            chargeGasoilTotal = round(evolutionChargeGasoil.getOrdonnees().stream().reduce(0.0F, Float::sum));
+            statistiquesTauxRentabilite
+                .chargeGasoilTotal(chargeGasoilTotal)
+                .evolutionChargeGasoil(evolutionChargeGasoil);
+        }
+        if (tauxRentabiliteRequest.isWithEvolutionTauxRentabilite()) {
+            Courbe<String, Float> evolutionTauxRentabilite = calculerTauxRentabilite(evolutionChiffreAffaire, evolutionChargeGasoil);
+            Float tauxRentabilite = round(calculerTauxRentabilite(chiffreAffaireTotal, chargeGasoilTotal));
+            statistiquesTauxRentabilite
+                .tauxRentabilite(tauxRentabilite)
+                .evolutionTauxRentabilite(evolutionTauxRentabilite);
+        }
+        if (tauxRentabiliteRequest.isWithTauxRentabiliteParMatricule()) {
+            Courbe<String, Float> tauxRentabiliteParMatricule = getTauxRentabiliteParMatricule(tauxRentabiliteRequest, chiffreAffaireRequest);
+            statistiquesTauxRentabilite.tauxRentabiliteParMatricule(tauxRentabiliteParMatricule);
+        }
+        return statistiquesTauxRentabilite;
+    }
 
-        return new StatistiquesTauxRentabilite()
-            .chiffreAffaireTotal(chiffreAffaireTotal)
-            .evolutionChiffreAffaire(evolutionChiffreAffaire)
-            .chargeGasoilTotal(chargeGasoilTotal)
-            .evolutionChargeGasoil(evolutionChargeGasoil)
-            .tauxRentabilite(tauxRentabilite)
-            .evolutionTauxRentabilite(evolutionTauxRentabilite)
-            .tauxRentabiliteParMatricule(tauxRentabiliteParMatricule);
+    private Float round(Float value) {
+        return (float) Math.round(value * 100) / 100;
     }
 
     private Courbe<String, Float> getTauxRentabiliteParMatricule(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest, StatistiquesChiffreAffaireRequest chiffreAffaireRequest) {

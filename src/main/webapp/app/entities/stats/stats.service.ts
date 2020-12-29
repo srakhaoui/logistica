@@ -26,6 +26,12 @@ export class StatsService {
     this.buildGetRequest(url, options);
   }
 
+  exportStatsRentabilite(req?: any): void {
+    const options: HttpParams = createRequestOption(req);
+    const url = `${this.resourceUrl}/taux-rentabilite/export`;
+    this.buildGetRequest(url, options);
+  }
+
   getStatistiquesTauxRentabilite(statistiquesTauxRentabiliteRequest: IStatistiquesTauxRentabiliteRequest): Observable<IStatistiquesTauxRentabilite> {
       return this.http.post<IStatistiquesTauxRentabilite>(`${this.resourceUrl}/taux-rentabilite`, statistiquesTauxRentabiliteRequest, { observe: 'body' });
   }
