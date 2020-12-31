@@ -155,4 +155,133 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         }
         return entityQuery.getResultList();
     }
+
+    @Override
+    public List<LitrageParMois> getLitrageParMois(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        final Long societeId = tauxConsommationRequest.getSocieteId();
+        final String matricule = tauxConsommationRequest.getMatricule();
+        final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
+        final LocalDate dateFin = tauxConsommationRequest.getDateFin();
+
+        boolean withSocieteId = societeId != null;
+        boolean withTransporteurId = matricule != null;
+        boolean withDateDebut = dateDebut != null;
+        boolean withDateFin = dateFin != null;
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withSocieteId) {
+            predicate.append(" And g.societeFacturation.id = :societeId");
+        }
+        if (withTransporteurId) {
+            predicate.append(" And g.transporteur.matricule = :matricule");
+        }
+        if (withDateDebut) {
+            predicate.append(" And g.dateBonGasoil >= :dateDebut");
+        }
+        if (withDateFin) {
+            predicate.append(" And g.dateBonGasoil <= :dateFin");
+        }
+
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.LitrageParMois(year(dateBonGasoil), month(dateBonGasoil), sum(quantiteEnLitre)) From Gasoil g").append(predicate).append(" Group By year(dateBonGasoil), month(dateBonGasoil)");
+        Query entityQuery = entityManager.createQuery(query.toString());
+
+        if (withSocieteId) {
+            entityQuery.setParameter("societeId", societeId);
+        }
+        if (withTransporteurId) {
+            entityQuery.setParameter("matricule", matricule);
+        }
+        if (withDateDebut) {
+            entityQuery.setParameter("dateDebut", dateDebut);
+        }
+        if (withDateFin) {
+            entityQuery.setParameter("dateFin", dateFin);
+        }
+        return entityQuery.getResultList();
+    }
+
+    @Override
+    public List<KilometrageParMois> getKilometrageParMois(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        final Long societeId = tauxConsommationRequest.getSocieteId();
+        final String matricule = tauxConsommationRequest.getMatricule();
+        final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
+        final LocalDate dateFin = tauxConsommationRequest.getDateFin();
+
+        boolean withSocieteId = societeId != null;
+        boolean withTransporteurId = matricule != null;
+        boolean withDateDebut = dateDebut != null;
+        boolean withDateFin = dateFin != null;
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withSocieteId) {
+            predicate.append(" And g.societeFacturation.id = :societeId");
+        }
+        if (withTransporteurId) {
+            predicate.append(" And g.transporteur.matricule = :matricule");
+        }
+        if (withDateDebut) {
+            predicate.append(" And g.dateBonGasoil >= :dateDebut");
+        }
+        if (withDateFin) {
+            predicate.append(" And g.dateBonGasoil <= :dateFin");
+        }
+
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.KilometrageParMois(year(dateBonGasoil), month(dateBonGasoil), sum(kilometrageParcouru)) From Gasoil g").append(predicate).append(" Group By year(dateBonGasoil), month(dateBonGasoil)");
+        Query entityQuery = entityManager.createQuery(query.toString());
+
+        if (withSocieteId) {
+            entityQuery.setParameter("societeId", societeId);
+        }
+        if (withTransporteurId) {
+            entityQuery.setParameter("matricule", matricule);
+        }
+        if (withDateDebut) {
+            entityQuery.setParameter("dateDebut", dateDebut);
+        }
+        if (withDateFin) {
+            entityQuery.setParameter("dateFin", dateFin);
+        }
+        return entityQuery.getResultList();
+    }
+
+    @Override
+    public List<TauxConsommationParMatricule> getTauxConsommationParMatricule(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        final Long societeId = tauxConsommationRequest.getSocieteId();
+        final String matricule = tauxConsommationRequest.getMatricule();
+        final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
+        final LocalDate dateFin = tauxConsommationRequest.getDateFin();
+
+        boolean withSocieteId = societeId != null;
+        boolean withTransporteurId = matricule != null;
+        boolean withDateDebut = dateDebut != null;
+        boolean withDateFin = dateFin != null;
+        StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withSocieteId) {
+            predicate.append(" And g.societeFacturation.id = :societeId");
+        }
+        if (withTransporteurId) {
+            predicate.append(" And g.transporteur.matricule = :matricule");
+        }
+        if (withDateDebut) {
+            predicate.append(" And g.dateBonGasoil >= :dateDebut");
+        }
+        if (withDateFin) {
+            predicate.append(" And g.dateBonGasoil <= :dateFin");
+        }
+
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.TauxConsommationParMatricule(transporteur.matricule, 100*(sum(quantiteEnLitre)/sum(kilometrageParcouru))) From Gasoil g").append(predicate).append(" Group By transporteur.matricule");
+        Query entityQuery = entityManager.createQuery(query.toString());
+
+        if (withSocieteId) {
+            entityQuery.setParameter("societeId", societeId);
+        }
+        if (withTransporteurId) {
+            entityQuery.setParameter("matricule", matricule);
+        }
+        if (withDateDebut) {
+            entityQuery.setParameter("dateDebut", dateDebut);
+        }
+        if (withDateFin) {
+            entityQuery.setParameter("dateFin", dateFin);
+        }
+        return entityQuery.getResultList();
+    }
 }

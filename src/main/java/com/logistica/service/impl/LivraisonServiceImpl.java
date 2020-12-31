@@ -321,7 +321,7 @@ public class LivraisonServiceImpl implements LivraisonService {
         float chiffreAffaireTotal = 0.0F;
         if (tauxRentabiliteRequest.isWithEvolutionChiffreAffaire()) {
             evolutionChiffreAffaire = getEvolutionChiffreAffaire(chiffreAffaireRequest);
-            chiffreAffaireTotal = round(evolutionChiffreAffaire.getOrdonnees().stream().reduce(0.0F, Float::sum));
+            chiffreAffaireTotal = StatsUtils.round(evolutionChiffreAffaire.getOrdonnees().stream().reduce(0.0F, Float::sum));
             statistiquesTauxRentabilite
                 .chiffreAffaireTotal(chiffreAffaireTotal)
                 .evolutionChiffreAffaire(evolutionChiffreAffaire);
@@ -330,14 +330,14 @@ public class LivraisonServiceImpl implements LivraisonService {
         float chargeGasoilTotal = 0.0f;
         if (tauxRentabiliteRequest.isWithEvolutionChargeGasoil()) {
             evolutionChargeGasoil = getEvolutionChargeGasoil(tauxRentabiliteRequest);
-            chargeGasoilTotal = round(evolutionChargeGasoil.getOrdonnees().stream().reduce(0.0F, Float::sum));
+            chargeGasoilTotal = StatsUtils.round(evolutionChargeGasoil.getOrdonnees().stream().reduce(0.0F, Float::sum));
             statistiquesTauxRentabilite
                 .chargeGasoilTotal(chargeGasoilTotal)
                 .evolutionChargeGasoil(evolutionChargeGasoil);
         }
         if (tauxRentabiliteRequest.isWithEvolutionTauxRentabilite()) {
             Courbe<String, Float> evolutionTauxRentabilite = calculerTauxRentabilite(evolutionChiffreAffaire, evolutionChargeGasoil);
-            Float tauxRentabilite = round(calculerTauxRentabilite(chiffreAffaireTotal, chargeGasoilTotal));
+            Float tauxRentabilite = StatsUtils.round(calculerTauxRentabilite(chiffreAffaireTotal, chargeGasoilTotal));
             statistiquesTauxRentabilite
                 .tauxRentabilite(tauxRentabilite)
                 .evolutionTauxRentabilite(evolutionTauxRentabilite);
@@ -347,10 +347,6 @@ public class LivraisonServiceImpl implements LivraisonService {
             statistiquesTauxRentabilite.tauxRentabiliteParMatricule(tauxRentabiliteParMatricule);
         }
         return statistiquesTauxRentabilite;
-    }
-
-    private Float round(Float value) {
-        return (float) Math.round(value * 100) / 100;
     }
 
     private Courbe<String, Float> getTauxRentabiliteParMatricule(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest, StatistiquesChiffreAffaireRequest chiffreAffaireRequest) {
@@ -393,7 +389,7 @@ public class LivraisonServiceImpl implements LivraisonService {
         } else {
             tauxRentabilite = (chiffreAffaire + uneChargeGasoil) / chiffreAffaire;
         }
-        return tauxRentabilite;
+        return tauxRentabilite * 100;
     }
 
     private Courbe<String, Float> getEvolutionChargeGasoil(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {

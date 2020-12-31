@@ -54,4 +54,6 @@ public interface GasoilService {
     List<ChargeGasoilParMois> getEvolutionChargeGasoilParMois(ChargeGasoilRequest chargeGasoilRequest);
 
     List<ChargeGasoilParMatricule> getRepartitionChargeGasoilParMatricule(ChargeGasoilRequest chargeGasoilRequest);
+
+    StatistiquesTauxConsommation getStatistiquesTauxConsommation(StatistiquesTauxConsommationRequest tauxConsommationRequest);
 }

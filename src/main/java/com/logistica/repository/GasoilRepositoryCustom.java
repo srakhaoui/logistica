@@ -13,4 +13,10 @@ public interface GasoilRepositoryCustom {
     List<ChargeGasoilParMois> getEvolutionChargeGasoilParMois(ChargeGasoilRequest chargeGasoilRequest);
 
     List<ChargeGasoilParMatricule> getRepartitionChargeGasoilParMatricule(ChargeGasoilRequest chargeGasoilRequest);
+
+    List<LitrageParMois> getLitrageParMois(StatistiquesTauxConsommationRequest statistiquesTauxConsommationRequest);
+
+    List<KilometrageParMois> getKilometrageParMois(StatistiquesTauxConsommationRequest statistiquesTauxConsommationRequest);
+
+    List<TauxConsommationParMatricule> getTauxConsommationParMatricule(StatistiquesTauxConsommationRequest statistiquesTauxConsommationRequest);
 }

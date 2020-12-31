@@ -9,10 +9,13 @@ import { IStatistiquesChiffreAffaire } from 'app/shared/model/statistiques-chiff
 import { IStatistiquesChiffreAffaireRequest } from 'app/shared/model/statistiques-chiffre-affaire-request.stats.model';
 import { IStatistiquesTauxRentabilite } from 'app/shared/model/statistiques-taux-rentabilite.stats.model';
 import { IStatistiquesTauxRentabiliteRequest } from 'app/shared/model/statistiques-taux-rentabilite-request.stats.model';
+import { IStatistiquesTauxConsommation } from 'app/shared/model/statistiques-taux-consommation.stats.model';
+import { IStatistiquesTauxConsommationRequest } from 'app/shared/model/statistiques-taux-consommation-request.stats.model';
 
 @Injectable({ providedIn: 'root' })
 export class StatsService {
   public resourceUrl = SERVER_API_URL + 'api/livraisons/stats';
+  public resourceUrlGasoil = SERVER_API_URL + 'api/gasoils/stats';
 
   constructor(protected http: HttpClient) {}
 
@@ -34,6 +37,10 @@ export class StatsService {
 
   getStatistiquesTauxRentabilite(statistiquesTauxRentabiliteRequest: IStatistiquesTauxRentabiliteRequest): Observable<IStatistiquesTauxRentabilite> {
       return this.http.post<IStatistiquesTauxRentabilite>(`${this.resourceUrl}/taux-rentabilite`, statistiquesTauxRentabiliteRequest, { observe: 'body' });
+  }
+
+  getStatistiquesTauxConsommation(statistiquesTauxConsommationRequest: IStatistiquesTauxConsommationRequest): Observable<IStatistiquesTauxConsommation> {
+      return this.http.post<IStatistiquesTauxConsommation>(`${this.resourceUrlGasoil}/taux-consommation`, statistiquesTauxConsommationRequest, { observe: 'body' });
   }
 
   private buildGetRequest(url, options){

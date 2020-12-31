@@ -17,8 +17,11 @@ import org.springframework.util.Assert;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Gasoil}.
@@ -147,4 +150,71 @@ public class GasoilServiceImpl implements GasoilService {
     public List<ChargeGasoilParMatricule> getRepartitionChargeGasoilParMatricule(ChargeGasoilRequest chargeGasoilRequest) {
         return gasoilRepository.getRepartitionChargeGasoilParMatricule(chargeGasoilRequest);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public StatistiquesTauxConsommation getStatistiquesTauxConsommation(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        Courbe<String, Float> evolutionLitrage = getEvolutionLitrage(tauxConsommationRequest);
+        float litrageTotal = StatsUtils.round(evolutionLitrage.getOrdonnees().stream().reduce(0.0F, Float::sum));
+        Courbe<String, Float> evolutionKilometrage = getEvolutionKilometrage(tauxConsommationRequest);
+        float kilometrageTotal = StatsUtils.round(evolutionKilometrage.getOrdonnees().stream().reduce(0.0F, Float::sum));
+        Courbe<String, Float> evolutionTauxConsommatiion = calculerTauxConsommation(evolutionLitrage, evolutionKilometrage);
+        float tauxConsommationGlobal = calculerTauxConsommation(litrageTotal, kilometrageTotal);
+        Courbe<String, Float> tauxConsommationParMatricule = getTauxConsommationParMatricule(tauxConsommationRequest);
+
+        return new StatistiquesTauxConsommation()
+            .withEvolutionLitrage(evolutionLitrage)
+            .withLitrageTotal(litrageTotal)
+            .withEvolutionKilometrage(evolutionKilometrage)
+            .withKilometrageTotal(kilometrageTotal)
+            .withEvolutionTauxConsommation(evolutionTauxConsommatiion)
+            .withTauxConsommation(tauxConsommationGlobal)
+            .withTauxConsommationParMatricule(tauxConsommationParMatricule);
+    }
+
+    private Courbe<String, Float> getEvolutionLitrage(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        List<LitrageParMois> litragesParMois = gasoilRepository.getLitrageParMois(tauxConsommationRequest);
+        Map<String, Float> LitrageByYearMonthMap = litragesParMois.stream()
+            .collect(Collectors.toMap(litrageParMois -> StatsUtils.getMoisAnneeAsStr(litrageParMois.getAnnee(), litrageParMois.getMois()), LitrageParMois::getLitrageAsFloat));
+        return StatsUtils.mapToCourbe(tauxConsommationRequest.getDateDebut(), tauxConsommationRequest.getDateFin(), LitrageByYearMonthMap);
+    }
+
+    private Courbe<String, Float> getEvolutionKilometrage(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        List<KilometrageParMois> kilometragesParMois = gasoilRepository.getKilometrageParMois(tauxConsommationRequest);
+        Map<String, Float> LitrageByYearMonthMap = kilometragesParMois.stream()
+            .collect(Collectors.toMap(litrageParMois -> StatsUtils.getMoisAnneeAsStr(litrageParMois.getAnnee(), litrageParMois.getMois()), KilometrageParMois::getKilometrageAsFloat));
+        return StatsUtils.mapToCourbe(tauxConsommationRequest.getDateDebut(), tauxConsommationRequest.getDateFin(), LitrageByYearMonthMap);
+    }
+
+    private Courbe<String, Float> calculerTauxConsommation(Courbe<String, Float> evolutionLitrage, Courbe<String, Float> evolutionKilometrage) {
+        Courbe<String, Float> evolutionTauxConsommation = new Courbe<>();
+        evolutionTauxConsommation.getAbscisses().addAll(evolutionLitrage.getAbscisses());
+        for (int i = 0; i < evolutionTauxConsommation.getAbscisses().size(); i++) {
+            Float litrage = evolutionLitrage.getOrdonnees().get(i);
+            Float kilometrage = evolutionKilometrage.getOrdonnees().get(i);
+            evolutionTauxConsommation.getOrdonnees().add(calculerTauxConsommation(litrage, kilometrage));
+        }
+
+        return evolutionTauxConsommation;
+    }
+
+    private Float calculerTauxConsommation(Float litrage, Float kilometrage) {
+        float tauxConsommation = 0.0F;
+        if (kilometrage > 0) {
+            tauxConsommation = (litrage / kilometrage) * 100;
+        }
+        return tauxConsommation;
+    }
+
+    private Courbe<String, Float> getTauxConsommationParMatricule(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        List<TauxConsommationParMatricule> tauxConsommationParMatriculeList = gasoilRepository.getTauxConsommationParMatricule(tauxConsommationRequest);
+        Collections.sort(tauxConsommationParMatriculeList);
+        Courbe<String, Float> tauxConsommationParMatriculeCourbe = new Courbe<>();
+        tauxConsommationParMatriculeList.forEach(tauxConsommationParMatricule -> {
+            tauxConsommationParMatriculeCourbe.getAbscisses().add(tauxConsommationParMatricule.getMatricule());
+            tauxConsommationParMatriculeCourbe.getOrdonnees().add(tauxConsommationParMatricule.getTauxConsommation().floatValue());
+        });
+        return tauxConsommationParMatriculeCourbe;
+    }
+
 }

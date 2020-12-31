@@ -187,4 +187,11 @@ public class GasoilResource {
         GasoilPriceResponse latestPrice = gasoilService.getLastPrixGasoil();
         return ResponseEntity.ok().body(latestPrice);
     }
+
+    @PostMapping("/gasoils/stats/taux-consommation")
+    public ResponseEntity<StatistiquesTauxConsommation> getStatistiquesTauxRentabilite(@RequestBody StatistiquesTauxConsommationRequest tauxConsommationRequest) {
+        log.debug("REST request to get tauxConsommationRequest : {}", tauxConsommationRequest);
+        StatistiquesTauxConsommation statistiquesTauxConsommation = gasoilService.getStatistiquesTauxConsommation(tauxConsommationRequest);
+        return ResponseEntity.ok(statistiquesTauxConsommation);
+    }
 }

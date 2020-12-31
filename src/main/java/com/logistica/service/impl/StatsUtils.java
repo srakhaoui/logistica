@@ -71,4 +71,8 @@ public class StatsUtils {
         }
         return compraison;
     }
+
+    public static Float round(Float value) {
+        return (float) Math.round(value * 100) / 100;
+    }
 }

@@ -1,0 +1,110 @@
+<div>
+    <h2 id="page-heading">
+        <span>Statistiques / Rentabilité</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="statsForm" role="form" novalidate (ngSubmit)="search()" [formGroup]="statsForm">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_proprietaire">Société</label>
+                    <select class="form-control" id="field_proprietaire" name="societe" formControlName="societe">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === statsForm.get('societe').value?.id ? statsForm.get('societe').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_transporteur">Matricule</label>
+                    <ng-select id="field_transporteur"
+                               [items]="transporteurs$ | async"
+                               [typeahead]="transporteurInput$"
+                               bindLabel="description"
+                               [hideSelected]="true"
+                               [loading]="transporteursLoading"
+                               formControlName="transporteur"
+                               name="transporteur"
+                               placeholder="Chercher par matricule">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_dateDebutBonLivraison">Date de début</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                            [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_dateFinBonLivraison">Date de fin</label>
+                    <div class="input-group">
+                        <input id="field_dateFinBonLivraison" type="text" class="form-control" name="dateFin"
+                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                        <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                            [icon]="'calendar-alt'"></fa-icon></button>
+                    </span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <br>
+                <button type="submit" id="search-reporting" class="btn btn-primary">
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div>
+        <span>Litrage total: <strong>{{statsTauxConsommation.litrageTotal}}</strong></span>
+        <br>
+        <span>Kilométrage total: <strong>{{statsTauxConsommation.kilometrageTotal}}</strong></span>
+        <div class="charts-header-evolution">
+            <span class="charts-title-evolution"></span>
+            <div class="export-icon-evolution" title="Exporter" (click)="exportStats()">
+            </div>
+        </div>
+        <canvas baseChart width="400" height="100"
+                [datasets]="evolutionLitrageChartData"
+                [options]="lineChartOptions"
+                [labels]="evolutionLitrageChartLabels"
+                [legend]="evolutionLegend"
+                [chartType]="evolutionChartType"
+                [colors]="evolutionColors">
+        </canvas>
+    </div>
+    <div class="evolutionTauxConsommation">
+        <span>Taux de consommation global: <strong>{{statsTauxConsommation.tauxConsommation}}</strong></span>
+        <canvas baseChart width="400" height="100"
+                [datasets]="evolutionTauxConsommationChartData"
+                [options]="lineChartOptions"
+                [labels]="evolutionTauxConsommationChartLabels"
+                [legend]="evolutionLegend"
+                [chartType]="evolutionTauxConsommationChartType"
+                [colors]="evolutionColors">
+        </canvas>
+    </div>
+    <div class="classementTauxConsommation">
+        <canvas baseChart width="400" height="100"
+                [datasets]="classementTauxConsommationChartData"
+                [options]="lineChartOptions"
+                [labels]="classementTauxConsommationChartLabels"
+                [legend]="evolutionLegend"
+                [chartType]="evolutionChartType"
+                [colors]="evolutionColors">
+        </canvas>
+    </div>
+</div>
