@@ -14,6 +14,7 @@ import com.logistica.service.tarif.TypePricer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,9 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Autowired
     private GasoilService gasoilService;
+
+    @Value("${logistica.livraison.date-ouverture-saisie-livraison}")
+    private String dateOuvertureSaisieLivraison;
 
     private final LivraisonRepository livraisonRepository;
 
@@ -77,7 +81,8 @@ public class LivraisonServiceImpl implements LivraisonService {
         if (dateBonCaisse.isAfter(LocalDate.now())) {
             throw new DateBonCaisseFutureException();
         }
-        if (dateLivraison.getYear() != LocalDate.now().getYear()) {
+        LocalDate anneeExerciceComptable = Optional.ofNullable(dateOuvertureSaisieLivraison).map(LocalDate::parse).orElse(LocalDate.now().withMonth(1).withDayOfMonth(1));
+        if (dateLivraison.isBefore(anneeExerciceComptable)) {
             throw new ExerciceComptableLivraisonInvalideException();
         }
         if (dateLivraison.isAfter(LocalDate.now())) {
@@ -87,7 +92,7 @@ public class LivraisonServiceImpl implements LivraisonService {
             throw new DateBonCaisseAnterieureDateLivraisonException();
         }
         Optional.ofNullable(livraison.getDateBonCommande()).ifPresent(dateBonCommande -> {
-            if (dateBonCommande.getYear() != LocalDate.now().getYear()) {
+            if (dateBonCommande.isBefore(anneeExerciceComptable)) {
                 throw new ExerciceComptableCommandeInvalideException();
             }
             if (dateBonCaisse.isBefore(dateBonCommande)) {
