@@ -74,4 +74,8 @@ public interface LivraisonService {
     StatistiquesChiffreAffaire getStatistiquesChiffreAffaire(StatistiquesChiffreAffaireRequest statistiquesChiffreAffaireRequest);
 
     StatistiquesTauxRentabilite getStatistiquesTauxRentabilite(StatistiquesTauxRentabiliteRequest statistiquesTauxRentabiliteRequest);
+
+    void setMaxRepartitionSize(Integer maxRepartitionSize);
+
+    Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitions);
 }
