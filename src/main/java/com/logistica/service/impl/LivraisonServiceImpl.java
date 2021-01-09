@@ -47,6 +47,9 @@ public class LivraisonServiceImpl implements LivraisonService {
     @Value("${logistica.livraison.date-ouverture-saisie-livraison}")
     private String dateOuvertureSaisieLivraison;
 
+    @Value("logistica.stats.repartition.max-size")
+    private Integer maxRepartitionSize;
+
     private final LivraisonRepository livraisonRepository;
 
     public LivraisonServiceImpl(LivraisonRepository livraisonRepository) {
@@ -295,12 +298,23 @@ public class LivraisonServiceImpl implements LivraisonService {
         return statistiquesChiffreAffaire;
     }
 
-    private Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitions) {
+    public Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitions) {
         Courbe<String, Float> courbe = new Courbe<>();
-        repartitions.forEach(chiffreAffaireParRepartition -> {
-            courbe.getAbscisses().add(chiffreAffaireParRepartition.getElementRepartition());
-            courbe.getOrdonnees().add(chiffreAffaireParRepartition.getChiffreAffaire().floatValue());
-        });
+        int i = 0;
+        float totalReste = 0;
+        for (ChiffreAffaireParRepartition chiffreAffaireParRepartition : repartitions) {
+            if (i < maxRepartitionSize - 1) {
+                courbe.getAbscisses().add(chiffreAffaireParRepartition.getElementRepartition());
+                courbe.getOrdonnees().add(chiffreAffaireParRepartition.getChiffreAffaire().floatValue());
+            } else {
+                totalReste += chiffreAffaireParRepartition.getChiffreAffaire().floatValue();
+            }
+            i++;
+        }
+        if (repartitions.size() > maxRepartitionSize) {
+            courbe.getAbscisses().add("Reste");
+            courbe.getOrdonnees().add(totalReste);
+        }
         return courbe;
     }
 
@@ -352,6 +366,11 @@ public class LivraisonServiceImpl implements LivraisonService {
             statistiquesTauxRentabilite.tauxRentabiliteParMatricule(tauxRentabiliteParMatricule);
         }
         return statistiquesTauxRentabilite;
+    }
+
+    @Override
+    public void setMaxRepartitionSize(Integer maxRepartitionSize) {
+        this.maxRepartitionSize = maxRepartitionSize;
     }
 
     private Courbe<String, Float> getTauxRentabiliteParMatricule(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest, StatistiquesChiffreAffaireRequest chiffreAffaireRequest) {
