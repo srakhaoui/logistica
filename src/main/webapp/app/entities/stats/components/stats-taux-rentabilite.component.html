@@ -32,6 +32,21 @@
                     </ng-select>
                 </div>
             </div>
+            <div class="form-group">
+                <label>Matricules à exclure:</label>
+                <ng-select [items]="matriculesToExclude$ | async"
+                           bindLabel="description"
+                           [addTag]="false"
+                           [multiple]="true"
+                           [hideSelected]="true"
+                           [loading]="matriculesToExcludeLoading"
+                           [typeahead]="matriculesToExcludeInput$"
+                           [(ngModel)]="matriculesToExclude"
+                           name="matriculesToExclude"
+                           formControlName="matriculesToExclude"
+                           addTagText="">
+                </ng-select>
+            </div>
             <div class="form-row">
                 <div class="col">
                     <label class="form-control-label" for="field_dateDebutBonLivraison">Date de début</label>

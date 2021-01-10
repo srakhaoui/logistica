@@ -15,6 +15,9 @@ import java.util.Optional;
  * Service Interface for managing {@link Livraison}.
  */
 public interface LivraisonService {
+
+    String LE_RESTE = "Le reste";
+
     /**
      * Save a livraison.
      *

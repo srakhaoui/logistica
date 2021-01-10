@@ -1,11 +1,13 @@
 package com.logistica.service.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class StatistiquesTauxConsommationRequest {
 
     private Long societeId;
-    private String matricule;
+    private List<String> matriculesToInclude;
+    private List<String> matriculesToExclude;
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
@@ -17,12 +19,20 @@ public class StatistiquesTauxConsommationRequest {
         this.societeId = societeId;
     }
 
-    public String getMatricule() {
-        return matricule;
+    public List<String> getMatriculesToInclude() {
+        return matriculesToInclude;
     }
 
-    public void setMatricule(String matricule) {
-        this.matricule = matricule;
+    public void setMatriculesToInclude(List<String> matriculesToInclude) {
+        this.matriculesToInclude = matriculesToInclude;
+    }
+
+    public List<String> getMatriculesToExclude() {
+        return matriculesToExclude;
+    }
+
+    public void setMatriculesToExclude(List<String> matriculesToExclude) {
+        this.matriculesToExclude = matriculesToExclude;
     }
 
     public LocalDate getDateDebut() {

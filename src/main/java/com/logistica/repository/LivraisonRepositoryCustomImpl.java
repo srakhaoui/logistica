@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.PageableExecutionUtils;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -398,7 +399,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final Long produitId = evolutionCARequest.getProduitId();
         final Long trajetId = evolutionCARequest.getTrajetId();
         final TypeLivraison typeLivraison = evolutionCARequest.getTypeLivraison();
-        final String matricule = evolutionCARequest.getMatricule();
+        final List<String> matriculesToInclude = evolutionCARequest.getMatriculesToInclude();
+        final List<String> matriculesToExclude = evolutionCARequest.getMatriculesToExclude();
         final LocalDate dateDebutBonLivraison = evolutionCARequest.getDateDebut();
         final LocalDate dateFinBonLivraison = evolutionCARequest.getDateFin();
 
@@ -406,7 +408,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         boolean withProduitId = produitId != null;
         boolean withTrajetId = trajetId != null;
         boolean withTypeLivraison = typeLivraison != null;
-        boolean withMatricule = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebutBonLivraison = dateDebutBonLivraison != null;
         boolean withDateFinBonLivraison = dateFinBonLivraison != null;
 
@@ -423,8 +426,11 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withTypeLivraison) {
             predicate.append(" And l.type = :type");
         }
-        if (withMatricule) {
-            predicate.append(" And l.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And l.transporteur.matricule in (:matriculesToInclude)");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And l.transporteur.matricule not in (:matriculesToExclude)");
         }
         if (withDateDebutBonLivraison) {
             predicate.append(" And l.dateBonLivraison >= :dateDebut");
@@ -448,8 +454,11 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withTypeLivraison) {
             entityQuery.setParameter("type", typeLivraison);
         }
-        if (withMatricule) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         if (withDateDebutBonLivraison) {
             entityQuery.setParameter("dateDebut", dateDebutBonLivraison);
@@ -466,7 +475,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final Long produitId = evolutionCARequest.getProduitId();
         final Long trajetId = evolutionCARequest.getTrajetId();
         final TypeLivraison typeLivraison = evolutionCARequest.getTypeLivraison();
-        final String matricule = evolutionCARequest.getMatricule();
+        final List<String> matriculesToInclude = evolutionCARequest.getMatriculesToInclude();
+        final List<String> matriculesToExclude = evolutionCARequest.getMatriculesToExclude();
         final LocalDate dateDebutBonLivraison = evolutionCARequest.getDateDebut();
         final LocalDate dateFinBonLivraison = evolutionCARequest.getDateFin();
 
@@ -474,7 +484,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         boolean withProduitId = produitId != null;
         boolean withTrajetId = trajetId != null;
         boolean withTypeLivraison = typeLivraison != null;
-        boolean withMatricule = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebutBonLivraison = dateDebutBonLivraison != null;
         boolean withDateFinBonLivraison = dateFinBonLivraison != null;
 
@@ -491,14 +502,17 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withTypeLivraison) {
             predicate.append(" And l.type = :type");
         }
-        if (withMatricule) {
-            predicate.append(" And l.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And l.transporteur.matricule in (:matriculesToInclude)");
         }
         if (withDateDebutBonLivraison) {
             predicate.append(" And l.dateBonLivraison >= :dateDebut");
         }
         if (withDateFinBonLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFin");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And l.transporteur.matricule not in (:matriculesToExclude)");
         }
 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.ChiffreAffaireParRepartition(str(" + uniteRepartition.getter() + "), sum(prixTotalVente)) From Livraison l").append(predicate).append(" Group By ").append(uniteRepartition.getter()).append(" Order by sum(prixTotalVente) desc");
@@ -516,14 +530,17 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withTypeLivraison) {
             entityQuery.setParameter("type", typeLivraison);
         }
-        if (withMatricule) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
         }
         if (withDateDebutBonLivraison) {
             entityQuery.setParameter("dateDebut", dateDebutBonLivraison);
         }
         if (withDateFinBonLivraison) {
             entityQuery.setParameter("dateFin", dateFinBonLivraison);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         return entityQuery.getResultList();
     }
@@ -534,7 +551,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final Long produitId = evolutionCARequest.getProduitId();
         final Long trajetId = evolutionCARequest.getTrajetId();
         final TypeLivraison typeLivraison = evolutionCARequest.getTypeLivraison();
-        final String matricule = evolutionCARequest.getMatricule();
+        final List<String> matriculesToInclude = evolutionCARequest.getMatriculesToInclude();
+        final List<String> matriculesToExclude = evolutionCARequest.getMatriculesToExclude();
         final LocalDate dateDebutBonLivraison = evolutionCARequest.getDateDebut();
         final LocalDate dateFinBonLivraison = evolutionCARequest.getDateFin();
 
@@ -542,7 +560,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         boolean withProduitId = produitId != null;
         boolean withTrajetId = trajetId != null;
         boolean withTypeLivraison = typeLivraison != null;
-        boolean withMatricule = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebutBonLivraison = dateDebutBonLivraison != null;
         boolean withDateFinBonLivraison = dateFinBonLivraison != null;
 
@@ -559,8 +578,11 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withTypeLivraison) {
             predicate.append(" And l.type = :type");
         }
-        if (withMatricule) {
-            predicate.append(" And l.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And l.transporteur.matricule in (:withMatriculesToInclude)");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And l.transporteur.matricule not in (:matriculesToExclude)");
         }
         if (withDateDebutBonLivraison) {
             predicate.append(" And l.dateBonLivraison >= :dateDebut");
@@ -584,8 +606,8 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withTypeLivraison) {
             entityQuery.setParameter("type", typeLivraison);
         }
-        if (withMatricule) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
         }
         if (withDateDebutBonLivraison) {
             entityQuery.setParameter("dateDebut", dateDebutBonLivraison);

@@ -47,7 +47,7 @@ public class LivraisonServiceTest {
         assertThat(courbe.getAbscisses().size()).isEqualTo(maxRepartitionsSize);
         List<String> expectedRepartitions = repartitions.subList(0, maxRepartitionsSize - 1).stream().map(ChiffreAffaireParRepartition::getElementRepartition).collect(Collectors.toList());
         assertThat(new HashSet<>(courbe.getAbscisses())).containsAll(expectedRepartitions);
-        assertThat(courbe.getAbscisses().get(maxRepartitionsSize - 1)).isEqualTo("Reste");
+        assertThat(courbe.getAbscisses().get(maxRepartitionsSize - 1)).isEqualTo(LivraisonService.LE_RESTE);
         assertThat(courbe.getOrdonnees().size()).isEqualTo(maxRepartitionsSize);
         List<Float> chiffresAffaire = repartitions.subList(0, maxRepartitionsSize - 1).stream().map(ChiffreAffaireParRepartition::getChiffreAffaire).map(Double::floatValue).collect(Collectors.toList());
         assertThat(new HashSet<>(courbe.getOrdonnees())).containsAll(chiffresAffaire);

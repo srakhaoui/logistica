@@ -41,18 +41,35 @@
                     </ng-select>
                 </div>
                 <div class="col">
-                    <label class="form-control-label" for="field_transporteur">Matricule</label>
-                    <ng-select id="field_transporteur"
-                               [items]="transporteurs$ | async"
-                               [typeahead]="transporteurInput$"
+                    <label class="form-control-label" for="field_transporteur">Matricules à inclure</label>
+                    <ng-select [items]="matriculesToInclude$ | async"
                                bindLabel="description"
+                               [addTag]="false"
+                               [multiple]="true"
                                [hideSelected]="true"
-                               [loading]="transporteursLoading"
-                               formControlName="transporteur"
-                               name="transporteur"
-                               placeholder="Chercher par matricule">
+                               [loading]="matriculesToIncludeLoading"
+                               [typeahead]="matriculesToIncludeInput$"
+                               [(ngModel)]="matriculesToInclude"
+                               name="matriculesToInclude"
+                               formControlName="matriculesToInclude"
+                               addTagText="">
                     </ng-select>
                 </div>
+            </div>
+            <div class="form-group">
+                <label>Matricules à exclure:</label>
+                <ng-select [items]="matriculesToExclude$ | async"
+                           bindLabel="description"
+                           [addTag]="false"
+                           [multiple]="true"
+                           [hideSelected]="true"
+                           [loading]="matriculesToExcludeLoading"
+                           [typeahead]="matriculesToExcludeInput$"
+                           [(ngModel)]="matriculesToExclude"
+                           name="matriculesToExclude"
+                           formControlName="matriculesToExclude"
+                           addTagText="">
+                </ng-select>
             </div>
             <div class="form-group">
                 <label class="form-control-label" jhiTranslate="logisticaApp.livraison.trajet"

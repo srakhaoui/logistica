@@ -47,7 +47,7 @@ public class LivraisonServiceImpl implements LivraisonService {
     @Value("${logistica.livraison.date-ouverture-saisie-livraison}")
     private String dateOuvertureSaisieLivraison;
 
-    @Value("logistica.stats.repartition.max-size")
+    @Value("${logistica.stats.repartition.max-size}")
     private Integer maxRepartitionSize;
 
     private final LivraisonRepository livraisonRepository;
@@ -312,7 +312,7 @@ public class LivraisonServiceImpl implements LivraisonService {
             i++;
         }
         if (repartitions.size() > maxRepartitionSize) {
-            courbe.getAbscisses().add("Reste");
+            courbe.getAbscisses().add(LE_RESTE);
             courbe.getOrdonnees().add(totalReste);
         }
         return courbe;
@@ -425,18 +425,20 @@ public class LivraisonServiceImpl implements LivraisonService {
     private ChargeGasoilRequest getChargeGasoilRequestFrom(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {
         ChargeGasoilRequest evolutionChargeGasoilRequest = new ChargeGasoilRequest();
         evolutionChargeGasoilRequest.setSocieteId(tauxRentabiliteRequest.getSocieteId());
-        evolutionChargeGasoilRequest.setMatricule(tauxRentabiliteRequest.getMatricule());
+        evolutionChargeGasoilRequest.setMatriculeToInclude(tauxRentabiliteRequest.getMatriculesToInclude());
         evolutionChargeGasoilRequest.setDateDebut(tauxRentabiliteRequest.getDateDebut());
         evolutionChargeGasoilRequest.setDateFin(tauxRentabiliteRequest.getDateFin());
+        evolutionChargeGasoilRequest.setMatriculesToExclude(tauxRentabiliteRequest.getMatriculesToExclude());
         return evolutionChargeGasoilRequest;
     }
 
     private StatistiquesChiffreAffaireRequest mapChiffreAffaireRequestFrom(StatistiquesTauxRentabiliteRequest tauxRentabiliteRequest) {
         StatistiquesChiffreAffaireRequest chiffreAffaireRequest = new StatistiquesChiffreAffaireRequest();
-        chiffreAffaireRequest.setMatricule(tauxRentabiliteRequest.getMatricule());
+        chiffreAffaireRequest.setMatriculesToInclude(tauxRentabiliteRequest.getMatriculesToInclude());
         chiffreAffaireRequest.setSocieteId(tauxRentabiliteRequest.getSocieteId());
         chiffreAffaireRequest.setDateDebut(tauxRentabiliteRequest.getDateDebut());
         chiffreAffaireRequest.setDateFin(tauxRentabiliteRequest.getDateFin());
+        chiffreAffaireRequest.setMatriculesToExclude(tauxRentabiliteRequest.getMatriculesToExclude());
         return chiffreAffaireRequest;
     }
 

@@ -3,16 +3,18 @@ package com.logistica.service.dto;
 import com.logistica.domain.enumeration.TypeLivraison;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class StatistiquesChiffreAffaireRequest {
 
     private Long societeId;
     private Long produitId;
-    private String matricule;
+    private List<String> matriculesToInclude;
     private Long trajetId;
     private TypeLivraison typeLivraison;
     private LocalDate dateDebut;
     private LocalDate dateFin;
+    private List<String> matriculesToExclude;
     private boolean withTotalChiffreAffaire;
     private boolean withEvolutionChiffreAffaire;
     private boolean withRepartitionParTypeLivraison;
@@ -37,12 +39,12 @@ public class StatistiquesChiffreAffaireRequest {
         this.produitId = produitId;
     }
 
-    public String getMatricule() {
-        return matricule;
+    public List<String> getMatriculesToInclude() {
+        return matriculesToInclude;
     }
 
-    public void setMatricule(String matricule) {
-        this.matricule = matricule;
+    public void setMatriculesToInclude(List<String> matriculesToInclude) {
+        this.matriculesToInclude = matriculesToInclude;
     }
 
     public Long getTrajetId() {
@@ -75,6 +77,14 @@ public class StatistiquesChiffreAffaireRequest {
 
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
+    }
+
+    public List<String> getMatriculesToExclude() {
+        return matriculesToExclude;
+    }
+
+    public void setMatriculesToExclude(List<String> matriculesToExclude) {
+        this.matriculesToExclude = matriculesToExclude;
     }
 
     public boolean isWithTotalChiffreAffaire() {

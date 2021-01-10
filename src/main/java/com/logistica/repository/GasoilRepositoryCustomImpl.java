@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.PageableExecutionUtils;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -73,20 +74,25 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
     @Override
     public List<ChargeGasoilParMois> getEvolutionChargeGasoilParMois(ChargeGasoilRequest chargeGasoilRequest) {
         final Long societeId = chargeGasoilRequest.getSocieteId();
-        final String matricule = chargeGasoilRequest.getMatricule();
+        final List<String> matriculesToInclude = chargeGasoilRequest.getMatriculeToInclude();
+        final List<String> matriculesToExclude = chargeGasoilRequest.getMatriculesToExclude();
         final LocalDate dateDebut = chargeGasoilRequest.getDateDebut();
         final LocalDate dateFin = chargeGasoilRequest.getDateFin();
 
         boolean withSocieteId = societeId != null;
-        boolean withTransporteurId = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withSocieteId) {
             predicate.append(" And g.societeFacturation.id = :societeId");
         }
-        if (withTransporteurId) {
-            predicate.append(" And g.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And g.transporteur.matricule not in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");
@@ -101,8 +107,11 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         if (withSocieteId) {
             entityQuery.setParameter("societeId", societeId);
         }
-        if (withTransporteurId) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         if (withDateDebut) {
             entityQuery.setParameter("dateDebut", dateDebut);
@@ -116,20 +125,25 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
     @Override
     public List<ChargeGasoilParMatricule> getRepartitionChargeGasoilParMatricule(ChargeGasoilRequest chargeGasoilRequest) {
         final Long societeId = chargeGasoilRequest.getSocieteId();
-        final String matricule = chargeGasoilRequest.getMatricule();
+        final List<String> matriculesToInclude = chargeGasoilRequest.getMatriculeToInclude();
+        final List<String> matriculesToExclude = chargeGasoilRequest.getMatriculesToExclude();
         final LocalDate dateDebut = chargeGasoilRequest.getDateDebut();
         final LocalDate dateFin = chargeGasoilRequest.getDateFin();
 
         boolean withSocieteId = societeId != null;
-        boolean withTransporteurId = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withSocieteId) {
             predicate.append(" And g.societeFacturation.id = :societeId");
         }
-        if (withTransporteurId) {
-            predicate.append(" And g.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And g.transporteur.matricule not in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");
@@ -144,8 +158,11 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         if (withSocieteId) {
             entityQuery.setParameter("societeId", societeId);
         }
-        if (withTransporteurId) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         if (withDateDebut) {
             entityQuery.setParameter("dateDebut", dateDebut);
@@ -159,20 +176,25 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
     @Override
     public List<LitrageParMois> getLitrageParMois(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
         final Long societeId = tauxConsommationRequest.getSocieteId();
-        final String matricule = tauxConsommationRequest.getMatricule();
+        final List<String> matriculesToInclude = tauxConsommationRequest.getMatriculesToInclude();
+        final List<String> matriculesToExclude = tauxConsommationRequest.getMatriculesToExclude();
         final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
         final LocalDate dateFin = tauxConsommationRequest.getDateFin();
 
         boolean withSocieteId = societeId != null;
-        boolean withTransporteurId = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withSocieteId) {
             predicate.append(" And g.societeFacturation.id = :societeId");
         }
-        if (withTransporteurId) {
-            predicate.append(" And g.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");
@@ -187,8 +209,11 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         if (withSocieteId) {
             entityQuery.setParameter("societeId", societeId);
         }
-        if (withTransporteurId) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         if (withDateDebut) {
             entityQuery.setParameter("dateDebut", dateDebut);
@@ -202,20 +227,25 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
     @Override
     public List<KilometrageParMois> getKilometrageParMois(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
         final Long societeId = tauxConsommationRequest.getSocieteId();
-        final String matricule = tauxConsommationRequest.getMatricule();
+        final List<String> matriculesToInclude = tauxConsommationRequest.getMatriculesToInclude();
+        final List<String> matriculesToExclude = tauxConsommationRequest.getMatriculesToExclude();
         final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
         final LocalDate dateFin = tauxConsommationRequest.getDateFin();
 
         boolean withSocieteId = societeId != null;
-        boolean withTransporteurId = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withSocieteId) {
             predicate.append(" And g.societeFacturation.id = :societeId");
         }
-        if (withTransporteurId) {
-            predicate.append(" And g.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");
@@ -230,8 +260,11 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         if (withSocieteId) {
             entityQuery.setParameter("societeId", societeId);
         }
-        if (withTransporteurId) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         if (withDateDebut) {
             entityQuery.setParameter("dateDebut", dateDebut);
@@ -245,20 +278,25 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
     @Override
     public List<TauxConsommationParMatricule> getTauxConsommationParMatricule(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
         final Long societeId = tauxConsommationRequest.getSocieteId();
-        final String matricule = tauxConsommationRequest.getMatricule();
+        final List<String> matriculesToInclude = tauxConsommationRequest.getMatriculesToInclude();
+        final List<String> matriculesToExclude = tauxConsommationRequest.getMatriculesToExclude();
         final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
         final LocalDate dateFin = tauxConsommationRequest.getDateFin();
 
         boolean withSocieteId = societeId != null;
-        boolean withTransporteurId = matricule != null;
+        boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
+        boolean withMatriculesToExclude = !CollectionUtils.isEmpty(matriculesToExclude);
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withSocieteId) {
             predicate.append(" And g.societeFacturation.id = :societeId");
         }
-        if (withTransporteurId) {
-            predicate.append(" And g.transporteur.matricule = :matricule");
+        if (withMatriculesToInclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
+        }
+        if (withMatriculesToExclude) {
+            predicate.append(" And g.transporteur.matricule in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");
@@ -273,8 +311,11 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         if (withSocieteId) {
             entityQuery.setParameter("societeId", societeId);
         }
-        if (withTransporteurId) {
-            entityQuery.setParameter("matricule", matricule);
+        if (withMatriculesToInclude) {
+            entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         if (withDateDebut) {
             entityQuery.setParameter("dateDebut", dateDebut);

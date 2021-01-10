@@ -34,9 +34,13 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
     produitInput$ = new Subject<string>();
     produitsLoading:Boolean = false;
 
-    transporteurs$: Observable<ITransporteur[]>;
-    transporteurInput$ = new Subject<string>();
-    transporteursLoading:Boolean = false;
+    matriculesToInclude$: Observable<ITransporteur[]>;
+    matriculesToIncludeLoading = false;
+    matriculesToIncludeInput$ = new Subject<string>();
+
+    matriculesToExclude$: Observable<ITransporteur[]>;
+    matriculesToExcludeLoading = false;
+    matriculesToExcludeInput$ = new Subject<string>();
 
     trajets$: Observable<ITrajet[]>;
     trajetInput$ = new Subject<string>();
@@ -122,7 +126,7 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       this.societeService
               .query()
               .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-      this.loadTransporteurs();
+      this.loadMatriculesToInclude();
       this.loadProduits();
       this.loadTrajets();
       this.search();
@@ -222,8 +226,19 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       if(this.statsForm.get('typeLivraison').value){
         statsRequest['typeLivraison'] = this.statsForm.get('typeLivraison').value;
       }
-      if(this.statsForm.get('transporteur').value){
-        statsRequest['matricule'] = this.statsForm.get('transporteur').value.matricule;
+      if(this.statsForm.get('matriculesToInclude').value) {
+        const transporteurToInclude = this.statsForm.get('matriculesToInclude').value;
+        statsRequest['matriculesToInclude'] = [];
+        transporteurToInclude.forEach(transporteur => {
+          statsRequest['matriculesToInclude'].push(transporteur.matricule);
+        });
+      }
+      if(this.statsForm.get('matriculesToExclude').value) {
+        const transporteurToExclude = this.statsForm.get('matriculesToExclude').value;
+        statsRequest['matriculesToExclude'] = [];
+        transporteurToExclude.forEach(transporteur => {
+          statsRequest['matriculesToExclude'].push(transporteur.matricule);
+        });
       }
       if(this.statsForm.get('dateDebut').value){
         statsRequest['dateDebut'] = format(this.statsForm.get('dateDebut').value);
@@ -242,14 +257,14 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       this.jhiAlertService.error(errorMessage, null, null);
     }
 
-    private loadTransporteurs(){
-      this.transporteurs$ = concat(
+    private loadMatriculesToInclude(){
+      this.matriculesToInclude$ = concat(
               of([]), // default items
-              this.transporteurInput$.pipe(
+              this.matriculesToIncludeInput$.pipe(
                   startWith(''),
                   debounceTime(500),
                   distinctUntilChanged(),
-                  tap(() => (this.transporteursLoading = true)),
+                  tap(() => (this.matriculesToIncludeLoading = true)),
                   switchMap(nom =>
                       this.transporteurService
                           .query({'matricule.contains': nom})
@@ -266,7 +281,7 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
                             })
                            )
                   ),
-                  tap(() => (this.transporteursLoading = false))
+                  tap(() => (this.matriculesToIncludeLoading = false))
               )
       );
     }
@@ -291,5 +306,34 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
 
   public exportStats(repartition: string){
     this.statsService.exportStats(repartition, this.buildStatsRequest());
+  }
+
+  private loadMatriculesToExclude(){
+      this.matriculesToExclude$ = concat(
+              of([]), // default items
+              this.matriculesToExcludeInput$.pipe(
+                  startWith(''),
+                  debounceTime(500),
+                  distinctUntilChanged(),
+                  tap(() => (this.matriculesToExcludeLoading = true)),
+                  switchMap(nom =>
+                      this.transporteurService
+                          .query({'matricule.contains': nom})
+                          .pipe(
+                            map((resp: HttpResponse<ITransporteur[]>) => resp.body),
+                            catchError(() => of([])),
+                            map((transporteurs: ITransporteur[]) => {
+                              const enriched:ITransporteur[] = [];
+                              transporteurs.forEach(transporteur => {
+                                transporteur.description = `${transporteur.matricule} - ${transporteur.nom} - ${transporteur.prenom}`
+                                enriched.push(transporteur);
+                              });
+                              return enriched;
+                            })
+                           )
+                  ),
+                  tap(() => (this.matriculesToExcludeLoading = false))
+              )
+      );
   }
 }
