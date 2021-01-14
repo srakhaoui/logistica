@@ -10,11 +10,11 @@ public class StatistiquesChiffreAffaireRequest {
     private Long societeId;
     private Long produitId;
     private List<String> matriculesToInclude;
+    private List<String> matriculesToExclude;
     private Long trajetId;
     private TypeLivraison typeLivraison;
     private LocalDate dateDebut;
     private LocalDate dateFin;
-    private List<String> matriculesToExclude;
     private boolean withTotalChiffreAffaire;
     private boolean withEvolutionChiffreAffaire;
     private boolean withRepartitionParTypeLivraison;

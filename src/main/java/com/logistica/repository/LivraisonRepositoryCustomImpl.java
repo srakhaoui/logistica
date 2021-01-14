@@ -579,7 +579,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             predicate.append(" And l.type = :type");
         }
         if (withMatriculesToInclude) {
-            predicate.append(" And l.transporteur.matricule in (:withMatriculesToInclude)");
+            predicate.append(" And l.transporteur.matricule in (:matriculesToInclude)");
         }
         if (withMatriculesToExclude) {
             predicate.append(" And l.transporteur.matricule not in (:matriculesToExclude)");
@@ -608,6 +608,9 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         }
         if (withMatriculesToInclude) {
             entityQuery.setParameter("matriculesToInclude", matriculesToInclude);
+        }
+        if (withMatriculesToExclude) {
+            entityQuery.setParameter("matriculesToExclude", matriculesToExclude);
         }
         if (withDateDebutBonLivraison) {
             entityQuery.setParameter("dateDebut", dateDebutBonLivraison);

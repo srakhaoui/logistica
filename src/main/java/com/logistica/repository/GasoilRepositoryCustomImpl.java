@@ -194,7 +194,7 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
             predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
         }
         if (withMatriculesToExclude) {
-            predicate.append(" And g.transporteur.matricule in (:matriculesToExclude)");
+            predicate.append(" And g.transporteur.matricule not in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");
@@ -245,7 +245,7 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
             predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
         }
         if (withMatriculesToExclude) {
-            predicate.append(" And g.transporteur.matricule in (:matriculesToExclude)");
+            predicate.append(" And g.transporteur.matricule not in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");
@@ -296,7 +296,7 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
             predicate.append(" And g.transporteur.matricule in (:matriculesToInclude)");
         }
         if (withMatriculesToExclude) {
-            predicate.append(" And g.transporteur.matricule in (:matriculesToExclude)");
+            predicate.append(" And g.transporteur.matricule not in (:matriculesToExclude)");
         }
         if (withDateDebut) {
             predicate.append(" And g.dateBonGasoil >= :dateDebut");

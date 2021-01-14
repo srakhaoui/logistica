@@ -35,6 +35,12 @@ export class StatsService {
     this.buildGetRequest(url, options);
   }
 
+  exportStatsTauxConsommation(req?: any): void {
+    const options: HttpParams = createRequestOption(req);
+    const url = `${this.resourceUrlGasoil}/taux-consommation/export`;
+    this.buildGetRequest(url, options);
+  }
+
   getStatistiquesTauxRentabilite(statistiquesTauxRentabiliteRequest: IStatistiquesTauxRentabiliteRequest): Observable<IStatistiquesTauxRentabilite> {
       return this.http.post<IStatistiquesTauxRentabilite>(`${this.resourceUrl}/taux-rentabilite`, statistiquesTauxRentabiliteRequest, { observe: 'body' });
   }

@@ -194,4 +194,28 @@ public class GasoilResource {
         StatistiquesTauxConsommation statistiquesTauxConsommation = gasoilService.getStatistiquesTauxConsommation(tauxConsommationRequest);
         return ResponseEntity.ok(statistiquesTauxConsommation);
     }
+
+    @GetMapping("/gasoils/stats/taux-consommation/export")
+    public void exportStatistiquesTauxRentabilite(StatistiquesTauxConsommationRequest tauxConsommationRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to get tauxConsommationRequest : {}", tauxConsommationRequest);
+        StatistiquesTauxConsommation statistiquesTauxConsommation = gasoilService.getStatistiquesTauxConsommation(tauxConsommationRequest);
+        Courbe<String, Float> evolutionLitrage = statistiquesTauxConsommation.getEvolutionLitrage();
+        Courbe<String, Float> evolutionKilometrage = statistiquesTauxConsommation.getEvolutionKilometrage();
+        buildAndSendTauxRentabiliteCsv(evolutionLitrage, evolutionKilometrage, httpServletResponse);
+    }
+
+    private void buildAndSendTauxRentabiliteCsv(Courbe<String, Float> evolutionLitrage, Courbe<String, Float> evolutionKilometrage, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", "attachment; filename=consommation-gasoil.csv");
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println("mois;litrage;kilometrage");
+        for (int i = 0; i < evolutionLitrage.getAbscisses().size(); i++) {
+            try {
+                outputStream.println(evolutionLitrage.getAbscisses().get(i) + ";" + evolutionLitrage.getOrdonnees().get(i) + ";" + evolutionKilometrage.getOrdonnees().get(i));
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        }
+    }
+
 }

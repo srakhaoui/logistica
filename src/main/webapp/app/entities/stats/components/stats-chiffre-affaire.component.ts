@@ -50,7 +50,8 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
         societe: new FormControl(),
         trajet: new FormControl(),
         produit: new FormControl(),
-        transporteur: new FormControl(),
+        matriculesToInclude: new FormControl(),
+        matriculesToExclude: new FormControl(),
         typeLivraison: new FormControl(),
         dateDebut: new FormControl(),
         dateFin: new FormControl()
@@ -126,9 +127,10 @@ export class StatsChiffreAffaireComponent implements OnInit, OnDestroy {
       this.societeService
               .query()
               .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-      this.loadMatriculesToInclude();
       this.loadProduits();
       this.loadTrajets();
+      this.loadMatriculesToInclude();
+      this.loadMatriculesToExclude();
       this.search();
     }
 

@@ -26,9 +26,9 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
 
     societes: ISociete[];
 
-    transporteurs$: Observable<ITransporteur[]>;
-    transporteurInput$ = new Subject<string>();
-    transporteursLoading:Boolean = false;
+    matriculesToInclude$: Observable<ITransporteur[]>;
+    matriculesToIncludeLoading = false;
+    matriculesToIncludeInput$ = new Subject<string>();
 
     matriculesToExclude$: Observable<ITransporteur[]>;
     matriculesToExcludeLoading = false;
@@ -36,7 +36,7 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
 
     statsForm = new FormGroup({
         societe: new FormControl(),
-        transporteur: new FormControl(),
+        matriculesToInclude: new FormControl(),
         matriculesToExclude: new FormControl(),
         dateDebut: new FormControl(),
         dateFin: new FormControl()
@@ -95,7 +95,7 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
       this.societeService
               .query()
               .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-      this.loadTransporteurs();
+      this.loadMatriculesToInclude();
       this.loadMatriculesToExclude();
       this.search();
     }
@@ -135,13 +135,17 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
       if(this.statsForm.get('societe').value){
         statsRequest['societeId'] = this.statsForm.get('societe').value.id;
       }
-      if(this.statsForm.get('transporteur').value){
-        statsRequest['matricule'] = this.statsForm.get('transporteur').value.matricule;
+      if(this.statsForm.get('matriculesToInclude').value) {
+        const matriculesToInclude = this.statsForm.get('matriculesToInclude').value;
+        statsRequest['matriculesToInclude'] = [];
+        matriculesToInclude.forEach(transporteur => {
+          statsRequest['matriculesToInclude'].push(transporteur.matricule);
+        });
       }
       if(this.statsForm.get('matriculesToExclude').value) {
-        const transporteurToExclude = this.statsForm.get('matriculesToExclude').value;
+        const matriculesToExclude = this.statsForm.get('matriculesToExclude').value;
         statsRequest['matriculesToExclude'] = [];
-        transporteurToExclude.forEach(transporteur => {
+        matriculesToExclude.forEach(transporteur => {
           statsRequest['matriculesToExclude'].push(transporteur.matricule);
         });
       }
@@ -162,14 +166,14 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
       this.jhiAlertService.error(errorMessage, null, null);
     }
 
-    private loadTransporteurs(){
-      this.transporteurs$ = concat(
+    private loadMatriculesToInclude(){
+      this.matriculesToInclude$ = concat(
               of([]), // default items
-              this.transporteurInput$.pipe(
+              this.matriculesToIncludeInput$.pipe(
                   startWith(''),
                   debounceTime(500),
                   distinctUntilChanged(),
-                  tap(() => (this.transporteursLoading = true)),
+                  tap(() => (this.matriculesToIncludeLoading = true)),
                   switchMap(nom =>
                       this.transporteurService
                           .query({'matricule.contains': nom})
@@ -186,7 +190,7 @@ export class StatsTauxRentabiliteComponent implements OnInit, OnDestroy {
                             })
                            )
                   ),
-                  tap(() => (this.transporteursLoading = false))
+                  tap(() => (this.matriculesToIncludeLoading = false))
               )
       );
     }
