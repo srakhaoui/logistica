@@ -19,8 +19,9 @@ public class RecapitulatifClient implements ICsvConvertible {
     private Double totalPrixVente;
     private String societeFacturation;
     private TypeLivraison type;
+    private String fournisseur;
 
-    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture) {
+    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture, String fournisseur) {
         this.societeFacturation = societeFacturation;
         this.type = typeLivraison;
         this.client = client;
@@ -32,6 +33,7 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.totalQuantiteeVendue = totalQuantiteeVendue;
         this.totalPrixVente = totalPrixVente;
         this.facture = facture;
+        this.fournisseur = fournisseur;
     }
 
     public String getClient() {
@@ -91,8 +93,16 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.facture = facture;
     }
 
+    public String getFournisseur() {
+        return fournisseur;
+    }
+
+    public void setFournisseur(String fournisseur) {
+        this.fournisseur = fournisseur;
+    }
+
     public static String csvHeader() {
-        return "client;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;totalPrixVente;societeFacturation;facture;type";
+        return "client;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;totalPrixVente;societeFacturation;facture;type;fournisseur";
     }
 
     @Override
@@ -108,7 +118,8 @@ public class RecapitulatifClient implements ICsvConvertible {
                 .append(StringUtils.replaceChars(Double.toString(Optional.ofNullable(totalPrixVente).orElse(0.0)), '.', ',')).append(";")
                 .append(Optional.ofNullable(societeFacturation).orElse("Undefined")).append(";")
                 .append(facture).append(";")
-                .append(type);
+                .append(type).append(";")
+                .append(fournisseur);
 
             return csv.toString();
         } catch (Exception ex) {

@@ -162,7 +162,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente), l.facture) From Livraison l");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente), l.facture, l.fournisseur.nom) From Livraison l");
         boolean withSocieteId = societeId != null;
         boolean withProduitId = produitId != null;
         boolean withClientId = clientId != null;
