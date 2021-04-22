@@ -20,8 +20,10 @@ public class RecapitulatifClient implements ICsvConvertible {
     private String societeFacturation;
     private TypeLivraison type;
     private String fournisseur;
+    private Float quantiteAchetee;
+    private Float prixTotalAchat;
 
-    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture, String fournisseur) {
+    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Double totalPrixVente, boolean facture, String fournisseur, Float quantiteAchetee, Float prixTotalAchat) {
         this.societeFacturation = societeFacturation;
         this.type = typeLivraison;
         this.client = client;
@@ -34,6 +36,8 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.totalPrixVente = totalPrixVente;
         this.facture = facture;
         this.fournisseur = fournisseur;
+        this.quantiteAchetee = quantiteAchetee;
+        this.prixTotalAchat = prixTotalAchat;
     }
 
     public String getClient() {
@@ -101,8 +105,24 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.fournisseur = fournisseur;
     }
 
+    public Float getQuantiteAchetee() {
+        return quantiteAchetee;
+    }
+
+    public void setQuantiteAchetee(Float quantiteAchetee) {
+        this.quantiteAchetee = quantiteAchetee;
+    }
+
+    public Float getPrixTotalAchat() {
+        return prixTotalAchat;
+    }
+
+    public void setPrixTotalAchat(Float prixTotalAchat) {
+        this.prixTotalAchat = prixTotalAchat;
+    }
+
     public static String csvHeader() {
-        return "client;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;totalPrixVente;societeFacturation;facture;type;fournisseur";
+        return "client;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;totalPrixVente;societeFacturation;facture;type;quantiteAchetee;prixTotalAchat;fournisseur";
     }
 
     @Override
@@ -119,6 +139,8 @@ public class RecapitulatifClient implements ICsvConvertible {
                 .append(Optional.ofNullable(societeFacturation).orElse("Undefined")).append(";")
                 .append(facture).append(";")
                 .append(type).append(";")
+                .append(quantiteAchetee).append(";")
+                .append(prixTotalAchat).append(";")
                 .append(fournisseur);
 
             return csv.toString();

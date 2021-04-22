@@ -134,6 +134,9 @@
                 <th scope="col"><span>Produit</span></th>
                 <th scope="col"><span>Total Quantité Vendue</span></th>
                 <th scope="col"><span>Total Prix Vente</span></th>
+                <th scope="col"><span>Total Quantité Achetée</span></th>
+                <th scope="col"><span>Total Prix Achat</span></th>
+
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
@@ -155,6 +158,8 @@
                 <td>{{recapitulatif.produit}}</td>
                 <td>{{recapitulatif.totalQuantiteeVendue}}</td>
                 <td>{{recapitulatif.totalPrixVente}}</td>
+                <td>{{recapitulatif.quantiteAchetee}}</td>
+                <td>{{recapitulatif.prixTotalAchat}}</td>
             </tr>
             </tbody>
         </table>

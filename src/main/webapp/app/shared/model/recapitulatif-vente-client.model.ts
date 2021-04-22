@@ -14,8 +14,10 @@ export interface IRecapitulatifVenteClient {
   totalPrixVente?: number;
   facture?: boolean;
   fournisseur?: string;
+  quantiteAchetee?: number;
+  prixTotalAchat?: number;
 }
 
 export class RecapitulatifVenteClient implements IRecapitulatifVenteClient {
-  constructor(public client?: string, public dateBonLivraison?: Moment, public numeroBonLivraison?: number, public matricule?: string, public produit?: string, public totalQuantiteeVendue?: number, public totalPrixVente?: number, public facture?: boolean, public fournisseur?: string) {}
+  constructor(public client?: string, public dateBonLivraison?: Moment, public numeroBonLivraison?: number, public matricule?: string, public produit?: string, public totalQuantiteeVendue?: number, public totalPrixVente?: number, public facture?: boolean, public fournisseur?: string, public quantiteAchetee?: number, public prixTotalAchat ?: number) {}
 }
