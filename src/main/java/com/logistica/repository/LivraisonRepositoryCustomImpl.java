@@ -161,8 +161,13 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final String chantier = recapitulatifClientRequest.getChantier();
         final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
+        boolean isMarchandise = typeLivraison == TypeLivraison.Marchandise;
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), sum(l.prixTotalVente), l.facture, l.fournisseur.nom, l.quantiteAchetee, l.prixTotalAchat) From Livraison l");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), l.uniteVente, sum(l.prixTotalVente), l.facture");
+        if (isMarchandise) {
+            query.append(", l.fournisseur.nom, l.quantiteAchetee, l.uniteAchat, l.prixTotalAchat");
+        }
+        query.append(") From Livraison l");
         boolean withSocieteId = societeId != null;
         boolean withProduitId = produitId != null;
         boolean withClientId = clientId != null;
@@ -197,7 +202,11 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
-        String queryAsStr = query.append(predicate.toString()).append(" Group by l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, l.facture, l.fournisseur.nom,l.quantiteAchetee, l.prixTotalAchat").toString();
+        query.append(predicate.toString()).append(" Group by l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, l.uniteVente, l.facture");
+        if (isMarchandise) {
+            query.append(", l.fournisseur.nom, l.quantiteAchetee, l.uniteAchat, l.prixTotalAchat");
+        }
+        String queryAsStr = query.toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifClient.class);
 
         Optional.ofNullable(societeId).ifPresent(aSocieteId -> entityQuery.setParameter("societeId", aSocieteId));

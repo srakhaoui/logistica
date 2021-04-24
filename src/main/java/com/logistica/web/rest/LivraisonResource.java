@@ -249,7 +249,7 @@ public class LivraisonResource {
     public void getAllLivraisons(RecapitulatifClientRequest recapitulatifClientRequest, HttpServletResponse httpServletResponse) throws IOException {
         log.debug("REST request to get recapitulatifClientRequest : {}", recapitulatifClientRequest);
         Page<RecapitulatifClient> page = livraisonService.getRecapitulatifClient(recapitulatifClientRequest, Pageable.unpaged());
-        buildAndSendCsv("export-client.csv", RecapitulatifClient.csvHeader(), page.getContent(), httpServletResponse);
+        buildAndSendCsv("export-client.csv", RecapitulatifClient.csvHeader(recapitulatifClientRequest.getTypeLivraison()), page.getContent(), httpServletResponse);
     }
 
     @GetMapping("/livraisons/vente/chauffeur")

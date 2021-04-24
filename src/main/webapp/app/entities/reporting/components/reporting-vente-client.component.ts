@@ -17,6 +17,7 @@ import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchErr
 import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
 import * as moment from 'moment';
 import { format } from 'app/shared/util/date-util';
+import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
 import { ReportingBonComponent } from 'app/entities/reporting/components/reporting-bon.component';
 
 @Component({
@@ -256,5 +257,9 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
       chantiersRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
     return chantiersRequest;
+  }
+
+  public isMarchandise(): Boolean {
+    return this.reportingForm.get('typeLivraison').value === TypeLivraison.Marchandise;
   }
 }
