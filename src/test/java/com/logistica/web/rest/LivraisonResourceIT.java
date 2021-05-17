@@ -48,20 +48,20 @@ public class LivraisonResourceIT {
     private static final LocalDate UPDATED_DATE_BON_COMMANDE = LocalDate.now(ZoneId.systemDefault());
     private static final LocalDate SMALLER_DATE_BON_COMMANDE = LocalDate.ofEpochDay(-1L);
 
-    private static final Long DEFAULT_NUMERO_BON_COMMANDE = 1L;
-    private static final Long UPDATED_NUMERO_BON_COMMANDE = 2L;
+    private static final String DEFAULT_NUMERO_BON_COMMANDE = "1";
+    private static final String UPDATED_NUMERO_BON_COMMANDE = "2";
     private static final Long SMALLER_NUMERO_BON_COMMANDE = 1L - 1L;
 
-    private static final Long DEFAULT_NUMERO_BON_LIVRAISON = 1L;
-    private static final Long UPDATED_NUMERO_BON_LIVRAISON = 2L;
+    private static final String DEFAULT_NUMERO_BON_LIVRAISON = "1";
+    private static final String UPDATED_NUMERO_BON_LIVRAISON = "2";
     private static final Long SMALLER_NUMERO_BON_LIVRAISON = 1L - 1L;
 
     private static final LocalDate DEFAULT_DATE_BON_LIVRAISON = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_DATE_BON_LIVRAISON = LocalDate.now(ZoneId.systemDefault());
     private static final LocalDate SMALLER_DATE_BON_LIVRAISON = LocalDate.ofEpochDay(-1L);
 
-    private static final Long DEFAULT_NUMERO_BON_FOURNISSEUR = 1L;
-    private static final Long UPDATED_NUMERO_BON_FOURNISSEUR = 2L;
+    private static final String DEFAULT_NUMERO_BON_FOURNISSEUR = "1";
+    private static final String UPDATED_NUMERO_BON_FOURNISSEUR = "2";
     private static final Long SMALLER_NUMERO_BON_FOURNISSEUR = 1L - 1L;
 
     private static final Float DEFAULT_QUANTITE_VENDUE = 1F;

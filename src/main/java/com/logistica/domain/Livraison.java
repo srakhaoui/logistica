@@ -38,7 +38,7 @@ public class Livraison implements ICsvConvertible, Serializable {
     private LocalDate dateBonCommande;
 
     @Column(name = "numero_bon_commande")
-    private Long numeroBonCommande;
+    private String numeroBonCommande;
 
     @Column(name = "bon_commande")
     private byte[] bonCommande;
@@ -47,7 +47,7 @@ public class Livraison implements ICsvConvertible, Serializable {
     private String bonCommandeMimeType;
 
     @Column(name = "numero_bon_livraison", nullable = false)
-    private Long numeroBonLivraison;
+    private String numeroBonLivraison;
 
     @NotNull
     @Column(name = "date_bon_livraison", nullable = false)
@@ -60,7 +60,7 @@ public class Livraison implements ICsvConvertible, Serializable {
     private String bonLivraisonMimeType;
 
     @Column(name = "numero_bon_fournisseur")
-    private Long numeroBonFournisseur;
+    private String numeroBonFournisseur;
 
     @Column(name = "bon_fournisseur")
     private byte[] bonFournisseur;
@@ -196,29 +196,29 @@ public class Livraison implements ICsvConvertible, Serializable {
         this.dateBonCommande = dateBonCommande;
     }
 
-    public Long getNumeroBonCommande() {
+    public String getNumeroBonCommande() {
         return numeroBonCommande;
     }
 
-    public Livraison numeroBonCommande(Long numeroBonCommande) {
+    public Livraison numeroBonCommande(String numeroBonCommande) {
         this.numeroBonCommande = numeroBonCommande;
         return this;
     }
 
-    public void setNumeroBonCommande(Long numeroBonCommande) {
+    public void setNumeroBonCommande(String numeroBonCommande) {
         this.numeroBonCommande = numeroBonCommande;
     }
 
-    public Long getNumeroBonLivraison() {
+    public String getNumeroBonLivraison() {
         return numeroBonLivraison;
     }
 
-    public Livraison numeroBonLivraison(Long numeroBonLivraison) {
+    public Livraison numeroBonLivraison(String numeroBonLivraison) {
         this.numeroBonLivraison = numeroBonLivraison;
         return this;
     }
 
-    public void setNumeroBonLivraison(Long numeroBonLivraison) {
+    public void setNumeroBonLivraison(String numeroBonLivraison) {
         this.numeroBonLivraison = numeroBonLivraison;
     }
 
@@ -235,16 +235,16 @@ public class Livraison implements ICsvConvertible, Serializable {
         this.dateBonLivraison = dateBonLivraison;
     }
 
-    public Long getNumeroBonFournisseur() {
+    public String getNumeroBonFournisseur() {
         return numeroBonFournisseur;
     }
 
-    public Livraison numeroBonFournisseur(Long numeroBonFournisseur) {
+    public Livraison numeroBonFournisseur(String numeroBonFournisseur) {
         this.numeroBonFournisseur = numeroBonFournisseur;
         return this;
     }
 
-    public void setNumeroBonFournisseur(Long numeroBonFournisseur) {
+    public void setNumeroBonFournisseur(String numeroBonFournisseur) {
         this.numeroBonFournisseur = numeroBonFournisseur;
     }
 

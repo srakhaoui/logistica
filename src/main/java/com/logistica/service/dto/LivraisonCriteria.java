@@ -61,13 +61,13 @@ public class LivraisonCriteria implements Serializable, Criteria {
 
     private LocalDateFilter dateBonCommande;
 
-    private LongFilter numeroBonCommande;
+    private StringFilter numeroBonCommande;
 
-    private LongFilter numeroBonLivraison;
+    private StringFilter numeroBonLivraison;
 
     private LocalDateFilter dateBonLivraison;
 
-    private LongFilter numeroBonFournisseur;
+    private StringFilter numeroBonFournisseur;
 
     private FloatFilter quantiteVendue;
 
@@ -183,19 +183,19 @@ public class LivraisonCriteria implements Serializable, Criteria {
         this.dateBonCommande = dateBonCommande;
     }
 
-    public LongFilter getNumeroBonCommande() {
+    public StringFilter getNumeroBonCommande() {
         return numeroBonCommande;
     }
 
-    public void setNumeroBonCommande(LongFilter numeroBonCommande) {
+    public void setNumeroBonCommande(StringFilter numeroBonCommande) {
         this.numeroBonCommande = numeroBonCommande;
     }
 
-    public LongFilter getNumeroBonLivraison() {
+    public StringFilter getNumeroBonLivraison() {
         return numeroBonLivraison;
     }
 
-    public void setNumeroBonLivraison(LongFilter numeroBonLivraison) {
+    public void setNumeroBonLivraison(StringFilter numeroBonLivraison) {
         this.numeroBonLivraison = numeroBonLivraison;
     }
 
@@ -207,11 +207,11 @@ public class LivraisonCriteria implements Serializable, Criteria {
         this.dateBonLivraison = dateBonLivraison;
     }
 
-    public LongFilter getNumeroBonFournisseur() {
+    public StringFilter getNumeroBonFournisseur() {
         return numeroBonFournisseur;
     }
 
-    public void setNumeroBonFournisseur(LongFilter numeroBonFournisseur) {
+    public void setNumeroBonFournisseur(StringFilter numeroBonFournisseur) {
         this.numeroBonFournisseur = numeroBonFournisseur;
     }
 

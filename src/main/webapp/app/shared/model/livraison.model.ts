@@ -12,14 +12,14 @@ import { IAudit } from 'app/shared/model/audit.model';
 export interface ILivraison {
   id?: number;
   dateBonCommande?: Moment;
-  numeroBonCommande?: number;
+  numeroBonCommande?: string;
   bonCommande?: any;
   hasBonCommande?: boolean;
-  numeroBonLivraison?: number;
+  numeroBonLivraison?: string;
   dateBonLivraison?: Moment;
   bonLivraison?: any;
   hasBonLivraison?: boolean;
-  numeroBonFournisseur?: number;
+  numeroBonFournisseur?: string;
   hasBonFournisseur?: boolean;
   quantiteVendue?: number;
   uniteVente?: Unite;
@@ -56,12 +56,12 @@ export class Livraison implements ILivraison {
   constructor(
     public id?: number,
     public dateBonCommande?: Moment,
-    public numeroBonCommande?: number,
+    public numeroBonCommande?: string,
     public bonCommande?: any,
-    public numeroBonLivraison?: number,
+    public numeroBonLivraison?: string,
     public dateBonLivraison?: Moment,
     public bonLivraison?: any,
-    public numeroBonFournisseur?: number,
+    public numeroBonFournisseur?: string,
     public quantiteVendue?: number,
     public uniteVente?: Unite,
     public prixTotalVente?: number,
@@ -80,7 +80,7 @@ export class Livraison implements ILivraison {
     public dernierEtat?: number,
     public penaliteEse?: number,
     public penaliteChfrs?: number,
-    public fraisEspece?: number,
+    public fraisEspece?: number,LivraisonRepositoryCustomImpl
     public retenu?: number,
     public totalComission?: number,
     public fournisseur?: IFournisseur,

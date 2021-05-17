@@ -105,10 +105,13 @@ public class LivraisonServiceImpl implements LivraisonService {
                 throw new DateLivraisonAnterieureDateCommandeException();
             }
         });
-        final boolean blAndClientAlreadyExist = livraison.getId() != null && livraisonRepository.existsLivraisonByNumeroBonLivraisonAndClientId(livraison.getNumeroBonLivraison(), livraison.getClient().getId());
-        if (blAndClientAlreadyExist) {
+        if (isBLExistsWithTheSameNumber(livraison)) {
             throw new NumeroBlAndClientAlreadyExistException();
         }
+    }
+
+    private boolean isBLExistsWithTheSameNumber(Livraison livraison) {
+        return livraison.getId() == null && livraisonRepository.existsLivraisonByNumeroBonLivraisonAndClientId(livraison.getNumeroBonLivraison(), livraison.getClient().getId());
     }
 
     private void calculerPrixTotaux(Livraison livraison) {

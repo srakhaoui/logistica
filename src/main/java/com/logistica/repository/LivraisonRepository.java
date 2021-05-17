@@ -39,5 +39,5 @@ public interface LivraisonRepository extends JpaRepository<Livraison, Long>, Jpa
     @Query("Select sum(l.prixTotalVente) from Livraison l where l.transporteur.id = :transporteurId and l.dateBonLivraison >= :dateDebut and l.dateBonLivraison <= :dateFin")
     Double getTotalVenteByTransporteur(@Param("transporteurId") Long transporteurId, @Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
 
-    boolean existsLivraisonByNumeroBonLivraisonAndClientId(Long numeroBonLivraison, Long clientId);
+    boolean existsLivraisonByNumeroBonLivraisonAndClientId(String numeroBonLivraison, Long clientId);
 }
