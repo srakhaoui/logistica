@@ -62,5 +62,7 @@
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/2020123114300000_create_livraison_seq.xml"
              relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/2021051720050000_create_seqs.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

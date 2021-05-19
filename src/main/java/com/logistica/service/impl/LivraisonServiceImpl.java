@@ -105,7 +105,7 @@ public class LivraisonServiceImpl implements LivraisonService {
                 throw new DateLivraisonAnterieureDateCommandeException();
             }
         });
-        final boolean blAndClientAlreadyExist = livraisonRepository.existsLivraisonByNumeroBonLivraisonAndClientId(livraison.getNumeroBonLivraison(), livraison.getClient().getId());
+        final boolean blAndClientAlreadyExist = livraison.getId() != null && livraisonRepository.existsLivraisonByNumeroBonLivraisonAndClientId(livraison.getNumeroBonLivraison(), livraison.getClient().getId());
         if (blAndClientAlreadyExist) {
             throw new NumeroBlAndClientAlreadyExistException();
         }

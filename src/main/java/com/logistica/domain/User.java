@@ -1,8 +1,7 @@
 package com.logistica.domain;
 
-import com.logistica.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.logistica.config.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -30,8 +29,8 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userSequenceGenerator")
+    @SequenceGenerator(name = "userSequenceGenerator", sequenceName = "user-seq", allocationSize = 1)
     private Long id;
 
     @NotNull
