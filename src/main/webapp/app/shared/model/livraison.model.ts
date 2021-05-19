@@ -80,7 +80,7 @@ export class Livraison implements ILivraison {
     public dernierEtat?: number,
     public penaliteEse?: number,
     public penaliteChfrs?: number,
-    public fraisEspece?: number,LivraisonRepositoryCustomImpl
+    public fraisEspece?: number,LivraisonRepositoryCustomImpl,
     public retenu?: number,
     public totalComission?: number,
     public fournisseur?: IFournisseur,

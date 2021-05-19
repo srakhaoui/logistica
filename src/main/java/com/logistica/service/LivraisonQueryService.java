@@ -1,6 +1,6 @@
 package com.logistica.service;
 
-import com.logistica.domain.Livraison;
+import com.logistica.domain.*;
 import com.logistica.repository.LivraisonRepository;
 import com.logistica.service.dto.LivraisonCriteria;
 import io.github.jhipster.service.QueryService;
@@ -85,16 +85,16 @@ public class LivraisonQueryService extends QueryService<Livraison> {
                 specification = specification.and(buildRangeSpecification(criteria.getDateBonCommande(), Livraison_.dateBonCommande));
             }
             if (criteria.getNumeroBonCommande() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getNumeroBonCommande(), Livraison_.numeroBonCommande));
+                specification = specification.and(buildSpecification(criteria.getNumeroBonCommande(), Livraison_.numeroBonCommande));
             }
             if (criteria.getNumeroBonLivraison() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getNumeroBonLivraison(), Livraison_.numeroBonLivraison));
+                specification = specification.and(buildSpecification(criteria.getNumeroBonLivraison(), Livraison_.numeroBonLivraison));
             }
             if (criteria.getDateBonLivraison() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getDateBonLivraison(), Livraison_.dateBonLivraison));
             }
             if (criteria.getNumeroBonFournisseur() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getNumeroBonFournisseur(), Livraison_.numeroBonFournisseur));
+                specification = specification.and(buildSpecification(criteria.getNumeroBonFournisseur(), Livraison_.numeroBonFournisseur));
             }
             if (criteria.getQuantiteVendue() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getQuantiteVendue(), Livraison_.quantiteVendue));
