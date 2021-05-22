@@ -3,10 +3,10 @@ import { Moment } from 'moment';
 export interface IRecapitulatifAchat {
   livraisonId?: number;
   dateBonLivraison?: Moment;
-  numeroBonLivraison?: number;
+  numeroBonLivraison?: string;
   hasBonCommande?: boolean;
   dateBonCommande?: Moment;
-  numeroBonCommande?: number;
+  numeroBonCommande?: string;
   nomFournisseur?: string;
   codeProduit?: string;
   matricule?: string;
@@ -16,5 +16,5 @@ export interface IRecapitulatifAchat {
 }
 
 export class RecapitulatifAchat implements IRecapitulatifAchat {
-  constructor(public dateBonLivraison?: Moment, public numeroBonLivraison?: number, public dateBonCommande?: Moment, public numeroBonCommande?: number, public nomFournisseur?: string, public codeProduit?: string, public matricule?: string, public totalQuantiteAchetee?: number, public totalQuantiteConvertie?: number, public totalPrixAchat?: number) {}
+  constructor(public dateBonLivraison?: Moment, public numeroBonLivraison?: string, public dateBonCommande?: Moment, public numeroBonCommande?: string, public nomFournisseur?: string, public codeProduit?: string, public matricule?: string, public totalQuantiteAchetee?: number, public totalQuantiteConvertie?: number, public totalPrixAchat?: number) {}
 }

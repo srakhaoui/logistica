@@ -9,10 +9,10 @@ import java.util.Optional;
 public class RecapitulatifAchat implements ICsvConvertible {
     private String bonLivraisonMimeType;
     private LocalDate dateBonLivraison;
-    private Long numeroBonLivraison;
+    private String numeroBonLivraison;
     private String bonCommandeMimeType;
     private LocalDate dateBonCommande;
-    private Long numeroBonCommande;
+    private String numeroBonCommande;
     private String nomFournisseur;
     private String codeProduit;
     private String matricule;
@@ -23,7 +23,7 @@ public class RecapitulatifAchat implements ICsvConvertible {
     public RecapitulatifAchat() {
     }
 
-    public RecapitulatifAchat(String bonLivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String bonCommandeMimeType, LocalDate dateBonCommande, Long numeroBonCommande, String nomFournisseur, String codeProduit, String matricule, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
+    public RecapitulatifAchat(String bonLivraisonMimeType, LocalDate dateBonLivraison, String numeroBonLivraison, String bonCommandeMimeType, LocalDate dateBonCommande, String numeroBonCommande, String nomFournisseur, String codeProduit, String matricule, Double totalQuantiteAchetee, Double totalQuantiteConvertie, Double totalPrixAchat) {
         this.bonLivraisonMimeType = bonLivraisonMimeType;
         this.dateBonLivraison = dateBonLivraison;
         this.numeroBonLivraison = numeroBonLivraison;
@@ -42,7 +42,7 @@ public class RecapitulatifAchat implements ICsvConvertible {
         return dateBonCommande;
     }
 
-    public Long getNumeroBonCommande() {
+    public String getNumeroBonCommande() {
         return numeroBonCommande;
     }
 
@@ -74,7 +74,7 @@ public class RecapitulatifAchat implements ICsvConvertible {
         return dateBonLivraison;
     }
 
-    public Long getNumeroBonLivraison() {
+    public String getNumeroBonLivraison() {
         return numeroBonLivraison;
     }
 

@@ -152,7 +152,7 @@
                     <div class="col">
                         <label class="form-control-label" jhiTranslate="logisticaApp.livraison.numeroBonLivraison"
                                for="field_numeroBonLivraison">Numero Bon Livraison</label>
-                        <input type="number" class="form-control" name="numeroBonLivraison"
+                        <input type="text" class="form-control" name="numeroBonLivraison"
                                id="field_numeroBonLivraison"
                                formControlName="numeroBonLivraison"/>
                         <div
@@ -219,7 +219,7 @@
                     <div *ngIf="isMarchandise()" class="col">
                         <label class="form-control-label" jhiTranslate="logisticaApp.livraison.numeroBonCommande"
                                for="field_numeroBonCommande">Numero Bon Commande</label>
-                        <input type="number" class="form-control" name="numeroBonCommande" id="field_numeroBonCommande"
+                        <input type="text" class="form-control" name="numeroBonCommande" id="field_numeroBonCommande"
                                formControlName="numeroBonCommande"/>
                         <div
                             *ngIf="isMarchandise() && (editForm.get('numeroBonCommande').dirty || editForm.get('numeroBonCommande').touched)">

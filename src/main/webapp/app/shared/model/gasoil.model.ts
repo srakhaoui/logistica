@@ -4,7 +4,7 @@ import { Moment } from 'moment';
 
 export interface IGasoil {
   id?: number;
-  numeroBonGasoil?: number;
+  numeroBonGasoil?: string;
   quantiteEnLitre?: number;
   prixDuLitre?: number;
   prixTotalGasoil?: number;
@@ -20,7 +20,7 @@ export interface IGasoil {
 export class Gasoil implements IGasoil {
   constructor(
     public id?: number,
-    public numeroBonGasoil?: number,
+    public numeroBonGasoil?: string,
     public quantiteEnLitre?: number,
     public prixDuLitre?: number,
     public prixTotalGasoil?: number,

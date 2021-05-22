@@ -13,7 +13,7 @@ public class RecapitulatifClient implements ICsvConvertible {
     private String bonlivraisonMimeType;
     private LocalDate dateBonLivraison;
     private boolean facture;
-    private Long numeroBonLivraison;
+    private String numeroBonLivraison;
     private String matricule;
     private String produit;
     private Double totalQuantiteeVendue;
@@ -27,7 +27,7 @@ public class RecapitulatifClient implements ICsvConvertible {
     private Float prixTotalAchat;
 
 
-    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture) {
+    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, String numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture) {
         this.societeFacturation = societeFacturation;
         this.type = typeLivraison;
         this.client = client;
@@ -42,7 +42,7 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.facture = facture;
     }
 
-    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, Long numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture, String fournisseur, Float quantiteAchetee, Unite uniteAchat, Float prixTotalAchat) {
+    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, String numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture, String fournisseur, Float quantiteAchetee, Unite uniteAchat, Float prixTotalAchat) {
         this(societeFacturation, typeLivraison, client, bonlivraisonMimeType, dateBonLivraison, numeroBonLivraison, matricule, produit, totalQuantiteeVendue, uniteVente, totalPrixVente, facture);
         this.fournisseur = fournisseur;
         this.quantiteAchetee = quantiteAchetee;
@@ -58,7 +58,7 @@ public class RecapitulatifClient implements ICsvConvertible {
         return dateBonLivraison;
     }
 
-    public Long getNumeroBonLivraison() {
+    public String getNumeroBonLivraison() {
         return numeroBonLivraison;
     }
 
