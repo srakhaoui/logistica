@@ -163,7 +163,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
         boolean isMarchandise = typeLivraison == TypeLivraison.Marchandise;
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), l.uniteVente, sum(l.prixTotalVente), l.facture");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), l.uniteVente, sum(l.prixTotalVente), l.facture, l.chantier");
         if (isMarchandise) {
             query.append(", l.fournisseur.nom, l.quantiteAchetee, l.uniteAchat, l.prixTotalAchat");
         }
@@ -202,7 +202,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
-        query.append(predicate.toString()).append(" Group by l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, l.uniteVente, l.facture");
+        query.append(predicate.toString()).append(" Group by l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, l.uniteVente, l.facture, l.chantier");
         if (isMarchandise) {
             query.append(", l.fournisseur.nom, l.quantiteAchetee, l.uniteAchat, l.prixTotalAchat");
         }

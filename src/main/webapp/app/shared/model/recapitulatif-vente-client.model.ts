@@ -3,6 +3,7 @@ import { Moment } from 'moment';
 export interface IRecapitulatifVenteClient {
   livraisonId?: number;
   client?: string;
+  chantier?: string;
   societeFacturation?: string;
   type?: string;
   hasBonLivraison?: boolean;
@@ -21,5 +22,5 @@ export interface IRecapitulatifVenteClient {
 }
 
 export class RecapitulatifVenteClient implements IRecapitulatifVenteClient {
-  constructor(public client?: string, public dateBonLivraison?: Moment, public numeroBonLivraison?: string, public matricule?: string, public produit?: string, public totalQuantiteeVendue?: number, public uniteVente?: string, public totalPrixVente?: number, public facture?: boolean, public fournisseur?: string, public quantiteAchetee?: number, public uniteAchat?: string, public prixTotalAchat ?: number) {}
+  constructor(public client?: string, public chantier?: string, public dateBonLivraison?: Moment, public numeroBonLivraison?: string, public matricule?: string, public produit?: string, public totalQuantiteeVendue?: number, public uniteVente?: string, public totalPrixVente?: number, public facture?: boolean, public fournisseur?: string, public quantiteAchetee?: number, public uniteAchat?: string, public prixTotalAchat ?: number) {}
 }

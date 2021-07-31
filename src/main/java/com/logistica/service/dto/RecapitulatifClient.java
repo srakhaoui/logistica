@@ -25,9 +25,10 @@ public class RecapitulatifClient implements ICsvConvertible {
     private Float quantiteAchetee;
     private Unite uniteAchat;
     private Float prixTotalAchat;
+    private String chantier;
 
 
-    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, String numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture) {
+    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, String numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture, String chantier) {
         this.societeFacturation = societeFacturation;
         this.type = typeLivraison;
         this.client = client;
@@ -40,10 +41,11 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.uniteVente = uniteVente;
         this.totalPrixVente = totalPrixVente;
         this.facture = facture;
+        this.chantier = chantier;
     }
 
-    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, String numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture, String fournisseur, Float quantiteAchetee, Unite uniteAchat, Float prixTotalAchat) {
-        this(societeFacturation, typeLivraison, client, bonlivraisonMimeType, dateBonLivraison, numeroBonLivraison, matricule, produit, totalQuantiteeVendue, uniteVente, totalPrixVente, facture);
+    public RecapitulatifClient(String societeFacturation, TypeLivraison typeLivraison, String client, String bonlivraisonMimeType, LocalDate dateBonLivraison, String numeroBonLivraison, String matricule, String produit, Double totalQuantiteeVendue, Unite uniteVente, Double totalPrixVente, boolean facture, String chantier, String fournisseur, Float quantiteAchetee, Unite uniteAchat, Float prixTotalAchat) {
+        this(societeFacturation, typeLivraison, client, bonlivraisonMimeType, dateBonLivraison, numeroBonLivraison, matricule, produit, totalQuantiteeVendue, uniteVente, totalPrixVente, facture, chantier);
         this.fournisseur = fournisseur;
         this.quantiteAchetee = quantiteAchetee;
         this.uniteAchat = uniteAchat;
@@ -147,8 +149,16 @@ public class RecapitulatifClient implements ICsvConvertible {
         this.prixTotalAchat = prixTotalAchat;
     }
 
+    public String getChantier() {
+        return chantier;
+    }
+
+    public void setChantier(String chantier) {
+        this.chantier = chantier;
+    }
+
     public static String csvHeader(TypeLivraison typeLivraison) {
-        String csvHeader = "client;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;UniteVente;totalPrixVente;societeFacturation;facture;type";
+        String csvHeader = "client;chantier;dateBonLivraison;numeroBonLivraison;matricule;produit;totalQuantiteeVendue;UniteVente;totalPrixVente;societeFacturation;facture;type";
         if (typeLivraison == TypeLivraison.Marchandise) {
             csvHeader += ";fournisseur;quantiteAchetee;UniteAchat;prixTotalAchat";
         }
@@ -160,6 +170,7 @@ public class RecapitulatifClient implements ICsvConvertible {
         try {
             StringBuilder csv = new StringBuilder();
             csv.append(Optional.ofNullable(client).orElse("Undefined")).append(";")
+                .append(Optional.ofNullable(chantier).orElse("Undefined")).append(";")
                 .append(dateBonLivraison).append(";")
                 .append(numeroBonLivraison).append(";")
                 .append(Optional.ofNullable(matricule).orElse("Undefined")).append(";")

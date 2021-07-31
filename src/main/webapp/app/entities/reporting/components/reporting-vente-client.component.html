@@ -123,6 +123,7 @@
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
                 <th scope="col"><span>Client</span></th>
+                <th scope="col"><span>Chantier</span></th>
                 <th scope="col"><span>Société facturation</span></th>
                 <th scope="col"><span>Type de livraison</span></th>
                 <th scope="col"><span>Bon de livraison</span>
@@ -143,6 +144,7 @@
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']" [infiniteScrollDistance]="0">
             <tr *ngFor="let recapitulatif of recapitulatifs ;trackBy: trackId">
                 <td>{{recapitulatif.client}}</td>
+                <td>{{recapitulatif.chantier}}</td>
                 <td>{{recapitulatif.societeFacturation}}</td>
                 <td>{{recapitulatif.typeLivraison}}</td>
                 <td>{{recapitulatif.dateBonLivraison | date:'dd MMM yyyy'}}</td>
