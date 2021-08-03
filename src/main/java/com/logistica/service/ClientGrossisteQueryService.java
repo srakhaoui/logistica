@@ -1,6 +1,7 @@
 package com.logistica.service;
 
 import com.logistica.domain.ClientGrossiste;
+import com.logistica.domain.ClientGrossiste_;
 import com.logistica.repository.ClientGrossisteRepository;
 import com.logistica.service.dto.ClientGrossisteCriteria;
 import io.github.jhipster.service.QueryService;

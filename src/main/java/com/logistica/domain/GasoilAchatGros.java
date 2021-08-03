@@ -1,6 +1,5 @@
 package com.logistica.domain;
 
-import com.logistica.domain.enumeration.Unite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -47,10 +46,6 @@ public class GasoilAchatGros implements Serializable {
     @DecimalMin(value = "0")
     @Column(name = "prix_unitaire", nullable = false)
     private Float prixUnitaire;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "unite")
-    private Unite unite;
 
     @ManyToOne(optional = false)
     @NotNull
