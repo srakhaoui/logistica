@@ -21,6 +21,7 @@
         "tarifTransport": "Tarif Transport",
         "livraison": "Livraison",
         "gasoil": "Gasoil",
+        "gasoilAchatGros": "Gasoil Achat Gros",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -1,0 +1,29 @@
+{
+  "logisticaApp": {
+    "gasoilAchatGros": {
+      "home": {
+        "title": "Gasoil Achat Gros",
+        "createLabel": "Create a new Gasoil Achat Gros",
+        "createOrEditLabel": "Create or edit a Gasoil Achat Gros",
+        "notFound": "No Gasoil Achat Gros found"
+      },
+      "created": "A new Gasoil Achat Gros is created with identifier {{ param }}",
+      "updated": "A Gasoil Achat Gros is updated with identifier {{ param }}",
+      "deleted": "A Gasoil Achat Gros is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Gasoil Achat Gros {{ id }}?"
+      },
+      "detail": {
+        "title": "Gasoil Achat Gros"
+      },
+      "dateReception": "Date Reception",
+      "numeroBonReception": "Numero Bon Reception",
+      "description": "Description",
+      "quantity": "Quantity",
+      "prixUnitaire": "Prix Unitaire",
+      "fournisseur": "Fournisseur",
+      "transporteur": "Transporteur",
+      "produit": "Produit"
+    }
+  }
+}

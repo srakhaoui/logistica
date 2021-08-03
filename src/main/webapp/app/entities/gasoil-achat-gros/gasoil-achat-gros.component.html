@@ -1,0 +1,107 @@
+<div>
+    <h2 id="page-heading">
+        <span>Achat Gasoil</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gasoil-achat-gros"
+                [routerLink]="['/gasoil-achat-gros/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span>
+              Achat Gasoil
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="gasoilAchatGros?.length === 0">
+        <span>Aucun résultat trouvé</span>
+    </div>
+    <div class="table-responsive" *ngIf="gasoilAchatGros?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="dateReception"><span
+                    jhiTranslate="logisticaApp.gasoilAchatGros.dateReception">Date Reception</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="numeroBonReception"><span
+                    jhiTranslate="logisticaApp.gasoilAchatGros.numeroBonReception">Numero Bon Reception</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="description"><span jhiTranslate="logisticaApp.gasoilAchatGros.description">Description</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="quantity"><span
+                    jhiTranslate="logisticaApp.gasoilAchatGros.quantity">Quantity</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixUnitaire"><span jhiTranslate="logisticaApp.gasoilAchatGros.prixUnitaire">Prix Unitaire</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="fournisseur.nom"><span
+                    jhiTranslate="logisticaApp.gasoilAchatGros.fournisseur">Fournisseur</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="transporteur.nom"><span
+                    jhiTranslate="logisticaApp.gasoilAchatGros.transporteur">Transporteur</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="produit.code"><span jhiTranslate="logisticaApp.gasoilAchatGros.produit">Produit</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
+            <tr *ngFor="let gasoilAchatGros of gasoilAchatGros ;trackBy: trackId">
+                <td><a [routerLink]="['/gasoil-achat-gros', gasoilAchatGros.id, 'view' ]">{{gasoilAchatGros.id}}</a>
+                </td>
+                <td>{{gasoilAchatGros.dateReception | date:'mediumDate'}}</td>
+                <td>{{gasoilAchatGros.numeroBonReception}}</td>
+                <td>{{gasoilAchatGros.description}}</td>
+                <td>{{gasoilAchatGros.quantity}}</td>
+                <td>{{gasoilAchatGros.prixUnitaire}}</td>
+                <td>
+                    <div *ngIf="gasoilAchatGros.fournisseur">
+                        <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseur?.id, 'view' ]">{{gasoilAchatGros.fournisseur?.nom}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="gasoilAchatGros.transporteur">
+                        <a [routerLink]="['/societe', gasoilAchatGros.transporteur?.id, 'view' ]">{{gasoilAchatGros.transporteur?.nom}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="gasoilAchatGros.produit">
+                        <a [routerLink]="['/produit', gasoilAchatGros.produit?.id, 'view' ]">{{gasoilAchatGros.produit?.code}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/gasoil-achat-gros', gasoilAchatGros.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/gasoil-achat-gros', gasoilAchatGros.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(gasoilAchatGros)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

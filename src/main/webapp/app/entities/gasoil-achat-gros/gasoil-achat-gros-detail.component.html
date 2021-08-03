@@ -1,0 +1,61 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="gasoilAchatGros">
+            <h2><span>Achat Gasoil</span> {{gasoilAchatGros.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span>Date de Réception</span></dt>
+                <dd>
+                    <span>{{gasoilAchatGros.dateReception}}</span>
+                </dd>
+                <dt><span>Numero du Bon de Réception</span></dt>
+                <dd>
+                    <span>{{gasoilAchatGros.numeroBonReception}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.description">Description</span></dt>
+                <dd>
+                    <span>{{gasoilAchatGros.description}}</span>
+                </dd>
+                <dt><span>Quantité</span></dt>
+                <dd>
+                    <span>{{gasoilAchatGros.quantity}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.prixUnitaire">Prix Unitaire</span></dt>
+                <dd>
+                    <span>{{gasoilAchatGros.prixUnitaire}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.fournisseur">Fournisseur</span></dt>
+                <dd>
+                    <div *ngIf="gasoilAchatGros.fournisseur">
+                        <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseur?.id, 'view']">{{gasoilAchatGros.fournisseur?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.transporteur">Transporteur</span></dt>
+                <dd>
+                    <div *ngIf="gasoilAchatGros.transporteur">
+                        <a [routerLink]="['/societe', gasoilAchatGros.transporteur?.id, 'view']">{{gasoilAchatGros.transporteur?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.produit">Produit</span></dt>
+                <dd>
+                    <div *ngIf="gasoilAchatGros.produit">
+                        <a [routerLink]="['/produit', gasoilAchatGros.produit?.id, 'view']">{{gasoilAchatGros.produit?.code}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/gasoil-achat-gros', gasoilAchatGros.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

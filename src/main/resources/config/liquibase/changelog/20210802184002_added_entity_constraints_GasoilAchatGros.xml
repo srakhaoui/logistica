@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity GasoilAchatGros.
+    -->
+    <changeSet id="20210802184002-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="fournisseur_id"
+                                 baseTableName="gasoil_achat_gros"
+                                 constraintName="fk_gasoil_achat_gros_fournisseur_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="fournisseur"/>
+
+        <addForeignKeyConstraint baseColumnNames="transporteur_id"
+                                 baseTableName="gasoil_achat_gros"
+                                 constraintName="fk_gasoil_achat_gros_transporteur_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="societe"/>
+
+        <addForeignKeyConstraint baseColumnNames="produit_id"
+                                 baseTableName="gasoil_achat_gros"
+                                 constraintName="fk_gasoil_achat_gros_produit_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="produit"/>
+
+    </changeSet>
+</databaseChangeLog>

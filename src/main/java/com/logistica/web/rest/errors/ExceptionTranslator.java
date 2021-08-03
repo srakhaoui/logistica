@@ -291,4 +291,14 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .build();
         return create(ex, problem, request);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleDateReceptionGasoilFutureException(DateReceptionGasoilFutureException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_BR_DATE_FUTURE)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
 }

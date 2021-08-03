@@ -19,6 +19,7 @@
     "tarif.tarifAlreadyExists": "This pricing has been already saved",
     "km.invalide": "The initial number of KMs could not be greater than the final number",
     "periode.invalide": "The end date could not be before the start date",
-    "bl.client.exist": "The BL number is already registered for this client"
+    "bl.client.exist": "The BL number is already registered for this client",
+    "br.date.future": "La date de réception ne peut être dans le future"
   }
 }

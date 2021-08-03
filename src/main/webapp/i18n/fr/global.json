@@ -25,6 +25,7 @@
         "livraison": "Livraison",
         "recapitulatif-achat": "Récapitulatif des achats",
         "gasoil": "Gasoil",
+        "gasoilAchatGros": "Gasoil Achat Gros",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {
