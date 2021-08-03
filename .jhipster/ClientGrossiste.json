@@ -1,0 +1,37 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [],
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required",
+        "unique",
+        "minlength"
+      ],
+      "fieldValidateRulesMinlength": "1"
+    },
+    {
+      "fieldName": "adresse",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "telephone",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "pattern"
+      ],
+      "fieldValidateRulesPattern": "^0[0-9]{9}$|\\s*"
+    }
+  ],
+  "changelogDate": "20210803183116",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "serviceClass",
+  "entityTableName": "client_grossiste",
+  "databaseType": "sql",
+  "jpaMetamodelFiltering": true,
+  "pagination": "infinite-scroll"
+}

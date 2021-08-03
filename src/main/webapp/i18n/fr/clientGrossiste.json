@@ -1,0 +1,24 @@
+{
+  "logisticaApp": {
+    "clientGrossiste": {
+      "home": {
+        "title": "ClientGrossistes",
+        "createLabel": "Créer un nouveau Client Grossiste",
+        "createOrEditLabel": "Créer ou éditer un Client Grossiste",
+        "notFound": "Aucun Client Grossiste trouvé"
+      },
+      "created": "Un nouveau Client Grossiste a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Client Grossiste avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Client Grossiste avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Client Grossiste {{ id }} ?"
+      },
+      "detail": {
+        "title": "Client Grossiste"
+      },
+      "nom": "Nom",
+      "adresse": "Adresse",
+      "telephone": "Telephone"
+    }
+  }
+}
