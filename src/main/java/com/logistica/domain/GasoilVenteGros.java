@@ -1,6 +1,7 @@
 package com.logistica.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.logistica.domain.enumeration.UniteGasoilGros;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,8 +21,8 @@ public class GasoilVenteGros implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gasoilVenteGrosSequenceGenerator")
+    @SequenceGenerator(name = "gasoilVenteGrosSequenceGenerator", sequenceName = "gasoil-vente-gros-seq", allocationSize = 1)
     private Long id;
 
     @NotNull
@@ -34,18 +35,19 @@ public class GasoilVenteGros implements Serializable {
     @Column(name = "quantite", nullable = false)
     private Float quantite;
 
-    @NotNull
-    @DecimalMin(value = "0")
     @Column(name = "prix_vente_total", nullable = false)
     private Float prixVenteTotal;
 
-    @NotNull
     @Column(name = "marge_globale", nullable = false)
     private Float margeGlobale;
 
-    @NotNull
     @Column(name = "taux_marge", nullable = false)
     private Float tauxMarge;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "unite_gasoil_gros", nullable = false)
+    private UniteGasoilGros uniteGasoilGros;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -136,6 +138,19 @@ public class GasoilVenteGros implements Serializable {
         this.tauxMarge = tauxMarge;
     }
 
+    public UniteGasoilGros getUniteGasoilGros() {
+        return uniteGasoilGros;
+    }
+
+    public GasoilVenteGros uniteGasoilGros(UniteGasoilGros uniteGasoilGros) {
+        this.uniteGasoilGros = uniteGasoilGros;
+        return this;
+    }
+
+    public void setUniteGasoilGros(UniteGasoilGros uniteGasoilGros) {
+        this.uniteGasoilGros = uniteGasoilGros;
+    }
+
     public Societe getSocieteFacturation() {
         return societeFacturation;
     }
@@ -201,6 +216,7 @@ public class GasoilVenteGros implements Serializable {
             ", prixVenteTotal=" + getPrixVenteTotal() +
             ", margeGlobale=" + getMargeGlobale() +
             ", tauxMarge=" + getTauxMarge() +
+            ", uniteGasoilGros='" + getUniteGasoilGros() + "'" +
             "}";
     }
 }

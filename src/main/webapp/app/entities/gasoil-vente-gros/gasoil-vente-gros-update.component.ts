@@ -4,9 +4,11 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Subject, Observable, of, concat } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, startWith } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
 import { IGasoilVenteGros, GasoilVenteGros } from 'app/shared/model/gasoil-vente-gros.model';
+import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 import { GasoilVenteGrosService } from './gasoil-vente-gros.service';
 import { ISociete } from 'app/shared/model/societe.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
@@ -24,9 +26,14 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
 
   societes: ISociete[];
 
-  clientgrossistes: IClientGrossiste[];
+  clientsGrossistes$: Observable<IClientGrossiste[]>;
+  clientsGrossistesInput$ = new Subject<string>();
+  clientsGrossistesLoading:Boolean = false;
 
-  gasoilachatgros: IGasoilAchatGros[];
+  gasoilachatgros$: Observable<IGasoilAchatGros[]>;
+  gasoilachatgrosInput$ = new Subject<string>();
+  gasoilachatgrosLoading:Boolean = false;
+
 
   editForm = this.fb.group({
     id: [],
@@ -35,6 +42,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
     prixVenteTotal: [null],
     margeGlobale: [null],
     tauxMarge: [null],
+    uniteGasoilGros: [null, [Validators.required]],
     societeFacturation: [null, Validators.required],
     client: [null, Validators.required],
     achatGasoil: [null, Validators.required]
@@ -58,18 +66,8 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
     this.societeService
       .query()
       .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
-    this.clientGrossisteService
-      .query()
-      .subscribe(
-        (res: HttpResponse<IClientGrossiste[]>) => (this.clientgrossistes = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
-    this.gasoilAchatGrosService
-      .query()
-      .subscribe(
-        (res: HttpResponse<IGasoilAchatGros[]>) => (this.gasoilachatgros = res.body),
-        (res: HttpErrorResponse) => this.onError(res.message)
-      );
+    this.loadClientsGrossistes();
+    this.loadGasoilAchatGros();
   }
 
   updateForm(gasoilVenteGros: IGasoilVenteGros) {
@@ -80,6 +78,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
       prixVenteTotal: gasoilVenteGros.prixVenteTotal,
       margeGlobale: gasoilVenteGros.margeGlobale,
       tauxMarge: gasoilVenteGros.tauxMarge,
+      uniteGasoilGros: gasoilVenteGros.id ? gasoilVenteGros.uniteGasoilGros : UniteGasoilGros.TONNE,
       societeFacturation: gasoilVenteGros.societeFacturation,
       client: gasoilVenteGros.client,
       achatGasoil: gasoilVenteGros.achatGasoil
@@ -109,6 +108,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
       prixVenteTotal: this.editForm.get(['prixVenteTotal']).value,
       margeGlobale: this.editForm.get(['margeGlobale']).value,
       tauxMarge: this.editForm.get(['tauxMarge']).value,
+      uniteGasoilGros: this.editForm.get(['uniteGasoilGros']).value,
       societeFacturation: this.editForm.get(['societeFacturation']).value,
       client: this.editForm.get(['client']).value,
       achatGasoil: this.editForm.get(['achatGasoil']).value
@@ -141,5 +141,41 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
 
   trackGasoilAchatGrosById(index: number, item: IGasoilAchatGros) {
     return item.id;
+  }
+
+  private loadClientsGrossistes(){
+    this.clientsGrossistes$ = concat(
+            of([]), // default items
+            this.clientsGrossistesInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.clientsGrossistesLoading = true)),
+                switchMap(nom =>
+                    this.clientGrossisteService
+                        .query({'nom.contains': nom})
+                        .pipe(map((resp: HttpResponse<IClientGrossiste[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.clientsGrossistesLoading = false))
+            )
+        );
+  }
+
+  private loadGasoilAchatGros(){
+    this.gasoilachatgros$ = concat(
+            of([]), // default items
+            this.gasoilachatgrosInput$.pipe(
+                startWith(''),
+                debounceTime(500),
+                distinctUntilChanged(),
+                tap(() => (this.gasoilachatgrosLoading = true)),
+                switchMap(nom =>
+                    this.gasoilAchatGrosService
+                        .query({'description.contains': nom})
+                        .pipe(map((resp: HttpResponse<IGasoilAchatGros[]>) => resp.body), catchError(() => of([])))
+                ),
+                tap(() => (this.gasoilachatgrosLoading = false))
+            )
+        );
   }
 }

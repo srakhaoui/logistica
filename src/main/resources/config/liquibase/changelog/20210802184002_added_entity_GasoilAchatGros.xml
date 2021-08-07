@@ -29,6 +29,9 @@
             <column name="prix_unitaire" type="${floatType}">
                 <constraints nullable="false"/>
             </column>
+            <column name="unite_gasoil_gros" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="fournisseur_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -66,6 +69,7 @@
             <column name="description" type="string"/>
             <column name="quantity" type="numeric"/>
             <column name="prix_unitaire" type="numeric"/>
+            <column name="unite_gasoil_gros" type="string"/>
             <column name="fournisseur_id" type="numeric"/>
             <column name="transporteur_id" type="numeric"/>
             <column name="produit_id" type="numeric"/>

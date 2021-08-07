@@ -35,7 +35,6 @@ public class GasoilAchatGrosQueryService extends QueryService<GasoilAchatGros> {
 
     /**
      * Return a {@link List} of {@link GasoilAchatGros} which matches the criteria from the database.
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching entities.
      */
@@ -62,7 +61,6 @@ public class GasoilAchatGrosQueryService extends QueryService<GasoilAchatGros> {
 
     /**
      * Return the number of matching entities in the database.
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the number of matching entities.
      */
@@ -75,7 +73,6 @@ public class GasoilAchatGrosQueryService extends QueryService<GasoilAchatGros> {
 
     /**
      * Function to convert {@link GasoilAchatGrosCriteria} to a {@link Specification}
-     *
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
@@ -99,6 +96,9 @@ public class GasoilAchatGrosQueryService extends QueryService<GasoilAchatGros> {
             }
             if (criteria.getPrixUnitaire() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getPrixUnitaire(), GasoilAchatGros_.prixUnitaire));
+            }
+            if (criteria.getUniteGasoilGros() != null) {
+                specification = specification.and(buildSpecification(criteria.getUniteGasoilGros(), GasoilAchatGros_.uniteGasoilGros));
             }
             if (criteria.getFournisseurId() != null) {
                 specification = specification.and(buildSpecification(criteria.getFournisseurId(),

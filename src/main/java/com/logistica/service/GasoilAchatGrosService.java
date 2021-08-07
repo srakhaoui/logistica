@@ -51,7 +51,7 @@ public class GasoilAchatGrosService {
     }
 
     private String descriptionFrom(GasoilAchatGros gasoilAchatGros) {
-        return gasoilAchatGros.getNumeroBonReception() + gasoilAchatGros.getFournisseur().getNom() + gasoilAchatGros.getDateReception();
+        return gasoilAchatGros.getFournisseur().getNom() + "_" + gasoilAchatGros.getNumeroBonReception() + "_" + gasoilAchatGros.getDateReception();
     }
 
     /**

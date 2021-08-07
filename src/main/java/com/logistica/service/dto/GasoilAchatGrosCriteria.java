@@ -1,5 +1,6 @@
 package com.logistica.service.dto;
 
+import com.logistica.domain.enumeration.UniteGasoilGros;
 import io.github.jhipster.service.Criteria;
 import io.github.jhipster.service.filter.*;
 
@@ -16,6 +17,24 @@ import java.util.Objects;
  * fix type specific filters.
  */
 public class GasoilAchatGrosCriteria implements Serializable, Criteria {
+    /**
+     * Class for filtering UniteGasoilGros
+     */
+    public static class UniteGasoilGrosFilter extends Filter<UniteGasoilGros> {
+
+        public UniteGasoilGrosFilter() {
+        }
+
+        public UniteGasoilGrosFilter(UniteGasoilGrosFilter filter) {
+            super(filter);
+        }
+
+        @Override
+        public UniteGasoilGrosFilter copy() {
+            return new UniteGasoilGrosFilter(this);
+        }
+
+    }
 
     private static final long serialVersionUID = 1L;
 
@@ -30,6 +49,8 @@ public class GasoilAchatGrosCriteria implements Serializable, Criteria {
     private FloatFilter quantity;
 
     private FloatFilter prixUnitaire;
+
+    private UniteGasoilGrosFilter uniteGasoilGros;
 
     private LongFilter fournisseurId;
 
@@ -47,6 +68,7 @@ public class GasoilAchatGrosCriteria implements Serializable, Criteria {
         this.description = other.description == null ? null : other.description.copy();
         this.quantity = other.quantity == null ? null : other.quantity.copy();
         this.prixUnitaire = other.prixUnitaire == null ? null : other.prixUnitaire.copy();
+        this.uniteGasoilGros = other.uniteGasoilGros == null ? null : other.uniteGasoilGros.copy();
         this.fournisseurId = other.fournisseurId == null ? null : other.fournisseurId.copy();
         this.transporteurId = other.transporteurId == null ? null : other.transporteurId.copy();
         this.produitId = other.produitId == null ? null : other.produitId.copy();
@@ -105,6 +127,14 @@ public class GasoilAchatGrosCriteria implements Serializable, Criteria {
         this.prixUnitaire = prixUnitaire;
     }
 
+    public UniteGasoilGrosFilter getUniteGasoilGros() {
+        return uniteGasoilGros;
+    }
+
+    public void setUniteGasoilGros(UniteGasoilGrosFilter uniteGasoilGros) {
+        this.uniteGasoilGros = uniteGasoilGros;
+    }
+
     public LongFilter getFournisseurId() {
         return fournisseurId;
     }
@@ -146,6 +176,7 @@ public class GasoilAchatGrosCriteria implements Serializable, Criteria {
                 Objects.equals(description, that.description) &&
                 Objects.equals(quantity, that.quantity) &&
                 Objects.equals(prixUnitaire, that.prixUnitaire) &&
+                Objects.equals(uniteGasoilGros, that.uniteGasoilGros) &&
                 Objects.equals(fournisseurId, that.fournisseurId) &&
                 Objects.equals(transporteurId, that.transporteurId) &&
                 Objects.equals(produitId, that.produitId);
@@ -160,6 +191,7 @@ public class GasoilAchatGrosCriteria implements Serializable, Criteria {
             description,
             quantity,
             prixUnitaire,
+            uniteGasoilGros,
             fournisseurId,
             transporteurId,
             produitId
@@ -175,6 +207,7 @@ public class GasoilAchatGrosCriteria implements Serializable, Criteria {
             (description != null ? "description=" + description + ", " : "") +
             (quantity != null ? "quantity=" + quantity + ", " : "") +
             (prixUnitaire != null ? "prixUnitaire=" + prixUnitaire + ", " : "") +
+            (uniteGasoilGros != null ? "uniteGasoilGros=" + uniteGasoilGros + ", " : "") +
             (fournisseurId != null ? "fournisseurId=" + fournisseurId + ", " : "") +
             (transporteurId != null ? "transporteurId=" + transporteurId + ", " : "") +
             (produitId != null ? "produitId=" + produitId + ", " : "") +

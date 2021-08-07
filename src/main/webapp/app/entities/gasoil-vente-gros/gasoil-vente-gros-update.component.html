@@ -1,8 +1,8 @@
 <div class="row justify-content-center">
     <div class="col-8">
         <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
-            <h2 id="jhi-gasoil-vente-gros-heading" jhiTranslate="logisticaApp.gasoilVenteGros.home.createOrEditLabel">
-                Create or edit a Gasoil Vente Gros</h2>
+            <h2 id="jhi-gasoil-vente-gros-heading">
+                Créer ou éditer Vente Gasoil</h2>
             <div>
                 <jhi-alert-error></jhi-alert-error>
                 <div class="form-group" [hidden]="!editForm.get('id').value">
@@ -122,6 +122,23 @@
                 </div>
 
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.uniteGasoilGros"
+                           for="field_uniteGasoilGros">Unite Gasoil Gros</label>
+                    <select class="form-control" name="uniteGasoilGros" formControlName="uniteGasoilGros"
+                            id="field_uniteGasoilGros">
+                        <option value="TONNE">{{'logisticaApp.UniteGasoilGros.TONNE' | translate}}</option>
+                    </select>
+                    <div
+                        *ngIf="editForm.get('uniteGasoilGros').invalid && (editForm.get('uniteGasoilGros').dirty || editForm.get('uniteGasoilGros').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('uniteGasoilGros').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.societeFacturation"
                            for="field_societeFacturation">Societe Facturation</label>
                     <select class="form-control" id="field_societeFacturation" name="societeFacturation"
@@ -142,44 +159,40 @@
                     </small>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.client"
-                           for="field_client">Client</label>
-                    <select class="form-control" id="field_client" name="client" formControlName="client">
-                        <option *ngIf="!editForm.get('client').value" [ngValue]="null" selected></option>
-                        <option
-                            [ngValue]="clientGrossisteOption.id === editForm.get('client').value?.id ? editForm.get('client').value : clientGrossisteOption"
-                            *ngFor="let clientGrossisteOption of clientgrossistes; trackBy: trackClientGrossisteById">
-                            {{clientGrossisteOption.nom}}
-                        </option>
-                    </select>
-                </div>
-                <div
-                    *ngIf="editForm.get('client').invalid && (editForm.get('client').dirty || editForm.get('client').touched)">
-                    <small class="form-text text-danger"
-                           *ngIf="editForm.get('client').errors.required" jhiTranslate="entity.validation.required">
-                        This field is required.
-                    </small>
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select id="field_client"
+                               [items]="clientsGrossistes$ | async"
+                               [typeahead]="clientsGrossistesInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsGrossistesLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
+                    <div *ngIf="(editForm.get('client').dirty || editForm.get('client').touched)">
+                        <small class="form-text text-danger" [hidden]="editForm.get('client').value"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.achatGasoil"
-                           for="field_achatGasoil">Achat Gasoil</label>
-                    <select class="form-control" id="field_achatGasoil" name="achatGasoil"
-                            formControlName="achatGasoil">
-                        <option *ngIf="!editForm.get('achatGasoil').value" [ngValue]="null" selected></option>
-                        <option
-                            [ngValue]="gasoilAchatGrosOption.id === editForm.get('achatGasoil').value?.id ? editForm.get('achatGasoil').value : gasoilAchatGrosOption"
-                            *ngFor="let gasoilAchatGrosOption of gasoilachatgros; trackBy: trackGasoilAchatGrosById">
-                            {{gasoilAchatGrosOption.description}}
-                        </option>
-                    </select>
-                </div>
-                <div
-                    *ngIf="editForm.get('achatGasoil').invalid && (editForm.get('achatGasoil').dirty || editForm.get('achatGasoil').touched)">
-                    <small class="form-text text-danger"
-                           *ngIf="editForm.get('achatGasoil').errors.required"
-                           jhiTranslate="entity.validation.required">
-                        This field is required.
-                    </small>
+                    <label class="form-control-label" for="field_achatGasoil">Achat Gasoil</label>
+                    <ng-select id="field_achatGasoil"
+                               [items]="gasoilachatgros$ | async"
+                               [typeahead]="gasoilachatgrosInput$"
+                               bindLabel="description"
+                               [hideSelected]="true"
+                               [loading]="gasoilachatgrosLoading"
+                               formControlName="achatGasoil"
+                               name="achatGasoil">
+                    </ng-select>
+                    <div *ngIf="(editForm.get('achatGasoil').dirty || editForm.get('achatGasoil').touched)">
+                        <small class="form-text text-danger" [hidden]="editForm.get('achatGasoil').value"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
                 </div>
             </div>
             <div>

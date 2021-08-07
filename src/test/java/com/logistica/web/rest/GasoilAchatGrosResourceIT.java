@@ -5,6 +5,7 @@ import com.logistica.domain.Fournisseur;
 import com.logistica.domain.GasoilAchatGros;
 import com.logistica.domain.Produit;
 import com.logistica.domain.Societe;
+import com.logistica.domain.enumeration.UniteGasoilGros;
 import com.logistica.repository.GasoilAchatGrosRepository;
 import com.logistica.service.GasoilAchatGrosQueryService;
 import com.logistica.service.GasoilAchatGrosService;
@@ -32,7 +33,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Integration tests for the {@link GasoilAchatGrosResource} REST controller.
  */
@@ -56,6 +56,9 @@ public class GasoilAchatGrosResourceIT {
     private static final Float DEFAULT_PRIX_UNITAIRE = 0F;
     private static final Float UPDATED_PRIX_UNITAIRE = 1F;
     private static final Float SMALLER_PRIX_UNITAIRE = 0F - 1F;
+
+    private static final UniteGasoilGros DEFAULT_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
+    private static final UniteGasoilGros UPDATED_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
 
     @Autowired
     private GasoilAchatGrosRepository gasoilAchatGrosRepository;
@@ -99,7 +102,7 @@ public class GasoilAchatGrosResourceIT {
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -109,7 +112,8 @@ public class GasoilAchatGrosResourceIT {
             .numeroBonReception(DEFAULT_NUMERO_BON_RECEPTION)
             .description(DEFAULT_DESCRIPTION)
             .quantity(DEFAULT_QUANTITY)
-            .prixUnitaire(DEFAULT_PRIX_UNITAIRE);
+            .prixUnitaire(DEFAULT_PRIX_UNITAIRE)
+            .uniteGasoilGros(DEFAULT_UNITE_GASOIL_GROS);
         // Add required entity
         Fournisseur fournisseur;
         if (TestUtil.findAll(em, Fournisseur.class).isEmpty()) {
@@ -142,10 +146,9 @@ public class GasoilAchatGrosResourceIT {
         gasoilAchatGros.setProduit(produit);
         return gasoilAchatGros;
     }
-
     /**
      * Create an updated entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -155,7 +158,8 @@ public class GasoilAchatGrosResourceIT {
             .numeroBonReception(UPDATED_NUMERO_BON_RECEPTION)
             .description(UPDATED_DESCRIPTION)
             .quantity(UPDATED_QUANTITY)
-            .prixUnitaire(UPDATED_PRIX_UNITAIRE);
+            .prixUnitaire(UPDATED_PRIX_UNITAIRE)
+            .uniteGasoilGros(UPDATED_UNITE_GASOIL_GROS);
         // Add required entity
         Fournisseur fournisseur;
         if (TestUtil.findAll(em, Fournisseur.class).isEmpty()) {
@@ -214,6 +218,7 @@ public class GasoilAchatGrosResourceIT {
         assertThat(testGasoilAchatGros.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testGasoilAchatGros.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
         assertThat(testGasoilAchatGros.getPrixUnitaire()).isEqualTo(DEFAULT_PRIX_UNITAIRE);
+        assertThat(testGasoilAchatGros.getUniteGasoilGros()).isEqualTo(DEFAULT_UNITE_GASOIL_GROS);
     }
 
     @Test
@@ -310,6 +315,24 @@ public class GasoilAchatGrosResourceIT {
 
     @Test
     @Transactional
+    public void checkUniteGasoilGrosIsRequired() throws Exception {
+        int databaseSizeBeforeTest = gasoilAchatGrosRepository.findAll().size();
+        // set the field null
+        gasoilAchatGros.setUniteGasoilGros(null);
+
+        // Create the GasoilAchatGros, which fails.
+
+        restGasoilAchatGrosMockMvc.perform(post("/api/gasoil-achat-gros")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(gasoilAchatGros)))
+            .andExpect(status().isBadRequest());
+
+        List<GasoilAchatGros> gasoilAchatGrosList = gasoilAchatGrosRepository.findAll();
+        assertThat(gasoilAchatGrosList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllGasoilAchatGros() throws Exception {
         // Initialize the database
         gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
@@ -323,7 +346,8 @@ public class GasoilAchatGrosResourceIT {
             .andExpect(jsonPath("$.[*].numeroBonReception").value(hasItem(DEFAULT_NUMERO_BON_RECEPTION)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY.doubleValue())))
-            .andExpect(jsonPath("$.[*].prixUnitaire").value(hasItem(DEFAULT_PRIX_UNITAIRE.doubleValue())));
+            .andExpect(jsonPath("$.[*].prixUnitaire").value(hasItem(DEFAULT_PRIX_UNITAIRE.doubleValue())))
+            .andExpect(jsonPath("$.[*].uniteGasoilGros").value(hasItem(DEFAULT_UNITE_GASOIL_GROS.toString())));
     }
 
     @Test
@@ -341,7 +365,8 @@ public class GasoilAchatGrosResourceIT {
             .andExpect(jsonPath("$.numeroBonReception").value(DEFAULT_NUMERO_BON_RECEPTION))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY.doubleValue()))
-            .andExpect(jsonPath("$.prixUnitaire").value(DEFAULT_PRIX_UNITAIRE.doubleValue()));
+            .andExpect(jsonPath("$.prixUnitaire").value(DEFAULT_PRIX_UNITAIRE.doubleValue()))
+            .andExpect(jsonPath("$.uniteGasoilGros").value(DEFAULT_UNITE_GASOIL_GROS.toString()));
     }
 
 
@@ -839,6 +864,58 @@ public class GasoilAchatGrosResourceIT {
 
     @Test
     @Transactional
+    public void getAllGasoilAchatGrosByUniteGasoilGrosIsEqualToSomething() throws Exception {
+        // Initialize the database
+        gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros equals to DEFAULT_UNITE_GASOIL_GROS
+        defaultGasoilAchatGrosShouldBeFound("uniteGasoilGros.equals=" + DEFAULT_UNITE_GASOIL_GROS);
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros equals to UPDATED_UNITE_GASOIL_GROS
+        defaultGasoilAchatGrosShouldNotBeFound("uniteGasoilGros.equals=" + UPDATED_UNITE_GASOIL_GROS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllGasoilAchatGrosByUniteGasoilGrosIsNotEqualToSomething() throws Exception {
+        // Initialize the database
+        gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros not equals to DEFAULT_UNITE_GASOIL_GROS
+        defaultGasoilAchatGrosShouldNotBeFound("uniteGasoilGros.notEquals=" + DEFAULT_UNITE_GASOIL_GROS);
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros not equals to UPDATED_UNITE_GASOIL_GROS
+        defaultGasoilAchatGrosShouldBeFound("uniteGasoilGros.notEquals=" + UPDATED_UNITE_GASOIL_GROS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllGasoilAchatGrosByUniteGasoilGrosIsInShouldWork() throws Exception {
+        // Initialize the database
+        gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros in DEFAULT_UNITE_GASOIL_GROS or UPDATED_UNITE_GASOIL_GROS
+        defaultGasoilAchatGrosShouldBeFound("uniteGasoilGros.in=" + DEFAULT_UNITE_GASOIL_GROS + "," + UPDATED_UNITE_GASOIL_GROS);
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros equals to UPDATED_UNITE_GASOIL_GROS
+        defaultGasoilAchatGrosShouldNotBeFound("uniteGasoilGros.in=" + UPDATED_UNITE_GASOIL_GROS);
+    }
+
+    @Test
+    @Transactional
+    public void getAllGasoilAchatGrosByUniteGasoilGrosIsNullOrNotNull() throws Exception {
+        // Initialize the database
+        gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros is not null
+        defaultGasoilAchatGrosShouldBeFound("uniteGasoilGros.specified=true");
+
+        // Get all the gasoilAchatGrosList where uniteGasoilGros is null
+        defaultGasoilAchatGrosShouldNotBeFound("uniteGasoilGros.specified=false");
+    }
+
+    @Test
+    @Transactional
     public void getAllGasoilAchatGrosByFournisseurIsEqualToSomething() throws Exception {
         // Get already existing entity
         Fournisseur fournisseur = gasoilAchatGros.getFournisseur();
@@ -896,7 +973,8 @@ public class GasoilAchatGrosResourceIT {
             .andExpect(jsonPath("$.[*].numeroBonReception").value(hasItem(DEFAULT_NUMERO_BON_RECEPTION)))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY.doubleValue())))
-            .andExpect(jsonPath("$.[*].prixUnitaire").value(hasItem(DEFAULT_PRIX_UNITAIRE.doubleValue())));
+            .andExpect(jsonPath("$.[*].prixUnitaire").value(hasItem(DEFAULT_PRIX_UNITAIRE.doubleValue())))
+            .andExpect(jsonPath("$.[*].uniteGasoilGros").value(hasItem(DEFAULT_UNITE_GASOIL_GROS.toString())));
 
         // Check, that the count call also returns 1
         restGasoilAchatGrosMockMvc.perform(get("/api/gasoil-achat-gros/count?sort=id,desc&" + filter))
@@ -948,7 +1026,8 @@ public class GasoilAchatGrosResourceIT {
             .numeroBonReception(UPDATED_NUMERO_BON_RECEPTION)
             .description(UPDATED_DESCRIPTION)
             .quantity(UPDATED_QUANTITY)
-            .prixUnitaire(UPDATED_PRIX_UNITAIRE);
+            .prixUnitaire(UPDATED_PRIX_UNITAIRE)
+            .uniteGasoilGros(UPDATED_UNITE_GASOIL_GROS);
 
         restGasoilAchatGrosMockMvc.perform(put("/api/gasoil-achat-gros")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -964,6 +1043,7 @@ public class GasoilAchatGrosResourceIT {
         assertThat(testGasoilAchatGros.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testGasoilAchatGros.getQuantity()).isEqualTo(UPDATED_QUANTITY);
         assertThat(testGasoilAchatGros.getPrixUnitaire()).isEqualTo(UPDATED_PRIX_UNITAIRE);
+        assertThat(testGasoilAchatGros.getUniteGasoilGros()).isEqualTo(UPDATED_UNITE_GASOIL_GROS);
     }
 
     @Test

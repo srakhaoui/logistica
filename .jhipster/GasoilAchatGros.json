@@ -9,7 +9,8 @@
       "relationshipValidateRules": [
         "required"
       ],
-      "otherEntityField": "nom"
+      "otherEntityField": "nom",
+      "otherEntityRelationshipName": "gasoilAchatGros"
     },
     {
       "relationshipName": "transporteur",
@@ -18,7 +19,8 @@
       "relationshipValidateRules": [
         "required"
       ],
-      "otherEntityField": "nom"
+      "otherEntityField": "nom",
+      "otherEntityRelationshipName": "gasoilAchatGros"
     },
     {
       "relationshipName": "produit",
@@ -27,7 +29,8 @@
       "relationshipValidateRules": [
         "required"
       ],
-      "otherEntityField": "code"
+      "otherEntityField": "code",
+      "otherEntityRelationshipName": "gasoilAchatGros"
     }
   ],
   "fields": [
@@ -69,6 +72,14 @@
         "min"
       ],
       "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldName": "uniteGasoilGros",
+      "fieldType": "UniteGasoilGros",
+      "fieldValues": "TONNE",
+      "fieldValidateRules": [
+        "required"
+      ]
     }
   ],
   "changelogDate": "20210802184002",

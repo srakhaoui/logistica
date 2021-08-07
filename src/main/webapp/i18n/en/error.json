@@ -20,6 +20,8 @@
     "km.invalide": "The initial number of KMs could not be greater than the final number",
     "periode.invalide": "The end date could not be before the start date",
     "bl.client.exist": "The BL number is already registered for this client",
-    "br.date.future": "La date de réception ne peut être dans le future"
+    "br.date.future": "The receiving date could not be in the futur",
+    "quantite.gasoil.insuffisante": "There available quantity is not enough to cover the selling quantity",
+    "km.parcouru.invalide": "The traveled distance is invalid, it can not be greater than 1000 km"
   }
 }

@@ -5,6 +5,7 @@ import * as moment from 'moment';
 import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { GasoilAchatGrosService } from 'app/entities/gasoil-achat-gros/gasoil-achat-gros.service';
 import { IGasoilAchatGros, GasoilAchatGros } from 'app/shared/model/gasoil-achat-gros.model';
+import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 
 describe('Service Tests', () => {
   describe('GasoilAchatGros Service', () => {
@@ -24,7 +25,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new GasoilAchatGros(0, currentDate, 'AAAAAAA', 'AAAAAAA', 0, 0);
+      elemDefault = new GasoilAchatGros(0, currentDate, 'AAAAAAA', 'AAAAAAA', 0, 0, UniteGasoilGros.TONNE);
     });
 
     describe('Service methods', () => {
@@ -75,7 +76,8 @@ describe('Service Tests', () => {
             numeroBonReception: 'BBBBBB',
             description: 'BBBBBB',
             quantity: 1,
-            prixUnitaire: 1
+            prixUnitaire: 1,
+            uniteGasoilGros: 'BBBBBB'
           },
           elemDefault
         );
@@ -102,7 +104,8 @@ describe('Service Tests', () => {
             numeroBonReception: 'BBBBBB',
             description: 'BBBBBB',
             quantity: 1,
-            prixUnitaire: 1
+            prixUnitaire: 1,
+            uniteGasoilGros: 'BBBBBB'
           },
           elemDefault
         );

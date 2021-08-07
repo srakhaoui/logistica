@@ -5,6 +5,7 @@ import com.logistica.domain.ClientGrossiste;
 import com.logistica.domain.GasoilAchatGros;
 import com.logistica.domain.GasoilVenteGros;
 import com.logistica.domain.Societe;
+import com.logistica.domain.enumeration.UniteGasoilGros;
 import com.logistica.repository.GasoilVenteGrosRepository;
 import com.logistica.service.GasoilVenteGrosService;
 import com.logistica.web.rest.errors.ExceptionTranslator;
@@ -29,7 +30,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
 /**
  * Integration tests for the {@link GasoilVenteGrosResource} REST controller.
  */
@@ -50,6 +50,9 @@ public class GasoilVenteGrosResourceIT {
 
     private static final Float DEFAULT_TAUX_MARGE = 1F;
     private static final Float UPDATED_TAUX_MARGE = 2F;
+
+    private static final UniteGasoilGros DEFAULT_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
+    private static final UniteGasoilGros UPDATED_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
 
     @Autowired
     private GasoilVenteGrosRepository gasoilVenteGrosRepository;
@@ -90,7 +93,7 @@ public class GasoilVenteGrosResourceIT {
 
     /**
      * Create an entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -100,7 +103,8 @@ public class GasoilVenteGrosResourceIT {
             .quantite(DEFAULT_QUANTITE)
             .prixVenteTotal(DEFAULT_PRIX_VENTE_TOTAL)
             .margeGlobale(DEFAULT_MARGE_GLOBALE)
-            .tauxMarge(DEFAULT_TAUX_MARGE);
+            .tauxMarge(DEFAULT_TAUX_MARGE)
+            .uniteGasoilGros(DEFAULT_UNITE_GASOIL_GROS);
         // Add required entity
         Societe societe;
         if (TestUtil.findAll(em, Societe.class).isEmpty()) {
@@ -133,10 +137,9 @@ public class GasoilVenteGrosResourceIT {
         gasoilVenteGros.setAchatGasoil(gasoilAchatGros);
         return gasoilVenteGros;
     }
-
     /**
      * Create an updated entity for this test.
-     * <p>
+     *
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
@@ -146,7 +149,8 @@ public class GasoilVenteGrosResourceIT {
             .quantite(UPDATED_QUANTITE)
             .prixVenteTotal(UPDATED_PRIX_VENTE_TOTAL)
             .margeGlobale(UPDATED_MARGE_GLOBALE)
-            .tauxMarge(UPDATED_TAUX_MARGE);
+            .tauxMarge(UPDATED_TAUX_MARGE)
+            .uniteGasoilGros(UPDATED_UNITE_GASOIL_GROS);
         // Add required entity
         Societe societe;
         if (TestUtil.findAll(em, Societe.class).isEmpty()) {
@@ -205,6 +209,7 @@ public class GasoilVenteGrosResourceIT {
         assertThat(testGasoilVenteGros.getPrixVenteTotal()).isEqualTo(DEFAULT_PRIX_VENTE_TOTAL);
         assertThat(testGasoilVenteGros.getMargeGlobale()).isEqualTo(DEFAULT_MARGE_GLOBALE);
         assertThat(testGasoilVenteGros.getTauxMarge()).isEqualTo(DEFAULT_TAUX_MARGE);
+        assertThat(testGasoilVenteGros.getUniteGasoilGros()).isEqualTo(DEFAULT_UNITE_GASOIL_GROS);
     }
 
     @Test
@@ -319,6 +324,24 @@ public class GasoilVenteGrosResourceIT {
 
     @Test
     @Transactional
+    public void checkUniteGasoilGrosIsRequired() throws Exception {
+        int databaseSizeBeforeTest = gasoilVenteGrosRepository.findAll().size();
+        // set the field null
+        gasoilVenteGros.setUniteGasoilGros(null);
+
+        // Create the GasoilVenteGros, which fails.
+
+        restGasoilVenteGrosMockMvc.perform(post("/api/gasoil-vente-gros")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(gasoilVenteGros)))
+            .andExpect(status().isBadRequest());
+
+        List<GasoilVenteGros> gasoilVenteGrosList = gasoilVenteGrosRepository.findAll();
+        assertThat(gasoilVenteGrosList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllGasoilVenteGros() throws Exception {
         // Initialize the database
         gasoilVenteGrosRepository.saveAndFlush(gasoilVenteGros);
@@ -332,7 +355,8 @@ public class GasoilVenteGrosResourceIT {
             .andExpect(jsonPath("$.[*].quantite").value(hasItem(DEFAULT_QUANTITE.doubleValue())))
             .andExpect(jsonPath("$.[*].prixVenteTotal").value(hasItem(DEFAULT_PRIX_VENTE_TOTAL.doubleValue())))
             .andExpect(jsonPath("$.[*].margeGlobale").value(hasItem(DEFAULT_MARGE_GLOBALE.doubleValue())))
-            .andExpect(jsonPath("$.[*].tauxMarge").value(hasItem(DEFAULT_TAUX_MARGE.doubleValue())));
+            .andExpect(jsonPath("$.[*].tauxMarge").value(hasItem(DEFAULT_TAUX_MARGE.doubleValue())))
+            .andExpect(jsonPath("$.[*].uniteGasoilGros").value(hasItem(DEFAULT_UNITE_GASOIL_GROS.toString())));
     }
 
     @Test
@@ -350,7 +374,8 @@ public class GasoilVenteGrosResourceIT {
             .andExpect(jsonPath("$.quantite").value(DEFAULT_QUANTITE.doubleValue()))
             .andExpect(jsonPath("$.prixVenteTotal").value(DEFAULT_PRIX_VENTE_TOTAL.doubleValue()))
             .andExpect(jsonPath("$.margeGlobale").value(DEFAULT_MARGE_GLOBALE.doubleValue()))
-            .andExpect(jsonPath("$.tauxMarge").value(DEFAULT_TAUX_MARGE.doubleValue()));
+            .andExpect(jsonPath("$.tauxMarge").value(DEFAULT_TAUX_MARGE.doubleValue()))
+            .andExpect(jsonPath("$.uniteGasoilGros").value(DEFAULT_UNITE_GASOIL_GROS.toString()));
     }
 
     @Test
@@ -378,7 +403,8 @@ public class GasoilVenteGrosResourceIT {
             .quantite(UPDATED_QUANTITE)
             .prixVenteTotal(UPDATED_PRIX_VENTE_TOTAL)
             .margeGlobale(UPDATED_MARGE_GLOBALE)
-            .tauxMarge(UPDATED_TAUX_MARGE);
+            .tauxMarge(UPDATED_TAUX_MARGE)
+            .uniteGasoilGros(UPDATED_UNITE_GASOIL_GROS);
 
         restGasoilVenteGrosMockMvc.perform(put("/api/gasoil-vente-gros")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -394,6 +420,7 @@ public class GasoilVenteGrosResourceIT {
         assertThat(testGasoilVenteGros.getPrixVenteTotal()).isEqualTo(UPDATED_PRIX_VENTE_TOTAL);
         assertThat(testGasoilVenteGros.getMargeGlobale()).isEqualTo(UPDATED_MARGE_GLOBALE);
         assertThat(testGasoilVenteGros.getTauxMarge()).isEqualTo(UPDATED_TAUX_MARGE);
+        assertThat(testGasoilVenteGros.getUniteGasoilGros()).isEqualTo(UPDATED_UNITE_GASOIL_GROS);
     }
 
     @Test

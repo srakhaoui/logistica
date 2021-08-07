@@ -9,6 +9,7 @@ import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, st
 import * as moment from 'moment';
 import { JhiAlertService } from 'ng-jhipster';
 import { IGasoilAchatGros, GasoilAchatGros } from 'app/shared/model/gasoil-achat-gros.model';
+import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 import { GasoilAchatGrosService } from './gasoil-achat-gros.service';
 import { IFournisseur } from 'app/shared/model/fournisseur.model';
 import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
@@ -43,6 +44,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     description: [],
     quantity: [null, [Validators.required, Validators.min(0)]],
     prixUnitaire: [null, [Validators.required, Validators.min(0)]],
+    uniteGasoilGros: [null, [Validators.required]],
     fournisseur: [null, Validators.required],
     transporteur: [null, Validators.required],
     produit: [null, Validators.required]
@@ -78,6 +80,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       description: gasoilAchatGros.description,
       quantity: gasoilAchatGros.quantity,
       prixUnitaire: gasoilAchatGros.prixUnitaire,
+      uniteGasoilGros: gasoilAchatGros.id ? gasoilAchatGros.uniteGasoilGros : UniteGasoilGros.TONNE,
       fournisseur: gasoilAchatGros.fournisseur,
       transporteur: gasoilAchatGros.transporteur,
       produit: gasoilAchatGros.produit
@@ -107,6 +110,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       description: this.editForm.get(['description']).value,
       quantity: this.editForm.get(['quantity']).value,
       prixUnitaire: this.editForm.get(['prixUnitaire']).value,
+      uniteGasoilGros: this.editForm.get(['uniteGasoilGros']).value,
       fournisseur: this.editForm.get(['fournisseur']).value,
       transporteur: this.editForm.get(['transporteur']).value,
       produit: this.editForm.get(['produit']).value

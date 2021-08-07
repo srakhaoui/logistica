@@ -29,6 +29,8 @@
     "item.duplicated": "L'élément saisi est déjà existant",
     "exercice.comptable.livraison": "L'année de la date de livraison ne peut être en dehors de l'exercice comptable en cours",
     "exercice.comptable.commande": "L'année de la date de commande ne peut être en dehors de l'exercice comptable en cours",
-    "bl.client.exist": "Le N° du bon de livraison a été déjà saisi pour le client choisi"
+    "bl.client.exist": "Le N° du bon de livraison a été déjà saisi pour le client choisi",
+    "quantite.gasoil.insuffisante": "La quantité du gasoil à vendre ne peut dépasser la quantité disponible",
+    "km.parcouru.invalide": "La distance parcourue ne peut dépasser 1000 km !"
   }
 }

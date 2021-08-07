@@ -99,6 +99,22 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilAchatGros.uniteGasoilGros"
+                           for="field_uniteGasoilGros">Unite Gasoil Gros</label>
+                    <select class="form-control" name="uniteGasoilGros" formControlName="uniteGasoilGros"
+                            id="field_uniteGasoilGros">
+                        <option value="TONNE">{{'logisticaApp.UniteGasoilGros.TONNE' | translate}}</option>
+                    </select>
+                    <div
+                        *ngIf="editForm.get('uniteGasoilGros').invalid && (editForm.get('uniteGasoilGros').dirty || editForm.get('uniteGasoilGros').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('uniteGasoilGros').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
                            for="field_fournisseur">Fournisseur</label>
                     <ng-select [items]="fournisseurs$ | async"

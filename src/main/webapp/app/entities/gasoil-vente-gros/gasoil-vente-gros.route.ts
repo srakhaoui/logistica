@@ -29,7 +29,7 @@ export const gasoilVenteGrosRoute: Routes = [
     path: '',
     component: GasoilVenteGrosComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.gasoilVenteGros.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -41,7 +41,7 @@ export const gasoilVenteGrosRoute: Routes = [
       gasoilVenteGros: GasoilVenteGrosResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.gasoilVenteGros.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -53,7 +53,7 @@ export const gasoilVenteGrosRoute: Routes = [
       gasoilVenteGros: GasoilVenteGrosResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.gasoilVenteGros.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -65,7 +65,7 @@ export const gasoilVenteGrosRoute: Routes = [
       gasoilVenteGros: GasoilVenteGrosResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.gasoilVenteGros.home.title'
     },
     canActivate: [UserRouteAccessService]

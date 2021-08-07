@@ -1,11 +1,11 @@
 <div>
     <h2 id="page-heading">
-        <span jhiTranslate="logisticaApp.gasoilVenteGros.home.title">Gasoil Vente Gros</span>
+        <span>Vente Gasoil</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gasoil-vente-gros"
                 [routerLink]="['/gasoil-vente-gros/new']">
             <fa-icon [icon]="'plus'"></fa-icon>
-            <span jhiTranslate="logisticaApp.gasoilVenteGros.home.createLabel">
-            Create a new Gasoil Vente Gros
+            <span>
+            Vente Gasoil
             </span>
         </button>
     </h2>
@@ -13,7 +13,7 @@
     <jhi-alert></jhi-alert>
     <br/>
     <div class="alert alert-warning" *ngIf="gasoilVenteGros?.length === 0">
-        <span jhiTranslate="logisticaApp.gasoilVenteGros.home.notFound">No gasoilVenteGros found</span>
+        <span>Aucun résultat trouvé</span>
     </div>
     <div class="table-responsive" *ngIf="gasoilVenteGros?.length > 0">
         <table class="table table-striped" aria-describedby="page-heading">
@@ -26,8 +26,7 @@
                     jhiTranslate="logisticaApp.gasoilVenteGros.prixVenteUnitaire">Prix Vente Unitaire</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="quantite"><span
-                    jhiTranslate="logisticaApp.gasoilVenteGros.quantite">Quantite</span>
+                <th scope="col" jhiSortBy="quantite"><span>Quantité</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col" jhiSortBy="prixVenteTotal"><span
@@ -40,8 +39,11 @@
                 <th scope="col" jhiSortBy="tauxMarge"><span jhiTranslate="logisticaApp.gasoilVenteGros.tauxMarge">Taux Marge</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col" jhiSortBy="uniteGasoilGros"><span>Unité Vente</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col" jhiSortBy="societeFacturation.nom"><span
-                    jhiTranslate="logisticaApp.gasoilVenteGros.societeFacturation">Societe Facturation</span>
+                >Société Facturation</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col" jhiSortBy="client.nom"><span
@@ -65,6 +67,9 @@
                 <td>{{gasoilVenteGros.prixVenteTotal}}</td>
                 <td>{{gasoilVenteGros.margeGlobale}}</td>
                 <td>{{gasoilVenteGros.tauxMarge}}</td>
+                <td jhiTranslate="{{'logisticaApp.UniteGasoilGros.' + gasoilVenteGros.uniteGasoilGros}}">
+                    {{gasoilVenteGros.uniteGasoilGros}}
+                </td>
                 <td>
                     <div *ngIf="gasoilVenteGros.societeFacturation">
                         <a [routerLink]="['/societe', gasoilVenteGros.societeFacturation?.id, 'view' ]">{{gasoilVenteGros.societeFacturation?.nom}}</a>

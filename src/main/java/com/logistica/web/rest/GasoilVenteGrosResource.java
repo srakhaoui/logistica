@@ -86,6 +86,7 @@ public class GasoilVenteGrosResource {
      * {@code GET  /gasoil-vente-gros} : get all the gasoilVenteGros.
      *
      * @param pageable the pagination information.
+
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gasoilVenteGros in body.
      */
     @GetMapping("/gasoil-vente-gros")

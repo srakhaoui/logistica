@@ -74,6 +74,14 @@
       "fieldValidateRules": [
         "required"
       ]
+    },
+    {
+      "fieldName": "uniteGasoilGros",
+      "fieldType": "UniteGasoilGros",
+      "fieldValues": "TONNE",
+      "fieldValidateRules": [
+        "required"
+      ]
     }
   ],
   "changelogDate": "20210803190032",

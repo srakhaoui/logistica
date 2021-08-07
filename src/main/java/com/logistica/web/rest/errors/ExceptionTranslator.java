@@ -256,7 +256,7 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     public ResponseEntity<Problem> handleKilometrageInvalideException(KilometrageInvalideException ex, NativeWebRequest request) {
         Problem problem = Problem.builder()
             .withStatus(Status.BAD_REQUEST)
-            .with(MESSAGE_KEY, ErrorConstants.ERR_KM_INVALIDE)
+            .with(MESSAGE_KEY, ex.getKey())
             .withDetail(ex.getMessage())
             .build();
         return create(ex, problem, request);
@@ -297,6 +297,16 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         Problem problem = Problem.builder()
             .withStatus(Status.BAD_REQUEST)
             .with(MESSAGE_KEY, ErrorConstants.ERR_BR_DATE_FUTURE)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleQuantiteGasoilInsuffisanteException(QuantiteGasoilInsuffisanteException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_QUANTITE_GASOIL_INSUFFISANTE)
             .withDetail(ex.getMessage())
             .build();
         return create(ex, problem, request);

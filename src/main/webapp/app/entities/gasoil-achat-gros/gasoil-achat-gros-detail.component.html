@@ -25,6 +25,10 @@
                 <dd>
                     <span>{{gasoilAchatGros.prixUnitaire}}</span>
                 </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.uniteGasoilGros">Unite Gasoil Gros</span></dt>
+                <dd>
+                    <span jhiTranslate="{{'logisticaApp.UniteGasoilGros.' + gasoilAchatGros.uniteGasoilGros}}">{{gasoilAchatGros.uniteGasoilGros}}</span>
+                </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.fournisseur">Fournisseur</span></dt>
                 <dd>
                     <div *ngIf="gasoilAchatGros.fournisseur">

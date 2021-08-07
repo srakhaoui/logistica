@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { take, map } from 'rxjs/operators';
 import { GasoilVenteGrosService } from 'app/entities/gasoil-vente-gros/gasoil-vente-gros.service';
 import { IGasoilVenteGros, GasoilVenteGros } from 'app/shared/model/gasoil-vente-gros.model';
+import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 
 describe('Service Tests', () => {
   describe('GasoilVenteGros Service', () => {
@@ -20,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(GasoilVenteGrosService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new GasoilVenteGros(0, 0, 0, 0, 0, 0);
+      elemDefault = new GasoilVenteGros(0, 0, 0, 0, 0, 0, UniteGasoilGros.TONNE);
     });
 
     describe('Service methods', () => {
@@ -60,7 +61,8 @@ describe('Service Tests', () => {
             quantite: 1,
             prixVenteTotal: 1,
             margeGlobale: 1,
-            tauxMarge: 1
+            tauxMarge: 1,
+            uniteGasoilGros: 'BBBBBB'
           },
           elemDefault
         );
@@ -82,7 +84,8 @@ describe('Service Tests', () => {
             quantite: 1,
             prixVenteTotal: 1,
             margeGlobale: 1,
-            tauxMarge: 1
+            tauxMarge: 1,
+            uniteGasoilGros: 'BBBBBB'
           },
           elemDefault
         );

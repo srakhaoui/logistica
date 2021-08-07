@@ -51,10 +51,14 @@ public class GasoilServiceImpl implements GasoilService {
     public Gasoil save(Gasoil gasoil) {
         log.debug("Request to save Gasoil : {}", gasoil);
         if (gasoil.getKilometrageFinal().compareTo(gasoil.getKilometrageInitial()) <= 0) {
-            throw new KilometrageInvalideException();
+            throw new KilometrageInvalideException("error.km.invalide");
         }
+
         gasoil.setPrixTotalGasoil(gasoil.getPrixDuLitre() * gasoil.getQuantiteEnLitre());
         gasoil.setKilometrageParcouru(gasoil.getKilometrageFinal() - gasoil.getKilometrageInitial());
+        if (gasoil.getKilometrageParcouru() > 1000) {
+            throw new KilometrageInvalideException("error.km.parcouru.invalide");
+        }
         return gasoilRepository.save(gasoil);
     }
 

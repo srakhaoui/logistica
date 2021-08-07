@@ -21,6 +21,7 @@
       "description": "Description",
       "quantity": "Quantity",
       "prixUnitaire": "Prix Unitaire",
+      "uniteGasoilGros": "Unite Gasoil Gros",
       "fournisseur": "Fournisseur",
       "transporteur": "Transporteur",
       "produit": "Produit"
