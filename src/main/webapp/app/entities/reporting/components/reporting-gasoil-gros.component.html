@@ -1,0 +1,135 @@
+<div>
+    <h2 id="page-heading">
+        <span>Gasoil / Charges & Marge</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_acheteur">Acheteur</label>
+                    <select class="form-control" id="field_acheteur" name="acheteur" formControlName="acheteur">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('acheteur').value?.id ? reportingForm.get('acheteur').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_transporteur">Transporteur</label>
+                    <select class="form-control" id="field_transporteur" name="transporteur"
+                            formControlName="transporteur">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('transporteur').value?.id ? reportingForm.get('transporteur').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" for="field_client">Client</label>
+                <ng-select id="field_client"
+                           [items]="clientsGrossistes$ | async"
+                           [typeahead]="clientsGrossistesInput$"
+                           bindLabel="nom"
+                           [hideSelected]="true"
+                           [loading]="clientsGrossistesLoading"
+                           formControlName="client"
+                           name="client">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
+                       for="field_fournisseur">Fournisseur</label>
+                <ng-select [items]="fournisseurs$ | async"
+                           [typeahead]="fournisseurInput$"
+                           bindLabel="nom"
+                           [hideSelected]="true"
+                           [loading]="fournisseursLoading"
+                           formControlName="fournisseur"
+                           name="fournisseur">
+                </ng-select>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_dateDebut">De</label>
+                    <div class="input-group">
+                        <input id="field_dateDebut" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_dateFin">à</label>
+                    <div class="input-group">
+                        <input id="field_dateFin" type="text" class="form-control" name="dateFin"
+                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <br>
+                <button type="submit" id="search-reporting" class="btn btn-primary">
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                </button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-success" (click)="export()">
+                    <span>Exporter</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
+        <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
+    </div>
+    <div class="table-responsive" *ngIf="recapitulatifs?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col"><span>Société</span></th>
+                <th scope="col"><span>Nom Transporteur</span></th>
+                <th scope="col"><span>Prénom Transporteur</span></th>
+                <th scope="col"><span>Matricule</span></th>
+                <th scope="col"><span>Total Quantité En Litre</span></th>
+                <th scope="col"><span>Moyenne Prix Du Litre</span></th>
+                <th scope="col"><span>Total Prix Gasoil</span></th>
+                <th scope="col"><span>Kilométrage Parcouru</span></th>
+                <th scope="col"><span>Marge Gasoil</span></th>
+                <th scope="col"><span>Total Commission Chauffeur</span></th>
+                <th scope="col"><span>Total Vente Transporteur</span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
+            <tr *ngFor="let recapitulatif of recapitulatifs">
+                <td>{{recapitulatif.societe}}</td>
+                <td>{{recapitulatif.nomTransporteur}}</td>
+                <td>{{recapitulatif.prenomTransporteur}}</td>
+                <td>{{recapitulatif.matricule}}</td>
+                <td>{{recapitulatif.totalQuantiteEnLitre}}</td>
+                <td>{{recapitulatif.moyennePrixDuLitre}}</td>
+                <td>{{recapitulatif.totalPrixGasoil}}</td>
+                <td>{{recapitulatif.kilometrageParcouru}}</td>
+                <td>{{recapitulatif.margeGasoil}}</td>
+                <td>{{recapitulatif.totalCommissionChauffeur}}</td>
+                <td>{{recapitulatif.totalVenteTransporteur}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
