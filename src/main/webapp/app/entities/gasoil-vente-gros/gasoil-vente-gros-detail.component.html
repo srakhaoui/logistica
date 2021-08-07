@@ -1,0 +1,62 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="gasoilVenteGros">
+            <h2><span jhiTranslate="logisticaApp.gasoilVenteGros.detail.title">Gasoil Vente Gros</span>
+                {{gasoilVenteGros.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.prixVenteUnitaire">Prix Vente Unitaire</span></dt>
+                <dd>
+                    <span>{{gasoilVenteGros.prixVenteUnitaire}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.quantite">Quantite</span></dt>
+                <dd>
+                    <span>{{gasoilVenteGros.quantite}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.prixVenteTotal">Prix Vente Total</span></dt>
+                <dd>
+                    <span>{{gasoilVenteGros.prixVenteTotal}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.margeGlobale">Marge Globale</span></dt>
+                <dd>
+                    <span>{{gasoilVenteGros.margeGlobale}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.tauxMarge">Taux Marge</span></dt>
+                <dd>
+                    <span>{{gasoilVenteGros.tauxMarge}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.societeFacturation">Societe Facturation</span></dt>
+                <dd>
+                    <div *ngIf="gasoilVenteGros.societeFacturation">
+                        <a [routerLink]="['/societe', gasoilVenteGros.societeFacturation?.id, 'view']">{{gasoilVenteGros.societeFacturation?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.client">Client</span></dt>
+                <dd>
+                    <div *ngIf="gasoilVenteGros.client">
+                        <a [routerLink]="['/client-grossiste', gasoilVenteGros.client?.id, 'view']">{{gasoilVenteGros.client?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.achatGasoil">Achat Gasoil</span></dt>
+                <dd>
+                    <div *ngIf="gasoilVenteGros.achatGasoil">
+                        <a [routerLink]="['/gasoil-achat-gros', gasoilVenteGros.achatGasoil?.id, 'view']">{{gasoilVenteGros.achatGasoil?.description}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/gasoil-vente-gros', gasoilVenteGros.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

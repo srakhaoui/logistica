@@ -1,0 +1,29 @@
+{
+  "logisticaApp": {
+    "gasoilVenteGros": {
+      "home": {
+        "title": "GasoilVenteGros",
+        "createLabel": "Créer un nouveau Gasoil Vente Gros",
+        "createOrEditLabel": "Créer ou éditer un Gasoil Vente Gros",
+        "notFound": "Aucun Gasoil Vente Gros trouvé"
+      },
+      "created": "Un nouveau Gasoil Vente Gros a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Gasoil Vente Gros avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Gasoil Vente Gros avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Gasoil Vente Gros {{ id }} ?"
+      },
+      "detail": {
+        "title": "Gasoil Vente Gros"
+      },
+      "prixVenteUnitaire": "Prix Vente Unitaire",
+      "quantite": "Quantite",
+      "prixVenteTotal": "Prix Vente Total",
+      "margeGlobale": "Marge Globale",
+      "tauxMarge": "Taux Marge",
+      "societeFacturation": "Societe Facturation",
+      "client": "Client",
+      "achatGasoil": "Achat Gasoil"
+    }
+  }
+}

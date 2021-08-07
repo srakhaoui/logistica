@@ -1,0 +1,108 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.gasoilVenteGros.home.title">Gasoil Vente Gros</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gasoil-vente-gros"
+                [routerLink]="['/gasoil-vente-gros/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span jhiTranslate="logisticaApp.gasoilVenteGros.home.createLabel">
+            Create a new Gasoil Vente Gros
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="gasoilVenteGros?.length === 0">
+        <span jhiTranslate="logisticaApp.gasoilVenteGros.home.notFound">No gasoilVenteGros found</span>
+    </div>
+    <div class="table-responsive" *ngIf="gasoilVenteGros?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixVenteUnitaire"><span
+                    jhiTranslate="logisticaApp.gasoilVenteGros.prixVenteUnitaire">Prix Vente Unitaire</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="quantite"><span
+                    jhiTranslate="logisticaApp.gasoilVenteGros.quantite">Quantite</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixVenteTotal"><span
+                    jhiTranslate="logisticaApp.gasoilVenteGros.prixVenteTotal">Prix Vente Total</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="margeGlobale"><span jhiTranslate="logisticaApp.gasoilVenteGros.margeGlobale">Marge Globale</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="tauxMarge"><span jhiTranslate="logisticaApp.gasoilVenteGros.tauxMarge">Taux Marge</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="societeFacturation.nom"><span
+                    jhiTranslate="logisticaApp.gasoilVenteGros.societeFacturation">Societe Facturation</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="client.nom"><span
+                    jhiTranslate="logisticaApp.gasoilVenteGros.client">Client</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="achatGasoil.description"><span
+                    jhiTranslate="logisticaApp.gasoilVenteGros.achatGasoil">Achat Gasoil</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
+            <tr *ngFor="let gasoilVenteGros of gasoilVenteGros ;trackBy: trackId">
+                <td><a [routerLink]="['/gasoil-vente-gros', gasoilVenteGros.id, 'view' ]">{{gasoilVenteGros.id}}</a>
+                </td>
+                <td>{{gasoilVenteGros.prixVenteUnitaire}}</td>
+                <td>{{gasoilVenteGros.quantite}}</td>
+                <td>{{gasoilVenteGros.prixVenteTotal}}</td>
+                <td>{{gasoilVenteGros.margeGlobale}}</td>
+                <td>{{gasoilVenteGros.tauxMarge}}</td>
+                <td>
+                    <div *ngIf="gasoilVenteGros.societeFacturation">
+                        <a [routerLink]="['/societe', gasoilVenteGros.societeFacturation?.id, 'view' ]">{{gasoilVenteGros.societeFacturation?.nom}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="gasoilVenteGros.client">
+                        <a [routerLink]="['/client-grossiste', gasoilVenteGros.client?.id, 'view' ]">{{gasoilVenteGros.client?.nom}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="gasoilVenteGros.achatGasoil">
+                        <a [routerLink]="['/gasoil-achat-gros', gasoilVenteGros.achatGasoil?.id, 'view' ]">{{gasoilVenteGros.achatGasoil?.description}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/gasoil-vente-gros', gasoilVenteGros.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/gasoil-vente-gros', gasoilVenteGros.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(gasoilVenteGros)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
