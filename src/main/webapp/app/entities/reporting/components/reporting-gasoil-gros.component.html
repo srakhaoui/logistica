@@ -1,6 +1,6 @@
 <div>
     <h2 id="page-heading">
-        <span>Gasoil / Charges & Marge</span>
+        <span>Gasoil / Achats & Ventes</span>
     </h2>
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
@@ -30,29 +30,31 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_client">Client</label>
-                <ng-select id="field_client"
-                           [items]="clientsGrossistes$ | async"
-                           [typeahead]="clientsGrossistesInput$"
-                           bindLabel="nom"
-                           [hideSelected]="true"
-                           [loading]="clientsGrossistesLoading"
-                           formControlName="client"
-                           name="client">
-                </ng-select>
-            </div>
-            <div class="form-group">
-                <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
-                       for="field_fournisseur">Fournisseur</label>
-                <ng-select [items]="fournisseurs$ | async"
-                           [typeahead]="fournisseurInput$"
-                           bindLabel="nom"
-                           [hideSelected]="true"
-                           [loading]="fournisseursLoading"
-                           formControlName="fournisseur"
-                           name="fournisseur">
-                </ng-select>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select id="field_client"
+                               [items]="clientsGrossistes$ | async"
+                               [typeahead]="clientsGrossistesInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsGrossistesLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
+                           for="field_fournisseur">Fournisseur</label>
+                    <ng-select [items]="fournisseurs$ | async"
+                               [typeahead]="fournisseurInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="fournisseursLoading"
+                               formControlName="fournisseur"
+                               name="fournisseur">
+                    </ng-select>
+                </div>
             </div>
             <div class="form-row">
                 <div class="col">
