@@ -30,8 +30,8 @@ public class Livraison implements ICsvConvertible, Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "livraisonSequenceGenerator")
+    @SequenceGenerator(name = "livraisonSequenceGenerator", sequenceName = "livraison-seq", allocationSize = 1)
     private Long id;
 
     @Column(name = "date_bon_commande")
