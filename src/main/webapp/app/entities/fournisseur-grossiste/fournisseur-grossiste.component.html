@@ -1,0 +1,70 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.fournisseurGrossiste.home.title">Fournisseur Grossistes</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-fournisseur-grossiste"
+                [routerLink]="['/fournisseur-grossiste/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span jhiTranslate="logisticaApp.fournisseurGrossiste.home.createLabel">
+            Create a new Fournisseur Grossiste
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="fournisseurGrossistes?.length === 0">
+        <span jhiTranslate="logisticaApp.fournisseurGrossiste.home.notFound">No fournisseurGrossistes found</span>
+    </div>
+    <div class="table-responsive" *ngIf="fournisseurGrossistes?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="nom"><span jhiTranslate="logisticaApp.fournisseurGrossiste.nom">Nom</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="adresse"><span jhiTranslate="logisticaApp.fournisseurGrossiste.adresse">Adresse</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="telephone"><span jhiTranslate="logisticaApp.fournisseurGrossiste.telephone">Telephone</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
+            <tr *ngFor="let fournisseurGrossiste of fournisseurGrossistes ;trackBy: trackId">
+                <td><a [routerLink]="['/fournisseur-grossiste', fournisseurGrossiste.id, 'view' ]">{{fournisseurGrossiste.id}}</a>
+                </td>
+                <td>{{fournisseurGrossiste.nom}}</td>
+                <td>{{fournisseurGrossiste.adresse}}</td>
+                <td>{{fournisseurGrossiste.telephone}}</td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/fournisseur-grossiste', fournisseurGrossiste.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/fournisseur-grossiste', fournisseurGrossiste.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(fournisseurGrossiste)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

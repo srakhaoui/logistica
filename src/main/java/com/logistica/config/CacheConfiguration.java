@@ -57,6 +57,8 @@ public class CacheConfiguration {
             createCache(cm, com.logistica.domain.GasoilAchatGros.class.getName());
             createCache(cm, com.logistica.domain.ClientGrossiste.class.getName());
             createCache(cm, com.logistica.domain.GasoilVenteGros.class.getName());
+            createCache(cm, com.logistica.domain.Carburant.class.getName());
+            createCache(cm, com.logistica.domain.FournisseurGrossiste.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

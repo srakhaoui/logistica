@@ -1,0 +1,28 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [],
+  "fields": [
+    {
+      "fieldName": "code",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required",
+        "minlength"
+      ],
+      "fieldValidateRulesMinlength": "1"
+    },
+    {
+      "fieldName": "categorie",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20210814094132",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "serviceClass",
+  "entityTableName": "carburant",
+  "databaseType": "sql",
+  "jpaMetamodelFiltering": true,
+  "pagination": "infinite-scroll"
+}

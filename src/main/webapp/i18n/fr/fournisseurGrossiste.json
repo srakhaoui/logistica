@@ -1,0 +1,24 @@
+{
+  "logisticaApp": {
+    "fournisseurGrossiste": {
+      "home": {
+        "title": "FournisseurGrossistes",
+        "createLabel": "Créer un nouveau Fournisseur Grossiste",
+        "createOrEditLabel": "Créer ou éditer un Fournisseur Grossiste",
+        "notFound": "Aucun Fournisseur Grossiste trouvé"
+      },
+      "created": "Un nouveau Fournisseur Grossiste a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Fournisseur Grossiste avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Fournisseur Grossiste avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Fournisseur Grossiste {{ id }} ?"
+      },
+      "detail": {
+        "title": "Fournisseur Grossiste"
+      },
+      "nom": "Nom",
+      "adresse": "Adresse",
+      "telephone": "Telephone"
+    }
+  }
+}

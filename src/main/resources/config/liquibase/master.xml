@@ -44,6 +44,10 @@
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210803190032_added_entity_GasoilVenteGros.xml"
              relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210814094132_added_entity_Carburant.xml"
+             relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20210815130139_added_entity_FournisseurGrossiste.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20200101112148_added_entity_constraints_Transporteur.xml"
              relativeToChangelogFile="false"/>

@@ -1,0 +1,36 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="fournisseurGrossiste">
+            <h2><span jhiTranslate="logisticaApp.fournisseurGrossiste.detail.title">Fournisseur Grossiste</span>
+                {{fournisseurGrossiste.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="logisticaApp.fournisseurGrossiste.nom">Nom</span></dt>
+                <dd>
+                    <span>{{fournisseurGrossiste.nom}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.fournisseurGrossiste.adresse">Adresse</span></dt>
+                <dd>
+                    <span>{{fournisseurGrossiste.adresse}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.fournisseurGrossiste.telephone">Telephone</span></dt>
+                <dd>
+                    <span>{{fournisseurGrossiste.telephone}}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/fournisseur-grossiste', fournisseurGrossiste.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

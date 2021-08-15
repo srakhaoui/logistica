@@ -28,6 +28,8 @@
         "gasoilAchatGros": "Gasoil Achat Gros",
         "clientGrossiste": "Client Grossiste",
         "gasoilVenteGros": "Gasoil Vente Gros",
+        "carburant": "Carburant",
+        "fournisseurGrossiste": "Fournisseur Grossiste",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -1,0 +1,36 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [],
+  "fields": [
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required",
+        "minlength"
+      ],
+      "fieldValidateRulesMinlength": "1"
+    },
+    {
+      "fieldName": "adresse",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "telephone",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "pattern"
+      ],
+      "fieldValidateRulesPattern": "^0[0-9]{9}$|\\s*"
+    }
+  ],
+  "changelogDate": "20210815130139",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "serviceClass",
+  "entityTableName": "fournisseur_grossiste",
+  "databaseType": "sql",
+  "jpaMetamodelFiltering": true,
+  "pagination": "infinite-scroll"
+}
