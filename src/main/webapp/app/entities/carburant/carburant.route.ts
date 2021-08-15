@@ -29,7 +29,7 @@ export const carburantRoute: Routes = [
     path: '',
     component: CarburantComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.carburant.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -41,7 +41,7 @@ export const carburantRoute: Routes = [
       carburant: CarburantResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.carburant.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -53,7 +53,7 @@ export const carburantRoute: Routes = [
       carburant: CarburantResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.carburant.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -65,7 +65,7 @@ export const carburantRoute: Routes = [
       carburant: CarburantResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.carburant.home.title'
     },
     canActivate: [UserRouteAccessService]

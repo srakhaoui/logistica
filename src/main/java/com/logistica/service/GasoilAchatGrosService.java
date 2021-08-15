@@ -39,7 +39,7 @@ public class GasoilAchatGrosService {
     public GasoilAchatGros save(GasoilAchatGros gasoilAchatGros) {
         log.debug("Request to save GasoilAchatGros : {}", gasoilAchatGros);
         isTrue(StringUtils.isNotBlank(gasoilAchatGros.getNumeroBonReception()), "NumeroBonReception is missing");
-        isTrue(StringUtils.isNotBlank(gasoilAchatGros.getFournisseur().getNom()), "Fournisseur is missing");
+        isTrue(StringUtils.isNotBlank(gasoilAchatGros.getFournisseurGrossiste().getNom()), "Fournisseur is missing");
         isTrue(gasoilAchatGros.getDateReception() != null, "DateReception is missing");
 
         if (gasoilAchatGros.getDateReception().isAfter(LocalDate.now())) {
@@ -51,7 +51,7 @@ public class GasoilAchatGrosService {
     }
 
     private String descriptionFrom(GasoilAchatGros gasoilAchatGros) {
-        return gasoilAchatGros.getFournisseur().getNom() + "_" + gasoilAchatGros.getNumeroBonReception() + "_" + gasoilAchatGros.getDateReception();
+        return gasoilAchatGros.getFournisseurGrossiste().getNom() + "_" + gasoilAchatGros.getNumeroBonReception() + "_" + gasoilAchatGros.getDateReception();
     }
 
     /**

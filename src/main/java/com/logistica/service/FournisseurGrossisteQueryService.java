@@ -1,6 +1,7 @@
 package com.logistica.service;
 
 import com.logistica.domain.FournisseurGrossiste;
+import com.logistica.domain.FournisseurGrossiste_;
 import com.logistica.repository.FournisseurGrossisteRepository;
 import com.logistica.service.dto.FournisseurGrossisteCriteria;
 import io.github.jhipster.service.QueryService;

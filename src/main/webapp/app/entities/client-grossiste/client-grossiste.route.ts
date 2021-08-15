@@ -29,7 +29,7 @@ export const clientGrossisteRoute: Routes = [
     path: '',
     component: ClientGrossisteComponent,
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.clientGrossiste.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -41,7 +41,7 @@ export const clientGrossisteRoute: Routes = [
       clientGrossiste: ClientGrossisteResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.clientGrossiste.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -53,7 +53,7 @@ export const clientGrossisteRoute: Routes = [
       clientGrossiste: ClientGrossisteResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.clientGrossiste.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -65,7 +65,7 @@ export const clientGrossisteRoute: Routes = [
       clientGrossiste: ClientGrossisteResolve
     },
     data: {
-      authorities: ['ROLE_USER'],
+      authorities: ['ROLE_GASOIL'],
       pageTitle: 'logisticaApp.clientGrossiste.home.title'
     },
     canActivate: [UserRouteAccessService]

@@ -55,9 +55,8 @@ public class GasoilAchatGros implements Serializable {
     private UniteGasoilGros uniteGasoilGros;
 
     @ManyToOne(optional = false)
-    @NotNull
     @JsonIgnoreProperties("gasoilAchatGros")
-    private Fournisseur fournisseur;
+    private FournisseurGrossiste fournisseurGrossiste;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -65,9 +64,8 @@ public class GasoilAchatGros implements Serializable {
     private Societe transporteur;
 
     @ManyToOne(optional = false)
-    @NotNull
     @JsonIgnoreProperties("gasoilAchatGros")
-    private Produit produit;
+    private Carburant carburant;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -156,17 +154,17 @@ public class GasoilAchatGros implements Serializable {
         this.uniteGasoilGros = uniteGasoilGros;
     }
 
-    public Fournisseur getFournisseur() {
-        return fournisseur;
+    public FournisseurGrossiste getFournisseurGrossiste() {
+        return fournisseurGrossiste;
     }
 
-    public GasoilAchatGros fournisseur(Fournisseur fournisseur) {
-        this.fournisseur = fournisseur;
+    public GasoilAchatGros fournisseur(FournisseurGrossiste fournisseur) {
+        this.fournisseurGrossiste = fournisseur;
         return this;
     }
 
-    public void setFournisseur(Fournisseur fournisseur) {
-        this.fournisseur = fournisseur;
+    public void setFournisseurGrossiste(FournisseurGrossiste fournisseurGrossiste) {
+        this.fournisseurGrossiste = fournisseurGrossiste;
     }
 
     public Societe getTransporteur() {
@@ -182,17 +180,17 @@ public class GasoilAchatGros implements Serializable {
         this.transporteur = societe;
     }
 
-    public Produit getProduit() {
-        return produit;
+    public Carburant getCarburant() {
+        return carburant;
     }
 
-    public GasoilAchatGros produit(Produit produit) {
-        this.produit = produit;
+    public GasoilAchatGros carburant(Carburant carburant) {
+        this.carburant = carburant;
         return this;
     }
 
-    public void setProduit(Produit produit) {
-        this.produit = produit;
+    public void setCarburant(Carburant carburant) {
+        this.carburant = carburant;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

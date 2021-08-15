@@ -1,10 +1,7 @@
 package com.logistica.web.rest;
 
 import com.logistica.LogisticaApp;
-import com.logistica.domain.Fournisseur;
-import com.logistica.domain.GasoilAchatGros;
-import com.logistica.domain.Produit;
-import com.logistica.domain.Societe;
+import com.logistica.domain.*;
 import com.logistica.domain.enumeration.UniteGasoilGros;
 import com.logistica.repository.GasoilAchatGrosRepository;
 import com.logistica.service.GasoilAchatGrosQueryService;
@@ -115,15 +112,15 @@ public class GasoilAchatGrosResourceIT {
             .prixUnitaire(DEFAULT_PRIX_UNITAIRE)
             .uniteGasoilGros(DEFAULT_UNITE_GASOIL_GROS);
         // Add required entity
-        Fournisseur fournisseur;
+        FournisseurGrossiste fournisseur;
         if (TestUtil.findAll(em, Fournisseur.class).isEmpty()) {
-            fournisseur = FournisseurResourceIT.createEntity(em);
+            fournisseur = FournisseurGrossisteResourceIT.createEntity(em);
             em.persist(fournisseur);
             em.flush();
         } else {
-            fournisseur = TestUtil.findAll(em, Fournisseur.class).get(0);
+            fournisseur = TestUtil.findAll(em, FournisseurGrossiste.class).get(0);
         }
-        gasoilAchatGros.setFournisseur(fournisseur);
+        gasoilAchatGros.setFournisseurGrossiste(fournisseur);
         // Add required entity
         Societe societe;
         if (TestUtil.findAll(em, Societe.class).isEmpty()) {
@@ -135,15 +132,15 @@ public class GasoilAchatGrosResourceIT {
         }
         gasoilAchatGros.setTransporteur(societe);
         // Add required entity
-        Produit produit;
-        if (TestUtil.findAll(em, Produit.class).isEmpty()) {
-            produit = ProduitResourceIT.createEntity(em);
+        Carburant produit;
+        if (TestUtil.findAll(em, Carburant.class).isEmpty()) {
+            produit = CarburantResourceIT.createEntity(em);
             em.persist(produit);
             em.flush();
         } else {
-            produit = TestUtil.findAll(em, Produit.class).get(0);
+            produit = TestUtil.findAll(em, Carburant.class).get(0);
         }
-        gasoilAchatGros.setProduit(produit);
+        gasoilAchatGros.setCarburant(produit);
         return gasoilAchatGros;
     }
     /**
@@ -161,15 +158,15 @@ public class GasoilAchatGrosResourceIT {
             .prixUnitaire(UPDATED_PRIX_UNITAIRE)
             .uniteGasoilGros(UPDATED_UNITE_GASOIL_GROS);
         // Add required entity
-        Fournisseur fournisseur;
-        if (TestUtil.findAll(em, Fournisseur.class).isEmpty()) {
-            fournisseur = FournisseurResourceIT.createUpdatedEntity(em);
-            em.persist(fournisseur);
+        FournisseurGrossiste fournisseurGrossiste;
+        if (TestUtil.findAll(em, FournisseurGrossiste.class).isEmpty()) {
+            fournisseurGrossiste = FournisseurGrossisteResourceIT.createUpdatedEntity(em);
+            em.persist(fournisseurGrossiste);
             em.flush();
         } else {
-            fournisseur = TestUtil.findAll(em, Fournisseur.class).get(0);
+            fournisseurGrossiste = TestUtil.findAll(em, FournisseurGrossiste.class).get(0);
         }
-        gasoilAchatGros.setFournisseur(fournisseur);
+        gasoilAchatGros.setFournisseurGrossiste(fournisseurGrossiste);
         // Add required entity
         Societe societe;
         if (TestUtil.findAll(em, Societe.class).isEmpty()) {
@@ -181,15 +178,15 @@ public class GasoilAchatGrosResourceIT {
         }
         gasoilAchatGros.setTransporteur(societe);
         // Add required entity
-        Produit produit;
+        Carburant carburant;
         if (TestUtil.findAll(em, Produit.class).isEmpty()) {
-            produit = ProduitResourceIT.createUpdatedEntity(em);
-            em.persist(produit);
+            carburant = CarburantResourceIT.createUpdatedEntity(em);
+            em.persist(carburant);
             em.flush();
         } else {
-            produit = TestUtil.findAll(em, Produit.class).get(0);
+            carburant = TestUtil.findAll(em, Carburant.class).get(0);
         }
-        gasoilAchatGros.setProduit(produit);
+        gasoilAchatGros.setCarburant(carburant);
         return gasoilAchatGros;
     }
 
@@ -918,9 +915,9 @@ public class GasoilAchatGrosResourceIT {
     @Transactional
     public void getAllGasoilAchatGrosByFournisseurIsEqualToSomething() throws Exception {
         // Get already existing entity
-        Fournisseur fournisseur = gasoilAchatGros.getFournisseur();
+        FournisseurGrossiste fournisseurGrossiste = gasoilAchatGros.getFournisseurGrossiste();
         gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
-        Long fournisseurId = fournisseur.getId();
+        Long fournisseurId = fournisseurGrossiste.getId();
 
         // Get all the gasoilAchatGrosList where fournisseur equals to fournisseurId
         defaultGasoilAchatGrosShouldBeFound("fournisseurId.equals=" + fournisseurId);
@@ -950,14 +947,14 @@ public class GasoilAchatGrosResourceIT {
     @Transactional
     public void getAllGasoilAchatGrosByProduitIsEqualToSomething() throws Exception {
         // Get already existing entity
-        Produit produit = gasoilAchatGros.getProduit();
+        Carburant carburant = gasoilAchatGros.getCarburant();
         gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
-        Long produitId = produit.getId();
+        Long produitId = carburant.getId();
 
-        // Get all the gasoilAchatGrosList where produit equals to produitId
+        // Get all the gasoilAchatGrosList where carburant equals to produitId
         defaultGasoilAchatGrosShouldBeFound("produitId.equals=" + produitId);
 
-        // Get all the gasoilAchatGrosList where produit equals to produitId + 1
+        // Get all the gasoilAchatGrosList where carburant equals to produitId + 1
         defaultGasoilAchatGrosShouldNotBeFound("produitId.equals=" + (produitId + 1));
     }
 

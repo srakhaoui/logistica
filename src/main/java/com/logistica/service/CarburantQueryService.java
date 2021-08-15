@@ -1,6 +1,7 @@
 package com.logistica.service;
 
 import com.logistica.domain.Carburant;
+import com.logistica.domain.Carburant_;
 import com.logistica.repository.CarburantRepository;
 import com.logistica.service.dto.CarburantCriteria;
 import io.github.jhipster.service.QueryService;

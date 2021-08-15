@@ -102,7 +102,7 @@ public class GasoilAchatGrosQueryService extends QueryService<GasoilAchatGros> {
             }
             if (criteria.getFournisseurId() != null) {
                 specification = specification.and(buildSpecification(criteria.getFournisseurId(),
-                    root -> root.join(GasoilAchatGros_.fournisseur, JoinType.LEFT).get(Fournisseur_.id)));
+                    root -> root.join(GasoilAchatGros_.fournisseurGrossiste, JoinType.LEFT).get(FournisseurGrossiste_.id)));
             }
             if (criteria.getTransporteurId() != null) {
                 specification = specification.and(buildSpecification(criteria.getTransporteurId(),
@@ -110,7 +110,7 @@ public class GasoilAchatGrosQueryService extends QueryService<GasoilAchatGros> {
             }
             if (criteria.getProduitId() != null) {
                 specification = specification.and(buildSpecification(criteria.getProduitId(),
-                    root -> root.join(GasoilAchatGros_.produit, JoinType.LEFT).get(Produit_.id)));
+                    root -> root.join(GasoilAchatGros_.carburant, JoinType.LEFT).get(Carburant_.id)));
             }
         }
         return specification;

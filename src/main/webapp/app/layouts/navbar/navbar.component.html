@@ -433,6 +433,20 @@
                         </a>
                     </li>
                     <li *jhiHasAnyAuthority="'ROLE_GASOIL'">
+                        <a class="dropdown-item" routerLink="carburant" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.carburant">Carburant</span>
+                        </a>
+                    </li>
+                    <li *jhiHasAnyAuthority="'ROLE_GASOIL'">
+                        <a class="dropdown-item" routerLink="fournisseur-grossiste" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
+                            <span jhiTranslate="global.menu.entities.fournisseurGrossiste">Fournisseur Grossiste</span>
+                        </a>
+                    </li>
+                    <li *jhiHasAnyAuthority="'ROLE_GASOIL'">
                         <a class="dropdown-item" routerLink="gasoil-achat-gros" routerLinkActive="active"
                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -467,20 +481,6 @@
                                       d="M4.553 7.776c.82-1.641 1.717-2.753 2.093-3.13l.708.708c-.29.29-1.128 1.311-1.907 2.87l-.894-.448z"/>
                             </svg>
                             <span>Vente Gasoil</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="carburant" routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.carburant">Carburant</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="fournisseur-grossiste" routerLinkActive="active"
-                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
-                            <fa-icon icon="asterisk" fixedWidth="true"></fa-icon>
-                            <span jhiTranslate="global.menu.entities.fournisseurGrossiste">Fournisseur Grossiste</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->

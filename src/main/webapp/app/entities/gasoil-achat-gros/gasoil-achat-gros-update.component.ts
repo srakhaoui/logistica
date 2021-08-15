@@ -11,12 +11,12 @@ import { JhiAlertService } from 'ng-jhipster';
 import { IGasoilAchatGros, GasoilAchatGros } from 'app/shared/model/gasoil-achat-gros.model';
 import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 import { GasoilAchatGrosService } from './gasoil-achat-gros.service';
-import { IFournisseur } from 'app/shared/model/fournisseur.model';
-import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
+import { IFournisseurGrossiste } from 'app/shared/model/fournisseur-grossiste.model';
+import { FournisseurGrossisteService } from 'app/entities/fournisseur-grossiste/fournisseur-grossiste.service';
 import { ISociete } from 'app/shared/model/societe.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
-import { IProduit } from 'app/shared/model/produit.model';
-import { ProduitService } from 'app/entities/produit/produit.service';
+import { ICarburant } from 'app/shared/model/carburant.model';
+import { CarburantService } from 'app/entities/carburant/carburant.service';
 
 @Component({
   selector: 'jhi-gasoil-achat-gros-update',
@@ -25,13 +25,13 @@ import { ProduitService } from 'app/entities/produit/produit.service';
 export class GasoilAchatGrosUpdateComponent implements OnInit {
   isSaving: boolean;
 
-  fournisseurs$: Observable<IFournisseur[]>;
+  fournisseurs$: Observable<IFournisseurGrossiste[]>;
   fournisseurInput$ = new Subject<string>();
   fournisseursLoading:Boolean = false;
 
   societes: ISociete[];
 
-  produits$: Observable<IProduit[]>;
+  produits$: Observable<ICarburant[]>;
   produitInput$ = new Subject<string>();
   produitsLoading:Boolean = false;
 
@@ -45,17 +45,17 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     quantity: [null, [Validators.required, Validators.min(0)]],
     prixUnitaire: [null, [Validators.required, Validators.min(0)]],
     uniteGasoilGros: [null, [Validators.required]],
-    fournisseur: [null, Validators.required],
+    fournisseurGrossiste: [null, Validators.required],
     transporteur: [null, Validators.required],
-    produit: [null, Validators.required]
+    carburant: [null, Validators.required]
   });
 
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected gasoilAchatGrosService: GasoilAchatGrosService,
-    protected fournisseurService: FournisseurService,
+    protected fournisseurGrossisteService: FournisseurGrossisteService,
     protected societeService: SocieteService,
-    protected produitService: ProduitService,
+    protected carburantService: CarburantService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -81,9 +81,9 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       quantity: gasoilAchatGros.quantity,
       prixUnitaire: gasoilAchatGros.prixUnitaire,
       uniteGasoilGros: gasoilAchatGros.id ? gasoilAchatGros.uniteGasoilGros : UniteGasoilGros.TONNE,
-      fournisseur: gasoilAchatGros.fournisseur,
+      fournisseurGrossiste: gasoilAchatGros.fournisseurGrossiste,
       transporteur: gasoilAchatGros.transporteur,
-      produit: gasoilAchatGros.produit
+      carburant: gasoilAchatGros.carburant
     });
   }
 
@@ -111,9 +111,9 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       quantity: this.editForm.get(['quantity']).value,
       prixUnitaire: this.editForm.get(['prixUnitaire']).value,
       uniteGasoilGros: this.editForm.get(['uniteGasoilGros']).value,
-      fournisseur: this.editForm.get(['fournisseur']).value,
+      fournisseurGrossiste: this.editForm.get(['fournisseurGrossiste']).value,
       transporteur: this.editForm.get(['transporteur']).value,
-      produit: this.editForm.get(['produit']).value
+      carburant: this.editForm.get(['carburant']).value
     };
   }
 
@@ -133,7 +133,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  trackFournisseurById(index: number, item: IFournisseur) {
+  trackFournisseurById(index: number, item: IFournisseurGrossiste) {
     return item.id;
   }
 
@@ -141,7 +141,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     return item.id;
   }
 
-  trackProduitById(index: number, item: IProduit) {
+  trackProduitById(index: number, item: ICarburant) {
     return item.id;
   }
 
@@ -154,9 +154,9 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
                 distinctUntilChanged(),
                 tap(() => (this.fournisseursLoading = true)),
                 switchMap(nom =>
-                    this.fournisseurService
+                    this.fournisseurGrossisteService
                         .query({'nom.contains': nom})
-                        .pipe(map((resp: HttpResponse<IFournisseur[]>) => resp.body), catchError(() => of([])))
+                        .pipe(map((resp: HttpResponse<IFournisseurGrossiste[]>) => resp.body), catchError(() => of([])))
                 ),
                 tap(() => (this.fournisseursLoading = false))
             )
@@ -172,9 +172,9 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
                 distinctUntilChanged(),
                 tap(() => (this.produitsLoading = true)),
                 switchMap(nom =>
-                    this.produitService
+                    this.carburantService
                         .query({'code.contains': nom})
-                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
+                        .pipe(map((resp: HttpResponse<ICarburant[]>) => resp.body), catchError(() => of([])))
                 ),
                 tap(() => (this.produitsLoading = false))
             )

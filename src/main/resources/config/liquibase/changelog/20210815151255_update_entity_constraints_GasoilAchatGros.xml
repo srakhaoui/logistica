@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity Gasoil.
+    -->
+    <changeSet id="20210815174002-1" author="jhipster">
+        <dropForeignKeyConstraint baseTableName="gasoil_achat_gros"
+                                  baseTableSchemaName="public"
+                                  constraintName="fk_gasoil_achat_gros_fournisseur_id"/>
+        <renameColumn columnDataType="bigint"
+                      newColumnName="fournisseur_grossiste_id"
+                      oldColumnName="fournisseur_id"
+                      tableName="gasoil_achat_gros"/>
+        <addForeignKeyConstraint baseColumnNames="fournisseur_grossiste_id"
+                                 baseTableName="gasoil_achat_gros"
+                                 constraintName="fk_gasoil_achat_gros_fournisseur_gros_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="fournisseur_grossiste"/>
+
+
+        <dropForeignKeyConstraint baseTableName="gasoil_achat_gros"
+                                  baseTableSchemaName="public"
+                                  constraintName="fk_gasoil_achat_gros_produit_id"/>
+        <renameColumn columnDataType="bigint"
+                      newColumnName="carburant_id"
+                      oldColumnName="produit_id"
+                      tableName="gasoil_achat_gros"/>
+        <addForeignKeyConstraint baseColumnNames="carburant_id"
+                                 baseTableName="gasoil_achat_gros"
+                                 constraintName="fk_gasoil_achat_gros_carburant_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="carburant"/>
+
+        <createSequence cacheSize="1"
+                        cycle="false"
+                        dataType="bigint"
+                        incrementBy="1"
+                        maxValue="9223372036854775807"
+                        minValue="1"
+                        sequenceName="carburant-seq"
+                        startValue="1"/>
+
+        <createSequence cacheSize="1"
+                        cycle="false"
+                        dataType="bigint"
+                        incrementBy="1"
+                        maxValue="9223372036854775807"
+                        minValue="1"
+                        sequenceName="fournisseur-grossiste-seq"
+                        startValue="1"/>
+
+    </changeSet>
+</databaseChangeLog>

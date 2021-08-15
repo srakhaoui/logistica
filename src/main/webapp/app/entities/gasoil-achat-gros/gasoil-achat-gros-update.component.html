@@ -122,11 +122,12 @@
                                bindLabel="nom"
                                [hideSelected]="true"
                                [loading]="fournisseursLoading"
-                               formControlName="fournisseur"
-                               name="fournisseur">
+                               formControlName="fournisseurGrossiste"
+                               name="fournisseurGrossiste">
                     </ng-select>
-                    <div *ngIf="(editForm.get('fournisseur').dirty || editForm.get('fournisseur').touched)">
-                        <small class="form-text text-danger" [hidden]="editForm.get('fournisseur').value"
+                    <div
+                        *ngIf="(editForm.get('fournisseurGrossiste').dirty || editForm.get('fournisseurGrossiste').touched)">
+                        <small class="form-text text-danger" [hidden]="editForm.get('fournisseurGrossiste').value"
                                jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
@@ -159,13 +160,13 @@
                                bindLabel="code"
                                [hideSelected]="true"
                                [loading]="produitsLoading"
-                               formControlName="produit"
-                               name="produit">
+                               formControlName="carburant"
+                               name="carburant">
                     </ng-select>
                     <div
-                        *ngIf="editForm.get('produit').invalid && (editForm.get('produit').dirty || editForm.get('produit').touched)">
+                        *ngIf="editForm.get('carburant').invalid && (editForm.get('carburant').dirty || editForm.get('carburant').touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('produit').errors.required"
+                               *ngIf="editForm.get('carburant').errors.required"
                                jhiTranslate="entity.validation.required">
                             This field is required.
                         </small>
