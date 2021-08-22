@@ -103,7 +103,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
 
   export(){
     this.reportingService
-        .exportGasoilReporting(this.buildReportingRequest(), '/gros/export');
+        .exportGasoilGrosReporting(this.buildReportingRequest(), '/vente/export');
   }
 
   private buildReportingRequest(): any {
@@ -121,8 +121,8 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
     if(this.reportingForm.get('client').value){
       reportingRequest['clientId'] = this.reportingForm.get('client').value.id;
     }
-    if(this.reportingForm.get('fournisseur').value){
-      reportingRequest['fournisseurId'] = this.reportingForm.get('fournisseur').value.id;
+    if(this.reportingForm.get('fournisseurGrossiste').value){
+      reportingRequest['fournisseurId'] = this.reportingForm.get('fournisseurGrossiste').value.id;
     }
 
     if(this.reportingForm.get('dateDebut').value){

@@ -113,6 +113,11 @@ export class ReportingService {
         .pipe(map((res: IRecapitulatifGasoilGrosResponseType) => res));
   }
 
+  exportGasoilGrosReporting(req?: any, uri?: string): void {
+    const options: HttpParams = createRequestOption(req);
+    const url = `${this.resourceUrlGasoilVenteGros}${uri}`;
+    this.buildGetRequest(url, options);
+  }
 
   getChantiersByClient(req?: any): Observable<IChantiersResponseType> {
       const options = createRequestOption(req);

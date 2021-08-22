@@ -2,6 +2,7 @@ package com.logistica.web.rest;
 
 import com.logistica.domain.GasoilVenteGros;
 import com.logistica.service.GasoilVenteGrosService;
+import com.logistica.service.dto.ICsvConvertible;
 import com.logistica.service.dto.RecapitulatifGasoilVenteGros;
 import com.logistica.service.dto.RecapitulatifGasoilVenteGrosRequest;
 import com.logistica.web.rest.errors.BadRequestAlertException;
@@ -18,7 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -137,5 +141,26 @@ public class GasoilVenteGrosResource {
         Page<RecapitulatifGasoilVenteGros> page = gasoilVenteGrosService.getRecapitulatifGasoilVenteGros(recapitulatifGasoilVenteGrosRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping(value = "/gasoil-vente-gros/vente/export")
+    public void exportVentesGasoilGros(RecapitulatifGasoilVenteGrosRequest recapitulatifGasoilVenteGrosRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to export RecapitulatifGasoilVenteGros : {}", recapitulatifGasoilVenteGrosRequest);
+        Page<RecapitulatifGasoilVenteGros> page = gasoilVenteGrosService.getRecapitulatifGasoilVenteGros(recapitulatifGasoilVenteGrosRequest, Pageable.unpaged());
+        buildAndSendCsv("export-gasoil-vente.csv", RecapitulatifGasoilVenteGros.csvHeader(), page.getContent(), httpServletResponse);
+    }
+
+    private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println(csvHeader);
+        page.stream().map(T::toCsv).forEach(csvContent -> {
+            try {
+                outputStream.println(csvContent);
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        });
     }
 }

@@ -3,10 +3,10 @@ package com.logistica.service.dto;
 import java.time.LocalDate;
 
 public class RecapitulatifGasoilVenteGrosRequest {
-    private long fournisseurId;
-    private long acheteurId;
-    private long transporteurId;
-    private long clientId;
+    private Long fournisseurId;
+    private Long acheteurId;
+    private Long transporteurId;
+    private Long clientId;
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
@@ -15,31 +15,31 @@ public class RecapitulatifGasoilVenteGrosRequest {
         return transporteurId;
     }
 
-    public void setTransporteurId(long transporteurId) {
+    public void setTransporteurId(Long transporteurId) {
         this.transporteurId = transporteurId;
     }
 
-    public long getAcheteurId() {
+    public Long getAcheteurId() {
         return acheteurId;
     }
 
-    public void setAcheteurId(long acheteurId) {
+    public void setAcheteurId(Long acheteurId) {
         this.acheteurId = acheteurId;
     }
 
-    public long getFournisseurId() {
+    public Long getFournisseurId() {
         return fournisseurId;
     }
 
-    public void setFournisseurId(long fournisseurId) {
+    public void setFournisseurId(Long fournisseurId) {
         this.fournisseurId = fournisseurId;
     }
 
-    public long getClientId() {
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 

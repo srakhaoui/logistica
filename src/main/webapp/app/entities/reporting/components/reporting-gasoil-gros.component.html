@@ -51,8 +51,8 @@
                                bindLabel="nom"
                                [hideSelected]="true"
                                [loading]="fournisseursLoading"
-                               formControlName="fournisseur"
-                               name="fournisseur">
+                               formControlName="fournisseurGrossiste"
+                               name="fournisseurGrossiste">
                     </ng-select>
                 </div>
             </div>
@@ -106,7 +106,7 @@
                 <th scope="col"><span>Client</span></th>
                 <th scope="col"><span>Carburant</span></th>
                 <th scope="col"><span>Quantité vendue</span></th>
-                <th scope="col"><span>Prix Unitaire Vente</span></th>
+                <th scope="col"><span>Prix Vente Unitaire</span></th>
                 <th scope="col"><span>Prix Vente Total</span></th>
                 <th scope="col"><span>Unité Vente</span></th>
             </tr>
@@ -116,10 +116,10 @@
             <tr *ngFor="let recapitulatif of recapitulatifs">
                 <td>{{recapitulatif.client}}</td>
                 <td>{{recapitulatif.carburant}}</td>
-                <td>{{recapitulatif.quantiteVendue}}</td>
-                <td>{{recapitulatif.prixUnitaireVente}}</td>
-                <td>{{recapitulatif.uniteVente}}</td>
-                <td>{{recapitulatif.prixTotalVente}}</td>
+                <td>{{recapitulatif.quantite}}</td>
+                <td>{{recapitulatif.prixVenteUnitaire}}</td>
+                <td>{{recapitulatif.prixVenteTotal}}</td>
+                <td>{{recapitulatif.unite}}</td>
             </tr>
             </tbody>
         </table>

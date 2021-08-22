@@ -1,17 +1,21 @@
 package com.logistica.service.dto;
 
-import java.time.LocalDate;
+import com.logistica.domain.enumeration.UniteGasoilGros;
+import org.apache.commons.lang3.StringUtils;
 
-public class RecapitulatifGasoilVenteGros {
+import java.time.LocalDate;
+import java.util.Optional;
+
+public class RecapitulatifGasoilVenteGros implements ICsvConvertible {
     private String client;
     private LocalDate dateVente;
     private String carburant;
     private Float quantite;
-    private String unite;
+    private UniteGasoilGros unite;
     private Float prixVenteUnitaire;
     private Float prixVenteTotal;
 
-    public RecapitulatifGasoilVenteGros(String client, LocalDate dateVente, String carburant, Float quantite, String unite, Float prixVenteUnitaire, Float prixVenteTotal) {
+    public RecapitulatifGasoilVenteGros(String client, LocalDate dateVente, String carburant, Float quantite, UniteGasoilGros unite, Float prixVenteUnitaire, Float prixVenteTotal) {
         this.client = client;
         this.dateVente = dateVente;
         this.carburant = carburant;
@@ -53,11 +57,11 @@ public class RecapitulatifGasoilVenteGros {
         this.quantite = quantite;
     }
 
-    public String getUnite() {
+    public UniteGasoilGros getUnite() {
         return unite;
     }
 
-    public void setUnite(String unite) {
+    public void setUnite(UniteGasoilGros unite) {
         this.unite = unite;
     }
 
@@ -75,5 +79,21 @@ public class RecapitulatifGasoilVenteGros {
 
     public void setPrixVenteTotal(Float prixVenteTotal) {
         this.prixVenteTotal = prixVenteTotal;
+    }
+
+    public static String csvHeader() {
+        return "client;carburant;quantite;prixVenteUnitaire;prixVenteTotal;unite";
+    }
+
+    @Override
+    public String toCsv() {
+        StringBuilder csv = new StringBuilder();
+        csv.append(Optional.ofNullable(client).orElse("")).append(";")
+            .append(Optional.ofNullable(carburant).orElse("")).append(";")
+            .append(StringUtils.replaceChars(Double.toString(quantite), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(prixVenteUnitaire), '.', ',')).append(";")
+            .append(StringUtils.replaceChars(Double.toString(prixVenteTotal), '.', ',')).append(";")
+            .append(unite);
+        return csv.toString();
     }
 }

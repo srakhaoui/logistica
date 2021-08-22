@@ -3,13 +3,13 @@ import { Moment } from 'moment';
 export interface IRecapitulatifGasoilGros {
   client?: string;
   carburant?: string;
-  quantiteVendue?: number;
-  prixUnitaireVente?: number;
-  uniteVente?: string;
+  quantite?: number;
+  prixVenteUnitaire?: number;
+  unite?: string;
   dateVente?: Moment;
-  prixTotalVente?: number;
+  prixVenteTotal?: number;
 }
 
 export class RecapitulatifGasoilGros implements IRecapitulatifGasoilGros {
-  constructor(public client?: string, public carburant?: string, public quantiteVendue?: number, public prixUnitaireVente?: number,   public uniteVente?: string, public dateVente?: Moment, public prixTotalVente?: number) {}
+  constructor(public client?: string, public carburant?: string, public quantite?: number, public prixVenteUnitaire?: number,   public unite?: string, public dateVente?: Moment, public prixVenteTotal?: number) {}
 }

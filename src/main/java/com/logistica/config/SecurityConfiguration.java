@@ -84,6 +84,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/account/reset-password/finish").permitAll()
             .antMatchers("/api/livraisons/**/export").permitAll()
             .antMatchers("/api/gasoils/**/export").permitAll()
+            .antMatchers("/api/gasoil-vente-gros/**/export").permitAll()
             .regexMatchers("/api/livraisons/\\d+/bon/[A-Za-z]+").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/management/health").permitAll()

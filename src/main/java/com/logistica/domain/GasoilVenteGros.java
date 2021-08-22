@@ -28,7 +28,7 @@ public class GasoilVenteGros implements Serializable {
 
     @NotNull
     @Column(name = "date_vente", nullable = false)
-    private LocalDate dateVente;
+    private LocalDate dateVente = LocalDate.now();
 
     @NotNull
     @DecimalMin(value = "0")
