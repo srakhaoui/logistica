@@ -29,10 +29,10 @@
                 <dd>
                     <span jhiTranslate="{{'logisticaApp.UniteGasoilGros.' + gasoilVenteGros.uniteGasoilGros}}">{{gasoilVenteGros.uniteGasoilGros}}</span>
                 </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.societeFacturation">Societe Facturation</span></dt>
+                <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.transporteur">Societe Facturation</span></dt>
                 <dd>
-                    <div *ngIf="gasoilVenteGros.societeFacturation">
-                        <a [routerLink]="['/societe', gasoilVenteGros.societeFacturation?.id, 'view']">{{gasoilVenteGros.societeFacturation?.nom}}</a>
+                    <div *ngIf="gasoilVenteGros.transporteur">
+                        <a [routerLink]="['/societe', gasoilVenteGros.transporteur?.id, 'view']">{{gasoilVenteGros.transporteur?.nom}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoilVenteGros.client">Client</span></dt>

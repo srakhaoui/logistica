@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface GasoilVenteGrosRepository extends JpaRepository<GasoilVenteGros, Long> {
+public interface GasoilVenteGrosRepository extends JpaRepository<GasoilVenteGros, Long>, GasoilVenteGrosRepositoryCustom {
 
     @Query("Select sum(quantite) From GasoilVenteGros g where g.achatGasoil.numeroBonReception = :numeroBonReception")
     Float getQuantiteVendueParNumeroBonReception(@Param("numeroBonReception") String numeroBonReception);

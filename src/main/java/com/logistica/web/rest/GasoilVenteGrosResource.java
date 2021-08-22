@@ -2,6 +2,8 @@ package com.logistica.web.rest;
 
 import com.logistica.domain.GasoilVenteGros;
 import com.logistica.service.GasoilVenteGrosService;
+import com.logistica.service.dto.RecapitulatifGasoilVenteGros;
+import com.logistica.service.dto.RecapitulatifGasoilVenteGrosRequest;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -121,5 +123,19 @@ public class GasoilVenteGrosResource {
         log.debug("REST request to delete GasoilVenteGros : {}", id);
         gasoilVenteGrosService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    /**
+     * {@code GET  /gasoil-vente-gros/ventes} : get all the ventes.
+     *
+     * @param pageable the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of gasoilVenteGros in body.
+     */
+    @GetMapping("/gasoil-vente-gros/ventes")
+    public ResponseEntity<List<RecapitulatifGasoilVenteGros>> getVentesGasoilGros(RecapitulatifGasoilVenteGrosRequest recapitulatifGasoilVenteGrosRequest, Pageable pageable) {
+        log.debug("REST request to get a page of RecapitulatifGasoilVenteGros");
+        Page<RecapitulatifGasoilVenteGros> page = gasoilVenteGrosService.getRecapitulatifGasoilVenteGros(recapitulatifGasoilVenteGrosRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 }

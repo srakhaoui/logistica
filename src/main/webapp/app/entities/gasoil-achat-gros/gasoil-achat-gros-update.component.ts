@@ -46,7 +46,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     prixUnitaire: [null, [Validators.required, Validators.min(0)]],
     uniteGasoilGros: [null, [Validators.required]],
     fournisseurGrossiste: [null, Validators.required],
-    transporteur: [null, Validators.required],
+    acheteur: [null, Validators.required],
     carburant: [null, Validators.required]
   });
 
@@ -82,7 +82,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       prixUnitaire: gasoilAchatGros.prixUnitaire,
       uniteGasoilGros: gasoilAchatGros.id ? gasoilAchatGros.uniteGasoilGros : UniteGasoilGros.TONNE,
       fournisseurGrossiste: gasoilAchatGros.fournisseurGrossiste,
-      transporteur: gasoilAchatGros.transporteur,
+      acheteur: gasoilAchatGros.acheteur,
       carburant: gasoilAchatGros.carburant
     });
   }
@@ -112,7 +112,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       prixUnitaire: this.editForm.get(['prixUnitaire']).value,
       uniteGasoilGros: this.editForm.get(['uniteGasoilGros']).value,
       fournisseurGrossiste: this.editForm.get(['fournisseurGrossiste']).value,
-      transporteur: this.editForm.get(['transporteur']).value,
+      acheteur: this.editForm.get(['acheteur']).value,
       carburant: this.editForm.get(['carburant']).value
     };
   }

@@ -130,7 +130,7 @@ public class GasoilAchatGrosResourceIT {
         } else {
             societe = TestUtil.findAll(em, Societe.class).get(0);
         }
-        gasoilAchatGros.setTransporteur(societe);
+        gasoilAchatGros.setAcheteur(societe);
         // Add required entity
         Carburant produit;
         if (TestUtil.findAll(em, Carburant.class).isEmpty()) {
@@ -176,7 +176,7 @@ public class GasoilAchatGrosResourceIT {
         } else {
             societe = TestUtil.findAll(em, Societe.class).get(0);
         }
-        gasoilAchatGros.setTransporteur(societe);
+        gasoilAchatGros.setAcheteur(societe);
         // Add required entity
         Carburant carburant;
         if (TestUtil.findAll(em, Produit.class).isEmpty()) {
@@ -931,7 +931,7 @@ public class GasoilAchatGrosResourceIT {
     @Transactional
     public void getAllGasoilAchatGrosByTransporteurIsEqualToSomething() throws Exception {
         // Get already existing entity
-        Societe transporteur = gasoilAchatGros.getTransporteur();
+        Societe transporteur = gasoilAchatGros.getAcheteur();
         gasoilAchatGrosRepository.saveAndFlush(gasoilAchatGros);
         Long transporteurId = transporteur.getId();
 

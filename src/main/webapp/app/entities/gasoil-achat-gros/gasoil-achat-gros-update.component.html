@@ -134,21 +134,21 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilAchatGros.transporteur"
-                           for="field_transporteur">Transporteur</label>
-                    <select class="form-control" id="field_transporteur" name="transporteur"
-                            formControlName="transporteur">
-                        <option *ngIf="!editForm.get('transporteur').value" [ngValue]="null" selected></option>
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilAchatGros.acheteur"
+                           for="field_acheteur">Acheteur</label>
+                    <select class="form-control" id="field_acheteur" name="acheteur"
+                            formControlName="acheteur">
+                        <option *ngIf="!editForm.get('acheteur').value" [ngValue]="null" selected></option>
                         <option
-                            [ngValue]="societeOption.id === editForm.get('transporteur').value?.id ? editForm.get('transporteur').value : societeOption"
+                            [ngValue]="societeOption.id === editForm.get('acheteur').value?.id ? editForm.get('acheteur').value : societeOption"
                             *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
                         </option>
                     </select>
                 </div>
                 <div
-                    *ngIf="editForm.get('transporteur').invalid && (editForm.get('transporteur').dirty || editForm.get('transporteur').touched)">
+                    *ngIf="editForm.get('acheteur').invalid && (editForm.get('acheteur').dirty || editForm.get('acheteur').touched)">
                     <small class="form-text text-danger"
-                           *ngIf="editForm.get('transporteur').errors.required"
+                           *ngIf="editForm.get('acheteur').errors.required"
                            jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>

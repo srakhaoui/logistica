@@ -90,5 +90,7 @@
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20210815151255_update_entity_constraints_GasoilAchatGros.xml"
              relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/202108210900050000_update_GasoilVenteGros.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

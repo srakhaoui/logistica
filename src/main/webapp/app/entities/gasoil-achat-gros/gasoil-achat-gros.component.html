@@ -48,8 +48,8 @@
                     jhiTranslate="logisticaApp.gasoilAchatGros.fournisseur">Fournisseur</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="transporteur.nom"><span
-                    jhiTranslate="logisticaApp.gasoilAchatGros.transporteur">Transporteur</span>
+                <th scope="col" jhiSortBy="acheteur.nom"><span
+                    jhiTranslate="logisticaApp.gasoilAchatGros.acheteur">Acheteur</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col" jhiSortBy="produit.code"><span jhiTranslate="logisticaApp.gasoilAchatGros.produit">Produit</span>
@@ -77,8 +77,8 @@
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="gasoilAchatGros.transporteur">
-                        <a [routerLink]="['/societe', gasoilAchatGros.transporteur?.id, 'view' ]">{{gasoilAchatGros.transporteur?.nom}}</a>
+                    <div *ngIf="gasoilAchatGros.acheteur">
+                        <a [routerLink]="['/societe', gasoilAchatGros.acheteur?.id, 'view' ]">{{gasoilAchatGros.acheteur?.nom}}</a>
                     </div>
                 </td>
                 <td>

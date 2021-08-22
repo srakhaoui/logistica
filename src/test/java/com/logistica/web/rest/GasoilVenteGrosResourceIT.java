@@ -114,7 +114,7 @@ public class GasoilVenteGrosResourceIT {
         } else {
             societe = TestUtil.findAll(em, Societe.class).get(0);
         }
-        gasoilVenteGros.setSocieteFacturation(societe);
+        gasoilVenteGros.setTransporteur(societe);
         // Add required entity
         ClientGrossiste clientGrossiste;
         if (TestUtil.findAll(em, ClientGrossiste.class).isEmpty()) {
@@ -160,7 +160,7 @@ public class GasoilVenteGrosResourceIT {
         } else {
             societe = TestUtil.findAll(em, Societe.class).get(0);
         }
-        gasoilVenteGros.setSocieteFacturation(societe);
+        gasoilVenteGros.setTransporteur(societe);
         // Add required entity
         ClientGrossiste clientGrossiste;
         if (TestUtil.findAll(em, ClientGrossiste.class).isEmpty()) {

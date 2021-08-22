@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * A GasoilVenteGros.
@@ -24,6 +25,10 @@ public class GasoilVenteGros implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "gasoilVenteGrosSequenceGenerator")
     @SequenceGenerator(name = "gasoilVenteGrosSequenceGenerator", sequenceName = "gasoil-vente-gros-seq", allocationSize = 1)
     private Long id;
+
+    @NotNull
+    @Column(name = "date_vente", nullable = false)
+    private LocalDate dateVente;
 
     @NotNull
     @DecimalMin(value = "0")
@@ -52,7 +57,7 @@ public class GasoilVenteGros implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("gasoilVenteGros")
-    private Societe societeFacturation;
+    private Societe transporteur;
 
     @ManyToOne(optional = false)
     @NotNull
@@ -151,17 +156,17 @@ public class GasoilVenteGros implements Serializable {
         this.uniteGasoilGros = uniteGasoilGros;
     }
 
-    public Societe getSocieteFacturation() {
-        return societeFacturation;
+    public Societe getTransporteur() {
+        return transporteur;
     }
 
     public GasoilVenteGros societeFacturation(Societe societe) {
-        this.societeFacturation = societe;
+        this.transporteur = societe;
         return this;
     }
 
-    public void setSocieteFacturation(Societe societe) {
-        this.societeFacturation = societe;
+    public void setTransporteur(Societe societe) {
+        this.transporteur = societe;
     }
 
     public ClientGrossiste getClient() {
@@ -171,6 +176,14 @@ public class GasoilVenteGros implements Serializable {
     public GasoilVenteGros client(ClientGrossiste clientGrossiste) {
         this.client = clientGrossiste;
         return this;
+    }
+
+    public LocalDate getDateVente() {
+        return dateVente;
+    }
+
+    public void setDateVente(LocalDate dateVente) {
+        this.dateVente = dateVente;
     }
 
     public void setClient(ClientGrossiste clientGrossiste) {

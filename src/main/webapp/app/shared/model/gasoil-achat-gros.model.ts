@@ -13,7 +13,7 @@ export interface IGasoilAchatGros {
   prixUnitaire?: number;
   uniteGasoilGros?: UniteGasoilGros;
   fournisseurGrossiste?: IFournisseurGrossiste;
-  transporteur?: ISociete;
+  acheteur?: ISociete;
   carburant?: ICarburant;
 }
 
@@ -27,7 +27,7 @@ export class GasoilAchatGros implements IGasoilAchatGros {
     public prixUnitaire?: number,
     public uniteGasoilGros?: UniteGasoilGros,
     public fournisseurGrossiste?: IFournisseurGrossiste,
-    public transporteur?: ISociete,
+    public acheteur?: ISociete,
     public carburant?: ICarburant
   ) {}
 }

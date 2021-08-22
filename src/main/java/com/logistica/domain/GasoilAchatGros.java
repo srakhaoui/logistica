@@ -61,7 +61,7 @@ public class GasoilAchatGros implements Serializable {
     @ManyToOne(optional = false)
     @NotNull
     @JsonIgnoreProperties("gasoilAchatGros")
-    private Societe transporteur;
+    private Societe acheteur;
 
     @ManyToOne(optional = false)
     @JsonIgnoreProperties("gasoilAchatGros")
@@ -167,17 +167,17 @@ public class GasoilAchatGros implements Serializable {
         this.fournisseurGrossiste = fournisseurGrossiste;
     }
 
-    public Societe getTransporteur() {
-        return transporteur;
+    public Societe getAcheteur() {
+        return acheteur;
     }
 
     public GasoilAchatGros transporteur(Societe societe) {
-        this.transporteur = societe;
+        this.acheteur = societe;
         return this;
     }
 
-    public void setTransporteur(Societe societe) {
-        this.transporteur = societe;
+    public void setAcheteur(Societe societe) {
+        this.acheteur = societe;
     }
 
     public Carburant getCarburant() {

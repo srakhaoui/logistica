@@ -11,7 +11,7 @@ export interface IGasoilVenteGros {
   margeGlobale?: number;
   tauxMarge?: number;
   uniteGasoilGros?: UniteGasoilGros;
-  societeFacturation?: ISociete;
+  transporteur?: ISociete;
   client?: IClientGrossiste;
   achatGasoil?: IGasoilAchatGros;
 }
@@ -25,7 +25,7 @@ export class GasoilVenteGros implements IGasoilVenteGros {
     public margeGlobale?: number,
     public tauxMarge?: number,
     public uniteGasoilGros?: UniteGasoilGros,
-    public societeFacturation?: ISociete,
+    public transporteur?: ISociete,
     public client?: IClientGrossiste,
     public achatGasoil?: IGasoilAchatGros
   ) {}

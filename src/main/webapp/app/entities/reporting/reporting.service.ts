@@ -16,6 +16,7 @@ import { IRecapitulatifVenteEfficaciteChauffeur } from 'app/shared/model/recapit
 import { IRecapitulatifVenteFacturation } from 'app/shared/model/recapitulatif-vente-facturation.model';
 import { IRecapitulatifVenteCaCamion } from 'app/shared/model/recapitulatif-vente-ca-camion.model';
 import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gasoil-charges.model';
+import { IRecapitulatifGasoilGros } from 'app/shared/model/recapitulatif-gasoil-gros.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
@@ -25,6 +26,7 @@ type IRecapitulatifVenteEfficaciteChauffeurResponseType = HttpResponse<IRecapitu
 type IRecapitulatifVenteFacturationResponseType = HttpResponse<IRecapitulatifVenteFacturation[]>;
 type IRecapitulatifVenteCaCamionResponseType = HttpResponse<IRecapitulatifVenteCaCamion[]>;
 type IRecapitulatifGasoilChargesResponseType = HttpResponse<IRecapitulatifChargesGasoil[]>;
+type IRecapitulatifGasoilGrosResponseType = HttpResponse<IRecapitulatifGasoilGros[]>;
 type IChantiersResponseType = HttpResponse<string[]>;
 
 
@@ -32,6 +34,7 @@ type IChantiersResponseType = HttpResponse<string[]>;
 export class ReportingService {
   public resourceUrl = SERVER_API_URL + 'api/livraisons';
   public resourceUrlGasoil = SERVER_API_URL + 'api/gasoils';
+  public resourceUrlGasoilVenteGros = SERVER_API_URL + 'api/gasoil-vente-gros';
 
   constructor(protected http: HttpClient) {}
 
@@ -102,6 +105,14 @@ export class ReportingService {
         .get<IRecapitulatifChargesGasoil[]>(`${this.resourceUrlGasoil}/charges`, { params: options, observe: 'response' })
         .pipe(map((res: IRecapitulatifGasoilChargesResponseType) => res));
   }
+
+  getReportingGasoilGros(req?: any): Observable<IRecapitulatifGasoilGrosResponseType> {
+      const options = createRequestOption(req);
+      return this.http
+        .get<IRecapitulatifGasoilGros[]>(`${this.resourceUrlGasoilVenteGros}/ventes`, { params: options, observe: 'response' })
+        .pipe(map((res: IRecapitulatifGasoilGrosResponseType) => res));
+  }
+
 
   getChantiersByClient(req?: any): Observable<IChantiersResponseType> {
       const options = createRequestOption(req);

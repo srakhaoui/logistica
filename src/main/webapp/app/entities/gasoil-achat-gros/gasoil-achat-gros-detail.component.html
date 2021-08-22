@@ -35,10 +35,10 @@
                         <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseur?.id, 'view']">{{gasoilAchatGros.fournisseur?.nom}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.transporteur">Transporteur</span></dt>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.acheteur">Acheteur</span></dt>
                 <dd>
-                    <div *ngIf="gasoilAchatGros.transporteur">
-                        <a [routerLink]="['/societe', gasoilAchatGros.transporteur?.id, 'view']">{{gasoilAchatGros.transporteur?.nom}}</a>
+                    <div *ngIf="gasoilAchatGros.acheteur">
+                        <a [routerLink]="['/societe', gasoilAchatGros.acheteur?.id, 'view']">{{gasoilAchatGros.acheteur?.nom}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.produit">Produit</span></dt>

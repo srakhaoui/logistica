@@ -42,7 +42,7 @@
                 <th scope="col" jhiSortBy="uniteGasoilGros"><span>Unité Vente</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="societeFacturation.nom"><span
+                <th scope="col" jhiSortBy="transporteur.nom"><span
                 >Société Facturation</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
@@ -71,8 +71,8 @@
                     {{gasoilVenteGros.uniteGasoilGros}}
                 </td>
                 <td>
-                    <div *ngIf="gasoilVenteGros.societeFacturation">
-                        <a [routerLink]="['/societe', gasoilVenteGros.societeFacturation?.id, 'view' ]">{{gasoilVenteGros.societeFacturation?.nom}}</a>
+                    <div *ngIf="gasoilVenteGros.transporteur">
+                        <a [routerLink]="['/societe', gasoilVenteGros.transporteur?.id, 'view' ]">{{gasoilVenteGros.transporteur?.nom}}</a>
                     </div>
                 </td>
                 <td>

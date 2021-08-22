@@ -139,21 +139,21 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.societeFacturation"
-                           for="field_societeFacturation">Societe Facturation</label>
-                    <select class="form-control" id="field_societeFacturation" name="societeFacturation"
-                            formControlName="societeFacturation">
-                        <option *ngIf="!editForm.get('societeFacturation').value" [ngValue]="null" selected></option>
+                    <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.transporteur"
+                           for="field_transporteur">Societe Facturation</label>
+                    <select class="form-control" id="field_transporteur" name="transporteur"
+                            formControlName="transporteur">
+                        <option *ngIf="!editForm.get('transporteur').value" [ngValue]="null" selected></option>
                         <option
-                            [ngValue]="societeOption.id === editForm.get('societeFacturation').value?.id ? editForm.get('societeFacturation').value : societeOption"
+                            [ngValue]="societeOption.id === editForm.get('transporteur').value?.id ? editForm.get('transporteur').value : societeOption"
                             *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
                         </option>
                     </select>
                 </div>
                 <div
-                    *ngIf="editForm.get('societeFacturation').invalid && (editForm.get('societeFacturation').dirty || editForm.get('societeFacturation').touched)">
+                    *ngIf="editForm.get('transporteur').invalid && (editForm.get('transporteur').dirty || editForm.get('transporteur').touched)">
                     <small class="form-text text-danger"
-                           *ngIf="editForm.get('societeFacturation').errors.required"
+                           *ngIf="editForm.get('transporteur').errors.required"
                            jhiTranslate="entity.validation.required">
                         This field is required.
                     </small>

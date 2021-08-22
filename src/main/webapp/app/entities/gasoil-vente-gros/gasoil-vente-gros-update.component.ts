@@ -43,7 +43,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
     margeGlobale: [null],
     tauxMarge: [null],
     uniteGasoilGros: [null, [Validators.required]],
-    societeFacturation: [null, Validators.required],
+    transporteur: [null, Validators.required],
     client: [null, Validators.required],
     achatGasoil: [null, Validators.required]
   });
@@ -79,7 +79,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
       margeGlobale: gasoilVenteGros.margeGlobale,
       tauxMarge: gasoilVenteGros.tauxMarge,
       uniteGasoilGros: gasoilVenteGros.id ? gasoilVenteGros.uniteGasoilGros : UniteGasoilGros.TONNE,
-      societeFacturation: gasoilVenteGros.societeFacturation,
+      transporteur: gasoilVenteGros.transporteur,
       client: gasoilVenteGros.client,
       achatGasoil: gasoilVenteGros.achatGasoil
     });
@@ -109,7 +109,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
       margeGlobale: this.editForm.get(['margeGlobale']).value,
       tauxMarge: this.editForm.get(['tauxMarge']).value,
       uniteGasoilGros: this.editForm.get(['uniteGasoilGros']).value,
-      societeFacturation: this.editForm.get(['societeFacturation']).value,
+      transporteur: this.editForm.get(['transporteur']).value,
       client: this.editForm.get(['client']).value,
       achatGasoil: this.editForm.get(['achatGasoil']).value
     };

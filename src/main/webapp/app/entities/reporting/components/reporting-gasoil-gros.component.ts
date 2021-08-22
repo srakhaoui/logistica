@@ -12,10 +12,10 @@ import { SocieteService } from 'app/entities/societe/societe.service';
 
 import * as moment from 'moment';
 import { format } from 'app/shared/util/date-util';
-import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gasoil-charges.model';
+import { IRecapitulatifGasoilGros } from 'app/shared/model/recapitulatif-gasoil-gros.model';
 
-import { IFournisseur } from 'app/shared/model/fournisseur.model';
-import { FournisseurService } from 'app/entities/fournisseur/fournisseur.service';
+import { IFournisseurGrossiste } from 'app/shared/model/fournisseur-grossiste.model';
+import { FournisseurGrossisteService } from 'app/entities/fournisseur-grossiste/fournisseur-grossiste.service';
 import { IClientGrossiste } from 'app/shared/model/client-grossiste.model';
 import { ClientGrossisteService } from 'app/entities/client-grossiste/client-grossiste.service';
 
@@ -28,7 +28,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
   acheteur: ISociete;
   transporteur: ISociete;
 
-  fournisseurs$: Observable<IFournisseur[]>;
+  fournisseurs$: Observable<IFournisseurGrossiste[]>;
   fournisseurInput$ = new Subject<string>();
   fournisseursLoading:Boolean = false;
 
@@ -40,12 +40,12 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
       acheteur: new FormControl(),
       transporteur: new FormControl(),
       client: new FormControl(),
-      fournisseur: new FormControl(),
+      fournisseurGrossiste: new FormControl(),
       dateDebut: new FormControl(),
       dateFin: new FormControl()
     });
 
-  recapitulatifs: IRecapitulatifChargesGasoil[];
+  recapitulatifs: IRecapitulatifGasoilGros[];
   itemsPerPage: number;
   links: any;
   page: any;
@@ -57,7 +57,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
 
   constructor(
     protected societeService: SocieteService,
-    protected fournisseurService: FournisseurService,
+    protected fournisseurGrossisteService: FournisseurGrossisteService,
     protected clientGrossisteService: ClientGrossisteService,
     protected reportingService: ReportingService,
     protected jhiAlertService: JhiAlertService,
@@ -71,7 +71,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
     this.links = {
       last: 0
     };
-    this.predicate = 'societe';
+    this.predicate = 'client';
     this.reverse = true;
   }
 
@@ -94,8 +94,8 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
   search(){
     this.isSearching = true;
     this.reportingService
-      .getReportingGasoilCharges(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<IRecapitulatifChargesGasoil[]>) => {
+      .getReportingGasoilGros(this.buildReportingRequest())
+      .subscribe((res: HttpResponse<IRecapitulatifGasoilGros[]>) => {
         this.isSearching = false;
         this.paginateRecapitulatifs(res.body, res.headers);
       });
@@ -103,7 +103,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
 
   export(){
     this.reportingService
-        .exportGasoilReporting(this.buildReportingRequest(), '/charges/export');
+        .exportGasoilReporting(this.buildReportingRequest(), '/gros/export');
   }
 
   private buildReportingRequest(): any {
@@ -168,7 +168,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  protected paginateRecapitulatifs(data: IRecapitulatifChargesGasoil[], headers: HttpHeaders) {
+  protected paginateRecapitulatifs(data: IRecapitulatifGasoilGros[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     for (let i = 0; i < data.length; i++) {
@@ -185,9 +185,9 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
                 distinctUntilChanged(),
                 tap(() => (this.fournisseursLoading = true)),
                 switchMap(nom =>
-                    this.fournisseurService
+                    this.fournisseurGrossisteService
                         .query({'nom.contains': nom})
-                        .pipe(map((resp: HttpResponse<IFournisseur[]>) => resp.body), catchError(() => of([])))
+                        .pipe(map((resp: HttpResponse<IFournisseurGrossiste[]>) => resp.body), catchError(() => of([])))
                 ),
                 tap(() => (this.fournisseursLoading = false))
             )
