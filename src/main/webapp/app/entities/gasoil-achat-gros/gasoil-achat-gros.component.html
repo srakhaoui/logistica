@@ -37,11 +37,11 @@
                     jhiTranslate="logisticaApp.gasoilAchatGros.quantity">Quantity</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="prixUnitaire"><span jhiTranslate="logisticaApp.gasoilAchatGros.prixUnitaire">Prix Unitaire</span>
-                    <fa-icon [icon]="'sort'"></fa-icon>
-                </th>
                 <th scope="col" jhiSortBy="uniteGasoilGros"><span
                 >Unité</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="prixUnitaire"><span jhiTranslate="logisticaApp.gasoilAchatGros.prixUnitaire">Prix Unitaire</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col" jhiSortBy="fournisseur.nom"><span
@@ -67,10 +67,10 @@
                 <td>{{gasoilAchatGros.numeroBonReception}}</td>
                 <td>{{gasoilAchatGros.description}}</td>
                 <td>{{gasoilAchatGros.quantity}}</td>
-                <td>{{gasoilAchatGros.prixUnitaire}}</td>
                 <td jhiTranslate="{{'logisticaApp.UniteGasoilGros.' + gasoilAchatGros.uniteGasoilGros}}">
                     {{gasoilAchatGros.uniteGasoilGros}}
                 </td>
+                <td>{{gasoilAchatGros.prixUnitaire}}</td>
                 <td>
                     <div *ngIf="gasoilAchatGros.fournisseur">
                         <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseur?.id, 'view' ]">{{gasoilAchatGros.fournisseur?.nom}}</a>

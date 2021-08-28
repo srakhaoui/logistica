@@ -1,6 +1,6 @@
 import { Moment } from 'moment';
 
-export interface IRecapitulatifGasoilGros {
+export interface IRecapitulatifGasoilGrosVente {
   client?: string;
   carburant?: string;
   quantite?: number;
@@ -10,6 +10,6 @@ export interface IRecapitulatifGasoilGros {
   prixVenteTotal?: number;
 }
 
-export class RecapitulatifGasoilGros implements IRecapitulatifGasoilGros {
+export class RecapitulatifGasoilGrosVente implements IRecapitulatifGasoilGrosVente {
   constructor(public client?: string, public carburant?: string, public quantite?: number, public prixVenteUnitaire?: number,   public unite?: string, public dateVente?: Moment, public prixVenteTotal?: number) {}
 }

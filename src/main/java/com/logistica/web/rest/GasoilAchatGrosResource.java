@@ -4,6 +4,9 @@ import com.logistica.domain.GasoilAchatGros;
 import com.logistica.service.GasoilAchatGrosQueryService;
 import com.logistica.service.GasoilAchatGrosService;
 import com.logistica.service.dto.GasoilAchatGrosCriteria;
+import com.logistica.service.dto.ICsvConvertible;
+import com.logistica.service.dto.RecapitulatifGasoilAchatGros;
+import com.logistica.service.dto.RecapitulatifGasoilGrosRequest;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -18,7 +21,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -140,5 +146,34 @@ public class GasoilAchatGrosResource {
         log.debug("REST request to delete GasoilAchatGros : {}", id);
         gasoilAchatGrosService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/gasoil-achat-gros/achats")
+    public ResponseEntity<List<RecapitulatifGasoilAchatGros>> getAchatsGasoilGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+        log.debug("REST request to get a page of RecapitulatifGasoilAchatGros");
+        Page<RecapitulatifGasoilAchatGros> page = gasoilAchatGrosService.getRecapitulatifGasoilAchatGros(recapitulatifGasoilGrosRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    @GetMapping(value = "/gasoil-achat-gros/achats/export")
+    public void exportAchatGasoilGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to export RecapitulatifGasoilAchatGros : {}", recapitulatifGasoilGrosRequest);
+        Page<RecapitulatifGasoilAchatGros> page = gasoilAchatGrosService.getRecapitulatifGasoilAchatGros(recapitulatifGasoilGrosRequest, Pageable.unpaged());
+        buildAndSendCsv("export-gasoil-achat.csv", RecapitulatifGasoilAchatGros.csvHeader(), page.getContent(), httpServletResponse);
+    }
+
+    private <T extends ICsvConvertible> void buildAndSendCsv(String filename, String csvHeader, List<T> page, HttpServletResponse reponse) throws IOException {
+        reponse.setContentType("text/csv");
+        reponse.setHeader("Content-Disposition", String.format("attachment; filename=%s", filename));
+        ServletOutputStream outputStream = reponse.getOutputStream();
+        outputStream.println(csvHeader);
+        page.stream().map(T::toCsv).forEach(csvContent -> {
+            try {
+                outputStream.println(csvContent);
+            } catch (IOException e) {
+                log.error("Failed to generate csv file", e);
+            }
+        });
     }
 }

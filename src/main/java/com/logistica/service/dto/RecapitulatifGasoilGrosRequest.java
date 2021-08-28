@@ -2,7 +2,7 @@ package com.logistica.service.dto;
 
 import java.time.LocalDate;
 
-public class RecapitulatifGasoilVenteGrosRequest {
+public class RecapitulatifGasoilGrosRequest {
     private Long fournisseurId;
     private Long acheteurId;
     private Long transporteurId;

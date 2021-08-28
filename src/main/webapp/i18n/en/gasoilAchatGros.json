@@ -24,7 +24,8 @@
       "uniteGasoilGros": "Unite Gasoil Gros",
       "fournisseur": "Fournisseur",
       "transporteur": "Transporteur",
-      "produit": "Produit"
+      "produit": "Produit",
+      "acheteur": "Seller"
     }
   }
 }

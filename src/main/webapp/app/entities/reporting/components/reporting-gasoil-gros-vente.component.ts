@@ -12,7 +12,7 @@ import { SocieteService } from 'app/entities/societe/societe.service';
 
 import * as moment from 'moment';
 import { format } from 'app/shared/util/date-util';
-import { IRecapitulatifGasoilGros } from 'app/shared/model/recapitulatif-gasoil-gros.model';
+import { IRecapitulatifGasoilGrosVente } from 'app/shared/model/recapitulatif-gasoil-gros-vente.model';
 
 import { IFournisseurGrossiste } from 'app/shared/model/fournisseur-grossiste.model';
 import { FournisseurGrossisteService } from 'app/entities/fournisseur-grossiste/fournisseur-grossiste.service';
@@ -21,9 +21,9 @@ import { ClientGrossisteService } from 'app/entities/client-grossiste/client-gro
 
 @Component({
   selector: 'jhi-reporting-gasoil-gros',
-  templateUrl: './reporting-gasoil-gros.component.html'
+  templateUrl: './reporting-gasoil-gros-vente.component.html'
 })
-export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
+export class ReportingGasoilGrosVenteComponent implements OnInit, OnDestroy {
   societes: ISociete[];
   acheteur: ISociete;
   transporteur: ISociete;
@@ -45,7 +45,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
       dateFin: new FormControl()
     });
 
-  recapitulatifs: IRecapitulatifGasoilGros[];
+  recapitulatifs: IRecapitulatifGasoilGrosVente[];
   itemsPerPage: number;
   links: any;
   page: any;
@@ -95,7 +95,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
     this.isSearching = true;
     this.reportingService
       .getReportingGasoilGros(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<IRecapitulatifGasoilGros[]>) => {
+      .subscribe((res: HttpResponse<IRecapitulatifGasoilGrosVente[]>) => {
         this.isSearching = false;
         this.paginateRecapitulatifs(res.body, res.headers);
       });
@@ -103,7 +103,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
 
   export(){
     this.reportingService
-        .exportGasoilGrosReporting(this.buildReportingRequest(), '/vente/export');
+        .exportGasoilGrosReporting(this.buildReportingRequest(), '/ventes/export');
   }
 
   private buildReportingRequest(): any {
@@ -168,7 +168,7 @@ export class ReportingGasoilGrosComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  protected paginateRecapitulatifs(data: IRecapitulatifGasoilGros[], headers: HttpHeaders) {
+  protected paginateRecapitulatifs(data: IRecapitulatifGasoilGrosVente[], headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     for (let i = 0; i < data.length; i++) {

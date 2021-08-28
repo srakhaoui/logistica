@@ -1,7 +1,7 @@
 package com.logistica.repository;
 
+import com.logistica.service.dto.RecapitulatifGasoilAchatGros;
 import com.logistica.service.dto.RecapitulatifGasoilGrosRequest;
-import com.logistica.service.dto.RecapitulatifGasoilVenteGros;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.support.PageableExecutionUtils;
@@ -11,59 +11,43 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.time.LocalDate;
 
-public class GasoilVenteGrosRepositoryCustomImpl implements GasoilVenteGrosRepositoryCustom {
+public class GasoilAchatGrosRepositoryCustomImpl implements GasoilAchatGrosRepositoryCustom {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public Page<RecapitulatifGasoilVenteGros> getRecapitulatifGasoilVenteGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+    public Page<RecapitulatifGasoilAchatGros> getRecapitulatifGasoilAchatGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
         final Long fournisseurId = recapitulatifGasoilGrosRequest.getFournisseurId();
-        final Long transporteurId = recapitulatifGasoilGrosRequest.getAcheteurId();
-        final Long clientId = recapitulatifGasoilGrosRequest.getClientId();
         final Long acheteurId = recapitulatifGasoilGrosRequest.getAcheteurId();
         final LocalDate dateDebut = recapitulatifGasoilGrosRequest.getDateDebut();
         final LocalDate dateFin = recapitulatifGasoilGrosRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilVenteGros(g.client.nom, g.dateVente, g.achatGasoil.carburant.code, g.quantite, g.uniteGasoilGros, g.prixVenteUnitaire, g.prixVenteTotal) From GasoilVenteGros g");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilAchatGros(g.fournisseurGrossiste.nom, g.acheteur.nom, g.carburant.code, g.dateReception, g.quantity, g.uniteGasoilGros, g.prixUnitaire) From GasoilAchatGros g");
         boolean withFournisseurId = fournisseurId != null;
         boolean withAcheteurId = acheteurId != null;
-        boolean withTransporteurId = transporteurId != null;
-        boolean withClientId = clientId != null;
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
         if (withFournisseurId) {
-            predicate.append(" And g.achatGasoil.fournisseurGrossiste.id = :fournisseurId");
+            predicate.append(" And g.fournisseurGrossiste.id = :fournisseurId");
         }
         if (withAcheteurId) {
-            predicate.append(" And g.achatGasoil.acheteur.id = :acheteurId");
-        }
-        if (withTransporteurId) {
-            predicate.append(" And g.transporteur.id = :transporteurId");
-        }
-        if (withClientId) {
-            predicate.append(" And g.client.id = :clientId");
+            predicate.append(" And g.acheteur.id = :acheteurId");
         }
         if (withDateDebut) {
-            predicate.append(" And g.dateVente >= :dateDebut");
+            predicate.append(" And g.dateReception >= :dateDebut");
         }
         if (withDateFin) {
-            predicate.append(" And g.dateVente <= :dateFin");
+            predicate.append(" And g.dateReception <= :dateFin");
         }
         String queryAsStr = query.append(predicate.toString()).toString();
-        Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifGasoilVenteGros.class);
+        Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifGasoilAchatGros.class);
         if (withFournisseurId) {
             entityQuery.setParameter("fournisseurId", fournisseurId);
         }
         if (withAcheteurId) {
             entityQuery.setParameter("acheteurId", acheteurId);
-        }
-        if (withTransporteurId) {
-            entityQuery.setParameter("transporteurId", transporteurId);
-        }
-        if (withClientId) {
-            entityQuery.setParameter("clientId", clientId);
         }
         if (withDateDebut) {
             entityQuery.setParameter("dateDebut", dateDebut);
@@ -77,7 +61,7 @@ public class GasoilVenteGrosRepositoryCustomImpl implements GasoilVenteGrosRepos
         }
 
         return PageableExecutionUtils.getPage(entityQuery.getResultList(), pageable, () -> {
-            String countQuery = new StringBuilder("Select count(*) From GasoilVenteGros g ").append(predicate).toString();
+            String countQuery = new StringBuilder("Select count(*) From GasoilAchatGros g ").append(predicate).toString();
             return entityManager.createQuery(countQuery).getFirstResult();
         });
     }

@@ -11,6 +11,6 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface GasoilAchatGrosRepository extends JpaRepository<GasoilAchatGros, Long>, JpaSpecificationExecutor<GasoilAchatGros> {
+public interface GasoilAchatGrosRepository extends JpaRepository<GasoilAchatGros, Long>, GasoilAchatGrosRepositoryCustom, JpaSpecificationExecutor<GasoilAchatGros> {
 
 }

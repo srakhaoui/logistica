@@ -1,6 +1,6 @@
 <div>
     <h2 id="page-heading">
-        <span>Gasoil / Achats & Ventes</span>
+        <span>Gasoil / Achats</span>
     </h2>
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
@@ -8,6 +8,19 @@
     <div>
         <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
             <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
+                           for="field_fournisseur">Fournisseur</label>
+                    <ng-select id="field_fournisseur"
+                               [items]="fournisseurs$ | async"
+                               [typeahead]="fournisseurInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="fournisseursLoading"
+                               formControlName="fournisseurGrossiste"
+                               name="fournisseurGrossiste">
+                    </ng-select>
+                </div>
                 <div class="col">
                     <label class="form-control-label" for="field_acheteur">Acheteur</label>
                     <select class="form-control" id="field_acheteur" name="acheteur" formControlName="acheteur">
@@ -17,43 +30,6 @@
                             *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
                         </option>
                     </select>
-                </div>
-                <div class="col">
-                    <label class="form-control-label" for="field_transporteur">Transporteur</label>
-                    <select class="form-control" id="field_transporteur" name="transporteur"
-                            formControlName="transporteur">
-                        <option [ngValue]="null"></option>
-                        <option
-                            [ngValue]="societeOption.id === reportingForm.get('transporteur').value?.id ? reportingForm.get('transporteur').value : societeOption"
-                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                        </option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="col">
-                    <label class="form-control-label" for="field_client">Client</label>
-                    <ng-select id="field_client"
-                               [items]="clientsGrossistes$ | async"
-                               [typeahead]="clientsGrossistesInput$"
-                               bindLabel="nom"
-                               [hideSelected]="true"
-                               [loading]="clientsGrossistesLoading"
-                               formControlName="client"
-                               name="client">
-                    </ng-select>
-                </div>
-                <div class="col">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
-                           for="field_fournisseur">Fournisseur</label>
-                    <ng-select [items]="fournisseurs$ | async"
-                               [typeahead]="fournisseurInput$"
-                               bindLabel="nom"
-                               [hideSelected]="true"
-                               [loading]="fournisseursLoading"
-                               formControlName="fournisseurGrossiste"
-                               name="fournisseurGrossiste">
-                    </ng-select>
                 </div>
             </div>
             <div class="form-row">
@@ -103,23 +79,25 @@
         <table class="table table-striped" aria-describedby="page-heading">
             <thead>
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
-                <th scope="col"><span>Client</span></th>
+                <th scope="col"><span>Fournisseur</span></th>
+                <th scope="col"><span>Acheteur</span></th>
                 <th scope="col"><span>Carburant</span></th>
-                <th scope="col"><span>Quantité vendue</span></th>
-                <th scope="col"><span>Prix Vente Unitaire</span></th>
-                <th scope="col"><span>Prix Vente Total</span></th>
-                <th scope="col"><span>Unité Vente</span></th>
+                <th scope="col"><span>Date Réception</span></th>
+                <th scope="col"><span>Quantité</span></th>
+                <th scope="col"><span>Unité Achat</span></th>
+                <th scope="col"><span>Prix Unitaire</span></th>
             </tr>
             </thead>
             <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
                    [infiniteScrollDistance]="0">
             <tr *ngFor="let recapitulatif of recapitulatifs">
-                <td>{{recapitulatif.client}}</td>
+                <td>{{recapitulatif.fournisseur}}</td>
+                <td>{{recapitulatif.acheteur}}</td>
                 <td>{{recapitulatif.carburant}}</td>
-                <td>{{recapitulatif.quantite}}</td>
-                <td>{{recapitulatif.prixVenteUnitaire}}</td>
-                <td>{{recapitulatif.prixVenteTotal}}</td>
+                <td>{{recapitulatif.dateReception}}</td>
+                <td>{{recapitulatif.quantity}}</td>
                 <td>{{recapitulatif.unite}}</td>
+                <td>{{recapitulatif.prixUnitaire}}</td>
             </tr>
             </tbody>
         </table>

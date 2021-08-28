@@ -2,6 +2,8 @@ package com.logistica.service;
 
 import com.logistica.domain.GasoilAchatGros;
 import com.logistica.repository.GasoilAchatGrosRepository;
+import com.logistica.service.dto.RecapitulatifGasoilAchatGros;
+import com.logistica.service.dto.RecapitulatifGasoilGrosRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -87,5 +89,10 @@ public class GasoilAchatGrosService {
     public void delete(Long id) {
         log.debug("Request to delete GasoilAchatGros : {}", id);
         gasoilAchatGrosRepository.deleteById(id);
+    }
+
+    public Page<RecapitulatifGasoilAchatGros> getRecapitulatifGasoilAchatGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+        log.debug("Request to get RecapitulatifGasoilAchatGros");
+        return gasoilAchatGrosRepository.getRecapitulatifGasoilAchatGros(recapitulatifGasoilGrosRequest, pageable);
     }
 }

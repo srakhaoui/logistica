@@ -106,7 +106,7 @@ public class GasoilAchatGrosQueryService extends QueryService<GasoilAchatGros> {
             }
             if (criteria.getTransporteurId() != null) {
                 specification = specification.and(buildSpecification(criteria.getTransporteurId(),
-                    root -> root.join(GasoilAchatGros_.transporteur, JoinType.LEFT).get(Societe_.id)));
+                    root -> root.join(GasoilAchatGros_.acheteur, JoinType.LEFT).get(Societe_.id)));
             }
             if (criteria.getProduitId() != null) {
                 specification = specification.and(buildSpecification(criteria.getProduitId(),

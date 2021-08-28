@@ -16,7 +16,8 @@ import { IRecapitulatifVenteEfficaciteChauffeur } from 'app/shared/model/recapit
 import { IRecapitulatifVenteFacturation } from 'app/shared/model/recapitulatif-vente-facturation.model';
 import { IRecapitulatifVenteCaCamion } from 'app/shared/model/recapitulatif-vente-ca-camion.model';
 import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gasoil-charges.model';
-import { IRecapitulatifGasoilGros } from 'app/shared/model/recapitulatif-gasoil-gros.model';
+import { IRecapitulatifGasoilGrosVente } from 'app/shared/model/recapitulatif-gasoil-gros-vente.model';
+import { IRecapitulatifGasoilGrosAchat } from 'app/shared/model/recapitulatif-gasoil-gros-achat.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
@@ -26,7 +27,8 @@ type IRecapitulatifVenteEfficaciteChauffeurResponseType = HttpResponse<IRecapitu
 type IRecapitulatifVenteFacturationResponseType = HttpResponse<IRecapitulatifVenteFacturation[]>;
 type IRecapitulatifVenteCaCamionResponseType = HttpResponse<IRecapitulatifVenteCaCamion[]>;
 type IRecapitulatifGasoilChargesResponseType = HttpResponse<IRecapitulatifChargesGasoil[]>;
-type IRecapitulatifGasoilGrosResponseType = HttpResponse<IRecapitulatifGasoilGros[]>;
+type IRecapitulatifGasoilGrosVenteResponseType = HttpResponse<IRecapitulatifGasoilGrosVente[]>;
+type IRecapitulatifGasoilGrosAchatResponseType = HttpResponse<IRecapitulatifGasoilGrosAchat[]>;
 type IChantiersResponseType = HttpResponse<string[]>;
 
 
@@ -35,6 +37,7 @@ export class ReportingService {
   public resourceUrl = SERVER_API_URL + 'api/livraisons';
   public resourceUrlGasoil = SERVER_API_URL + 'api/gasoils';
   public resourceUrlGasoilVenteGros = SERVER_API_URL + 'api/gasoil-vente-gros';
+  public resourceUrlGasoilAchatGros = SERVER_API_URL + 'api/gasoil-achat-gros';
 
   constructor(protected http: HttpClient) {}
 
@@ -106,16 +109,29 @@ export class ReportingService {
         .pipe(map((res: IRecapitulatifGasoilChargesResponseType) => res));
   }
 
-  getReportingGasoilGros(req?: any): Observable<IRecapitulatifGasoilGrosResponseType> {
+  getReportingGasoilGros(req?: any): Observable<IRecapitulatifGasoilGrosVenteResponseType> {
       const options = createRequestOption(req);
       return this.http
-        .get<IRecapitulatifGasoilGros[]>(`${this.resourceUrlGasoilVenteGros}/ventes`, { params: options, observe: 'response' })
-        .pipe(map((res: IRecapitulatifGasoilGrosResponseType) => res));
+        .get<IRecapitulatifGasoilGrosVente[]>(`${this.resourceUrlGasoilVenteGros}/ventes`, { params: options, observe: 'response' })
+        .pipe(map((res: IRecapitulatifGasoilGrosVenteResponseType) => res));
   }
 
   exportGasoilGrosReporting(req?: any, uri?: string): void {
     const options: HttpParams = createRequestOption(req);
     const url = `${this.resourceUrlGasoilVenteGros}${uri}`;
+    this.buildGetRequest(url, options);
+  }
+
+  getReportingGasoilGrosAchat(req?: any): Observable<IRecapitulatifGasoilGrosAchatResponseType> {
+      const options = createRequestOption(req);
+      return this.http
+        .get<IRecapitulatifGasoilGrosVente[]>(`${this.resourceUrlGasoilAchatGros}/achats`, { params: options, observe: 'response' })
+        .pipe(map((res: IRecapitulatifGasoilGrosAchatResponseType) => res));
+  }
+
+  exportGasoilGrosAchatReporting(req?: any, uri?: string): void {
+    const options: HttpParams = createRequestOption(req);
+    const url = `${this.resourceUrlGasoilAchatGros}${uri}`;
     this.buildGetRequest(url, options);
   }
 

@@ -2,8 +2,8 @@ package com.logistica.service;
 
 import com.logistica.domain.GasoilVenteGros;
 import com.logistica.repository.GasoilVenteGrosRepository;
+import com.logistica.service.dto.RecapitulatifGasoilGrosRequest;
 import com.logistica.service.dto.RecapitulatifGasoilVenteGros;
-import com.logistica.service.dto.RecapitulatifGasoilVenteGrosRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -86,7 +86,7 @@ public class GasoilVenteGrosService {
     }
 
     @Transactional(readOnly = true)
-    public Page<RecapitulatifGasoilVenteGros> getRecapitulatifGasoilVenteGros(RecapitulatifGasoilVenteGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+    public Page<RecapitulatifGasoilVenteGros> getRecapitulatifGasoilVenteGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
         return gasoilVenteGrosRepository.getRecapitulatifGasoilVenteGros(recapitulatifGasoilGrosRequest, pageable);
     }
 }
