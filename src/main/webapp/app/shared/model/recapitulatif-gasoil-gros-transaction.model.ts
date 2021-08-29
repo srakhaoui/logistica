@@ -8,10 +8,10 @@ export interface IRecapitulatifGasoilGrosTransaction {
   quantiteAchetee?: number;
   uniteAchat?: string;
   prixAchatUnitaire?: number;
-  prixAchatTotal?: number;;
+  prixAchatTotal?: number;
   client?: string;
   transporteur?: string;
-  dateVente?: Moment;;
+  dateVente?: Moment;
   quantiteVendue?: number;
   uniteVente?: string;
   prixVenteUnitaire?: number;
@@ -19,7 +19,3 @@ export interface IRecapitulatifGasoilGrosTransaction {
   margeGlobale?: number;
   tauxMarge?: number;
 }
-
-/*export class RecapitulatifGasoilGrosVente implements IRecapitulatifGasoilGrosVente {
-  constructor(public client?: string, public carburant?: string, public quantite?: number, public prixVenteUnitaire?: number,   public unite?: string, public dateVente?: Moment, public prixVenteTotal?: number) {}
-}*/

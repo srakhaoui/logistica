@@ -7,9 +7,5 @@ export interface IRecapitulatifGasoilGros {
   totalQuantiteVendue?: number;
   totalPrixVente?: number;
   margeGlobale?: number;
-  tauxMarge;?: number;
+  tauxMarge?: number;
 }
-
-/*export class RecapitulatifGasoilGrosVente implements IRecapitulatifGasoilGrosVente {
-  constructor(public client?: string, public carburant?: string, public quantite?: number, public prixVenteUnitaire?: number,   public unite?: string, public dateVente?: Moment, public prixVenteTotal?: number) {}
-}*/

@@ -29,10 +29,10 @@
                 <dd>
                     <span jhiTranslate="{{'logisticaApp.UniteGasoilGros.' + gasoilAchatGros.uniteGasoilGros}}">{{gasoilAchatGros.uniteGasoilGros}}</span>
                 </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.fournisseur">Fournisseur</span></dt>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.fournisseurGrossiste">Fournisseur</span></dt>
                 <dd>
-                    <div *ngIf="gasoilAchatGros.fournisseur">
-                        <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseur?.id, 'view']">{{gasoilAchatGros.fournisseur?.nom}}</a>
+                    <div *ngIf="gasoilAchatGros.fournisseurGrossiste">
+                        <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseurGrossiste?.id, 'view']">{{gasoilAchatGros.fournisseurGrossiste?.nom}}</a>
                     </div>
                 </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.acheteur">Acheteur</span></dt>
@@ -41,10 +41,10 @@
                         <a [routerLink]="['/societe', gasoilAchatGros.acheteur?.id, 'view']">{{gasoilAchatGros.acheteur?.nom}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.produit">Produit</span></dt>
+                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.carburant">Produit</span></dt>
                 <dd>
-                    <div *ngIf="gasoilAchatGros.produit">
-                        <a [routerLink]="['/produit', gasoilAchatGros.produit?.id, 'view']">{{gasoilAchatGros.produit?.code}}</a>
+                    <div *ngIf="gasoilAchatGros.carburant">
+                        <a [routerLink]="['/produit', gasoilAchatGros.carburant?.id, 'view']">{{gasoilAchatGros.carburant?.code}}</a>
                     </div>
                 </dd>
             </dl>
