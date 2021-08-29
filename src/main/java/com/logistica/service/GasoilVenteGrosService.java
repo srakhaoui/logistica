@@ -2,8 +2,11 @@ package com.logistica.service;
 
 import com.logistica.domain.GasoilVenteGros;
 import com.logistica.repository.GasoilVenteGrosRepository;
+import com.logistica.service.dto.RecapitulatifGasoilGros;
 import com.logistica.service.dto.RecapitulatifGasoilGrosRequest;
+import com.logistica.service.dto.RecapitulatifGasoilTransactionGros;
 import com.logistica.service.dto.RecapitulatifGasoilVenteGros;
+import com.logistica.service.util.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -41,8 +44,9 @@ public class GasoilVenteGrosService {
             throw new QuantiteGasoilInsuffisanteException();
         }
         gasoilVenteGros.setPrixVenteTotal(gasoilVenteGros.getPrixVenteUnitaire() * gasoilVenteGros.getQuantite());
-        gasoilVenteGros.setMargeGlobale(gasoilVenteGros.getPrixVenteTotal() - (gasoilVenteGros.getAchatGasoil().getPrixUnitaire() * gasoilVenteGros.getAchatGasoil().getQuantity()));
-        gasoilVenteGros.setTauxMarge(100 * gasoilVenteGros.getMargeGlobale() / gasoilVenteGros.getPrixVenteTotal());
+        float prixTotalAchat = gasoilVenteGros.getAchatGasoil().getPrixUnitaire() * gasoilVenteGros.getAchatGasoil().getQuantity();
+        gasoilVenteGros.setMargeGlobale(gasoilVenteGros.getPrixVenteTotal() - prixTotalAchat);
+        gasoilVenteGros.setTauxMarge(MathUtil.roundUp(100 * gasoilVenteGros.getMargeGlobale() / prixTotalAchat));
         return gasoilVenteGrosRepository.save(gasoilVenteGros);
     }
 
@@ -87,6 +91,17 @@ public class GasoilVenteGrosService {
 
     @Transactional(readOnly = true)
     public Page<RecapitulatifGasoilVenteGros> getRecapitulatifGasoilVenteGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+        log.debug("Call to getRecapitulatifGasoilVenteGros");
         return gasoilVenteGrosRepository.getRecapitulatifGasoilVenteGros(recapitulatifGasoilGrosRequest, pageable);
+    }
+
+    public Page<RecapitulatifGasoilTransactionGros> getRecapitulatifGasoilTransactionGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+        log.debug("Request to get RecapitulatifGasoilTransactionGros");
+        return gasoilVenteGrosRepository.getRecapitulatifGasoilTransactionGros(recapitulatifGasoilGrosRequest, pageable);
+    }
+
+    public RecapitulatifGasoilGros getRecapitulatifGasoilGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest) {
+        log.debug("Request to get RecapitulatifGasoilGros");
+        return gasoilVenteGrosRepository.getRecapitulatifGasoilGros(recapitulatifGasoilGrosRequest);
     }
 }

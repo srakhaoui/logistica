@@ -1,0 +1,9 @@
+.gasoil-gros-synthese {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.gasoil-gros-synthese div > span > label {
+  font-weight: bold;
+  margin-right: 5%;
+}

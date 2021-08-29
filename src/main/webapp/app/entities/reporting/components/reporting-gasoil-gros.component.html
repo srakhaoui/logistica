@@ -1,0 +1,176 @@
+<div>
+    <h2 id="page-heading">
+        <span>Gasoil / Achats & Ventes</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_acheteur">Acheteur</label>
+                    <select class="form-control" id="field_acheteur" name="acheteur" formControlName="acheteur">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('acheteur').value?.id ? reportingForm.get('acheteur').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_transporteur">Transporteur</label>
+                    <select class="form-control" id="field_transporteur" name="transporteur"
+                            formControlName="transporteur">
+                        <option [ngValue]="null"></option>
+                        <option
+                            [ngValue]="societeOption.id === reportingForm.get('transporteur').value?.id ? reportingForm.get('transporteur').value : societeOption"
+                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select id="field_client"
+                               [items]="clientsGrossistes$ | async"
+                               [typeahead]="clientsGrossistesInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsGrossistesLoading"
+                               formControlName="client"
+                               name="client">
+                    </ng-select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
+                           for="field_fournisseur">Fournisseur</label>
+                    <ng-select [items]="fournisseurs$ | async"
+                               [typeahead]="fournisseurInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="fournisseursLoading"
+                               formControlName="fournisseurGrossiste"
+                               name="fournisseurGrossiste">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_dateDebut">De</label>
+                    <div class="input-group">
+                        <input id="field_dateDebut" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_dateFin">à</label>
+                    <div class="input-group">
+                        <input id="field_dateFin" type="text" class="form-control" name="dateFin"
+                               ngbDatepicker #dateFinDp="ngbDatepicker" formControlName="dateFin"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateFinDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <br>
+                <button type="submit" id="search-reporting" class="btn btn-primary">
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                </button>
+                &nbsp;&nbsp;
+                <button type="button" class="btn btn-success" (click)="export()">
+                    <span>Exporter</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="gasoil-gros-synthese" *ngIf="recapitulatifGasoilGros != undefined">
+        <div>
+            <span><label>Total Quantité achetée</label></span>
+            <span>{{recapitulatifGasoilGros.totalQuantiteAchetee}}</span>
+        </div>
+        <div>
+            <span><label>Total Prix Achat</label></span>
+            <span>{{recapitulatifGasoilGros.totalPrixAchat}}</span>
+        </div>
+        <div>
+            <span><label>Total Quantité Vendue</label></span>
+            <span>{{recapitulatifGasoilGros.totalQuantiteVendue}}</span>
+        </div>
+        <div>
+            <span><label>Total Prix Vente</label></span>
+            <span>{{recapitulatifGasoilGros.totalPrixVente}}</span>
+        </div>
+        <div>
+            <span><label>Marge Globale</label></span>
+            <span>{{recapitulatifGasoilGros.margeGlobale}}</span>
+        </div>
+        <div>
+            <span><label>Taux Marge</label></span>
+            <span>{{recapitulatifGasoilGros.tauxMarge}}%</span>
+        </div>
+    </div>
+    <br>
+    <div class="alert alert-warning" *ngIf="recapitulatifs?.length === 0">
+        <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
+    </div>
+    <div class="table-responsive" *ngIf="recapitulatifs?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col"><span>Fournisseur</span></th>
+                <th scope="col"><span>Acheteur</span></th>
+                <th scope="col"><span>Carburant</span></th>
+                <th scope="col"><span>Date Réception</span></th>
+                <th scope="col"><span>Quantité Achetée</span></th>
+                <th scope="col"><span>Unité Achat</span></th>
+                <th scope="col"><span>Prix Achat Unitaire</span></th>
+                <th scope="col"><span>Prix Achat Total</span></th>
+                <th scope="col"><span>Client</span></th>
+                <th scope="col"><span>Transporteur</span></th>
+                <th scope="col"><span>Date Vente</span></th>
+                <th scope="col"><span>Quantité Vendue</span></th>
+                <th scope="col"><span>Unité Vente</span></th>
+                <th scope="col"><span>Prix Vente Unitaire</span></th>
+                <th scope="col"><span>Prix Vente Total</span></th>
+                <th scope="col"><span>Marge Globale</span></th>
+                <th scope="col"><span>Taux Marge</span></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
+            <tr *ngFor="let recapitulatif of recapitulatifs">
+                <td>{{recapitulatif.fournisseur}}</td>
+                <td>{{recapitulatif.acheteur}}</td>
+                <td>{{recapitulatif.carburant}}</td>
+                <td>{{recapitulatif.dateReception}}</td>
+                <td>{{recapitulatif.quantiteAchetee}}</td>
+                <td>{{recapitulatif.uniteAchat}}</td>
+                <td>{{recapitulatif.prixAchatUnitaire}}</td>
+                <td>{{recapitulatif.prixAchatTotal}}</td>
+                <td>{{recapitulatif.client}}</td>
+                <td>{{recapitulatif.transporteur}}</td>
+                <td>{{recapitulatif.dateVente}}</td>
+                <td>{{recapitulatif.quantiteVendue}}</td>
+                <td>{{recapitulatif.uniteVente}}</td>
+                <td>{{recapitulatif.prixVenteUnitaire}}</td>
+                <td>{{recapitulatif.prixVenteTotal}}</td>
+                <td>{{recapitulatif.margeGlobale}}</td>
+                <td>{{recapitulatif.tauxMarge}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

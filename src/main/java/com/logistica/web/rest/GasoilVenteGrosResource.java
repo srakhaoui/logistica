@@ -2,9 +2,7 @@ package com.logistica.web.rest;
 
 import com.logistica.domain.GasoilVenteGros;
 import com.logistica.service.GasoilVenteGrosService;
-import com.logistica.service.dto.ICsvConvertible;
-import com.logistica.service.dto.RecapitulatifGasoilGrosRequest;
-import com.logistica.service.dto.RecapitulatifGasoilVenteGros;
+import com.logistica.service.dto.*;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -127,6 +125,24 @@ public class GasoilVenteGrosResource {
         log.debug("REST request to delete GasoilVenteGros : {}", id);
         gasoilVenteGrosService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/gasoil-vente-gros/transactions")
+    public ResponseEntity<RecapitulatifGasoilGros> getTransactionGasoilGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+        log.debug("REST request to get a page of RecapitulatifGasoilTransactionGros");
+        Page<RecapitulatifGasoilTransactionGros> page = gasoilVenteGrosService.getRecapitulatifGasoilTransactionGros(recapitulatifGasoilGrosRequest, pageable);
+        RecapitulatifGasoilGros recapitulatifGasoilGros = gasoilVenteGrosService.getRecapitulatifGasoilGros(recapitulatifGasoilGrosRequest);
+        recapitulatifGasoilGros.setRecapitulatifGasoilTransactionGrosList(page.getContent());
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(recapitulatifGasoilGros);
+    }
+
+    @GetMapping(value = "/gasoil-vente-gros/transactions/export")
+    public void exportTransactionsGasoilGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, HttpServletResponse httpServletResponse) throws IOException {
+        log.debug("REST request to export RecapitulatifGasoilTransactionGros : {}", recapitulatifGasoilGrosRequest);
+        Page<RecapitulatifGasoilTransactionGros> page = gasoilVenteGrosService.getRecapitulatifGasoilTransactionGros(recapitulatifGasoilGrosRequest, Pageable.unpaged());
+        buildAndSendCsv("export-gasoil-vente.csv", RecapitulatifGasoilVenteGros.csvHeader(), page.getContent(), httpServletResponse);
     }
 
     /**
