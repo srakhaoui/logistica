@@ -80,7 +80,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       description: gasoilAchatGros.description,
       quantity: gasoilAchatGros.quantity,
       prixUnitaire: gasoilAchatGros.prixUnitaire,
-      uniteGasoilGros: gasoilAchatGros.id ? gasoilAchatGros.uniteGasoilGros : UniteGasoilGros.TONNE,
+      uniteGasoilGros: gasoilAchatGros.id ? gasoilAchatGros.uniteGasoilGros : UniteGasoilGros.LITRE,
       fournisseurGrossiste: gasoilAchatGros.fournisseurGrossiste,
       acheteur: gasoilAchatGros.acheteur,
       carburant: gasoilAchatGros.carburant

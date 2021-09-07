@@ -1,3 +1,3 @@
 export const enum UniteGasoilGros {
-  TONNE = 'TONNE'
+  LITRE = 'LITRE'
 }

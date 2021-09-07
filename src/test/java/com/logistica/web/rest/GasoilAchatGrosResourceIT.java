@@ -54,8 +54,8 @@ public class GasoilAchatGrosResourceIT {
     private static final Float UPDATED_PRIX_UNITAIRE = 1F;
     private static final Float SMALLER_PRIX_UNITAIRE = 0F - 1F;
 
-    private static final UniteGasoilGros DEFAULT_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
-    private static final UniteGasoilGros UPDATED_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
+    private static final UniteGasoilGros DEFAULT_UNITE_GASOIL_GROS = UniteGasoilGros.LITRE;
+    private static final UniteGasoilGros UPDATED_UNITE_GASOIL_GROS = UniteGasoilGros.LITRE;
 
     @Autowired
     private GasoilAchatGrosRepository gasoilAchatGrosRepository;

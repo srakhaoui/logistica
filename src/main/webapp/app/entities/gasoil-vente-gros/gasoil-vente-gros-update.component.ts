@@ -78,7 +78,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
       prixVenteTotal: gasoilVenteGros.prixVenteTotal,
       margeGlobale: gasoilVenteGros.margeGlobale,
       tauxMarge: gasoilVenteGros.tauxMarge,
-      uniteGasoilGros: gasoilVenteGros.id ? gasoilVenteGros.uniteGasoilGros : UniteGasoilGros.TONNE,
+      uniteGasoilGros: gasoilVenteGros.id ? gasoilVenteGros.uniteGasoilGros : UniteGasoilGros.LITRE,
       transporteur: gasoilVenteGros.transporteur,
       client: gasoilVenteGros.client,
       achatGasoil: gasoilVenteGros.achatGasoil

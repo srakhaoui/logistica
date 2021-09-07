@@ -51,8 +51,8 @@ public class GasoilVenteGrosResourceIT {
     private static final Float DEFAULT_TAUX_MARGE = 1F;
     private static final Float UPDATED_TAUX_MARGE = 2F;
 
-    private static final UniteGasoilGros DEFAULT_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
-    private static final UniteGasoilGros UPDATED_UNITE_GASOIL_GROS = UniteGasoilGros.TONNE;
+    private static final UniteGasoilGros DEFAULT_UNITE_GASOIL_GROS = UniteGasoilGros.LITRE;
+    private static final UniteGasoilGros UPDATED_UNITE_GASOIL_GROS = UniteGasoilGros.LITRE;
 
     @Autowired
     private GasoilVenteGrosRepository gasoilVenteGrosRepository;

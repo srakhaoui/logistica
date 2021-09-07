@@ -25,7 +25,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new GasoilAchatGros(0, currentDate, 'AAAAAAA', 'AAAAAAA', 0, 0, UniteGasoilGros.TONNE);
+      elemDefault = new GasoilAchatGros(0, currentDate, 'AAAAAAA', 'AAAAAAA', 0, 0, UniteGasoilGros.LITRE);
     });
 
     describe('Service methods', () => {

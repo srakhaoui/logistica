@@ -21,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(GasoilVenteGrosService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new GasoilVenteGros(0, 0, 0, 0, 0, 0, UniteGasoilGros.TONNE);
+      elemDefault = new GasoilVenteGros(0, 0, 0, 0, 0, 0, UniteGasoilGros.LITRE);
     });
 
     describe('Service methods', () => {
