@@ -24,7 +24,8 @@
       "uniteGasoilGros": "Unite Gasoil Gros",
       "societeFacturation": "Societe Facturation",
       "client": "Client",
-      "achatGasoil": "Achat Gasoil"
+      "achatGasoil": "Achat Gasoil",
+      "transporteur": "Transporteur"
     }
   }
 }

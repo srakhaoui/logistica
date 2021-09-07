@@ -2,7 +2,8 @@
   "logisticaApp": {
     "UniteGasoilGros": {
       "null": "",
-      "TONNE": "TONNE"
+      "TONNE": "TONNE",
+      "LITRE": "LITRE"
     }
   }
 }
