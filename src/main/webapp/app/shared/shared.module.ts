@@ -6,11 +6,12 @@ import { FindLanguageFromKeyPipe } from './language/find-language-from-key.pipe'
 import { JhiAlertComponent } from './alert/alert.component';
 import { JhiAlertErrorComponent } from './alert/alert-error.component';
 import { JhiLoginModalComponent } from './login/login.component';
+import { UploadFileComponent } from './upload-file/upload-file.component';
 import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
 
 @NgModule({
   imports: [LogisticaSharedLibsModule,NgSelectModule,FormsModule],
-  declarations: [FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent, JhiLoginModalComponent, HasAnyAuthorityDirective],
+  declarations: [FindLanguageFromKeyPipe, JhiAlertComponent, JhiAlertErrorComponent, JhiLoginModalComponent, HasAnyAuthorityDirective, UploadFileComponent],
   entryComponents: [JhiLoginModalComponent],
   exports: [
     LogisticaSharedLibsModule,
@@ -20,7 +21,8 @@ import { HasAnyAuthorityDirective } from './auth/has-any-authority.directive';
     JhiAlertComponent,
     JhiAlertErrorComponent,
     JhiLoginModalComponent,
-    HasAnyAuthorityDirective
+    HasAnyAuthorityDirective,
+    UploadFileComponent
   ]
 })
 export class LogisticaSharedModule {}
