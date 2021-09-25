@@ -9,39 +9,23 @@
         <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
             <div class="form-row">
                 <div class="col">
-                    <label class="form-control-label" for="field_acheteur">Acheteur</label>
-                    <select class="form-control" id="field_acheteur" name="acheteur" formControlName="acheteur">
-                        <option [ngValue]="null"></option>
-                        <option
-                            [ngValue]="societeOption.id === reportingForm.get('acheteur').value?.id ? reportingForm.get('acheteur').value : societeOption"
-                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                        </option>
-                    </select>
-                </div>
-                <div class="col">
-                    <label class="form-control-label" for="field_transporteur">Transporteur</label>
-                    <select class="form-control" id="field_transporteur" name="transporteur"
-                            formControlName="transporteur">
-                        <option [ngValue]="null"></option>
-                        <option
-                            [ngValue]="societeOption.id === reportingForm.get('transporteur').value?.id ? reportingForm.get('transporteur').value : societeOption"
-                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                        </option>
-                    </select>
+                    <label class="form-control-label" for="field_numeroBonReception">Bon de Réception</label>
+                    <div class="input-group">
+                        <input id="field_numeroBonReception" type="text" class="form-control" name="numeroBonReception"
+                               formControlName="numeroBonReception"/>
+                    </div>
                 </div>
             </div>
             <div class="form-row">
                 <div class="col">
-                    <label class="form-control-label" for="field_client">Client</label>
-                    <ng-select id="field_client"
-                               [items]="clientsGrossistes$ | async"
-                               [typeahead]="clientsGrossistesInput$"
-                               bindLabel="nom"
-                               [hideSelected]="true"
-                               [loading]="clientsGrossistesLoading"
-                               formControlName="client"
-                               name="client">
-                    </ng-select>
+                    <label class="form-control-label" for="field_acheteur">Acheteur</label>
+                    <select class="form-control" id="field_acheteur" name="acheteur" formControlName="acheteur">
+                        <option [ngValue]="null"></option>
+                        <option
+                                [ngValue]="societeOption.id === reportingForm.get('acheteur').value?.id ? reportingForm.get('acheteur').value : societeOption"
+                                *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
                 </div>
                 <div class="col">
                     <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
@@ -53,6 +37,31 @@
                                [loading]="fournisseursLoading"
                                formControlName="fournisseurGrossiste"
                                name="fournisseurGrossiste">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_transporteur">Transporteur</label>
+                    <select class="form-control" id="field_transporteur" name="transporteur"
+                            formControlName="transporteur">
+                        <option [ngValue]="null"></option>
+                        <option
+                                [ngValue]="societeOption.id === reportingForm.get('transporteur').value?.id ? reportingForm.get('transporteur').value : societeOption"
+                                *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_client">Client</label>
+                    <ng-select id="field_client"
+                               [items]="clientsGrossistes$ | async"
+                               [typeahead]="clientsGrossistesInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="clientsGrossistesLoading"
+                               formControlName="client"
+                               name="client">
                     </ng-select>
                 </div>
             </div>
@@ -105,6 +114,7 @@
             <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
                 <th scope="col"><span>Client</span></th>
                 <th scope="col"><span>Carburant</span></th>
+                <th scope="col"><span>Date Vente</span></th>
                 <th scope="col"><span>Quantité vendue</span></th>
                 <th scope="col"><span>Unité Vente</span></th>
                 <th scope="col"><span>Prix Vente Unitaire</span></th>
@@ -116,6 +126,7 @@
             <tr *ngFor="let recapitulatif of recapitulatifs">
                 <td>{{recapitulatif.client}}</td>
                 <td>{{recapitulatif.carburant}}</td>
+                <td>{{recapitulatif.dateVente}}</td>
                 <td>{{recapitulatif.quantite}}</td>
                 <td>{{recapitulatif.unite}}</td>
                 <td>{{recapitulatif.prixVenteUnitaire}}</td>

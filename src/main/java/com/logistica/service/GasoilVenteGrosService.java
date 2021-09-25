@@ -40,12 +40,12 @@ public class GasoilVenteGrosService {
     public GasoilVenteGros save(GasoilVenteGros gasoilVenteGros) {
         log.debug("Request to save GasoilVenteGros : {}", gasoilVenteGros);
         //Check that there is enough quantity to sell
-        if (gasoilVenteGros.getQuantite() > quantiteDisponibleFrom(gasoilVenteGros)) {
+        if (gasoilVenteGros.getId() == null && gasoilVenteGros.getQuantite() > quantiteDisponibleFrom(gasoilVenteGros)) {
             throw new QuantiteGasoilInsuffisanteException();
         }
         gasoilVenteGros.setPrixVenteTotal(gasoilVenteGros.getPrixVenteUnitaire() * gasoilVenteGros.getQuantite());
         float prixTotalAchat = gasoilVenteGros.getAchatGasoil().getPrixUnitaire() * gasoilVenteGros.getAchatGasoil().getQuantity();
-        gasoilVenteGros.setMargeGlobale(gasoilVenteGros.getPrixVenteTotal() - prixTotalAchat);
+        gasoilVenteGros.setMargeGlobale((gasoilVenteGros.getPrixVenteUnitaire() - gasoilVenteGros.getAchatGasoil().getPrixUnitaire()) * gasoilVenteGros.getQuantite());
         gasoilVenteGros.setTauxMarge(MathUtil.roundUp(100 * gasoilVenteGros.getMargeGlobale() / prixTotalAchat));
         return gasoilVenteGrosRepository.save(gasoilVenteGros);
     }

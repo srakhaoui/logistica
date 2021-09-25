@@ -3,6 +3,7 @@ package com.logistica.service.dto;
 import java.time.LocalDate;
 
 public class RecapitulatifGasoilGrosRequest {
+    private String numeroBonReception;
     private Long fournisseurId;
     private Long acheteurId;
     private Long transporteurId;
@@ -10,6 +11,14 @@ public class RecapitulatifGasoilGrosRequest {
     private LocalDate dateDebut;
     private LocalDate dateFin;
 
+
+    public String getNumeroBonReception() {
+        return numeroBonReception;
+    }
+
+    public void setNumeroBonReception(String numeroBonReception) {
+        this.numeroBonReception = numeroBonReception;
+    }
 
     public long getTransporteurId() {
         return transporteurId;

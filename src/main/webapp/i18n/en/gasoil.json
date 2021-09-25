@@ -25,7 +25,12 @@
       "kilometrageFinal": "Kilometrage Final",
       "kilometrageParcouru": "Kilometrage Parcouru",
       "transporteur": "Transporteur",
-      "societeFacturation": "Societe Facturation"
+      "societeFacturation": "Societe Facturation",
+      "maili": {
+        "aucun": "No fuel form has been integrated ",
+        "un": "{{ bonsGasoil }} fuel form has been integrated",
+        "plusieurs": "{{ bonsGasoil }} fuel forms has been integrated"
+      }
     }
   }
 }

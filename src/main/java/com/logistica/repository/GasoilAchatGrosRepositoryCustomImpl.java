@@ -18,17 +18,22 @@ public class GasoilAchatGrosRepositoryCustomImpl implements GasoilAchatGrosRepos
 
     @Override
     public Page<RecapitulatifGasoilAchatGros> getRecapitulatifGasoilAchatGros(RecapitulatifGasoilGrosRequest recapitulatifGasoilGrosRequest, Pageable pageable) {
+        final String numeroBonReception = recapitulatifGasoilGrosRequest.getNumeroBonReception();
         final Long fournisseurId = recapitulatifGasoilGrosRequest.getFournisseurId();
         final Long acheteurId = recapitulatifGasoilGrosRequest.getAcheteurId();
         final LocalDate dateDebut = recapitulatifGasoilGrosRequest.getDateDebut();
         final LocalDate dateFin = recapitulatifGasoilGrosRequest.getDateFin();
 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilAchatGros(g.fournisseurGrossiste.nom, g.acheteur.nom, g.carburant.code, g.dateReception, g.quantity, g.uniteGasoilGros, g.prixUnitaire) From GasoilAchatGros g");
+        boolean withNumeroBonReception = numeroBonReception != null;
         boolean withFournisseurId = fournisseurId != null;
         boolean withAcheteurId = acheteurId != null;
         boolean withDateDebut = dateDebut != null;
         boolean withDateFin = dateFin != null;
         StringBuilder predicate = new StringBuilder(" Where 1=1 ");
+        if (withNumeroBonReception) {
+            predicate.append(" And g.numeroBonReception = :numeroBonReception");
+        }
         if (withFournisseurId) {
             predicate.append(" And g.fournisseurGrossiste.id = :fournisseurId");
         }
@@ -43,6 +48,9 @@ public class GasoilAchatGrosRepositoryCustomImpl implements GasoilAchatGrosRepos
         }
         String queryAsStr = query.append(predicate.toString()).toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifGasoilAchatGros.class);
+        if (withNumeroBonReception) {
+            entityQuery.setParameter("numeroBonReception", numeroBonReception);
+        }
         if (withFournisseurId) {
             entityQuery.setParameter("fournisseurId", fournisseurId);
         }

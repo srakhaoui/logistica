@@ -22,6 +22,10 @@
                 <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col" jhiSortBy="dateVente">
+                    <span>Date Vente</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col" jhiSortBy="prixVenteUnitaire"><span
                     jhiTranslate="logisticaApp.gasoilVenteGros.prixVenteUnitaire">Prix Vente Unitaire</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
@@ -62,6 +66,7 @@
             <tr *ngFor="let gasoilVenteGros of gasoilVenteGros ;trackBy: trackId">
                 <td><a [routerLink]="['/gasoil-vente-gros', gasoilVenteGros.id, 'view' ]">{{gasoilVenteGros.id}}</a>
                 </td>
+                <td>{{gasoilVenteGros.dateVente}}</td>
                 <td>{{gasoilVenteGros.prixVenteUnitaire}}</td>
                 <td>{{gasoilVenteGros.quantite}}</td>
                 <td jhiTranslate="{{'logisticaApp.UniteGasoilGros.' + gasoilVenteGros.uniteGasoilGros}}">

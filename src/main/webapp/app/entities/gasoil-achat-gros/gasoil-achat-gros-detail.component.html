@@ -29,7 +29,7 @@
                 <dd>
                     <span jhiTranslate="{{'logisticaApp.UniteGasoilGros.' + gasoilAchatGros.uniteGasoilGros}}">{{gasoilAchatGros.uniteGasoilGros}}</span>
                 </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.fournisseurGrossiste">Fournisseur</span></dt>
+                <dt><span>Fournisseur</span></dt>
                 <dd>
                     <div *ngIf="gasoilAchatGros.fournisseurGrossiste">
                         <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseurGrossiste?.id, 'view']">{{gasoilAchatGros.fournisseurGrossiste?.nom}}</a>
@@ -41,7 +41,7 @@
                         <a [routerLink]="['/societe', gasoilAchatGros.acheteur?.id, 'view']">{{gasoilAchatGros.acheteur?.nom}}</a>
                     </div>
                 </dd>
-                <dt><span jhiTranslate="logisticaApp.gasoilAchatGros.carburant">Produit</span></dt>
+                <dt><span>Carburant</span></dt>
                 <dd>
                     <div *ngIf="gasoilAchatGros.carburant">
                         <a [routerLink]="['/produit', gasoilAchatGros.carburant?.id, 'view']">{{gasoilAchatGros.carburant?.code}}</a>

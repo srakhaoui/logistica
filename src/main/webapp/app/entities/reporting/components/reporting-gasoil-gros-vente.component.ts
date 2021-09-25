@@ -37,6 +37,7 @@ export class ReportingGasoilGrosVenteComponent implements OnInit, OnDestroy {
    clientsGrossistesLoading:Boolean = false;
 
   reportingForm = new FormGroup({
+      numeroBonReception: new FormControl(),
       acheteur: new FormControl(),
       transporteur: new FormControl(),
       client: new FormControl(),
@@ -111,6 +112,9 @@ export class ReportingGasoilGrosVenteComponent implements OnInit, OnDestroy {
       page: this.page,
       size: this.itemsPerPage,
       sort: this.sort()
+    }
+    if(this.reportingForm.get('numeroBonReception').value){
+      reportingRequest['numeroBonReception'] = this.reportingForm.get('numeroBonReception').value;
     }
     if(this.reportingForm.get('acheteur').value){
       reportingRequest['acheteurId'] = this.reportingForm.get('acheteur').value.id;

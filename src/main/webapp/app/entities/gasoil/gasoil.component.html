@@ -1,6 +1,8 @@
 <div>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
     <h2 id="page-heading">
-        <jhi-upload-file endpoint="toto"></jhi-upload-file>&nbsp;
+        <jhi-upload-file endpoint="api/gasoils/maili" (fileUploadedEvent)="onFileUploaded($event)"></jhi-upload-file>
         <span jhiTranslate="logisticaApp.gasoil.home.title">Bons Gasoil</span>
         <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gasoil"
                 [routerLink]="['/gasoil/new']">
@@ -8,8 +10,6 @@
             <span>Bon Gasoil</span>
         </button>
     </h2>
-    <jhi-alert-error></jhi-alert-error>
-    <jhi-alert></jhi-alert>
     <br/>
     <div class="alert alert-warning" *ngIf="gasoils?.length === 0">
         <span jhiTranslate="logisticaApp.gasoil.home.notFound">No gasoils found</span>
@@ -28,13 +28,16 @@
                     jhiTranslate="logisticaApp.gasoil.societeFacturation">Societe Facturation</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col" jhiSortBy="platform"><span>Plateforme</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col" jhiSortBy="numeroBonGasoil"><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="dateBonGasoil"><span >Date Bon Gasoil</span>
+                <th scope="col" jhiSortBy="dateBonGasoil"><span>Date Bon Gasoil</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="dateSaisie"><span >Date Saisie</span>
+                <th scope="col" jhiSortBy="dateSaisie"><span>Date Saisie</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
                 <th scope="col" jhiSortBy="quantiteEnLitre"><span jhiTranslate="logisticaApp.gasoil.quantiteEnLitre">Quantite En Litre</span>
@@ -74,6 +77,7 @@
                         <a [routerLink]="['/societe', gasoil.societeFacturation?.id, 'view' ]">{{gasoil.societeFacturation?.nom}}</a>
                     </div>
                 </td>
+                <td [ngClass]="{'Maili': gasoil.platform=='Maili'}">{{gasoil.platform}}</td>
                 <td>{{gasoil.numeroBonGasoil}}</td>
                 <td>{{gasoil.dateBonGasoil | date:'dd MMM yyyy'}}</td>
                 <td>{{gasoil.dateSaisie | date:'dd MMM yyyy'}}</td>

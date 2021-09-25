@@ -1,6 +1,7 @@
 package com.logistica.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.logistica.domain.enumeration.Platform;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * A Gasoil.
@@ -62,7 +64,10 @@ public class Gasoil implements Serializable {
     private LocalDate dateSaisie = LocalDate.now();
 
     @Column(name = "date_bon_gasoil", nullable = false)
-    private LocalDate dateBonGasoil;
+    private LocalDateTime dateBonGasoil;
+
+    @Column(name = "platform", nullable = false)
+    private Platform platform;
 
     @Embedded
     private Audit audit = new Audit();
@@ -201,12 +206,20 @@ public class Gasoil implements Serializable {
         this.dateSaisie = dateSaisie;
     }
 
-    public LocalDate getDateBonGasoil() {
+    public LocalDateTime getDateBonGasoil() {
         return dateBonGasoil;
     }
 
-    public void setDateBonGasoil(LocalDate dateBonGasoil) {
+    public void setDateBonGasoil(LocalDateTime dateBonGasoil) {
         this.dateBonGasoil = dateBonGasoil;
+    }
+
+    public Platform getPlatform() {
+        return platform;
+    }
+
+    public void setPlatform(Platform platform) {
+        this.platform = platform;
     }
 
     public Audit getAudit() {

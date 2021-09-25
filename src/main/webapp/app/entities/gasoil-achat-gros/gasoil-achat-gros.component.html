@@ -72,8 +72,8 @@
                 </td>
                 <td>{{gasoilAchatGros.prixUnitaire}}</td>
                 <td>
-                    <div *ngIf="gasoilAchatGros.fournisseur">
-                        <a [routerLink]="['/fournisseur', gasoilAchatGros.fournisseur?.id, 'view' ]">{{gasoilAchatGros.fournisseur?.nom}}</a>
+                    <div *ngIf="gasoilAchatGros.fournisseurGrossiste">
+                        <a [routerLink]="['/fournisseur-grossiste', gasoilAchatGros.fournisseurGrossiste?.id, 'view' ]">{{gasoilAchatGros.fournisseurGrossiste?.nom}}</a>
                     </div>
                 </td>
                 <td>
@@ -82,8 +82,8 @@
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="gasoilAchatGros.produit">
-                        <a [routerLink]="['/produit', gasoilAchatGros.produit?.id, 'view' ]">{{gasoilAchatGros.produit?.code}}</a>
+                    <div *ngIf="gasoilAchatGros.carburant">
+                        <a [routerLink]="['/carburant', gasoilAchatGros.carburant?.id, 'view' ]">{{gasoilAchatGros.carburant?.code}}</a>
                     </div>
                 </td>
                 <td class="text-right">

@@ -9,6 +9,23 @@
         <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
             <div class="form-row">
                 <div class="col">
+                    <label class="form-control-label" for="field_numeroBonReception">Bon de Réception</label>
+                    <input id="field_numeroBonReception" type="text" class="form-control" name="numeroBonReception"
+                           formControlName="numeroBonReception"/>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_acheteur">Acheteur</label>
+                    <select class="form-control" id="field_acheteur" name="acheteur" formControlName="acheteur">
+                        <option [ngValue]="null"></option>
+                        <option
+                                [ngValue]="societeOption.id === reportingForm.get('acheteur').value?.id ? reportingForm.get('acheteur').value : societeOption"
+                                *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
+                        </option>
+                    </select>
+                </div>
+                <div class="col">
                     <label class="form-control-label" jhiTranslate="logisticaApp.livraison.fournisseur"
                            for="field_fournisseur">Fournisseur</label>
                     <ng-select id="field_fournisseur"
@@ -20,16 +37,6 @@
                                formControlName="fournisseurGrossiste"
                                name="fournisseurGrossiste">
                     </ng-select>
-                </div>
-                <div class="col">
-                    <label class="form-control-label" for="field_acheteur">Acheteur</label>
-                    <select class="form-control" id="field_acheteur" name="acheteur" formControlName="acheteur">
-                        <option [ngValue]="null"></option>
-                        <option
-                            [ngValue]="societeOption.id === reportingForm.get('acheteur').value?.id ? reportingForm.get('acheteur').value : societeOption"
-                            *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}
-                        </option>
-                    </select>
                 </div>
             </div>
             <div class="form-row">

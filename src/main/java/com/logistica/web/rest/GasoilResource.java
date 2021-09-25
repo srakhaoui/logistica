@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.ServletOutputStream;
@@ -218,4 +219,9 @@ public class GasoilResource {
         }
     }
 
+    @PostMapping("/gasoils/maili")
+    public ResponseEntity<ImportMailiResponse> importMaili(MailiIntegrationRequest mailiIntegrationRequest, @RequestParam(value = "file") MultipartFile mailExport) throws IOException {
+        log.debug("REST MailiIntegrationRequest : {}", mailiIntegrationRequest);
+        return ResponseEntity.ok(gasoilService.importMaili(mailExport));
+    }
 }

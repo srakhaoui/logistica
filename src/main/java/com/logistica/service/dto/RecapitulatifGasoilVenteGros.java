@@ -82,7 +82,7 @@ public class RecapitulatifGasoilVenteGros implements ICsvConvertible {
     }
 
     public static String csvHeader() {
-        return "client;carburant;quantite;prixVenteUnitaire;prixVenteTotal;unite";
+        return "client;carburant;dateVente;quantite;prixVenteUnitaire;prixVenteTotal;unite";
     }
 
     @Override
@@ -90,6 +90,7 @@ public class RecapitulatifGasoilVenteGros implements ICsvConvertible {
         StringBuilder csv = new StringBuilder();
         csv.append(Optional.ofNullable(client).orElse("")).append(";")
             .append(Optional.ofNullable(carburant).orElse("")).append(";")
+            .append(dateVente).append(";")
             .append(StringUtils.replaceChars(Double.toString(quantite), '.', ',')).append(";")
             .append(StringUtils.replaceChars(Double.toString(prixVenteUnitaire), '.', ',')).append(";")
             .append(StringUtils.replaceChars(Double.toString(prixVenteTotal), '.', ',')).append(";")

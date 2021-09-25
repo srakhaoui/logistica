@@ -1,4 +1,4 @@
-import { Input, Component, OnInit, OnDestroy } from '@angular/core';
+import { Input, Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { finalize } from 'rxjs/operators';
@@ -10,7 +10,8 @@ import { finalize } from 'rxjs/operators';
 })
 export class UploadFileComponent implements OnInit, OnDestroy {
 
-  @Input() endpoint: string;
+  @Input() endpoint = '';
+  @Output() fileUploadedEvent = new EventEmitter<Object>();
 
   fileName = '';
   uploadProgress:number;
@@ -26,7 +27,7 @@ export class UploadFileComponent implements OnInit, OnDestroy {
           const formData = new FormData();
           formData.append("file", file);
 
-          const upload$ = this.http.post(this.endpoint, formData, {
+          const upload$ = this.http.post('/' + this.endpoint, formData, {
               reportProgress: true,
               observe: 'events'
           })
@@ -37,6 +38,9 @@ export class UploadFileComponent implements OnInit, OnDestroy {
           this.uploadSub = upload$.subscribe(uploadEvent => {
             if (uploadEvent.type === HttpEventType.UploadProgress) {
               this.uploadProgress = Math.round(100 * (uploadEvent.loaded / uploadEvent.total));
+            }
+            if(uploadEvent.type === HttpEventType.Response){
+              this.fileUploadedEvent.emit(uploadEvent.body);
             }
           })
       }
@@ -55,6 +59,8 @@ export class UploadFileComponent implements OnInit, OnDestroy {
   ngOnInit() {
   }
   ngOnDestroy() {
-    this.uploadSub.unsubscribe();
+    if(this.uploadSub){
+      this.uploadSub.unsubscribe();
+    }
   }
 }

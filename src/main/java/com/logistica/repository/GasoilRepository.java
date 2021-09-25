@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 
 /**
  * Spring Data  repository for the Gasoil entity.
@@ -20,4 +22,8 @@ public interface GasoilRepository extends JpaRepository<Gasoil, Long>, JpaSpecif
 
     @Query("Select prixDuLitre From Gasoil Where audit.createdOn = (Select max(audit.createdOn) From Gasoil Where prixDuLitre is not null)")
     Float getLastPrixGasoil();
+
+    @Query("Select id From Gasoil Where transporteur.matricule = :matricule And dateBonGasoil = :dateBonGasoil")
+    Long findByMatriculeAndDateBonGasoil(@Param("matricule") String matricule, @Param("dateBonGasoil") LocalDateTime mailiIntegrationTs);
+
 }

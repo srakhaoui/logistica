@@ -3,7 +3,7 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-
+import { JhiAlertService } from 'ng-jhipster';
 import { IGasoil } from 'app/shared/model/gasoil.model';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
@@ -12,7 +12,8 @@ import { GasoilDeleteDialogComponent } from './gasoil-delete-dialog.component';
 
 @Component({
   selector: 'jhi-gasoil',
-  templateUrl: './gasoil.component.html'
+  templateUrl: './gasoil.component.html',
+  styleUrls: ['./gasoil.component.scss']
 })
 export class GasoilComponent implements OnInit, OnDestroy {
   gasoils: IGasoil[];
@@ -27,6 +28,7 @@ export class GasoilComponent implements OnInit, OnDestroy {
   constructor(
     protected gasoilService: GasoilService,
     protected eventManager: JhiEventManager,
+    protected jhiAlertService: JhiAlertService,
     protected modalService: NgbModal,
     protected parseLinks: JhiParseLinks
   ) {
@@ -37,7 +39,7 @@ export class GasoilComponent implements OnInit, OnDestroy {
       last: 0
     };
     this.predicate = 'id';
-    this.reverse = true;
+    this.reverse = false;
   }
 
   loadAll() {
@@ -97,5 +99,10 @@ export class GasoilComponent implements OnInit, OnDestroy {
     for (let i = 0; i < data.length; i++) {
       this.gasoils.push(data[i]);
     }
+  }
+
+  onFileUploaded(event){
+      this.jhiAlertService.success(event['message'], {"bonsGasoil": event['bonsGasoil']}, null);
+      this.loadAll();
   }
 }

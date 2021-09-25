@@ -11,7 +11,8 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
@@ -25,8 +26,8 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
     public Page<RecapitulatifChargeGasoil> getRecapitulatifChargeGasoil(RecapitulatifChargeGasoilRequest recapitulatifChargeGasoilRequest, Pageable pageable) {
         final Long societeId = recapitulatifChargeGasoilRequest.getSocieteId();
         final Long transporteurId = recapitulatifChargeGasoilRequest.getTransporteurId();
-        final LocalDate dateDebut = recapitulatifChargeGasoilRequest.getDateDebut();
-        final LocalDate dateFin = recapitulatifChargeGasoilRequest.getDateFin();
+        final LocalDateTime dateDebut = LocalDateTime.of(recapitulatifChargeGasoilRequest.getDateDebut(), LocalTime.MIDNIGHT);
+        final LocalDateTime dateFin = LocalDateTime.of(recapitulatifChargeGasoilRequest.getDateFin(), LocalTime.MIDNIGHT);
 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifChargeGasoil(g.societeFacturation.id, g.societeFacturation.nom, g.transporteur.id, g.transporteur.nom, g.transporteur.prenom, g.transporteur.matricule, sum(g.quantiteEnLitre), avg(g.prixDuLitre), sum(g.prixTotalGasoil), sum(g.kilometrageParcouru)) From Gasoil g");
         boolean withSocieteId = societeId != null;
@@ -76,8 +77,8 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         final Long societeId = chargeGasoilRequest.getSocieteId();
         final List<String> matriculesToInclude = chargeGasoilRequest.getMatriculeToInclude();
         final List<String> matriculesToExclude = chargeGasoilRequest.getMatriculesToExclude();
-        final LocalDate dateDebut = chargeGasoilRequest.getDateDebut();
-        final LocalDate dateFin = chargeGasoilRequest.getDateFin();
+        final LocalDateTime dateDebut = LocalDateTime.of(chargeGasoilRequest.getDateDebut(), LocalTime.MIDNIGHT);
+        final LocalDateTime dateFin = LocalDateTime.of(chargeGasoilRequest.getDateFin(), LocalTime.MIDNIGHT);
 
         boolean withSocieteId = societeId != null;
         boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
@@ -127,8 +128,8 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         final Long societeId = chargeGasoilRequest.getSocieteId();
         final List<String> matriculesToInclude = chargeGasoilRequest.getMatriculeToInclude();
         final List<String> matriculesToExclude = chargeGasoilRequest.getMatriculesToExclude();
-        final LocalDate dateDebut = chargeGasoilRequest.getDateDebut();
-        final LocalDate dateFin = chargeGasoilRequest.getDateFin();
+        final LocalDateTime dateDebut = LocalDateTime.of(chargeGasoilRequest.getDateDebut(), LocalTime.MIDNIGHT);
+        final LocalDateTime dateFin = LocalDateTime.of(chargeGasoilRequest.getDateFin(), LocalTime.MIDNIGHT);
 
         boolean withSocieteId = societeId != null;
         boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
@@ -178,8 +179,8 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         final Long societeId = tauxConsommationRequest.getSocieteId();
         final List<String> matriculesToInclude = tauxConsommationRequest.getMatriculesToInclude();
         final List<String> matriculesToExclude = tauxConsommationRequest.getMatriculesToExclude();
-        final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
-        final LocalDate dateFin = tauxConsommationRequest.getDateFin();
+        final LocalDateTime dateDebut = LocalDateTime.of(tauxConsommationRequest.getDateDebut(), LocalTime.MIDNIGHT);
+        final LocalDateTime dateFin = LocalDateTime.of(tauxConsommationRequest.getDateFin(), LocalTime.MIDNIGHT);
 
         boolean withSocieteId = societeId != null;
         boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
@@ -229,8 +230,8 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         final Long societeId = tauxConsommationRequest.getSocieteId();
         final List<String> matriculesToInclude = tauxConsommationRequest.getMatriculesToInclude();
         final List<String> matriculesToExclude = tauxConsommationRequest.getMatriculesToExclude();
-        final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
-        final LocalDate dateFin = tauxConsommationRequest.getDateFin();
+        final LocalDateTime dateDebut = LocalDateTime.of(tauxConsommationRequest.getDateDebut(), LocalTime.MIDNIGHT);
+        final LocalDateTime dateFin = LocalDateTime.of(tauxConsommationRequest.getDateFin(), LocalTime.MIDNIGHT);
 
         boolean withSocieteId = societeId != null;
         boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);
@@ -280,8 +281,8 @@ public class GasoilRepositoryCustomImpl implements GasoilRepositoryCustom {
         final Long societeId = tauxConsommationRequest.getSocieteId();
         final List<String> matriculesToInclude = tauxConsommationRequest.getMatriculesToInclude();
         final List<String> matriculesToExclude = tauxConsommationRequest.getMatriculesToExclude();
-        final LocalDate dateDebut = tauxConsommationRequest.getDateDebut();
-        final LocalDate dateFin = tauxConsommationRequest.getDateFin();
+        final LocalDateTime dateDebut = LocalDateTime.of(tauxConsommationRequest.getDateDebut(), LocalTime.MIDNIGHT);
+        final LocalDateTime dateFin = LocalDateTime.of(tauxConsommationRequest.getDateFin(), LocalTime.MIDNIGHT);
 
         boolean withSocieteId = societeId != null;
         boolean withMatriculesToInclude = !CollectionUtils.isEmpty(matriculesToInclude);

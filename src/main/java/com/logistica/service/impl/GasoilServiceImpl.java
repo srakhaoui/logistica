@@ -1,11 +1,16 @@
 package com.logistica.service.impl;
 
 import com.logistica.domain.Gasoil;
+import com.logistica.domain.enumeration.Platform;
 import com.logistica.repository.GasoilRepository;
+import com.logistica.repository.TransporteurRepository;
 import com.logistica.service.GasoilService;
 import com.logistica.service.KilometrageInvalideException;
 import com.logistica.service.LivraisonService;
 import com.logistica.service.dto.*;
+import com.logistica.service.mapper.MailiWorkBookParser;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +19,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
@@ -35,7 +42,13 @@ public class GasoilServiceImpl implements GasoilService {
     private final GasoilRepository gasoilRepository;
 
     @Autowired
+    private MailiWorkBookParser mailiWorkBookParser;
+
+    @Autowired
     private LivraisonService livraisonService;
+
+    @Autowired
+    private TransporteurRepository transporteurRepository;
 
     public GasoilServiceImpl(GasoilRepository gasoilRepository) {
         this.gasoilRepository = gasoilRepository;
@@ -53,7 +66,6 @@ public class GasoilServiceImpl implements GasoilService {
         if (gasoil.getKilometrageFinal().compareTo(gasoil.getKilometrageInitial()) <= 0) {
             throw new KilometrageInvalideException("error.km.invalide");
         }
-
         gasoil.setPrixTotalGasoil(gasoil.getPrixDuLitre() * gasoil.getQuantiteEnLitre());
         gasoil.setKilometrageParcouru(gasoil.getKilometrageFinal() - gasoil.getKilometrageInitial());
         if (gasoil.getKilometrageParcouru() > 1000) {
@@ -174,6 +186,47 @@ public class GasoilServiceImpl implements GasoilService {
             .withEvolutionTauxConsommation(evolutionTauxConsommatiion)
             .withTauxConsommation(tauxConsommationGlobal)
             .withTauxConsommationParMatricule(tauxConsommationParMatricule);
+    }
+
+    @Override
+    @Transactional
+    public ImportMailiResponse importMaili(MultipartFile mailExport) throws IOException {
+        List<BonGasoilInfo> bonGasoilInfos = mailiWorkBookParser.parse(WorkbookFactory.create(mailExport.getInputStream()));
+        List<Gasoil> gasoils = bonGasoilInfos.stream()
+            .filter(bonGasoilInfo -> StringUtils.isNotBlank(bonGasoilInfo.getMatricule()))
+            .filter(bonGasoilInfo -> transporteurRepository.findByMatricule(bonGasoilInfo.getMatricule()) != null)
+            .filter(bonGasoilInfo -> gasoilRepository.findByMatriculeAndDateBonGasoil(bonGasoilInfo.getMatricule(), bonGasoilInfo.getDateBonGasoil()) == null)
+            .map(this::bonGasoilInfoToBonGasoil)
+            .collect(Collectors.toList());
+        gasoils.forEach(this::save);
+
+        return new ImportMailiResponse(messageFrom(gasoils.size()), gasoils.size());
+    }
+
+    private String messageFrom(int size) {
+        String message;
+        if (size == 0) {
+            message = "logisticaApp.gasoil.maili.aucun";
+        } else if (size == 1) {
+            message = "logisticaApp.gasoil.maili.un";
+        } else {
+            message = "logisticaApp.gasoil.maili.plusieurs";
+        }
+        return message;
+    }
+
+    private Gasoil bonGasoilInfoToBonGasoil(BonGasoilInfo bonGasoilInfo) {
+        Gasoil gasoil = new Gasoil();
+        gasoil.setPlatform(Platform.Maili);
+        gasoil.setQuantiteEnLitre(bonGasoilInfo.getQuantiteEnLitre());
+        gasoil.setTransporteur(transporteurRepository.findByMatricule(bonGasoilInfo.getMatricule()));
+        gasoil.setSocieteFacturation(gasoil.getTransporteur().getProprietaire());
+        gasoil.setPrixDuLitre(gasoilRepository.getLastPrixGasoil());
+        gasoil.setDateBonGasoil(bonGasoilInfo.getDateBonGasoil());
+        gasoil.setKilometrageInitial(0);
+        gasoil.setKilometrageFinal(1);
+        gasoil.setNumeroBonGasoil(-1L);
+        return gasoil;
     }
 
     private Courbe<String, Float> getEvolutionLitrage(StatistiquesTauxConsommationRequest tauxConsommationRequest) {

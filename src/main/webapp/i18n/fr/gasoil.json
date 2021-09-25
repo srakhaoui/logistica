@@ -25,7 +25,12 @@
       "kilometrageFinal": "Kilometrage Final",
       "kilometrageParcouru": "Kilometrage Parcouru",
       "transporteur": "Transporteur",
-      "societeFacturation": "Societe Facturation"
+      "societeFacturation": "Societe Facturation",
+      "maili": {
+        "aucun": "Aucun bon de gasoil n'a été intégré",
+        "un": "{{ bonsGasoil }} bon de gasoil a été intégré",
+        "plusieurs": "{{ bonsGasoil }} bons de gasoil ont été intégrés"
+      }
     }
   }
 }

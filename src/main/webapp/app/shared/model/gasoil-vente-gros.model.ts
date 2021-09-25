@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 import { ISociete } from 'app/shared/model/societe.model';
 import { IClientGrossiste } from 'app/shared/model/client-grossiste.model';
 import { IGasoilAchatGros } from 'app/shared/model/gasoil-achat-gros.model';
@@ -14,6 +15,7 @@ export interface IGasoilVenteGros {
   transporteur?: ISociete;
   client?: IClientGrossiste;
   achatGasoil?: IGasoilAchatGros;
+  dateVente?: Moment;
 }
 
 export class GasoilVenteGros implements IGasoilVenteGros {
@@ -27,6 +29,7 @@ export class GasoilVenteGros implements IGasoilVenteGros {
     public uniteGasoilGros?: UniteGasoilGros,
     public transporteur?: ISociete,
     public client?: IClientGrossiste,
-    public achatGasoil?: IGasoilAchatGros
+    public achatGasoil?: IGasoilAchatGros,
+    public dateVente?: Moment
   ) {}
 }

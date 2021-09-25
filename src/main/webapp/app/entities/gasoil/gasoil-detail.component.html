@@ -17,15 +17,19 @@
                         <a [routerLink]="['/societe', gasoil.societeFacturation?.id, 'view']">{{gasoil.societeFacturation?.nom}}</a>
                     </div>
                 </dd>
+                <dt><span>Plateforme</span></dt>
+                <dd>
+                    <span>{{gasoil.platform}}</span>
+                </dd>
                 <dt><span jhiTranslate="logisticaApp.gasoil.numeroBonGasoil">Numero Bon Gasoil</span></dt>
                 <dd>
                     <span>{{gasoil.numeroBonGasoil}}</span>
                 </dd>
-                <dt><span >Date Bon Gasoil</span></dt>
+                <dt><span>Date Bon Gasoil</span></dt>
                 <dd>
                     <span>{{gasoil.dateBonGasoil | date:'dd MMM yyyy'}}</span>
                 </dd>
-                <dt><span >Date Bon Saisie</span></dt>
+                <dt><span>Date Bon Saisie</span></dt>
                 <dd>
                     <span>{{gasoil.dateSaisie | date:'dd MMM yyyy'}}</span>
                 </dd>

@@ -7,8 +7,8 @@
     <div class="progress-ctn" *ngIf="uploadProgress">
         <div class="progress">
             <div class="progress-bar progress-bar-striped bg-success" role="progressbar" style="width: 25%"
-                 aria-valuenow="uploadProgress" aria-valuemin="0" aria-valuemax="100"></div>
+                 attr.aria-valuenow="{{uploadProgress}}" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
-        <fa-icon [icon]="'x'" (click)="cancelUpload()"></fa-icon>
+        <fa-icon [icon]="'cancel'" (click)="cancelUpload()"></fa-icon>
     </div>
 </div>
