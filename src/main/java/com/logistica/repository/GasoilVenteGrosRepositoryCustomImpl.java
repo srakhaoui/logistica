@@ -162,7 +162,7 @@ public class GasoilVenteGrosRepositoryCustomImpl implements GasoilVenteGrosRepos
         }
 
         return PageableExecutionUtils.getPage(entityQuery.getResultList(), pageable, () -> {
-            String countQuery = new StringBuilder("Select count(*) From RecapitulatifGasoilTransactionGros g ").append(predicate).toString();
+            String countQuery = new StringBuilder("Select count(*) From GasoilVenteGros g ").append(predicate).toString();
             return entityManager.createQuery(countQuery).getFirstResult();
         });
     }

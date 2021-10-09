@@ -66,6 +66,7 @@ public class Gasoil implements Serializable {
     @Column(name = "date_bon_gasoil", nullable = false)
     private LocalDateTime dateBonGasoil;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "platform", nullable = false)
     private Platform platform;
 

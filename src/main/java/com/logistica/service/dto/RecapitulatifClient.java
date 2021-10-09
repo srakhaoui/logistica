@@ -182,8 +182,8 @@ public class RecapitulatifClient implements ICsvConvertible {
                 .append(facture).append(";")
                 .append(type).append(";");
 
-            if (type == TypeLivraison.Marchandise) {
-                csv.append(Optional.ofNullable(fournisseur).orElse("Undefined"))
+            if (TypeLivraison.Marchandise == type) {
+                csv.append(Optional.ofNullable(fournisseur).orElse("Undefined")).append(";")
                     .append(StringUtils.replaceChars(Float.toString(Optional.ofNullable(quantiteAchetee).orElse(0.0F)), '.', ',')).append(";")
                     .append(Optional.ofNullable(uniteAchat).map(Unite::name).orElse("Undefined")).append(";")
                     .append(StringUtils.replaceChars(Float.toString(Optional.ofNullable(prixTotalAchat).orElse(0.0F)), '.', ',')).append(";");

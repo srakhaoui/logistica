@@ -4,18 +4,15 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
 
-    <changeSet id="20210919111455-1" author="said.rakhaoui">
+    <changeSet id="20211009152100-1" author="said.rakhaoui">
         <modifyDataType columnName="date_bon_gasoil"
                         newDataType="timestamp"
                         schemaName="public"
                         tableName="gasoil"/>
+        <update tableName="gasoil">
+            <column name="platform" value="Logistica"></column>
+        </update>
 
-        <addColumn schemaName="public"
-                   tableName="gasoil">
-            <column name="platform" type="varchar(10)" defaultValue="Logistica">
-                <constraints nullable="false"/>
-            </column>
-        </addColumn>
     </changeSet>
 
 </databaseChangeLog>
