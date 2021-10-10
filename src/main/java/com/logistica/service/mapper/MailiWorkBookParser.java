@@ -29,7 +29,7 @@ public class MailiWorkBookParser {
     private static final Predicate<String> DRIVER_MATCHER = Pattern.compile("Driver:").asPredicate();
     private static final Pattern MATRICULE_FINDER = Pattern.compile("T\\d+:?\\s*(\\w+)");
     private static final Predicate<String> FUELING_TOTAL_FINDER = Pattern.compile("Total:").asPredicate();
-    private static final Pattern DATE_FUELING_FINDER = Pattern.compile("(\\d{2}\\/\\d{2}\\/\\d{4}\\s+\\d{2}:\\d{2})\\s+-");
+    private static final Pattern DATE_FUELING_FINDER = Pattern.compile("(\\d{2}/\\d{2}/\\d{4}\\s+\\d{2}:\\d{2})\\s+-");
     private static final SimpleDateFormat DATE_TIME_FORMATTER = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
     public List<BonGasoilInfo> parse(Workbook workbook) {
@@ -47,21 +47,17 @@ public class MailiWorkBookParser {
                 Matcher matriculeMatcher = MATRICULE_FINDER.matcher(row.getCell(2).getStringCellValue());
                 if (matriculeMatcher.find()) {
                     matricule = matriculeMatcher.group(1);
-//                    if(StringUtils.isNotBlank(matricule)){
                     Row fuelingItem = reportSheet.getRow(++i);
                     do {
-                        if (isNonEmpty(fuelingItem)) {
-                            Matcher dateFuelingMatcher = DATE_FUELING_FINDER.matcher(fuelingItem.getCell(1).getStringCellValue());
-                            if (dateFuelingMatcher.find()) {
-                                LocalDateTime bonGasoilDateTs = getDateBonGasoilTs(dateFuelingMatcher);
-                                float quantiteEnLitre = (float) fuelingItem.getCell(3).getNumericCellValue();
-                                bonGasoilInfos.add(new BonGasoilInfo(matricule, bonGasoilDateTs, quantiteEnLitre));
-                            }
+                        Matcher fuelingDateMatcher = DATE_FUELING_FINDER.matcher(getOrDefaultToEmpty(fuelingItem, 1));
+                        if (fuelingDateMatcher.find()) {
+                            LocalDateTime bonGasoilDateTs = getDateBonGasoilTs(fuelingDateMatcher);
+                            float quantiteEnLitre = (float) fuelingItem.getCell(3).getNumericCellValue();
+                            bonGasoilInfos.add(new BonGasoilInfo(matricule, bonGasoilDateTs, quantiteEnLitre));
                         }
                         fuelingItem = reportSheet.getRow(i++);
                     } while (!FUELING_TOTAL_FINDER.test(getOrDefaultToEmpty(fuelingItem, 1)));
                     i--;
-//                    }
                 }
             }
             cellBValue = getCellBValue(reportSheet, i++);

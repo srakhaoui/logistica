@@ -85,6 +85,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.reportingForm.get('dateDebut').setValue(defaultDateDebut);
     const defaultDateFin = moment(new Date()).endOf('month');
     this.reportingForm.get('dateFin').setValue(defaultDateFin);
+    this.reportingForm.get('typeLivraison').setValue(TypeLivraison.Transport);
   }
 
   loadAll() {
