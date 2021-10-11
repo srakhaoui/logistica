@@ -15,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransporteurRepository extends JpaRepository<Transporteur, Long>, JpaSpecificationExecutor<Transporteur> {
 
-    @Query("From Transporteur Where matricule = :matricule and lastModifiedOn = (Select max(t1.lastModifiedOn) From Transporteur t1 where t1.matricule = :matricule)")
+    @Query("From Transporteur Where matricule = :matricule and createdOn = (Select max(t1.createdOn) From Transporteur t1 where t1.matricule = :matricule)")
     Transporteur findByMatricule(@Param("matricule") String matricule);
 
 }
