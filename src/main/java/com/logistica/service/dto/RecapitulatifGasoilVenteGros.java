@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.Optional;
 
 public class RecapitulatifGasoilVenteGros implements ICsvConvertible {
+    private String description;
     private String client;
     private LocalDate dateVente;
     private String carburant;
@@ -15,7 +16,8 @@ public class RecapitulatifGasoilVenteGros implements ICsvConvertible {
     private Float prixVenteUnitaire;
     private Float prixVenteTotal;
 
-    public RecapitulatifGasoilVenteGros(String client, LocalDate dateVente, String carburant, Float quantite, UniteGasoilGros unite, Float prixVenteUnitaire, Float prixVenteTotal) {
+    public RecapitulatifGasoilVenteGros(String description, String client, LocalDate dateVente, String carburant, Float quantite, UniteGasoilGros unite, Float prixVenteUnitaire, Float prixVenteTotal) {
+        this.description = description;
         this.client = client;
         this.dateVente = dateVente;
         this.carburant = carburant;
@@ -82,13 +84,14 @@ public class RecapitulatifGasoilVenteGros implements ICsvConvertible {
     }
 
     public static String csvHeader() {
-        return "client;carburant;dateVente;quantite;prixVenteUnitaire;prixVenteTotal;unite";
+        return "description;client;carburant;dateVente;quantite;prixVenteUnitaire;prixVenteTotal;unite";
     }
 
     @Override
     public String toCsv() {
         StringBuilder csv = new StringBuilder();
-        csv.append(Optional.ofNullable(client).orElse("")).append(";")
+        csv.append(Optional.ofNullable(description).orElse("")).append(";")
+            .append(Optional.ofNullable(client).orElse("")).append(";")
             .append(Optional.ofNullable(carburant).orElse("")).append(";")
             .append(dateVente).append(";")
             .append(StringUtils.replaceChars(Double.toString(quantite), '.', ',')).append(";")

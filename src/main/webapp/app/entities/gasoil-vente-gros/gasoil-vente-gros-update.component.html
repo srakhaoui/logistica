@@ -11,6 +11,19 @@
                            readonly/>
                 </div>
                 <div class="form-group">
+                    <label class="form-control-label" for="field_dateVente">Date Vente</label>
+                    <input type="date" class="form-control" name="dateVente" id="field_dateVente"
+                           formControlName="dateVente"/>
+                    <div
+                        *ngIf="editForm.get('dateVente').invalid && (editForm.get('dateVente').dirty || editForm.get('dateVente').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('dateVente').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.prixVenteUnitaire"
                            for="field_prixVenteUnitaire">Prix Vente Unitaire</label>
                     <input type="number" class="form-control" name="prixVenteUnitaire" id="field_prixVenteUnitaire"

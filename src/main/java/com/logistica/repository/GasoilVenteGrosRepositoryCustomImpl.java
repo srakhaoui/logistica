@@ -29,7 +29,7 @@ public class GasoilVenteGrosRepositoryCustomImpl implements GasoilVenteGrosRepos
         final LocalDate dateDebut = recapitulatifGasoilGrosRequest.getDateDebut();
         final LocalDate dateFin = recapitulatifGasoilGrosRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilVenteGros(g.client.nom, g.dateVente, g.achatGasoil.carburant.code, g.quantite, g.uniteGasoilGros, g.prixVenteUnitaire, g.prixVenteTotal) From GasoilVenteGros g");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilVenteGros(g.achatGasoil.description, g.client.nom, g.dateVente, g.achatGasoil.carburant.code, g.quantite, g.uniteGasoilGros, g.prixVenteUnitaire, g.prixVenteTotal) From GasoilVenteGros g");
         boolean withNumeroBonReception = numeroBonReception != null;
         boolean withFournisseurId = fournisseurId != null;
         boolean withAcheteurId = acheteurId != null;
@@ -103,7 +103,7 @@ public class GasoilVenteGrosRepositoryCustomImpl implements GasoilVenteGrosRepos
         final LocalDate dateDebut = recapitulatifGasoilGrosRequest.getDateDebut();
         final LocalDate dateFin = recapitulatifGasoilGrosRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilTransactionGros(g.achatGasoil.fournisseurGrossiste.nom, g.achatGasoil.acheteur.nom, g.achatGasoil.carburant.code, g.achatGasoil.dateReception, g.achatGasoil.quantity, g.achatGasoil.uniteGasoilGros, g.achatGasoil.prixUnitaire, g.achatGasoil.prixUnitaire * g.achatGasoil.quantity, g.client.nom, g.transporteur.nom, g.dateVente, g.quantite, g.uniteGasoilGros, g.prixVenteUnitaire, g.prixVenteTotal, g.margeGlobale, g.tauxMarge) From GasoilVenteGros g");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilTransactionGros(g.achatGasoil.description, g.achatGasoil.fournisseurGrossiste.nom, g.achatGasoil.acheteur.nom, g.achatGasoil.carburant.code, g.achatGasoil.dateReception, g.achatGasoil.quantity, g.achatGasoil.uniteGasoilGros, g.achatGasoil.prixUnitaire, g.achatGasoil.prixUnitaire * g.achatGasoil.quantity, g.client.nom, g.transporteur.nom, g.dateVente, g.quantite, g.uniteGasoilGros, g.prixVenteUnitaire, g.prixVenteTotal, g.margeGlobale, g.tauxMarge) From GasoilVenteGros g");
         boolean withNumeroBonReception = numeroBonReception != null;
         boolean withFournisseurId = fournisseurId != null;
         boolean withAcheteurId = acheteurId != null;

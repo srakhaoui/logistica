@@ -6,6 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDate;
 
 public class RecapitulatifGasoilAchatGros implements ICsvConvertible {
+    private String description;
     private String fournisseur;
     private String acheteur;
     private String carburant;
@@ -14,7 +15,9 @@ public class RecapitulatifGasoilAchatGros implements ICsvConvertible {
     private UniteGasoilGros unite;
     private Float prixUnitaire;
 
-    public RecapitulatifGasoilAchatGros(String fournisseur, String acheteur, String carburant, LocalDate dateReception, Float quantity, UniteGasoilGros unite, Float prixUnitaire) {
+
+    public RecapitulatifGasoilAchatGros(String description, String fournisseur, String acheteur, String carburant, LocalDate dateReception, Float quantity, UniteGasoilGros unite, Float prixUnitaire) {
+        this.description = description;
         this.fournisseur = fournisseur;
         this.acheteur = acheteur;
         this.carburant = carburant;
@@ -81,13 +84,14 @@ public class RecapitulatifGasoilAchatGros implements ICsvConvertible {
     }
 
     public static String csvHeader() {
-        return "fournisseur;acheteur;carburant;dateReception;quantity;unite;prixUnitaire;";
+        return "description;fournisseur;acheteur;carburant;dateReception;quantity;unite;prixUnitaire;";
     }
 
     @Override
     public String toCsv() {
         StringBuilder csv = new StringBuilder();
-        csv.append(fournisseur).append(";")
+        csv.append(description).append(";")
+            .append(fournisseur).append(";")
             .append(acheteur).append(";")
             .append(carburant).append(";")
             .append(dateReception).append(";")

@@ -37,6 +37,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    dateVente: [null, [Validators.required]],
     prixVenteUnitaire: [null, [Validators.required, Validators.min(0)]],
     quantite: [null, [Validators.required, Validators.min(0)]],
     prixVenteTotal: [null],
@@ -73,6 +74,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
   updateForm(gasoilVenteGros: IGasoilVenteGros) {
     this.editForm.patchValue({
       id: gasoilVenteGros.id,
+      dateVente: gasoilVenteGros.dateVente,
       prixVenteUnitaire: gasoilVenteGros.prixVenteUnitaire,
       quantite: gasoilVenteGros.quantite,
       prixVenteTotal: gasoilVenteGros.prixVenteTotal,
@@ -103,6 +105,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
     return {
       ...new GasoilVenteGros(),
       id: this.editForm.get(['id']).value,
+      dateVente: this.editForm.get(['dateVente']).value,
       prixVenteUnitaire: this.editForm.get(['prixVenteUnitaire']).value,
       quantite: this.editForm.get(['quantite']).value,
       prixVenteTotal: this.editForm.get(['prixVenteTotal']).value,

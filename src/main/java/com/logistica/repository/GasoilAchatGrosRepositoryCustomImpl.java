@@ -24,7 +24,7 @@ public class GasoilAchatGrosRepositoryCustomImpl implements GasoilAchatGrosRepos
         final LocalDate dateDebut = recapitulatifGasoilGrosRequest.getDateDebut();
         final LocalDate dateFin = recapitulatifGasoilGrosRequest.getDateFin();
 
-        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilAchatGros(g.fournisseurGrossiste.nom, g.acheteur.nom, g.carburant.code, g.dateReception, g.quantity, g.uniteGasoilGros, g.prixUnitaire) From GasoilAchatGros g");
+        StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifGasoilAchatGros(g.description, g.fournisseurGrossiste.nom, g.acheteur.nom, g.carburant.code, g.dateReception, g.quantity, g.uniteGasoilGros, g.prixUnitaire) From GasoilAchatGros g");
         boolean withNumeroBonReception = numeroBonReception != null;
         boolean withFournisseurId = fournisseurId != null;
         boolean withAcheteurId = acheteurId != null;
