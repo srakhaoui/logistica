@@ -10,6 +10,8 @@ import { JhiAlertService } from 'ng-jhipster';
 import { IGasoil, Gasoil } from 'app/shared/model/gasoil.model';
 import { IGasoilPrice } from 'app/shared/model/gasoil-price.model';
 import { GasoilService } from './gasoil.service';
+import { DepotService } from 'app/entities/depot/depot.service';
+import { IDepot } from 'app/shared/model/depot.model';
 import { ITransporteur } from 'app/shared/model/transporteur.model';
 import { TransporteurService } from 'app/entities/transporteur/transporteur.service';
 import { ISociete } from 'app/shared/model/societe.model';
@@ -27,6 +29,10 @@ export class GasoilUpdateComponent implements OnInit {
   transporteurInput$ = new Subject<string>();
   transporteursLoading:Boolean = false;
 
+  depots$: Observable<IDepot[]>;
+  depotInput$ = new Subject<string>();
+  depotsLoading:Boolean = false;
+
   societes: ISociete[];
 
   kilometrageInitialReadOnly;
@@ -43,6 +49,7 @@ export class GasoilUpdateComponent implements OnInit {
     kilometrageParcouru: [],
     transporteur: [null, [Validators.required]],
     societeFacturation: [null, [Validators.required]],
+    depot: [null, [Validators.required]],
     dateBonGasoil: [null, [Validators.required]],
     dateSaisie: []
   });
@@ -50,6 +57,7 @@ export class GasoilUpdateComponent implements OnInit {
   constructor(
     protected jhiAlertService: JhiAlertService,
     protected gasoilService: GasoilService,
+    protected depotService: DepotService,
     protected transporteurService: TransporteurService,
     protected societeService: SocieteService,
     protected activatedRoute: ActivatedRoute,
@@ -71,6 +79,7 @@ export class GasoilUpdateComponent implements OnInit {
       transporteur.description = `${transporteur.nom} - ${transporteur.prenom} - ${transporteur.matricule}`;
     }
     this.setLatestGasoilPrice();
+    this.loadDepots();
   }
 
   updateForm(gasoil: IGasoil) {
@@ -203,4 +212,22 @@ export class GasoilUpdateComponent implements OnInit {
            );
     }
   }
+
+  private loadDepots(){
+      this.depots$ = concat(
+              of([]), // default items
+              this.depotInput$.pipe(
+                  startWith(''),
+                  debounceTime(500),
+                  distinctUntilChanged(),
+                  tap(() => (this.depotsLoading = true)),
+                  switchMap(nom =>
+                      this.depotService
+                          .query({'consommationInterne.equals': true, 'nom.contains': nom})
+                          .pipe(map((resp: HttpResponse<IDepot[]>) => resp.body), catchError(() => of([])))
+                  ),
+                  tap(() => (this.depotsLoading = false))
+              )
+          );
+    }
 }

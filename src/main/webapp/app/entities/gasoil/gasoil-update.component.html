@@ -50,6 +50,29 @@
                         </small>
                     </div>
                 </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="field_depot">Dépôt</label>
+                    <ng-select id="field_depot"
+                               [items]="depots$ | async"
+                               [typeahead]="depotInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="depotsLoading"
+                               formControlName="depot"
+                               name="depot"
+                               placeholder="Chercher par dépôt">
+                    </ng-select>
+                    <div
+                        *ngIf="editForm.get('depot').invalid && (editForm.get('depot').dirty || editForm.get('depot').touched)">
+                        <small class="form-text text-danger" *ngIf="editForm.get('depot').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+
+
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoil.numeroBonGasoil"
                            for="field_numeroBonGasoil">Numero Bon Gasoil</label>

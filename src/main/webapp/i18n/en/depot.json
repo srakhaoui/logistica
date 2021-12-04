@@ -1,0 +1,26 @@
+{
+  "logisticaApp": {
+    "depot": {
+      "home": {
+        "title": "Depots",
+        "createLabel": "Create a new Depot",
+        "createOrEditLabel": "Create or edit a Depot",
+        "notFound": "No Depots found"
+      },
+      "created": "A new Depot is created with identifier {{ param }}",
+      "updated": "A Depot is updated with identifier {{ param }}",
+      "deleted": "A Depot is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Depot {{ id }}?"
+      },
+      "detail": {
+        "title": "Depot"
+      },
+      "stock": "Stock",
+      "nom": "Nom",
+      "consommationInterne": "Consommation Interne",
+      "alimentation": "Alimentation",
+      "consommation": "Consommation"
+    }
+  }
+}

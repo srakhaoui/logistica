@@ -60,6 +60,10 @@ public class Gasoil implements Serializable {
     @JsonIgnoreProperties("gasoils")
     private Societe societeFacturation;
 
+    @ManyToOne
+    @JsonIgnoreProperties("gasoils")
+    private Depot depot;
+
     @Column(name = "date_saisie", nullable = false)
     private LocalDate dateSaisie = LocalDate.now();
 
@@ -229,6 +233,14 @@ public class Gasoil implements Serializable {
 
     public void setAudit(Audit audit) {
         this.audit = audit;
+    }
+
+    public Depot getDepot() {
+        return depot;
+    }
+
+    public void setDepot(Depot depot) {
+        this.depot = depot;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

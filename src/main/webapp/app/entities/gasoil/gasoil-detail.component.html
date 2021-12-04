@@ -17,6 +17,12 @@
                         <a [routerLink]="['/societe', gasoil.societeFacturation?.id, 'view']">{{gasoil.societeFacturation?.nom}}</a>
                     </div>
                 </dd>
+                <dt><span>Depot</span></dt>
+                <dd>
+                    <div *ngIf="gasoil.depot">
+                        <a [routerLink]="['/depot', gasoil.depot?.id, 'view']">{{gasoil.depot?.nom}}</a>
+                    </div>
+                </dd>
                 <dt><span>Plateforme</span></dt>
                 <dd>
                     <span>{{gasoil.platform}}</span>

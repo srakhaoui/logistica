@@ -1,0 +1,56 @@
+{
+  "fluentMethods": true,
+  "clientRootFolder": "",
+  "relationships": [
+    {
+      "relationshipName": "alimentation",
+      "otherEntityName": "clientGrossiste",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": [
+        "required"
+      ],
+      "otherEntityField": "nom",
+      "otherEntityRelationshipName": "depot"
+    },
+    {
+      "relationshipName": "consommation",
+      "otherEntityName": "fournisseurGrossiste",
+      "relationshipType": "many-to-one",
+      "relationshipValidateRules": [
+        "required"
+      ],
+      "otherEntityField": "nom",
+      "otherEntityRelationshipName": "depot"
+    }
+  ],
+  "fields": [
+    {
+      "fieldName": "stock",
+      "fieldType": "Float",
+      "fieldValidateRules": [
+        "required",
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldName": "nom",
+      "fieldType": "String",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldName": "consommationInterne",
+      "fieldType": "Boolean"
+    }
+  ],
+  "changelogDate": "20211204095222",
+  "dto": "no",
+  "searchEngine": false,
+  "service": "serviceClass",
+  "entityTableName": "depot",
+  "databaseType": "sql",
+  "jpaMetamodelFiltering": true,
+  "pagination": "infinite-scroll"
+}
