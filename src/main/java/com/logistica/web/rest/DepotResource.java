@@ -4,6 +4,8 @@ import com.logistica.domain.Depot;
 import com.logistica.service.DepotQueryService;
 import com.logistica.service.DepotService;
 import com.logistica.service.dto.DepotCriteria;
+import com.logistica.service.dto.StocksRequest;
+import com.logistica.service.dto.StocksResponse;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -140,5 +142,11 @@ public class DepotResource {
         log.debug("REST request to delete Depot : {}", id);
         depotService.delete(id);
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString())).build();
+    }
+
+    @GetMapping("/depots/stocks")
+    public ResponseEntity<List<StocksResponse>> getStocks(StocksRequest stocksRequest) {
+        log.debug("REST request to get stock by : {}", stocksRequest);
+        return ResponseEntity.ok().body(depotService.getStocks(stocksRequest));
     }
 }

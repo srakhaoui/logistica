@@ -2,6 +2,8 @@ package com.logistica.service;
 
 import com.logistica.domain.Depot;
 import com.logistica.repository.DepotRepository;
+import com.logistica.service.dto.StocksRequest;
+import com.logistica.service.dto.StocksResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -9,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Depot}.
@@ -70,5 +74,33 @@ public class DepotService {
     public void delete(Long id) {
         log.debug("Request to delete Depot : {}", id);
         depotRepository.deleteById(id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<StocksResponse> getStocks(StocksRequest stocksRequest) {
+        List<Depot> depots = Optional.ofNullable(stocksRequest.getDepot()).map(depotName -> depotRepository.findByNom(depotName)).orElseGet(() -> depotRepository.findAll());
+        return depots.stream().map(depot -> {
+            if (depot.isConsommationInterne()) {
+                return new StocksResponse(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot), getConsommationInterne(depot));
+            } else {
+                return new StocksResponse(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot));
+            }
+        }).collect(Collectors.toList());
+    }
+
+    private Float getConsommationInterne(Depot depot) {
+        return Optional.ofNullable(depotRepository.getConsommationInterneByDepotInterne(depot.getNom())).orElse(0.0F);
+    }
+
+    private Float getEntreesAchat(Depot depot) {
+        return Optional.ofNullable(depotRepository.getEntreesAchatByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
+    }
+
+    private Float getEntreesVente(Depot depot) {
+        return Optional.ofNullable(depotRepository.getEntreesVenteByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
+    }
+
+    private Float getSorties(Depot depot) {
+        return Optional.ofNullable(depotRepository.getSortieByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
     }
 }

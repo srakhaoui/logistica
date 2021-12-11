@@ -1,5 +1,6 @@
 import { ITransporteur } from 'app/shared/model/transporteur.model';
 import { ISociete } from 'app/shared/model/societe.model';
+import { IDepot } from 'app/shared/model/depot.model';
 import { Platform } from 'app/shared/model/enumerations/platform.model';
 import { Moment } from 'moment';
 
@@ -17,6 +18,7 @@ export interface IGasoil {
   dateBonGasoil?: Moment;
   dateSaisie?: Moment;
   platform?: Platform;
+  depot?: IDepot;
 }
 
 export class Gasoil implements IGasoil {
@@ -33,7 +35,8 @@ export class Gasoil implements IGasoil {
     public societeFacturation?: ISociete,
     public dateBonGasoil?: Moment,
     public dateSaisie?: Moment,
-    public platform?: Platform
+    public platform?: Platform,
+    public depot?: IDepot
   ) {
     this.platform = Platform.Logistica;
   }
