@@ -2,8 +2,8 @@ package com.logistica.service;
 
 import com.logistica.domain.Depot;
 import com.logistica.repository.DepotRepository;
-import com.logistica.service.dto.StocksRequest;
-import com.logistica.service.dto.StocksResponse;
+import com.logistica.service.dto.RecapitulatifStock;
+import com.logistica.service.dto.RecapitulatifStockRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -77,13 +77,13 @@ public class DepotService {
     }
 
     @Transactional(readOnly = true)
-    public List<StocksResponse> getStocks(StocksRequest stocksRequest) {
-        List<Depot> depots = Optional.ofNullable(stocksRequest.getDepot()).map(depotName -> depotRepository.findByNom(depotName)).orElseGet(() -> depotRepository.findAll());
+    public List<RecapitulatifStock> getStocks(RecapitulatifStockRequest recapitulatifStockRequest) {
+        List<Depot> depots = Optional.ofNullable(recapitulatifStockRequest.getDepot()).map(depotName -> depotRepository.findByNom(depotName)).orElseGet(() -> depotRepository.findAll());
         return depots.stream().map(depot -> {
             if (depot.isConsommationInterne()) {
-                return new StocksResponse(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot), getConsommationInterne(depot));
+                return new RecapitulatifStock(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot), getConsommationInterne(depot));
             } else {
-                return new StocksResponse(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot));
+                return new RecapitulatifStock(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot));
             }
         }).collect(Collectors.toList());
     }

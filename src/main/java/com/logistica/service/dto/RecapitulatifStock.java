@@ -1,29 +1,29 @@
 package com.logistica.service.dto;
 
-public class StocksResponse {
+public class RecapitulatifStock {
     private String depot;
     private boolean depotReserve;
     private float stockInitial;
     private float entreesAchat;
-    private float entreesTransfet;
+    private float entreesTransfert;
     private float sorties;
     private float consommationInterne;
     private float stock;
 
-    public StocksResponse(String depot, boolean depotReserve, float stockInitial, double entreesAchat, double entreesTransfet, double sorties, double consommationInterne) {
-        this(depot, depotReserve, stockInitial, entreesAchat, entreesTransfet, sorties);
+    public RecapitulatifStock(String depot, boolean depotReserve, float stockInitial, double entreesAchat, double entreesTransfert, double sorties, double consommationInterne) {
+        this(depot, depotReserve, stockInitial, entreesAchat, entreesTransfert, sorties);
         this.consommationInterne = (float) consommationInterne;
         this.stock = (float) (stock - consommationInterne);
     }
 
-    public StocksResponse(String depot, boolean depotReserve, float stockInitial, double entreesAchat, double entreesTransfet, double sorties) {
+    public RecapitulatifStock(String depot, boolean depotReserve, float stockInitial, double entreesAchat, double entreesTransfert, double sorties) {
         this.depot = depot;
         this.depotReserve = depotReserve;
         this.stockInitial = stockInitial;
         this.entreesAchat = (float) entreesAchat;
-        this.entreesTransfet = (float) entreesTransfet;
+        this.entreesTransfert = (float) entreesTransfert;
         this.sorties = (float) sorties;
-        this.stock = (float) (stockInitial + entreesAchat + entreesTransfet - sorties);
+        this.stock = (float) (stockInitial + entreesAchat + entreesTransfert - sorties);
     }
 
     public String getDepot() {
@@ -58,12 +58,12 @@ public class StocksResponse {
         this.entreesAchat = entreesAchat;
     }
 
-    public float getEntreesTransfet() {
-        return entreesTransfet;
+    public float getEntreesTransfert() {
+        return entreesTransfert;
     }
 
-    public void setEntreesTransfet(float entreesTransfet) {
-        this.entreesTransfet = entreesTransfet;
+    public void setEntreesTransfert(float entreesTransfert) {
+        this.entreesTransfert = entreesTransfert;
     }
 
     public double getSorties() {

@@ -1,6 +1,6 @@
 package com.logistica.service.dto;
 
-public class StocksRequest {
+public class RecapitulatifStockRequest {
 
     private String depot;
 

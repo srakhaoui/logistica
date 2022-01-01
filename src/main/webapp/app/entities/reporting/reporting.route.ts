@@ -11,6 +11,8 @@ import { ReportingGasoilChargesComponent } from './components/reporting-gasoil-c
 import { ReportingGasoilGrosVenteComponent } from './components/reporting-gasoil-gros-vente.component';
 import { ReportingGasoilGrosAchatComponent } from './components/reporting-gasoil-gros-achat.component';
 import { ReportingGasoilGrosComponent } from './components/reporting-gasoil-gros.component';
+import { ReportingStockComponent } from './components/reporting-stock.component';
+
 
 export const reportingRoute: Routes = [
   {
@@ -111,5 +113,14 @@ export const reportingRoute: Routes = [
         pageTitle: 'logisticaApp.reporting.home.title'
       },
       canActivate: [UserRouteAccessService]
-  }
+  },
+  {
+        path: 'gasoil/stock',
+        component: ReportingStockComponent,
+        data: {
+          authorities: ['ROLE_GASOIL'],
+          pageTitle: 'logisticaApp.reporting.home.title'
+        },
+        canActivate: [UserRouteAccessService]
+    }
 ];

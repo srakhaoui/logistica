@@ -1,0 +1,70 @@
+<div>
+    <h2 id="page-heading">
+        <span>Etat des stocks</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="reportingStockForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingStockForm">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_fournisseur">Dépôt</label>
+                    <ng-select [items]="depots$ | async"
+                               [typeahead]="depotInput$"
+                               bindLabel="nom"
+                               [hideSelected]="true"
+                               [loading]="depotsLoading"
+                               formControlName="depot"
+                               name="depot">
+                    </ng-select>
+                </div>
+            </div>
+            <div>
+                <br>
+                <button type="submit" id="search-reporting" class="btn btn-primary" [disabled]="isSearching">
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="alert alert-warning" *ngIf="recapitulatifStocks?.length === 0">
+        <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
+    </div>
+    <div class="table-responsive" *ngIf="recapitulatifStocks?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col" jhiSortBy="depot"><span>Dépôt</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"><span>Dépôt Réserve</span></th>
+                <th scope="col"><span>Stock Initial en Litre</span></th>
+                <th scope="col"><span>Entrées - Achats en Litre</span></th>
+                <th scope="col"><span>Entrées - Transferts en Litre</span></th>
+                <th scope="col"><span>Sorties en Litre</span></th>
+                <th scope="col"><span>Sorties - Consommation Interne en Litre</span></th>
+                <th scope="col"><span>Stock Courant en Litre</span></th>
+            </tr>
+            </thead>
+            <tr *ngFor="let recapitulatifStock of recapitulatifStocks ;trackBy: trackId">
+                <td>{{recapitulatifStock.depot}}</td>
+                <td>
+                    <span *ngIf="recapitulatifStock.depotReserve">Oui</span>
+                    <span *ngIf="!recapitulatifStock.depotReserve">Non</span>
+                </td>
+                <td>{{recapitulatifStock.stockInitial}}</td>
+                <td>{{recapitulatifStock.entreesAchat}}</td>
+                <td>{{recapitulatifStock.entreesTransfert}}</td>
+                <td>{{recapitulatifStock.sorties}}</td>
+                <td>{{recapitulatifStock.consommationInterne}}</td>
+                <td>{{recapitulatifStock.stock}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -4,8 +4,8 @@ import com.logistica.domain.Depot;
 import com.logistica.service.DepotQueryService;
 import com.logistica.service.DepotService;
 import com.logistica.service.dto.DepotCriteria;
-import com.logistica.service.dto.StocksRequest;
-import com.logistica.service.dto.StocksResponse;
+import com.logistica.service.dto.RecapitulatifStock;
+import com.logistica.service.dto.RecapitulatifStockRequest;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -145,8 +145,8 @@ public class DepotResource {
     }
 
     @GetMapping("/depots/stocks")
-    public ResponseEntity<List<StocksResponse>> getStocks(StocksRequest stocksRequest) {
-        log.debug("REST request to get stock by : {}", stocksRequest);
-        return ResponseEntity.ok().body(depotService.getStocks(stocksRequest));
+    public ResponseEntity<List<RecapitulatifStock>> getStocks(RecapitulatifStockRequest recapitulatifStockRequest) {
+        log.debug("REST request to get stock by : {}", recapitulatifStockRequest);
+        return ResponseEntity.ok().body(depotService.getStocks(recapitulatifStockRequest));
     }
 }

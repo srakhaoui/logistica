@@ -19,6 +19,7 @@ import { IRecapitulatifChargesGasoil } from 'app/shared/model/recapitulatif-gaso
 import { IRecapitulatifGasoilGrosVente } from 'app/shared/model/recapitulatif-gasoil-gros-vente.model';
 import { IRecapitulatifGasoilGrosAchat } from 'app/shared/model/recapitulatif-gasoil-gros-achat.model';
 import { IRecapitulatifGasoilGros } from 'app/shared/model/recapitulatif-gasoil-gros.model';
+import { IRecapitulatifStock } from 'app/shared/model/recapitulatif-stock.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
@@ -31,6 +32,7 @@ type IRecapitulatifGasoilChargesResponseType = HttpResponse<IRecapitulatifCharge
 type IRecapitulatifGasoilGrosVenteResponseType = HttpResponse<IRecapitulatifGasoilGrosVente[]>;
 type IRecapitulatifGasoilGrosAchatResponseType = HttpResponse<IRecapitulatifGasoilGrosAchat[]>;
 type IRecapitulatifGasoilGrosResponseType = HttpResponse<IRecapitulatifGasoilGros>;
+type IRecapitulatifStocksResponseType = HttpResponse<IRecapitulatifStock[]>;
 type IChantiersResponseType = HttpResponse<string[]>;
 
 
@@ -40,6 +42,7 @@ export class ReportingService {
   public resourceUrlGasoil = SERVER_API_URL + 'api/gasoils';
   public resourceUrlGasoilVenteGros = SERVER_API_URL + 'api/gasoil-vente-gros';
   public resourceUrlGasoilAchatGros = SERVER_API_URL + 'api/gasoil-achat-gros';
+  public resourceUrlDepot = SERVER_API_URL + 'api/depots';
 
   constructor(protected http: HttpClient) {}
 
@@ -49,6 +52,14 @@ export class ReportingService {
       .get<IRecapitulatifAchat[]>(`${this.resourceUrl}/achat`, { params: options, observe: 'response' })
       .pipe(map((res: IRecapitulatifAchatsResponseType) => this.convertDateArrayFromServer(res)));
   }
+
+  getReportingStock(req?: any): Observable<IRecapitulatifStocksResponseType> {
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifStock[]>(`${this.resourceUrlDepot}/stocks`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifStocksResponseType) => res));
+  }
+
 
   getReportingAchatTrajet(req?: any): Observable<ILivraisonResponseType> {
     const options = createRequestOption(req);
