@@ -1,6 +1,7 @@
 package com.logistica.web.rest.errors;
 
 import com.logistica.service.*;
+import com.logistica.service.impl.CiterneNonReconnuException;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
@@ -307,6 +308,17 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
         Problem problem = Problem.builder()
             .withStatus(Status.BAD_REQUEST)
             .with(MESSAGE_KEY, ErrorConstants.ERR_QUANTITE_GASOIL_INSUFFISANTE)
+            .withDetail(ex.getMessage())
+            .build();
+        return create(ex, problem, request);
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleCiterneNonReconnuException(CiterneNonReconnuException ex, NativeWebRequest request) {
+        Problem problem = Problem.builder()
+            .withStatus(Status.BAD_REQUEST)
+            .with(MESSAGE_KEY, ErrorConstants.ERR_CITERNE_NON_RECONNUE)
+            .withTitle(ex.getMessage())
             .withDetail(ex.getMessage())
             .build();
         return create(ex, problem, request);

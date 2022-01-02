@@ -22,6 +22,13 @@
     "bl.client.exist": "The BL number is already registered for this client",
     "br.date.future": "The receiving date could not be in the futur",
     "quantite.gasoil.insuffisante": "There available quantity is not enough to cover the selling quantity",
-    "km.parcouru.invalide": "The traveled distance is invalid, it can not be greater than 1000 km"
+    "km.parcouru.invalide": "The traveled distance is invalid, it can not be greater than 1000 km",
+    "gasoil.citerne.non-reconnue": "The given tank is unrecognized",
+    "gasoil.quantite.non.fournie": "Quantity in liter is missing !",
+    "gasoil.prix.unitaire.non.fournie": "Unit price is missing !",
+    "gasoil.bon.gasoil.non.fournie": "Fuel Receipt number is missing !",
+    "gasoil.kilometrage.initial.non.fournie": "Initial number of KMs is missing ",
+    "gasoil.kilometrage.final.non.fourni": "Final number of KMs is missing",
+    "gasoil.citerne.non.fournie": "Tank is missing"
   }
 }

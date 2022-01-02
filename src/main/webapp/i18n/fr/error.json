@@ -31,6 +31,13 @@
     "exercice.comptable.commande": "L'année de la date de commande ne peut être en dehors de l'exercice comptable en cours",
     "bl.client.exist": "Le N° du bon de livraison a été déjà saisi pour le client choisi",
     "quantite.gasoil.insuffisante": "La quantité du gasoil à vendre ne peut dépasser la quantité disponible",
-    "km.parcouru.invalide": "La distance parcourue ne peut dépasser 1000 km !"
+    "km.parcouru.invalide": "La distance parcourue ne peut dépasser 1000 km !",
+    "gasoil.citerne.non-reconnue": "La citerne renseignée est non reconnue !",
+    "gasoil.quantite.non.fournie": "Quantite en Litre non renseignée !",
+    "gasoil.prix.unitaire.non.fournie": "Prix unitaire non renseigné !",
+    "gasoil.bon.gasoil.non.fournie": "Numero du bon de gasoil non renseigné !",
+    "gasoil.kilometrage.initial.non.fournie": "Kilometrage initial non renseigné ",
+    "gasoil.kilometrage.final.non.fourni": "Kilometrage final non renseigné",
+    "gasoil.citerne.non.fournie": "Citerne non renseignée"
   }
 }

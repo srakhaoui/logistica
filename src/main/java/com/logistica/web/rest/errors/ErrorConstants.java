@@ -9,6 +9,7 @@ public final class ErrorConstants {
     public static final String ERR_CONCURRENCY_FAILURE = "error.concurrencyFailure";
     public static final String ERR_EXERCICE_COMPTABLE_LIVRAISON = "error.exercice.comptable.livraison";
     public static final String ERR_EXERCICE_COMPTABLE_COMMANDE = "error.exercice.comptable.commande";
+    public static final String ERR_CITERNE_NON_RECONNUE = "error.gasoil.citerne.non-reconnue";
     public static final String ERR_PRICING = "error.%s.pricingIssue";
     public static final String ERR_DUPLICATION = "error.item.duplicated";
     public static final String ERR_VALIDATION = "error.validation";

@@ -1,6 +1,7 @@
 package com.logistica.service.mapper;
 
 import com.logistica.service.dto.BonGasoilInfo;
+import com.logistica.web.rest.errors.BadRequestAlertException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -51,9 +52,7 @@ public class MailiWorkBookParser {
                     do {
                         Matcher fuelingDateMatcher = DATE_FUELING_FINDER.matcher(getOrDefaultToEmpty(fuelingItem, 1));
                         if (fuelingDateMatcher.find()) {
-                            LocalDateTime bonGasoilDateTs = getDateBonGasoilTs(fuelingDateMatcher);
-                            float quantiteEnLitre = (float) fuelingItem.getCell(3).getNumericCellValue();
-                            bonGasoilInfos.add(new BonGasoilInfo(matricule, bonGasoilDateTs, quantiteEnLitre));
+                            bonGasoilInfos.add(bonGasoilInfoFrom(matricule, fuelingDateMatcher, fuelingItem));
                         }
                         fuelingItem = reportSheet.getRow(i++);
                     } while (!FUELING_TOTAL_FINDER.test(getOrDefaultToEmpty(fuelingItem, 1)));
@@ -63,6 +62,30 @@ public class MailiWorkBookParser {
             cellBValue = getCellBValue(reportSheet, i++);
         } while (!END_MATCHER.test(cellBValue));
         return bonGasoilInfos;
+    }
+
+    private BonGasoilInfo bonGasoilInfoFrom(String matricule, Matcher fuelingDateMatcher, Row fuelingItem) {
+        return BonGasoilInfo.newInstance()
+            .matricule(matricule)
+            .dateBonGasoil(getDateBonGasoilTs(fuelingDateMatcher))
+            .quantiteEnLitre(getFloatValueAtIndex(fuelingItem.getCell(3), "Quantite en Litre non fournie", "gasoil.quantite.non.fournie"))
+            .prixUnitaire(getFloatValueAtIndex(fuelingItem.getCell(5), "Prix unitaire non fournie", "gasoil.prix.unitaire.non.fournie"))
+            .numeroBonGasoil(getLongValueAtIndex(fuelingItem.getCell(8), "Numero du bon de gasoil non fournie", "gasoil.bon.gasoil.non.fournie"))
+            .kilometrageInitial(getIntValueAtIndex(fuelingItem.getCell(9), "Kilometrage initial non fournie", "gasoil.kilometrage.initial.non.fournie"))
+            .kilometrageFinal(getIntValueAtIndex(fuelingItem.getCell(10), "Kilometrage final non fourni", "gasoil.kilometrage.final.non.fourni"))
+            .citerne(Optional.ofNullable(fuelingItem.getCell(11)).map(Cell::getStringCellValue).orElseThrow(() -> new BadRequestAlertException("Citerne non fournie", "Gasoil", "Citerne non renseignée")));
+    }
+
+    private Float getFloatValueAtIndex(Cell cell, String missingMessage, String errorKey) {
+        return Optional.ofNullable(cell).map(Cell::getNumericCellValue).map(Double::floatValue).orElseThrow(() -> new BadRequestAlertException(missingMessage, "Gasoil", errorKey));
+    }
+
+    private Long getLongValueAtIndex(Cell cell, String missingMessage, String errorKey) {
+        return Optional.ofNullable(cell).map(Cell::getNumericCellValue).map(Double::longValue).orElseThrow(() -> new BadRequestAlertException(missingMessage, "Gasoil", errorKey));
+    }
+
+    private Integer getIntValueAtIndex(Cell cell, String missingMessage, String errorKey) {
+        return Optional.ofNullable(cell).map(Cell::getNumericCellValue).map(Double::intValue).orElseThrow(() -> new BadRequestAlertException(missingMessage, "Gasoil", errorKey));
     }
 
     private LocalDateTime getDateBonGasoilTs(Matcher dateFuelingMatcher) {

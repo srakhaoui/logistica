@@ -1,7 +1,9 @@
 package com.logistica.service.impl;
 
+import com.logistica.domain.Depot;
 import com.logistica.domain.Gasoil;
 import com.logistica.domain.enumeration.Platform;
+import com.logistica.repository.DepotRepository;
 import com.logistica.repository.GasoilRepository;
 import com.logistica.repository.TransporteurRepository;
 import com.logistica.service.GasoilService;
@@ -30,6 +32,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.apache.commons.collections4.CollectionUtils.isEmpty;
+
 /**
  * Service Implementation for managing {@link Gasoil}.
  */
@@ -49,6 +53,9 @@ public class GasoilServiceImpl implements GasoilService {
 
     @Autowired
     private TransporteurRepository transporteurRepository;
+
+    @Autowired
+    private DepotRepository depotRepository;
 
     public GasoilServiceImpl(GasoilRepository gasoilRepository) {
         this.gasoilRepository = gasoilRepository;
@@ -223,10 +230,19 @@ public class GasoilServiceImpl implements GasoilService {
         gasoil.setSocieteFacturation(gasoil.getTransporteur().getProprietaire());
         gasoil.setPrixDuLitre(gasoilRepository.getLastPrixGasoil());
         gasoil.setDateBonGasoil(bonGasoilInfo.getDateBonGasoil());
-        gasoil.setKilometrageInitial(0);
-        gasoil.setKilometrageFinal(1);
-        gasoil.setNumeroBonGasoil(-1L);
+        gasoil.setKilometrageInitial(bonGasoilInfo.getKilometrageInitial());
+        gasoil.setKilometrageFinal(bonGasoilInfo.getKilometrageFinal());
+        gasoil.setNumeroBonGasoil(bonGasoilInfo.getNumeroBonGasoil());
+        gasoil.setDepot(depotFrom(bonGasoilInfo));
         return gasoil;
+    }
+
+    private Depot depotFrom(BonGasoilInfo bonGasoilInfo) {
+        List<Depot> depots = depotRepository.findByNom(bonGasoilInfo.getCiterne());
+        if (isEmpty(depots)) {
+            throw new CiterneNonReconnuException(String.format("La citerne fournie est non reconnue %s", bonGasoilInfo.getCiterne()));
+        }
+        return depots.stream().findFirst().get();
     }
 
     private Courbe<String, Float> getEvolutionLitrage(StatistiquesTauxConsommationRequest tauxConsommationRequest) {
