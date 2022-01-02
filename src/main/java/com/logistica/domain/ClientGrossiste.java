@@ -20,8 +20,8 @@ public class ClientGrossiste implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
-    @SequenceGenerator(name = "sequenceGenerator")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "clientGrossisteSequenceGenerator")
+    @SequenceGenerator(name = "clientGrossisteSequenceGenerator", sequenceName = "client-grossite-seq", allocationSize = 1)
     private Long id;
 
     @NotNull
