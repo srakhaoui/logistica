@@ -6,11 +6,13 @@ import com.logistica.domain.enumeration.Platform;
 import com.logistica.repository.DepotRepository;
 import com.logistica.repository.GasoilRepository;
 import com.logistica.repository.TransporteurRepository;
+import com.logistica.service.DepotService;
 import com.logistica.service.GasoilService;
 import com.logistica.service.KilometrageInvalideException;
 import com.logistica.service.LivraisonService;
 import com.logistica.service.dto.*;
 import com.logistica.service.mapper.MailiWorkBookParser;
+import com.logistica.web.rest.errors.BadRequestAlertException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.slf4j.Logger;
@@ -57,6 +59,9 @@ public class GasoilServiceImpl implements GasoilService {
     @Autowired
     private DepotRepository depotRepository;
 
+    @Autowired
+    private DepotService depotService;
+
     public GasoilServiceImpl(GasoilRepository gasoilRepository) {
         this.gasoilRepository = gasoilRepository;
     }
@@ -70,6 +75,7 @@ public class GasoilServiceImpl implements GasoilService {
     @Override
     public Gasoil save(Gasoil gasoil) {
         log.debug("Request to save Gasoil : {}", gasoil);
+        controleStockSuffisant(gasoil);
         if (gasoil.getKilometrageFinal().compareTo(gasoil.getKilometrageInitial()) <= 0) {
             throw new KilometrageInvalideException("error.km.invalide");
         }
@@ -79,6 +85,14 @@ public class GasoilServiceImpl implements GasoilService {
             throw new KilometrageInvalideException("error.km.parcouru.invalide");
         }
         return gasoilRepository.save(gasoil);
+    }
+
+    private void controleStockSuffisant(Gasoil gasoil) {
+        double stockDisponible = depotService.getStock(gasoil.getDepot());
+        if (gasoil.getQuantiteEnLitre() > stockDisponible) {
+            BadRequestAlertException badRequestAlertException = new BadRequestAlertException("Stock insuffisant du dépôt sélectioné", "Depot", "error.stock.insuffisant");
+            badRequestAlertException.getParameters().put("stock", stockDisponible);
+        }
     }
 
     /**

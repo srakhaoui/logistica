@@ -33,9 +33,7 @@ export class DepotUpdateComponent implements OnInit {
     id: [],
     stock: [null, [Validators.required, Validators.min(0)]],
     nom: [null, [Validators.required]],
-    consommationInterne: [],
-    alimentation: [null, Validators.required],
-    consommation: [null, Validators.required]
+    consommationInterne: []
   });
 
   constructor(
@@ -61,9 +59,7 @@ export class DepotUpdateComponent implements OnInit {
       id: depot.id,
       stock: depot.stock,
       nom: depot.nom,
-      consommationInterne: depot.consommationInterne,
-      alimentation: depot.alimentation,
-      consommation: depot.consommation
+      consommationInterne: depot.consommationInterne
     });
   }
 
@@ -87,9 +83,7 @@ export class DepotUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       stock: this.editForm.get(['stock']).value,
       nom: this.editForm.get(['nom']).value,
-      consommationInterne: this.editForm.get(['consommationInterne']).value,
-      alimentation: this.editForm.get(['alimentation']).value,
-      consommation: this.editForm.get(['consommation']).value
+      consommationInterne: this.editForm.get(['consommationInterne']).value
     };
   }
 

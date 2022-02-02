@@ -7,6 +7,7 @@ import com.logistica.service.dto.RecapitulatifGasoilGrosRequest;
 import com.logistica.service.dto.RecapitulatifGasoilTransactionGros;
 import com.logistica.service.dto.RecapitulatifGasoilVenteGros;
 import com.logistica.service.util.MathUtil;
+import com.logistica.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -27,8 +28,11 @@ public class GasoilVenteGrosService {
 
     private final GasoilVenteGrosRepository gasoilVenteGrosRepository;
 
-    public GasoilVenteGrosService(GasoilVenteGrosRepository gasoilVenteGrosRepository) {
+    private final DepotService depotService;
+
+    public GasoilVenteGrosService(GasoilVenteGrosRepository gasoilVenteGrosRepository, DepotService depotService) {
         this.gasoilVenteGrosRepository = gasoilVenteGrosRepository;
+        this.depotService = depotService;
     }
 
     /**
@@ -39,14 +43,21 @@ public class GasoilVenteGrosService {
      */
     public GasoilVenteGros save(GasoilVenteGros gasoilVenteGros) {
         log.debug("Request to save GasoilVenteGros : {}", gasoilVenteGros);
+        if (gasoilVenteGros.getAchatGasoil() == null) {
+            throw new BadRequestAlertException("Vous devez renseigner au moins une source (Achat gasoil ou dépôt)", "Depot", "error.vente-gros.bon-achat-ou-depot");
+        }
         //Check that there is enough quantity to sell
         if (gasoilVenteGros.getId() == null && gasoilVenteGros.getQuantite() > quantiteDisponibleFrom(gasoilVenteGros)) {
             throw new QuantiteGasoilInsuffisanteException();
         }
         gasoilVenteGros.setPrixVenteTotal(gasoilVenteGros.getPrixVenteUnitaire() * gasoilVenteGros.getQuantite());
-        float prixTotalAchat = gasoilVenteGros.getAchatGasoil().getPrixUnitaire() * gasoilVenteGros.getAchatGasoil().getQuantity();
-        gasoilVenteGros.setMargeGlobale((gasoilVenteGros.getPrixVenteUnitaire() - gasoilVenteGros.getAchatGasoil().getPrixUnitaire()) * gasoilVenteGros.getQuantite());
-        gasoilVenteGros.setTauxMarge(MathUtil.roundUp(100 * gasoilVenteGros.getMargeGlobale() / prixTotalAchat));
+        if (gasoilVenteGros.getAchatGasoil() != null) {
+            float prixTotalAchat = gasoilVenteGros.getAchatGasoil().getPrixUnitaire() * gasoilVenteGros.getAchatGasoil().getQuantity();
+            gasoilVenteGros.setMargeGlobale((gasoilVenteGros.getPrixVenteUnitaire() - gasoilVenteGros.getAchatGasoil().getPrixUnitaire()) * gasoilVenteGros.getQuantite());
+            gasoilVenteGros.setTauxMarge(MathUtil.roundUp(100 * gasoilVenteGros.getMargeGlobale() / prixTotalAchat));
+        } else {
+
+        }
         return gasoilVenteGrosRepository.save(gasoilVenteGros);
     }
 

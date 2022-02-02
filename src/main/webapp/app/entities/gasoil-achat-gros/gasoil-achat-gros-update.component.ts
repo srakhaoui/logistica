@@ -11,6 +11,8 @@ import { JhiAlertService } from 'ng-jhipster';
 import { IGasoilAchatGros, GasoilAchatGros } from 'app/shared/model/gasoil-achat-gros.model';
 import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 import { GasoilAchatGrosService } from './gasoil-achat-gros.service';
+import { DepotService } from 'app/entities/depot/depot.service';
+import { IDepot } from 'app/shared/model/depot.model';
 import { IFournisseurGrossiste } from 'app/shared/model/fournisseur-grossiste.model';
 import { FournisseurGrossisteService } from 'app/entities/fournisseur-grossiste/fournisseur-grossiste.service';
 import { ISociete } from 'app/shared/model/societe.model';
@@ -35,6 +37,10 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
   produitInput$ = new Subject<string>();
   produitsLoading:Boolean = false;
 
+  depots$: Observable<IDepot[]>;
+  depotInput$ = new Subject<string>();
+  depotsLoading:Boolean = false;
+
   dateReceptionDp: any;
 
   editForm = this.fb.group({
@@ -47,7 +53,8 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     uniteGasoilGros: [null, [Validators.required]],
     fournisseurGrossiste: [null, Validators.required],
     acheteur: [null, Validators.required],
-    carburant: [null, Validators.required]
+    carburant: [null, Validators.required],
+    depot: [null]
   });
 
   constructor(
@@ -55,6 +62,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     protected gasoilAchatGrosService: GasoilAchatGrosService,
     protected fournisseurGrossisteService: FournisseurGrossisteService,
     protected societeService: SocieteService,
+    protected depotService: DepotService,
     protected carburantService: CarburantService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
@@ -70,6 +78,7 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       .query()
       .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
     this.loadProduits();
+    this.loadDepots();
   }
 
   updateForm(gasoilAchatGros: IGasoilAchatGros) {
@@ -83,7 +92,8 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       uniteGasoilGros: gasoilAchatGros.id ? gasoilAchatGros.uniteGasoilGros : UniteGasoilGros.LITRE,
       fournisseurGrossiste: gasoilAchatGros.fournisseurGrossiste,
       acheteur: gasoilAchatGros.acheteur,
-      carburant: gasoilAchatGros.carburant
+      carburant: gasoilAchatGros.carburant,
+      depot: gasoilAchatGros.depot
     });
   }
 
@@ -113,7 +123,8 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
       uniteGasoilGros: this.editForm.get(['uniteGasoilGros']).value,
       fournisseurGrossiste: this.editForm.get(['fournisseurGrossiste']).value,
       acheteur: this.editForm.get(['acheteur']).value,
-      carburant: this.editForm.get(['carburant']).value
+      carburant: this.editForm.get(['carburant']).value,
+      depot: this.editForm.get(['depot']).value
     };
   }
 
@@ -180,4 +191,22 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
             )
         );
   }
+
+    private loadDepots(){
+      this.depots$ = concat(
+              of([]), // default items
+              this.depotInput$.pipe(
+                  startWith(''),
+                  debounceTime(500),
+                  distinctUntilChanged(),
+                  tap(() => (this.depotsLoading = true)),
+                  switchMap(nom =>
+                      this.depotService
+                          .query({'nom.contains': nom})
+                          .pipe(map((resp: HttpResponse<IDepot[]>) => resp.body), catchError(() => of([])))
+                  ),
+                  tap(() => (this.depotsLoading = false))
+              )
+          );
+    }
 }

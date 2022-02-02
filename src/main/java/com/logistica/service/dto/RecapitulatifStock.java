@@ -7,79 +7,93 @@ public class RecapitulatifStock {
     private float entreesAchat;
     private float entreesTransfert;
     private float sorties;
+    private float sortiesTransfert;
     private float consommationInterne;
     private float stock;
 
-    public RecapitulatifStock(String depot, boolean depotReserve, float stockInitial, double entreesAchat, double entreesTransfert, double sorties, double consommationInterne) {
-        this(depot, depotReserve, stockInitial, entreesAchat, entreesTransfert, sorties);
-        this.consommationInterne = (float) consommationInterne;
-        this.stock = (float) (stock - consommationInterne);
+    public RecapitulatifStock() {
     }
 
-    public RecapitulatifStock(String depot, boolean depotReserve, float stockInitial, double entreesAchat, double entreesTransfert, double sorties) {
-        this.depot = depot;
-        this.depotReserve = depotReserve;
+    public RecapitulatifStock calculerStock() {
+        this.stock = stockInitial + entreesAchat + entreesTransfert - sorties - sortiesTransfert - consommationInterne;
+        return this;
+    }
+
+    public RecapitulatifStock stock(float stock) {
+        this.stock = stock;
+        return this;
+    }
+
+    public RecapitulatifStock consommationInterne(float consommationInterne) {
+        this.consommationInterne = consommationInterne;
+        return this;
+    }
+
+    public RecapitulatifStock sorties(float sorties) {
+        this.sorties = sorties;
+        return this;
+    }
+
+    public RecapitulatifStock sortiesTransfert(float sortiesTransfert) {
+        this.sortiesTransfert = sortiesTransfert;
+        return this;
+    }
+
+    public RecapitulatifStock entreesTransfert(float entreesTransfert) {
+        this.entreesTransfert = entreesTransfert;
+        return this;
+    }
+
+    public RecapitulatifStock entreesAchat(float entreesAchat) {
+        this.entreesAchat = entreesAchat;
+        return this;
+    }
+
+    public RecapitulatifStock stockInitial(float stockInitial) {
         this.stockInitial = stockInitial;
-        this.entreesAchat = (float) entreesAchat;
-        this.entreesTransfert = (float) entreesTransfert;
-        this.sorties = (float) sorties;
-        this.stock = (float) (stockInitial + entreesAchat + entreesTransfert - sorties);
+        return this;
+    }
+
+    public RecapitulatifStock depotReserve(boolean depotReserve) {
+        this.depotReserve = depotReserve;
+        return this;
+    }
+
+    public RecapitulatifStock depot(String depot) {
+        this.depot = depot;
+        return this;
     }
 
     public String getDepot() {
         return depot;
     }
 
-    public void setDepot(String depot) {
-        this.depot = depot;
-    }
-
     public float getStockInitial() {
         return stockInitial;
-    }
-
-    public void setStockInitial(float stockInitial) {
-        this.stockInitial = stockInitial;
     }
 
     public boolean isDepotReserve() {
         return depotReserve;
     }
 
-    public void setDepotReserve(boolean depotReserve) {
-        this.depotReserve = depotReserve;
-    }
-
     public double getEntreesAchat() {
         return entreesAchat;
-    }
-
-    public void setEntreesAchat(float entreesAchat) {
-        this.entreesAchat = entreesAchat;
     }
 
     public float getEntreesTransfert() {
         return entreesTransfert;
     }
 
-    public void setEntreesTransfert(float entreesTransfert) {
-        this.entreesTransfert = entreesTransfert;
-    }
-
     public double getSorties() {
         return sorties;
     }
 
-    public void setSorties(float sorties) {
-        this.sorties = sorties;
+    public float getSortiesTransfert() {
+        return sortiesTransfert;
     }
 
     public double getConsommationInterne() {
         return consommationInterne;
-    }
-
-    public void setConsommationInterne(float consommationInterne) {
-        this.consommationInterne = consommationInterne;
     }
 
     public double getStock() {

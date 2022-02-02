@@ -4,6 +4,13 @@ public class RecapitulatifStockRequest {
 
     private String depot;
 
+    public RecapitulatifStockRequest() {
+    }
+
+    public RecapitulatifStockRequest(String depot) {
+        this.depot = depot;
+    }
+
     public String getDepot() {
         return depot;
     }

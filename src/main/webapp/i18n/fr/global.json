@@ -31,6 +31,7 @@
         "carburant": "Carburant",
         "fournisseurGrossiste": "Fournisseur Grossiste",
         "depot": "Depot",
+        "gasoilTransfert": "Gasoil Transfert",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

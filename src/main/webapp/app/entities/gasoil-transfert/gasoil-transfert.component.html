@@ -1,0 +1,85 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="logisticaApp.gasoilTransfert.home.title">Gasoil Transferts</span>
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-gasoil-transfert"
+                [routerLink]="['/gasoil-transfert/new']">
+            <fa-icon [icon]="'plus'"></fa-icon>
+            <span>
+            Transfert Gasoil
+            </span>
+        </button>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div class="alert alert-warning" *ngIf="gasoilTransferts?.length === 0">
+        <span jhiTranslate="logisticaApp.gasoilTransfert.home.notFound">No gasoilTransferts found</span>
+    </div>
+    <div class="table-responsive" *ngIf="gasoilTransferts?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+            <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                <th scope="col" jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="transfertDate"><span
+                    jhiTranslate="logisticaApp.gasoilTransfert.transfertDate">Transfert Date</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="quantite"><span
+                    jhiTranslate="logisticaApp.gasoilTransfert.quantite">Quantite</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="source.nom"><span
+                    jhiTranslate="logisticaApp.gasoilTransfert.source">Source</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col" jhiSortBy="destination.nom"><span
+                    jhiTranslate="logisticaApp.gasoilTransfert.destination">Destination</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
+                <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody infinite-scroll (scrolled)="loadPage(page + 1)" [infiniteScrollDisabled]="page >= links['last']"
+                   [infiniteScrollDistance]="0">
+            <tr *ngFor="let gasoilTransfert of gasoilTransferts ;trackBy: trackId">
+                <td><a [routerLink]="['/gasoil-transfert', gasoilTransfert.id, 'view' ]">{{gasoilTransfert.id}}</a></td>
+                <td>{{gasoilTransfert.transfertDate | date:'mediumDate'}}</td>
+                <td>{{gasoilTransfert.quantite}}</td>
+                <td>
+                    <div *ngIf="gasoilTransfert.source">
+                        <a [routerLink]="['/depot', gasoilTransfert.source?.id, 'view' ]">{{gasoilTransfert.source?.nom}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="gasoilTransfert.destination">
+                        <a [routerLink]="['/depot', gasoilTransfert.destination?.id, 'view' ]">{{gasoilTransfert.destination?.nom}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group">
+                        <button type="submit"
+                                [routerLink]="['/gasoil-transfert', gasoilTransfert.id, 'view' ]"
+                                class="btn btn-info btn-sm">
+                            <fa-icon [icon]="'eye'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/gasoil-transfert', gasoilTransfert.id, 'edit']"
+                                class="btn btn-primary btn-sm">
+                            <fa-icon [icon]="'pencil-alt'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit" (click)="delete(gasoilTransfert)"
+                                class="btn btn-danger btn-sm">
+                            <fa-icon [icon]="'times'"></fa-icon>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

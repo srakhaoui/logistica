@@ -68,7 +68,7 @@ export class ReportingVenteCaCamionComponent implements OnInit, OnDestroy {
       last: 0
     };
     this.predicate = 'nomChauffeur';
-    this.reverse = true;
+    this.reverse = false;
   }
 
   private initForm(){

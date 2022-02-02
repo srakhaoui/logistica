@@ -44,6 +44,10 @@
                 <th scope="col" jhiSortBy="prixUnitaire"><span jhiTranslate="logisticaApp.gasoilAchatGros.prixUnitaire">Prix Unitaire</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col" jhiSortBy="depot.nom">
+                    <span>Dépôt</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col" jhiSortBy="fournisseur.nom"><span
                     jhiTranslate="logisticaApp.gasoilAchatGros.fournisseur">Fournisseur</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
@@ -71,6 +75,11 @@
                     {{gasoilAchatGros.uniteGasoilGros}}
                 </td>
                 <td>{{gasoilAchatGros.prixUnitaire}}</td>
+                <td>
+                    <div *ngIf="gasoilAchatGros.depot">
+                        <a [routerLink]="['/depot', gasoilAchatGros.depot?.id, 'view' ]">{{gasoilAchatGros.depot?.nom}}</a>
+                    </div>
+                </td>
                 <td>
                     <div *ngIf="gasoilAchatGros.fournisseurGrossiste">
                         <a [routerLink]="['/fournisseur-grossiste', gasoilAchatGros.fournisseurGrossiste?.id, 'view' ]">{{gasoilAchatGros.fournisseurGrossiste?.nom}}</a>

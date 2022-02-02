@@ -4,6 +4,7 @@ import com.logistica.domain.Depot;
 import com.logistica.repository.DepotRepository;
 import com.logistica.service.dto.RecapitulatifStock;
 import com.logistica.service.dto.RecapitulatifStockRequest;
+import com.logistica.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -77,14 +78,31 @@ public class DepotService {
     }
 
     @Transactional(readOnly = true)
+    public double getStock(Depot depot) {
+        return getStocks(new RecapitulatifStockRequest(depot.getNom()))
+            .stream()
+            .findFirst()
+            .map(RecapitulatifStock::getStock)
+            .orElseThrow(() -> new BadRequestAlertException(String.format("Depot introuvable %s", depot.getNom()), "Depot", "error.depot.introuvable"));
+    }
+
+    @Transactional(readOnly = true)
     public List<RecapitulatifStock> getStocks(RecapitulatifStockRequest recapitulatifStockRequest) {
         List<Depot> depots = Optional.ofNullable(recapitulatifStockRequest.getDepot()).map(depotName -> depotRepository.findByNom(depotName)).orElseGet(() -> depotRepository.findAll());
         return depots.stream().map(depot -> {
+            RecapitulatifStock recapitulatifStock = new RecapitulatifStock();
+            recapitulatifStock
+                .depot(depot.getNom())
+                .depotReserve(depot.isConsommationInterne())
+                .stockInitial(depot.getStock())
+                .entreesAchat(getEntreesAchat(depot))
+                .entreesTransfert(getEntreesTransfert(depot))
+                .sorties(getSortiesVente(depot))
+                .sortiesTransfert(getSortiesTransfert(depot));
             if (depot.isConsommationInterne()) {
-                return new RecapitulatifStock(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot), getConsommationInterne(depot));
-            } else {
-                return new RecapitulatifStock(depot.getNom(), depot.isConsommationInterne(), depot.getStock(), getEntreesAchat(depot), getEntreesVente(depot), getSorties(depot));
+                recapitulatifStock.consommationInterne(getConsommationInterne(depot));
             }
+            return recapitulatifStock.calculerStock();
         }).collect(Collectors.toList());
     }
 
@@ -96,11 +114,15 @@ public class DepotService {
         return Optional.ofNullable(depotRepository.getEntreesAchatByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
     }
 
-    private Float getEntreesVente(Depot depot) {
-        return Optional.ofNullable(depotRepository.getEntreesVenteByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
+    private Float getEntreesTransfert(Depot depot) {
+        return Optional.ofNullable(depotRepository.getEntreesTransfertByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
     }
 
-    private Float getSorties(Depot depot) {
-        return Optional.ofNullable(depotRepository.getSortieByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
+    private Float getSortiesVente(Depot depot) {
+        return Optional.ofNullable(depotRepository.getSortieVenteByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
+    }
+
+    private Float getSortiesTransfert(Depot depot) {
+        return Optional.ofNullable(depotRepository.getSortieTransfertByDepot(depot.getNom(), depot.isConsommationInterne())).orElse(0.0F);
     }
 }

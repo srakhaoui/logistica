@@ -30,12 +30,6 @@
                     jhiTranslate="logisticaApp.depot.consommationInterne">Consommation Interne</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
-                <th scope="col" jhiSortBy="alimentation.nom"><span jhiTranslate="logisticaApp.depot.alimentation">Alimentation</span>
-                    <fa-icon [icon]="'sort'"></fa-icon>
-                </th>
-                <th scope="col" jhiSortBy="consommation.nom"><span jhiTranslate="logisticaApp.depot.consommation">Consommation</span>
-                    <fa-icon [icon]="'sort'"></fa-icon>
-                </th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -46,16 +40,6 @@
                 <td>{{depot.stock}}</td>
                 <td>{{depot.nom}}</td>
                 <td>{{depot.consommationInterne}}</td>
-                <td>
-                    <div *ngIf="depot.alimentation">
-                        <a [routerLink]="['/client-grossiste', depot.alimentation?.id, 'view' ]">{{depot.alimentation?.nom}}</a>
-                    </div>
-                </td>
-                <td>
-                    <div *ngIf="depot.consommation">
-                        <a [routerLink]="['/fournisseur-grossiste', depot.consommation?.id, 'view' ]">{{depot.consommation?.nom}}</a>
-                    </div>
-                </td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

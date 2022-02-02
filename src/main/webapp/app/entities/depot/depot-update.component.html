@@ -52,48 +52,6 @@
                            id="field_consommationInterne"
                            formControlName="consommationInterne"/>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" for="field_client">Alimentation</label>
-                    <ng-select id="field_client"
-                               [items]="clientsGrossistes$ | async"
-                               [typeahead]="clientsGrossistesInput$"
-                               bindLabel="nom"
-                               [hideSelected]="true"
-                               [loading]="clientsGrossistesLoading"
-                               formControlName="alimentation"
-                               name="alimentation">
-                    </ng-select>
-                    <div
-                        *ngIf="editForm.get('alimentation').invalid && (editForm.get('alimentation').dirty || editForm.get('alimentation').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('alimentation').errors.required"
-                               jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="logisticaApp.depot.consommation"
-                           for="field_consommation">Consommation</label>
-                    <ng-select id="field_consommation"
-                               [items]="fournisseurs$ | async"
-                               [typeahead]="fournisseurInput$"
-                               bindLabel="nom"
-                               [hideSelected]="true"
-                               [loading]="fournisseursLoading"
-                               formControlName="consommation"
-                               name="consommation">
-                    </ng-select>
-                    <div
-                        *ngIf="editForm.get('consommation').invalid && (editForm.get('consommation').dirty || editForm.get('consommation').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('consommation').errors.required"
-                               jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                    </div>
-                </div>
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">

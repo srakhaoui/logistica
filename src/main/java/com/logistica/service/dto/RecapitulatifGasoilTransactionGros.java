@@ -23,8 +23,10 @@ public class RecapitulatifGasoilTransactionGros implements IRecapitulatifGasoilT
     private Float prixVenteTotal;
     private Float margeGlobale;
     private Float tauxMarge;
+    private String description;
 
-    public RecapitulatifGasoilTransactionGros(String fournisseur, String acheteur, String carburant, LocalDate dateReception, Float quantiteAchetee, UniteGasoilGros uniteAchat, Float prixAchatUnitaire, Float prixAchatTotal, String client, String transporteur, LocalDate dateVente, Float quantiteVendue, UniteGasoilGros uniteVente, Float prixVenteUnitaire, Float prixVenteTotal, Float margeGlobale, Float tauxMarge) {
+    public RecapitulatifGasoilTransactionGros(String description, String fournisseur, String acheteur, String carburant, LocalDate dateReception, Float quantiteAchetee, UniteGasoilGros uniteAchat, Float prixAchatUnitaire, Float prixAchatTotal, String client, String transporteur, LocalDate dateVente, Float quantiteVendue, UniteGasoilGros uniteVente, Float prixVenteUnitaire, Float prixVenteTotal, Float margeGlobale, Float tauxMarge) {
+        this.description = description;
         this.fournisseur = fournisseur;
         this.acheteur = acheteur;
         this.carburant = carburant;
@@ -110,6 +112,14 @@ public class RecapitulatifGasoilTransactionGros implements IRecapitulatifGasoilT
 
     public void setPrixVenteTotal(Float prixVenteTotal) {
         this.prixVenteTotal = prixVenteTotal;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override

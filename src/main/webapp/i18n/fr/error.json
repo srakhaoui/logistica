@@ -38,6 +38,9 @@
     "gasoil.bon.gasoil.non.fournie": "Numero du bon de gasoil non renseigné !",
     "gasoil.kilometrage.initial.non.fournie": "Kilometrage initial non renseigné ",
     "gasoil.kilometrage.final.non.fourni": "Kilometrage final non renseigné",
-    "gasoil.citerne.non.fournie": "Citerne non renseignée"
+    "gasoil.citerne.non.fournie": "Citerne non renseignée",
+    "stock.insuffisant": "Le stock du dépôt sélectionné est insuffisant: {0}",
+    "depot.introuvable": "Le dépôt sélectionné est introvable",
+    "vente-gros.bon-achat-ou-depot": "Vous devez spécifier la source en renseignant soit le bon d'achat du gasoil ou le dépot"
   }
 }

@@ -174,7 +174,7 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
                 tap(() => (this.gasoilachatgrosLoading = true)),
                 switchMap(nom =>
                     this.gasoilAchatGrosService
-                        .query({'description.contains': nom})
+                        .query({'description.contains': nom, 'quantity.greaterThan': 0})
                         .pipe(map((resp: HttpResponse<IGasoilAchatGros[]>) => resp.body), catchError(() => of([])))
                 ),
                 tap(() => (this.gasoilachatgrosLoading = false))

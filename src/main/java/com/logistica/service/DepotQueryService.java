@@ -1,9 +1,7 @@
 package com.logistica.service;
 
-import com.logistica.domain.ClientGrossiste_;
 import com.logistica.domain.Depot;
 import com.logistica.domain.Depot_;
-import com.logistica.domain.FournisseurGrossiste_;
 import com.logistica.repository.DepotRepository;
 import com.logistica.service.dto.DepotCriteria;
 import io.github.jhipster.service.QueryService;
@@ -15,7 +13,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.JoinType;
 import java.util.List;
 
 /**
@@ -93,14 +90,6 @@ public class DepotQueryService extends QueryService<Depot> {
             }
             if (criteria.getConsommationInterne() != null) {
                 specification = specification.and(buildSpecification(criteria.getConsommationInterne(), Depot_.consommationInterne));
-            }
-            if (criteria.getAlimentationId() != null) {
-                specification = specification.and(buildSpecification(criteria.getAlimentationId(),
-                    root -> root.join(Depot_.alimentation, JoinType.LEFT).get(ClientGrossiste_.id)));
-            }
-            if (criteria.getConsommationId() != null) {
-                specification = specification.and(buildSpecification(criteria.getConsommationId(),
-                    root -> root.join(Depot_.consommation, JoinType.LEFT).get(FournisseurGrossiste_.id)));
             }
         }
         return specification;

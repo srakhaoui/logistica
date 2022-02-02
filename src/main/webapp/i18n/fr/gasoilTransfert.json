@@ -1,0 +1,25 @@
+{
+  "logisticaApp": {
+    "gasoilTransfert": {
+      "home": {
+        "title": "GasoilTransferts",
+        "createLabel": "Créer un nouveau Gasoil Transfert",
+        "createOrEditLabel": "Créer ou éditer un Gasoil Transfert",
+        "notFound": "Aucun Gasoil Transfert trouvé"
+      },
+      "created": "Un nouveau Gasoil Transfert a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Gasoil Transfert avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Gasoil Transfert avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Gasoil Transfert {{ id }} ?"
+      },
+      "detail": {
+        "title": "Gasoil Transfert"
+      },
+      "transfertDate": "Transfert Date",
+      "quantite": "Quantite",
+      "source": "Source",
+      "destination": "Destination"
+    }
+  }
+}

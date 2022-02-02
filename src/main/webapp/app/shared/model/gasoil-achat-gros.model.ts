@@ -1,6 +1,7 @@
 import { Moment } from 'moment';
 import { IFournisseurGrossiste } from 'app/shared/model/fournisseur-grossiste.model';
 import { ISociete } from 'app/shared/model/societe.model';
+import { IDepot } from 'app/shared/model/depot.model';
 import { ICarburant } from 'app/shared/model/carburant.model';
 import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 
@@ -15,6 +16,7 @@ export interface IGasoilAchatGros {
   fournisseurGrossiste?: IFournisseurGrossiste;
   acheteur?: ISociete;
   carburant?: ICarburant;
+  depot?: IDepot;
 }
 
 export class GasoilAchatGros implements IGasoilAchatGros {
@@ -28,6 +30,7 @@ export class GasoilAchatGros implements IGasoilAchatGros {
     public uniteGasoilGros?: UniteGasoilGros,
     public fournisseurGrossiste?: IFournisseurGrossiste,
     public acheteur?: ISociete,
-    public carburant?: ICarburant
+    public carburant?: ICarburant,
+    public depot?: IDepot
   ) {}
 }

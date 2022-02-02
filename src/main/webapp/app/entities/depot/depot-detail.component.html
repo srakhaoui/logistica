@@ -17,18 +17,6 @@
                 <dd>
                     <span>{{depot.consommationInterne ? 'Oui' : 'Non'}}</span>
                 </dd>
-                <dt><span jhiTranslate="logisticaApp.depot.alimentation">Alimentation</span></dt>
-                <dd>
-                    <div *ngIf="depot.alimentation">
-                        <a [routerLink]="['/client-grossiste', depot.alimentation?.id, 'view']">{{depot.alimentation?.nom}}</a>
-                    </div>
-                </dd>
-                <dt><span jhiTranslate="logisticaApp.depot.consommation">Consommation</span></dt>
-                <dd>
-                    <div *ngIf="depot.consommation">
-                        <a [routerLink]="['/fournisseur-grossiste', depot.consommation?.id, 'view']">{{depot.consommation?.nom}}</a>
-                    </div>
-                </dd>
             </dl>
 
             <button type="submit"

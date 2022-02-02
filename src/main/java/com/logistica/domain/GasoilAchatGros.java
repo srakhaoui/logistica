@@ -67,6 +67,9 @@ public class GasoilAchatGros implements Serializable {
     @JsonIgnoreProperties("gasoilAchatGros")
     private Carburant carburant;
 
+    @ManyToOne
+    private Depot depot;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -191,6 +194,14 @@ public class GasoilAchatGros implements Serializable {
 
     public void setCarburant(Carburant carburant) {
         this.carburant = carburant;
+    }
+
+    public Depot getDepot() {
+        return depot;
+    }
+
+    public void setDepot(Depot depot) {
+        this.depot = depot;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

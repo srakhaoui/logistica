@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="20220205152100-1" author="said.rakhaoui">
+        <dropColumn columnName="alimentation_id"
+                    schemaName="public"
+                    tableName="depot">
+            <column name="alimentation_id"></column>
+        </dropColumn>
+        <dropColumn columnName="consommation_id"
+                    schemaName="public"
+                    tableName="depot">
+            <column name="consommation_id"></column>
+        </dropColumn>
+    </changeSet>
+
+</databaseChangeLog>

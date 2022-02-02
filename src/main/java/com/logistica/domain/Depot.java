@@ -1,6 +1,5 @@
 package com.logistica.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -35,16 +34,6 @@ public class Depot implements Serializable {
 
     @Column(name = "consommation_interne")
     private Boolean consommationInterne;
-
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties("depots")
-    private ClientGrossiste alimentation;
-
-    @ManyToOne(optional = false)
-    @NotNull
-    @JsonIgnoreProperties("depots")
-    private FournisseurGrossiste consommation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -94,31 +83,6 @@ public class Depot implements Serializable {
         this.consommationInterne = consommationInterne;
     }
 
-    public ClientGrossiste getAlimentation() {
-        return alimentation;
-    }
-
-    public Depot alimentation(ClientGrossiste clientGrossiste) {
-        this.alimentation = clientGrossiste;
-        return this;
-    }
-
-    public void setAlimentation(ClientGrossiste clientGrossiste) {
-        this.alimentation = clientGrossiste;
-    }
-
-    public FournisseurGrossiste getConsommation() {
-        return consommation;
-    }
-
-    public Depot consommation(FournisseurGrossiste fournisseurGrossiste) {
-        this.consommation = fournisseurGrossiste;
-        return this;
-    }
-
-    public void setConsommation(FournisseurGrossiste fournisseurGrossiste) {
-        this.consommation = fournisseurGrossiste;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

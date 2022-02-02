@@ -18,4 +18,12 @@
                       newColumnName="transporteur_id"></renameColumn>
     </changeSet>
 
+    <changeSet id="202201291551050000-1" author="said.rakhaoui">
+        <addColumn schemaName="public"
+                   tableName="gasoil_achat_gros">
+            <column name="depot_id" type="bigint">
+            </column>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>

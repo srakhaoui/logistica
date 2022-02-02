@@ -60,6 +60,7 @@ public class Gasoil implements Serializable {
     @JsonIgnoreProperties("gasoils")
     private Societe societeFacturation;
 
+    @NotNull
     @ManyToOne
     @JsonIgnoreProperties("gasoils")
     private Depot depot;

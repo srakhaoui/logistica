@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="gasoilTransfert">
+            <h2><span jhiTranslate="logisticaApp.gasoilTransfert.detail.title">Gasoil Transfert</span>
+                {{gasoilTransfert.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="logisticaApp.gasoilTransfert.quantite">Quantite</span></dt>
+                <dd>
+                    <span>{{gasoilTransfert.quantite}}</span>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilTransfert.source">Source</span></dt>
+                <dd>
+                    <div *ngIf="gasoilTransfert.source">
+                        <a [routerLink]="['/depot', gasoilTransfert.source?.id, 'view']">{{gasoilTransfert.source?.nom}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="logisticaApp.gasoilTransfert.destination">Destination</span></dt>
+                <dd>
+                    <div *ngIf="gasoilTransfert.destination">
+                        <a [routerLink]="['/depot', gasoilTransfert.destination?.id, 'view']">{{gasoilTransfert.destination?.nom}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/gasoil-transfert', gasoilTransfert.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

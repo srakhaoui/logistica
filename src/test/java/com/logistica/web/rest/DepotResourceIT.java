@@ -106,7 +106,6 @@ public class DepotResourceIT {
         } else {
             clientGrossiste = TestUtil.findAll(em, ClientGrossiste.class).get(0);
         }
-        depot.setAlimentation(clientGrossiste);
         // Add required entity
         FournisseurGrossiste fournisseurGrossiste;
         if (TestUtil.findAll(em, FournisseurGrossiste.class).isEmpty()) {
@@ -116,7 +115,6 @@ public class DepotResourceIT {
         } else {
             fournisseurGrossiste = TestUtil.findAll(em, FournisseurGrossiste.class).get(0);
         }
-        depot.setConsommation(fournisseurGrossiste);
         return depot;
     }
     /**
@@ -139,7 +137,6 @@ public class DepotResourceIT {
         } else {
             clientGrossiste = TestUtil.findAll(em, ClientGrossiste.class).get(0);
         }
-        depot.setAlimentation(clientGrossiste);
         // Add required entity
         FournisseurGrossiste fournisseurGrossiste;
         if (TestUtil.findAll(em, FournisseurGrossiste.class).isEmpty()) {
@@ -149,7 +146,6 @@ public class DepotResourceIT {
         } else {
             fournisseurGrossiste = TestUtil.findAll(em, FournisseurGrossiste.class).get(0);
         }
-        depot.setConsommation(fournisseurGrossiste);
         return depot;
     }
 
@@ -522,36 +518,6 @@ public class DepotResourceIT {
         defaultDepotShouldNotBeFound("consommationInterne.specified=false");
     }
 
-    @Test
-    @Transactional
-    public void getAllDepotsByAlimentationIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        ClientGrossiste alimentation = depot.getAlimentation();
-        depotRepository.saveAndFlush(depot);
-        Long alimentationId = alimentation.getId();
-
-        // Get all the depotList where alimentation equals to alimentationId
-        defaultDepotShouldBeFound("alimentationId.equals=" + alimentationId);
-
-        // Get all the depotList where alimentation equals to alimentationId + 1
-        defaultDepotShouldNotBeFound("alimentationId.equals=" + (alimentationId + 1));
-    }
-
-
-    @Test
-    @Transactional
-    public void getAllDepotsByConsommationIsEqualToSomething() throws Exception {
-        // Get already existing entity
-        FournisseurGrossiste consommation = depot.getConsommation();
-        depotRepository.saveAndFlush(depot);
-        Long consommationId = consommation.getId();
-
-        // Get all the depotList where consommation equals to consommationId
-        defaultDepotShouldBeFound("consommationId.equals=" + consommationId);
-
-        // Get all the depotList where consommation equals to consommationId + 1
-        defaultDepotShouldNotBeFound("consommationId.equals=" + (consommationId + 1));
-    }
 
     /**
      * Executes the search, and checks that the default entity is returned.

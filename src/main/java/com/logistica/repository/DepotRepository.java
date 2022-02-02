@@ -17,17 +17,19 @@ import java.util.List;
 @Repository
 public interface DepotRepository extends JpaRepository<Depot, Long>, JpaSpecificationExecutor<Depot> {
 
-    @Query("Select sum(alim.quantite) From Depot d, GasoilVenteGros alim Where d.nom=:depotName and d.consommationInterne = :consommationInterne And d.alimentation = alim.client ")
-    Float getEntreesVenteByDepot(@Param("depotName") String depotName, @Param("consommationInterne") Boolean consommationInterne);
+    @Query("Select sum(t.quantite) From GasoilTransfert t Where t.destination.nom = :depotName and t.destination.consommationInterne = :consommationInterne")
+    Float getEntreesTransfertByDepot(@Param("depotName") String depotName, @Param("consommationInterne") Boolean consommationInterne);
 
-    @Query("Select sum(alim.quantity) From Depot d, GasoilAchatGros alim Where d.nom=:depotName and d.consommationInterne = :consommationInterne And d.consommation = alim.fournisseurGrossiste ")
+    @Query("Select sum(alim.quantity) From GasoilAchatGros alim Where alim.depot.nom = :depotName and alim.depot.consommationInterne = :consommationInterne")
     Float getEntreesAchatByDepot(@Param("depotName") String depotName, @Param("consommationInterne") Boolean consommationInterne);
 
+    @Query("Select sum(t.quantite) From GasoilTransfert t Where t.source.nom = :depotName and t.source.consommationInterne = :consommationInterne")
+    Float getSortieTransfertByDepot(@Param("depotName") String depotName, @Param("consommationInterne") Boolean consommationInterne);
 
-    @Query("Select sum(conso.quantite) From Depot d, GasoilVenteGros conso Where d.nom=:depotName and d.consommationInterne = :consommationInterne And d.consommation = conso.achatGasoil.fournisseurGrossiste ")
-    Float getSortieByDepot(@Param("depotName") String depotName, @Param("consommationInterne") Boolean consommationInterne);
+    @Query("Select sum(conso.quantite) From GasoilVenteGros conso Where conso.achatGasoil.depot.nom = :depotName and conso.achatGasoil.depot.consommationInterne = :consommationInterne")
+    Float getSortieVenteByDepot(@Param("depotName") String depotName, @Param("consommationInterne") Boolean consommationInterne);
 
-    @Query("Select sum(consoIntern.quantiteEnLitre)  From Depot d, Gasoil consoIntern  Where d.nom=:depotName and d.consommationInterne = true And d = consoIntern.depot ")
+    @Query("Select sum(consoIntern.quantiteEnLitre)  From Gasoil consoIntern  Where consoIntern.depot.nom=:depotName and consoIntern.depot.consommationInterne = true")
     Float getConsommationInterneByDepotInterne(@Param("depotName") String depotName);
 
     List<Depot> findByNom(String depot);
