@@ -29,6 +29,17 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="2022021118300000-1" author="said.rakhaoui">
+        <createSequence cacheSize="1"
+                        cycle="false"
+                        dataType="bigint"
+                        incrementBy="1"
+                        maxValue="9223372036854775807"
+                        minValue="1"
+                        sequenceName="gasoil-transfert-seq"
+                        startValue="1"/>
+    </changeSet>
+
     <changeSet id="20220204194443-1-relations" author="jhipster">
 
     </changeSet>
