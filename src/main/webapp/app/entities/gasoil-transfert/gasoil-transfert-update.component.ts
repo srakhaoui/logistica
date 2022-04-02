@@ -14,13 +14,18 @@ import { DepotService } from 'app/entities/depot/depot.service';
 
 @Component({
   selector: 'jhi-gasoil-transfert-update',
-  templateUrl: './gasoil-transfert-update.component.html'
+  templateUrl: './gasoil-transfert-update.component.html',
+  styleUrls: ['gasoil-transfert-update.component.scss']
 })
 export class GasoilTransfertUpdateComponent implements OnInit {
   isSaving: boolean;
 
   depots: IDepot[];
   transfertDateDp: any;
+
+  selectedSource: IDepot;
+  sourceStock: number;
+  quantiteSaisie: number;
 
   editForm = this.fb.group({
     id: [],
@@ -81,7 +86,7 @@ export class GasoilTransfertUpdateComponent implements OnInit {
     return {
       ...new GasoilTransfert(),
       id: this.editForm.get(['id']).value,
-      transfertDate: this.editForm.get(['transfertDate']).value,
+      transfertDate: moment(new Date()),
       quantite: this.editForm.get(['quantite']).value,
       source: this.editForm.get(['source']).value,
       destination: this.editForm.get(['destination']).value
@@ -107,4 +112,15 @@ export class GasoilTransfertUpdateComponent implements OnInit {
   trackDepotById(index: number, item: IDepot) {
     return item.id;
   }
+
+  loadSelectedSourceStock(){
+    this.depotService
+          .getStock(this.selectedSource.nom)
+          .subscribe((res: HttpResponse<number>) => (this.sourceStock = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+  }
+
+  onSaisieQuantite(quantite){
+    this.quantiteSaisie = quantite;
+  }
+
 }

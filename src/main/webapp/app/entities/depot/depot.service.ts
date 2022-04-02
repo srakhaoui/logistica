@@ -8,6 +8,7 @@ import { IDepot } from 'app/shared/model/depot.model';
 
 type EntityResponseType = HttpResponse<IDepot>;
 type EntityArrayResponseType = HttpResponse<IDepot[]>;
+type DoubleResponseType = HttpResponse<number>;
 
 @Injectable({ providedIn: 'root' })
 export class DepotService {
@@ -34,5 +35,9 @@ export class DepotService {
 
   delete(id: number): Observable<HttpResponse<any>> {
     return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+  }
+
+  getStock(nomDepot: string): Observable<DoubleResponseType> {
+    return this.http.get<number>(`${this.resourceUrl}/stocks/${nomDepot}`, {observe: 'response' });
   }
 }

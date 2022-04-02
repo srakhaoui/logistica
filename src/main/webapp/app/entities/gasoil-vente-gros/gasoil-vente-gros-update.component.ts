@@ -19,7 +19,8 @@ import { GasoilAchatGrosService } from 'app/entities/gasoil-achat-gros/gasoil-ac
 
 @Component({
   selector: 'jhi-gasoil-vente-gros-update',
-  templateUrl: './gasoil-vente-gros-update.component.html'
+  templateUrl: './gasoil-vente-gros-update.component.html',
+  styleUrls: ['gasoil-vente-gros-update.component.scss']
 })
 export class GasoilVenteGrosUpdateComponent implements OnInit {
   isSaving: boolean;
@@ -33,6 +34,8 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
   gasoilachatgros$: Observable<IGasoilAchatGros[]>;
   gasoilachatgrosInput$ = new Subject<string>();
   gasoilachatgrosLoading:Boolean = false;
+  selectedAchatGasoil:IGasoilAchatGros;
+  quantiteSaisie: number;
 
 
   editForm = this.fb.group({
@@ -180,5 +183,13 @@ export class GasoilVenteGrosUpdateComponent implements OnInit {
                 tap(() => (this.gasoilachatgrosLoading = false))
             )
         );
+  }
+
+  onSelectAchatGasoil(achatGasoil){
+    this.selectedAchatGasoil = achatGasoil;
+  }
+
+  onQuantiteTyping(quantite){
+    this.quantiteSaisie = quantite;
   }
 }

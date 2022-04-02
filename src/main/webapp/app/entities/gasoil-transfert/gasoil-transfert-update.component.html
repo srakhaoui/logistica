@@ -14,7 +14,7 @@
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoilTransfert.quantite"
                            for="field_quantite">Quantite</label>
                     <input type="number" class="form-control" name="quantite" id="field_quantite"
-                           formControlName="quantite"/>
+                           formControlName="quantite" (input)="onSaisieQuantite($event.target.value)"/>
                     <div
                         *ngIf="editForm.get('quantite').invalid && (editForm.get('quantite').dirty || editForm.get('quantite').touched)">
                         <small class="form-text text-danger"
@@ -38,14 +38,19 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoilTransfert.source"
                            for="field_source">Source</label>
-                    <select class="form-control" id="field_source" name="source" formControlName="source">
+                    <select class="form-control" id="field_source" name="source" formControlName="source"
+                            [(ngModel)]="selectedSource" (change)="loadSelectedSourceStock()">
                         <option *ngIf="!editForm.get('source').value" [ngValue]="null" selected></option>
                         <option
                             [ngValue]="depotOption.id === editForm.get('source').value?.id ? editForm.get('source').value : depotOption"
                             *ngFor="let depotOption of depots; trackBy: trackDepotById">{{depotOption.nom}}
                         </option>
                     </select>
+                    <label
+                        [ngClass]="{'quantity-available': sourceStock > quantiteSaisie, 'quantity-unavailable': sourceStock < quantiteSaisie}"
+                        *ngIf="sourceStock">La quantité disponible est : <b>{{sourceStock}}</b> </label>
                 </div>
+                -
                 <div
                     *ngIf="editForm.get('source').invalid && (editForm.get('source').dirty || editForm.get('source').touched)">
                     <small class="form-text text-danger"

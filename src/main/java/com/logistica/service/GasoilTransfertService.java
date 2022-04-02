@@ -39,7 +39,7 @@ public class GasoilTransfertService {
     public GasoilTransfert save(GasoilTransfert gasoilTransfert) {
         log.debug("Request to save GasoilTransfert : {}", gasoilTransfert);
         gasoilTransfert.setTransfertDate(LocalDate.now());
-        if (gasoilTransfert.getQuantite() > depotService.getStock(gasoilTransfert.getSource())) {
+        if (gasoilTransfert.getQuantite() > depotService.getStock(gasoilTransfert.getSource().getNom())) {
             throw new QuantiteGasoilInsuffisanteException();
         }
         return gasoilTransfertRepository.save(gasoilTransfert);

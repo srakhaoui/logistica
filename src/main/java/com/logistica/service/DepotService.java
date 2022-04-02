@@ -78,12 +78,12 @@ public class DepotService {
     }
 
     @Transactional(readOnly = true)
-    public double getStock(Depot depot) {
-        return getStocks(new RecapitulatifStockRequest(depot.getNom()))
+    public double getStock(String nom) {
+        return getStocks(new RecapitulatifStockRequest(nom))
             .stream()
             .findFirst()
             .map(RecapitulatifStock::getStock)
-            .orElseThrow(() -> new BadRequestAlertException(String.format("Depot introuvable %s", depot.getNom()), "Depot", "error.depot.introuvable"));
+            .orElseThrow(() -> new BadRequestAlertException(String.format("Depot introuvable %s", nom), "Depot", "error.depot.introuvable"));
     }
 
     @Transactional(readOnly = true)

@@ -88,7 +88,7 @@ public class GasoilServiceImpl implements GasoilService {
     }
 
     private void controleStockSuffisant(Gasoil gasoil) {
-        double stockDisponible = depotService.getStock(gasoil.getDepot());
+        double stockDisponible = depotService.getStock(gasoil.getDepot().getNom());
         if (gasoil.getQuantiteEnLitre() > stockDisponible) {
             BadRequestAlertException badRequestAlertException = new BadRequestAlertException("Stock insuffisant du dépôt sélectioné", "Depot", "error.stock.insuffisant");
             badRequestAlertException.getParameters().put("stock", stockDisponible);

@@ -51,7 +51,7 @@
                     <label class="form-control-label" jhiTranslate="logisticaApp.gasoilVenteGros.quantite"
                            for="field_quantite">Quantite</label>
                     <input type="number" class="form-control" name="quantite" id="field_quantite"
-                           formControlName="quantite"/>
+                           formControlName="quantite" (input)="onQuantiteTyping($event.target.value)"/>
                     <div
                         *ngIf="editForm.get('quantite').invalid && (editForm.get('quantite').dirty || editForm.get('quantite').touched)">
                         <small class="form-text text-danger"
@@ -192,6 +192,7 @@
                 <div class="form-group">
                     <label class="form-control-label" for="field_achatGasoil">Achat Gasoil</label>
                     <ng-select id="field_achatGasoil"
+                               (change)="onSelectAchatGasoil($event)"
                                [items]="gasoilachatgros$ | async"
                                [typeahead]="gasoilachatgrosInput$"
                                bindLabel="description"
@@ -200,6 +201,10 @@
                                formControlName="achatGasoil"
                                name="achatGasoil">
                     </ng-select>
+                    <label
+                        [ngClass]="{'quantity-available': selectedAchatGasoil.quantity > quantiteSaisie, 'quantity-unavailable': selectedAchatGasoil.quantity < quantiteSaisie}"
+                        *ngIf="selectedAchatGasoil">La quantité disponible est : <b>{{selectedAchatGasoil.quantity}}</b>
+                        {{selectedAchatGasoil.uniteGasoilGros}}</label>
                     <div *ngIf="(editForm.get('achatGasoil').dirty || editForm.get('achatGasoil').touched)">
                         <small class="form-text text-danger" [hidden]="editForm.get('achatGasoil').value"
                                jhiTranslate="entity.validation.required">

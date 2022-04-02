@@ -149,4 +149,10 @@ public class DepotResource {
         log.debug("REST request to get stock by : {}", recapitulatifStockRequest);
         return ResponseEntity.ok().body(depotService.getStocks(recapitulatifStockRequest));
     }
+
+    @GetMapping("/depots/stocks/{depotName}")
+    public ResponseEntity<Double> getStock(@PathVariable String depotName) {
+        log.debug("REST request to get stock of : {}", depotName);
+        return ResponseEntity.ok().body(depotService.getStock(depotName));
+    }
 }
