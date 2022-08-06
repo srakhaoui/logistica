@@ -83,6 +83,10 @@ import { RouterModule } from '@angular/router';
       {
         path: 'gasoil-transfert',
         loadChildren: () => import('./gasoil-transfert/gasoil-transfert.module').then(m => m.LogisticaGasoilTransfertModule)
+      },
+      {
+        path: 'depot-aggregat',
+        loadChildren: () => import('./depot-aggregat/depot-aggregat.module').then(m => m.LogisticaDepotAggregatModule)
       }
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ])

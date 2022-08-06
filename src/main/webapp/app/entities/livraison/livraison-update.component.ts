@@ -22,6 +22,8 @@ import { IProduit } from 'app/shared/model/produit.model';
 import { ProduitService } from 'app/entities/produit/produit.service';
 import { ISociete } from 'app/shared/model/societe.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
+import { IDepotAggregat } from 'app/shared/model/depot-aggregat.model';
+import { DepotAggregatService } from 'app/entities/depot-aggregat/depot-aggregat.service';
 import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
 import { Unite } from 'app/shared/model/enumerations/unite.model';
 
@@ -53,6 +55,8 @@ export class LivraisonUpdateComponent implements OnInit {
   produitsLoading:Boolean = false;
 
   societes: ISociete[];
+  depotAggregats: IDepotAggregat[];
+
   dateBonCommandeDp: any;
   dateBonLivraisonDp: any;
   dateBonCaisseDp: any;
@@ -94,6 +98,7 @@ export class LivraisonUpdateComponent implements OnInit {
     trajet: new FormControl(),
     produit: new FormControl(null, [Validators.required]),
     societeFacturation: new FormControl(null, [Validators.required]),
+    depotAggregat: new FormControl(null, [Validators.required]),
     chantier: new FormControl()
   }, [this.validateLivraison]);
 
@@ -106,6 +111,7 @@ export class LivraisonUpdateComponent implements OnInit {
     protected trajetService: TrajetService,
     protected produitService: ProduitService,
     protected societeService: SocieteService,
+    protected depotAggregatService: DepotAggregatService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) { }
@@ -123,6 +129,7 @@ export class LivraisonUpdateComponent implements OnInit {
     this.societeService
       .query()
       .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+    this.loadDepotAggregats();
     if(this.editForm.get('transporteur').value) {
       const transporteur: ITransporteur = this.editForm.get('transporteur').value;
       transporteur.description = `${transporteur.nom} - ${transporteur.prenom} - ${transporteur.matricule}`;
@@ -164,6 +171,7 @@ export class LivraisonUpdateComponent implements OnInit {
       trajet: livraison.trajet,
       produit: livraison.produit,
       societeFacturation: livraison.societeFacturation,
+      depotAggregat: livraison.depotAggregat,
       chantier: livraison.chantier
     });
   }
@@ -220,6 +228,7 @@ export class LivraisonUpdateComponent implements OnInit {
       trajet: this.editForm.get(['trajet']).value,
       produit: this.editForm.get(['produit']).value,
       societeFacturation: this.editForm.get(['societeFacturation']).value,
+      depotAggregat: this.editForm.get(['depotAggregat']).value,
       chantier: this.editForm.get(['chantier']).value
     };
   }
@@ -263,6 +272,10 @@ export class LivraisonUpdateComponent implements OnInit {
   trackSocieteById(index: number, item: ISociete) {
     return item.id;
   }
+
+  trackDepotAggregatById(index: number, item: IDepotAggregat) {
+      return item.id;
+    }
 
   private loadFournisseurs(){
     this.fournisseurs$ = concat(
@@ -363,6 +376,12 @@ export class LivraisonUpdateComponent implements OnInit {
                 tap(() => (this.produitsLoading = false))
             )
         );
+  }
+
+  private loadDepotAggregats(){
+      this.depotAggregatService
+        .query()
+        .subscribe((res: HttpResponse<IDepotAggregat[]>) => (this.depotAggregats = res.body), (res: HttpErrorResponse) => this.onError(res.message));
   }
 
   public isMarchandise(): Boolean {

@@ -8,6 +8,7 @@ import { ISociete } from 'app/shared/model/societe.model';
 import { Unite } from 'app/shared/model/enumerations/unite.model';
 import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
 import { IAudit } from 'app/shared/model/audit.model';
+import { IDepotAggregat } from 'app/shared/model/depot-aggregat.model';
 
 export interface ILivraison {
   id?: number;
@@ -48,6 +49,7 @@ export interface ILivraison {
   trajet?: ITrajet;
   produit?: IProduit;
   societeFacturation?: ISociete;
+  depotAggregat?: IDepotAggregat;
   audit?: IAudit;
   chantier?: string;
 }
@@ -89,6 +91,7 @@ export class Livraison implements ILivraison {
     public trajet?: ITrajet,
     public produit?: IProduit,
     public societeFacturation?: ISociete,
+    public depotAggregat?: IDepotAggregat,
     public chantier?: string
   ) {
     this.facture = this.facture || false;

@@ -163,6 +163,9 @@ public class Livraison implements ICsvConvertible, Serializable {
     @JsonIgnoreProperties("livraisons")
     private Societe societeFacturation;
 
+    @ManyToOne
+    private DepotAggregat depotAggregat;
+
     @Embedded
     private Audit audit = new Audit();
 
@@ -698,6 +701,14 @@ public class Livraison implements ICsvConvertible, Serializable {
 
     public void setSocieteFacturation(Societe societe) {
         this.societeFacturation = societe;
+    }
+
+    public DepotAggregat getDepotAggregat() {
+        return depotAggregat;
+    }
+
+    public void setDepotAggregat(DepotAggregat depotAggregat) {
+        this.depotAggregat = depotAggregat;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

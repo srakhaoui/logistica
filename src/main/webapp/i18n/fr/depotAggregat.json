@@ -1,0 +1,23 @@
+{
+  "logisticaApp": {
+    "depotAggregat": {
+      "home": {
+        "title": "Dépôts",
+        "createLabel": "Créer un nouveau Depot Agregat",
+        "createOrEditLabel": "Créer ou éditer un Depot Agregat",
+        "notFound": "Aucun Depot Agregat trouvé"
+      },
+      "created": "Un nouveau Depot Agregat a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Depot Agregat avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Depot Agregat avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Depot Agregat {{ id }} ?"
+      },
+      "detail": {
+        "title": "Depot Agregat"
+      },
+      "stock": "Stock",
+      "nom": "Nom"
+    }
+  }
+}

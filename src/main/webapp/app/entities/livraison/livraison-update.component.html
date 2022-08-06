@@ -337,6 +337,24 @@
                         </small>
                     </div>
                 </div>
+                <div *ngIf="isMarchandise()" class="form-group">
+                    <label class="form-control-label" for="field_quantiteConvertie">Dépôt</label>
+                    <select class="form-control" id="field_depot_aggregat" name="depotAggregat"
+                            formControlName="depotAggregat">
+                        <option *ngFor="let depotAggregatOption of depotAggregats; trackBy: trackDepotAggregatById"
+                                [ngValue]="depotAggregatOption.id === editForm.get('depotAggregat').value?.id ? editForm.get('depotAggregat').value : depotAggregatOption">
+                            {{depotAggregatOption.nom}}
+                        </option>
+                    </select>
+                    <div
+                        *ngIf="editForm.get('depotAggregat').invalid && (editForm.get('depotAggregat').dirty || editForm.get('depotAggregat').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('depotAggregat').errors.required"
+                               jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
                 <div class="form-row">
                     <div class="col">
                         <label class="form-control-label" jhiTranslate="logisticaApp.livraison.reparationDivers"

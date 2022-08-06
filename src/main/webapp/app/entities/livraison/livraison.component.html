@@ -219,6 +219,9 @@
                     jhiTranslate="logisticaApp.livraison.societeFacturation">Societe Facturation</span>
                     <fa-icon [icon]="'sort'"></fa-icon>
                 </th>
+                <th scope="col" jhiSortBy="depotAggregat.nom"><span>Dépôt</span>
+                    <fa-icon [icon]="'sort'"></fa-icon>
+                </th>
                 <th scope="col"></th>
             </tr>
             </thead>
@@ -274,12 +277,17 @@
                 </td>
                 <td>
                     <div *ngIf="livraison.produit">
-                        <a [routerLink]="['/produit', livraison.produit?.id, 'view' ]" >{{livraison.produit?.code}}</a>
+                        <a [routerLink]="['/produit', livraison.produit?.id, 'view' ]">{{livraison.produit?.code}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="livraison.societeFacturation">
-                        <a [routerLink]="['/societe', livraison.societeFacturation?.id, 'view' ]" >{{livraison.societeFacturation?.nom}}</a>
+                        <a [routerLink]="['/societe', livraison.societeFacturation?.id, 'view' ]">{{livraison.societeFacturation?.nom}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="livraison.depotAggregat">
+                        <a [routerLink]="['/depot-aggregat', livraison.depotAggregat?.id, 'view' ]">{{livraison.depotAggregat?.nom}}</a>
                     </div>
                 </td>
                 <td class="text-right">
