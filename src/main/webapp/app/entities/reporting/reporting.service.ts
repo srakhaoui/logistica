@@ -20,6 +20,7 @@ import { IRecapitulatifGasoilGrosVente } from 'app/shared/model/recapitulatif-ga
 import { IRecapitulatifGasoilGrosAchat } from 'app/shared/model/recapitulatif-gasoil-gros-achat.model';
 import { IRecapitulatifGasoilGros } from 'app/shared/model/recapitulatif-gasoil-gros.model';
 import { IRecapitulatifStock } from 'app/shared/model/recapitulatif-stock.model';
+import { IRecapitulatifDepotAgregatStock } from 'app/shared/model/recapitulatif-depot-agregat-stock.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
@@ -34,6 +35,8 @@ type IRecapitulatifGasoilGrosAchatResponseType = HttpResponse<IRecapitulatifGaso
 type IRecapitulatifGasoilGrosResponseType = HttpResponse<IRecapitulatifGasoilGros>;
 type IRecapitulatifStocksResponseType = HttpResponse<IRecapitulatifStock[]>;
 type IChantiersResponseType = HttpResponse<string[]>;
+type IRecapitulatifDepotAgregatStockType = HttpResponse<IRecapitulatifDepotAgregatStock[]>;
+
 
 
 @Injectable({ providedIn: 'root' })
@@ -43,6 +46,7 @@ export class ReportingService {
   public resourceUrlGasoilVenteGros = SERVER_API_URL + 'api/gasoil-vente-gros';
   public resourceUrlGasoilAchatGros = SERVER_API_URL + 'api/gasoil-achat-gros';
   public resourceUrlDepot = SERVER_API_URL + 'api/depots';
+  public resourceUrlDepotAgregat = SERVER_API_URL + 'api/depot-aggregats';
 
   constructor(protected http: HttpClient) {}
 
@@ -167,6 +171,13 @@ export class ReportingService {
       return this.http
         .get<string[]>(`${this.resourceUrl}/client/chantiers`, { params: options, observe: 'response' })
         .pipe(map((res: IChantiersResponseType) => res));
+  }
+
+  getReportingDepotAgregatStock(req?: any): Observable<IRecapitulatifDepotAgregatStockType> {
+      const options = createRequestOption(req);
+      return this.http
+        .get<IRecapitulatifDepotAgregatStock[]>(`${this.resourceUrlDepotAgregat}/stocks`, { params: options, observe: 'response' })
+        .pipe(map((res: IRecapitulatifDepotAgregatStockType) => res));
   }
 
   protected convertDateArrayFromServer(res: IRecapitulatifAchatsResponseType): IRecapitulatifAchatsResponseType {

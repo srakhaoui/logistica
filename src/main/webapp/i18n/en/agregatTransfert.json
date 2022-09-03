@@ -1,0 +1,25 @@
+{
+  "logisticaApp": {
+    "agregatTransfert": {
+      "home": {
+        "title": "Transfert Agregats",
+        "createLabel": "Create a new Transfert Agregat",
+        "createOrEditLabel": "Create or edit a Transfert Agregat",
+        "notFound": "No Transfert Agregats found"
+      },
+      "created": "A new Transfert Agregat is created with identifier {{ param }}",
+      "updated": "A Transfert Agregat is updated with identifier {{ param }}",
+      "deleted": "A Transfert Agregat is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Transfert Agregat {{ id }}?"
+      },
+      "detail": {
+        "title": "Transfert Agregat"
+      },
+      "transfertDate": "Transfert Date",
+      "quantite": "Quantite",
+      "source": "Source",
+      "destination": "Destination"
+    }
+  }
+}

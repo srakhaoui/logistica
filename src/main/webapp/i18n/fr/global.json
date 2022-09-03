@@ -33,6 +33,7 @@
         "depot": "Depot",
         "gasoilTransfert": "Gasoil Transfert",
         "depotAggregat": "Dépôt",
+        "agregatTransfert": "Transfert Agregat",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

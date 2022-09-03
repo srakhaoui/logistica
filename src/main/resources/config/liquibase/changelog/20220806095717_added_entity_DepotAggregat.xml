@@ -16,6 +16,9 @@
             <column name="stock" type="${floatType}">
                 <constraints nullable="false"/>
             </column>
+            <column name="unite" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
             <column name="nom" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>

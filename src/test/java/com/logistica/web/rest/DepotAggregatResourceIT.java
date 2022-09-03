@@ -3,6 +3,7 @@ package com.logistica.web.rest;
 import com.logistica.LogisticaApp;
 import com.logistica.domain.DepotAggregat;
 import com.logistica.repository.DepotAggregatRepository;
+import com.logistica.service.DepotAgregatService;
 import com.logistica.web.rest.errors.ExceptionTranslator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -60,10 +61,12 @@ public class DepotAggregatResourceIT {
 
     private DepotAggregat depotAggregat;
 
+    private DepotAgregatService depotAgregatService;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final DepotAggregatResource depotAggregatResource = new DepotAggregatResource(depotAggregatRepository);
+        final DepotAggregatResource depotAggregatResource = new DepotAggregatResource(depotAgregatService, depotAggregatRepository);
         this.restDepotAggregatMockMvc = MockMvcBuilders.standaloneSetup(depotAggregatResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

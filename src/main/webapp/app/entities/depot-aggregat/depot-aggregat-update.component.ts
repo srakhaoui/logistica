@@ -18,6 +18,7 @@ export class DepotAggregatUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     stock: [null, [Validators.required, Validators.min(0)]],
+    unite: [null, [Validators.required]],
     nom: [null, [Validators.required]]
   });
 
@@ -34,6 +35,7 @@ export class DepotAggregatUpdateComponent implements OnInit {
     this.editForm.patchValue({
       id: depotAggregat.id,
       stock: depotAggregat.stock,
+      unite: depotAggregat.unite,
       nom: depotAggregat.nom
     });
   }
@@ -57,6 +59,7 @@ export class DepotAggregatUpdateComponent implements OnInit {
       ...new DepotAggregat(),
       id: this.editForm.get(['id']).value,
       stock: this.editForm.get(['stock']).value,
+      unite: this.editForm.get(['unite']).value,
       nom: this.editForm.get(['nom']).value
     };
   }

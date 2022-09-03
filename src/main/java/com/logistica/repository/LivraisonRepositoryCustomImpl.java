@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -628,5 +629,23 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
             entityQuery.setParameter("dateFin", dateFinBonLivraison);
         }
         return (Double) entityQuery.getSingleResult();
+    }
+
+    public List<StockDepot> getTotalAchatMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest depotAggregatStockRequest) {
+        return getStockDepots(depotAggregatStockRequest, "Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteAchat, sum(l.quantiteAchetee)) From Livraison %s l Group By l.depotAggregat, l.uniteAchat");
+    }
+
+    public List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest depotAggregatStockRequest) {
+        return getStockDepots(depotAggregatStockRequest, "Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteVente, sum(l.quantiteVendue)) From Livraison %s l Group By l.depotAggregat, l.uniteVente");
+
+    }
+
+    private List<StockDepot> getStockDepots(RecapitulatifDepotAggregatStockRequest depotAggregatStockRequest, String queryTemplate) {
+        Optional<LocalDate> dateDebutOptional = Optional.ofNullable(depotAggregatStockRequest.getDateDebut());
+        String dateDebutCriteria = dateDebutOptional.map(dateDebut -> "Where l.dateBonLivraison >= :dateDebut").orElse("");
+        TypedQuery<StockDepot> entityQuery = entityManager.createQuery(String.format(queryTemplate, dateDebutCriteria), StockDepot.class);
+        dateDebutOptional.ifPresent(dateDebut -> entityQuery.setParameter("dateDebut", dateDebut));
+
+        return entityQuery.getResultList();
     }
 }

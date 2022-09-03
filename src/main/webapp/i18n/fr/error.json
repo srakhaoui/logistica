@@ -41,6 +41,7 @@
     "gasoil.citerne.non.fournie": "Citerne non renseignée",
     "stock.insuffisant": "Le stock du dépôt sélectionné est insuffisant: {0}",
     "depot.introuvable": "Le dépôt sélectionné est introvable",
-    "vente-gros.bon-achat-ou-depot": "Vous devez spécifier la source en renseignant soit le bon d'achat du gasoil ou le dépot"
+    "vente-gros.bon-achat-ou-depot": "Vous devez spécifier la source en renseignant soit le bon d'achat du gasoil ou le dépot",
+    "quantite.depot.insuffisante": "La quantité du dépôt source est insuffisante"
   }
 }

@@ -3,6 +3,7 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { take, map } from 'rxjs/operators';
 import { DepotAggregatService } from 'app/entities/depot-aggregat/depot-aggregat.service';
 import { IDepotAggregat, DepotAggregat } from 'app/shared/model/depot-aggregat.model';
+import { Unite } from 'app/shared/model/enumerations/unite.model';
 
 describe('Service Tests', () => {
   describe('DepotAggregat Service', () => {
@@ -20,7 +21,7 @@ describe('Service Tests', () => {
       service = injector.get(DepotAggregatService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new DepotAggregat(0, 0, 'AAAAAAA');
+      elemDefault = new DepotAggregat(0, 0, Unite.Tonne, 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -76,6 +77,7 @@ describe('Service Tests', () => {
         const returnedFromService = Object.assign(
           {
             stock: 1,
+            unite: Unite.Tonne,
             nom: 'BBBBBB'
           },
           elemDefault

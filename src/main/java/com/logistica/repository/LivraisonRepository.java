@@ -2,6 +2,7 @@ package com.logistica.repository;
 
 import com.logistica.domain.Livraison;
 import com.logistica.service.dto.IRecapitulatifChauffeur;
+import com.logistica.service.dto.StockDepot;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -40,4 +41,10 @@ public interface LivraisonRepository extends JpaRepository<Livraison, Long>, Jpa
     Double getTotalVenteByTransporteur(@Param("transporteurId") Long transporteurId, @Param("dateDebut") LocalDate dateDebut, @Param("dateFin") LocalDate dateFin);
 
     boolean existsLivraisonByNumeroBonLivraisonAndClientId(String numeroBonLivraison, Long clientId);
+
+    @Query("Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteAchat, sum(l.quantiteAchetee)) From Livraison l Group By l.depotAggregat, l.uniteAchat")
+    List<StockDepot> getTotalAchatMarchandisesByDepotAndUnite();
+
+    @Query("Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteVente, sum(l.quantiteVendue)) From Livraison l Group By l.depotAggregat, l.uniteVente")
+    List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite();
 }

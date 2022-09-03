@@ -1,5 +1,6 @@
 package com.logistica.domain;
 
+import com.logistica.domain.enumeration.Unite;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -27,6 +28,10 @@ public class DepotAggregat implements Serializable {
     @DecimalMin(value = "0")
     @Column(name = "stock", nullable = false)
     private Float stock;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "unite")
+    private Unite unite;
 
     @NotNull
     @Column(name = "nom", nullable = false)
@@ -65,6 +70,14 @@ public class DepotAggregat implements Serializable {
 
     public void setNom(String nom) {
         this.nom = nom;
+    }
+
+    public Unite getUnite() {
+        return unite;
+    }
+
+    public void setUnite(Unite unite) {
+        this.unite = unite;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -1,0 +1,39 @@
+.entete-depot {
+  background-color: #4582EC;
+  color: white;
+  font-family: sans-serif;
+  justify-content: center
+}
+
+.stock-initial {
+  background-color: #72dc8c;
+  color: white;
+}
+
+.entete-depot-achats {
+  background-color: #52cc70;
+  color: white;
+  //font-family: sans-serif;
+}
+
+.entete-depot-ventes {
+  background-color: #efb666;
+  color: white;
+  //font-family: sans-serif;
+}
+
+.entete-depot-transferts-entrants {
+  background-color: #52cc70;
+  color: white;
+  //font-family: sans-serif;
+}
+
+.entete-depot-transferts-sortants {
+  background-color: #efb666;
+  color: white;
+  //font-family: sans-serif;
+}
+
+.stock-par-unite {
+  font-weight: bold;
+}

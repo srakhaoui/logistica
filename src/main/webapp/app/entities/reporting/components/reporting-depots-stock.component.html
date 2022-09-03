@@ -1,0 +1,113 @@
+<div>
+    <h2 id="page-heading">
+        <span>Stocks</span>
+    </h2>
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <br/>
+    <div>
+        <form name="reportingForm" role="form" novalidate (ngSubmit)="reset()" [formGroup]="reportingForm">
+            <div class="form-row">
+                <div class="col">
+                    <label class="form-control-label" for="field_dateDebutBonLivraison">Achats et ventes depuis</label>
+                    <div class="input-group">
+                        <input id="field_dateDebutBonLivraison" type="text" class="form-control" name="dateDebut"
+                               ngbDatepicker #dateDebutDp="ngbDatepicker" formControlName="dateDebut"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="dateDebutDp.toggle()"><fa-icon
+                                [icon]="'calendar-alt'"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <br>
+                <button type="submit" id="search-reporting" class="btn btn-primary" [disabled]="isSearching">
+                    <fa-icon *ngIf="!isSearching" [icon]="'search'"></fa-icon>&nbsp;
+                    <span *ngIf="!isSearching">Rechercher</span>
+                    <span *ngIf="isSearching" class="spinner-border spinner-border-sm" role="status"
+                          aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="alert alert-warning" *ngIf="recapitulatifStocks?.length === 0">
+        <span jhiTranslate="logisticaApp.reporting.home.notFound">No reporting found</span>
+    </div>
+    <div class="table-responsive" *ngIf="recapitulatifStocks?.length > 0">
+        <div class="container" *ngFor="let recapitulatifStock of recapitulatifStocks; recapitulatifStock">
+            <div class="row entete-depot">{{recapitulatifStock.nom}}</div>
+            <div class="row stock-initial">
+                <div class="col">Stock initial</div>
+                <div class="col">{{recapitulatifStock.initialStock}}</div>
+                <div class="col">{{recapitulatifStock.uniteIntialStock}}</div>
+            </div>
+            <div class="row entete-depot-achats">
+                <div class="col">Achats</div>
+                <div class="col">
+                    <div *ngFor="let achat of recapitulatifStock.achats; recapitulatifStock" class="short-div">
+                        {{achat.total}}
+                    </div>
+                </div>
+                <div class="col">
+                    <div *ngFor="let achat of recapitulatifStock.achats; recapitulatifStock" class="short-div">
+                        {{achat.unite}}
+                    </div>
+                </div>
+            </div>
+            <div class="row entete-depot-transferts-entrants">
+                <div class="col">Transferts entrants</div>
+                <div class="col">
+                    <div *ngFor="let transfertEntrant of recapitulatifStock.transfertsEntrants;" class="short-div">
+                        {{transfertEntrant.total}}
+                    </div>
+                </div>
+                <div class="col">
+                    <div *ngFor="let transfertEntrant of recapitulatifStock.transfertsEntrants;" class="short-div">
+                        {{transfertEntrant.unite}}
+                    </div>
+                </div>
+            </div>
+            <div class="row entete-depot-ventes">
+                <div class="col">Ventes</div>
+                <div class="col">
+                    <div *ngFor="let vente of recapitulatifStock.ventes; recapitulatifStock" class="short-div">
+                        {{vente.total}}
+                    </div>
+                </div>
+                <div class="col">
+                    <div *ngFor="let vente of recapitulatifStock.ventes; recapitulatifStock" class="short-div">
+                        {{vente.unite}}
+                    </div>
+                </div>
+            </div>
+            <div class="row entete-depot-transferts-sortants">
+                <div class="col">Transferts sortants</div>
+                <div class="col">
+                    <div *ngFor="let transfertSortant of recapitulatifStock.transfertsSortants;" class="short-div">
+                        {{transfertSortant.total}}
+                    </div>
+                </div>
+                <div class="col">
+                    <div *ngFor="let transfertSortant of recapitulatifStock.transfertsSortants;" class="short-div">
+                        {{transfertSortant.unite}}
+                    </div>
+                </div>
+            </div>
+            <div class="row stock-par-unite">
+                <div class="col">Total par unité</div>
+                <div class="col">
+                    <div *ngFor="let stock of recapitulatifStock.stockByUnite | keyvalue" class="short-div">
+                        {{stock.value}}
+                    </div>
+                </div>
+                <div class="col">
+                    <div *ngFor="let stock of recapitulatifStock.stockByUnite | keyvalue" class="short-div">
+                        {{stock.key}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

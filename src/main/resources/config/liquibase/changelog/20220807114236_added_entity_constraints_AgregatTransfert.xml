@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <!--
+        Added the constraints for entity AgregatTransfert.
+    -->
+    <changeSet id="20220807114236-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="source_id"
+                                 baseTableName="agregat_transfert"
+                                 constraintName="fk_agregat_transfert_source_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="depot_aggregat"/>
+
+        <addForeignKeyConstraint baseColumnNames="destination_id"
+                                 baseTableName="agregat_transfert"
+                                 constraintName="fk_agregat_transfert_destination_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="depot_aggregat"/>
+
+    </changeSet>
+</databaseChangeLog>

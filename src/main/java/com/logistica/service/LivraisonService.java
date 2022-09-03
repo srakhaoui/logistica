@@ -81,4 +81,8 @@ public interface LivraisonService {
     void setMaxRepartitionSize(Integer maxRepartitionSize);
 
     Courbe<String, Float> getCourbe(List<ChiffreAffaireParRepartition> repartitions);
+
+    List<StockDepot> getTotalAchatMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest);
+
+    List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest);
 }

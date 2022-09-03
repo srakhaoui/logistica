@@ -2,76 +2,62 @@ package com.logistica.service.dto;
 
 import com.logistica.domain.enumeration.Unite;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class RecapitulatifDepotAggregatStock {
     private final String nom;
     private final Float initialStock;
     private Unite uniteIntialStock;
-    private float entreesAchat;
-    private Unite uniteEntreesAchat;
-    private float entreesTransfert;
-    private Unite uniteTransfertAchat;
-    private float sortiesVente;
-    private Unite uniteSortiesAchat;
-    private float sortiesTransfert;
-    private Unite uniteSortiesTransfert;
-    private Float stock;
+    private List<StockDepot> achats;
+    private List<StockDepot> ventes;
+    private List<StockDepot> transfertsEntrants;
+    private List<StockDepot> transfertsSortants;
+    private Map<Unite, Float> stockByUnite;
 
-    public RecapitulatifDepotAggregatStock(String nom, Float initialStock) {
+    public RecapitulatifDepotAggregatStock(String nom, Float initialStock, Unite uniteIntialStock) {
+        stockByUnite = new HashMap<>();
         this.nom = nom;
         this.initialStock = initialStock;
+        this.uniteIntialStock = uniteIntialStock;
     }
 
     public String getNom() {
         return nom;
     }
 
-    public RecapitulatifDepotAggregatStock entreesAchat(float entreesAchat) {
-        this.entreesAchat = entreesAchat;
+    public RecapitulatifDepotAggregatStock achats(List<StockDepot> achats) {
+        this.achats = achats;
+        achats.stream()
+            .forEach(achat -> stockByUnite.put(achat.getUnite(), stockByUnite.getOrDefault(achat.getUnite(), 0.0F) + achat.getTotal()));
         return this;
     }
 
-    public RecapitulatifDepotAggregatStock entreesTransfert(float entreesTransfert) {
-        this.entreesTransfert = entreesTransfert;
+    public RecapitulatifDepotAggregatStock ventes(List<StockDepot> ventes) {
+        this.ventes = ventes;
+        ventes.stream()
+            .forEach(vente -> stockByUnite.put(vente.getUnite(), stockByUnite.getOrDefault(vente.getUnite(), 0.0F) - vente.getTotal()));
         return this;
     }
 
-    public RecapitulatifDepotAggregatStock sortiesVente(float sortiesVente) {
-        this.sortiesVente = sortiesVente;
+    public RecapitulatifDepotAggregatStock transfertsEntrants(List<StockDepot> transfertsEntrants) {
+        this.transfertsEntrants = transfertsEntrants;
+        transfertsEntrants.stream()
+            .forEach(transfertEntrant -> stockByUnite.put(transfertEntrant.getUnite(), stockByUnite.getOrDefault(transfertEntrant.getUnite(), 0.0F) + transfertEntrant.getTotal()));
         return this;
     }
 
-    public RecapitulatifDepotAggregatStock sortiesTransfert(float sortiesTransfert) {
-        this.sortiesTransfert = sortiesTransfert;
+    public RecapitulatifDepotAggregatStock transfertsSortants(List<StockDepot> transfertsSortants) {
+        this.transfertsSortants = transfertsSortants;
+        transfertsSortants.stream()
+            .forEach(transfertSortant -> stockByUnite.put(transfertSortant.getUnite(), stockByUnite.getOrDefault(transfertSortant.getUnite(), 0.0F) - transfertSortant.getTotal()));
         return this;
     }
 
-    public RecapitulatifDepotAggregatStock uniteIntialStock(Unite uniteIntialStock) {
-        this.uniteIntialStock = uniteIntialStock;
-        return this;
-    }
-
-    public RecapitulatifDepotAggregatStock uniteEntreesAchat(Unite uniteEntreesAchat) {
-        this.uniteEntreesAchat = uniteEntreesAchat;
-        return this;
-    }
-
-    public RecapitulatifDepotAggregatStock uniteTransfertAchat(Unite uniteTransfertAchat) {
-        this.uniteTransfertAchat = uniteTransfertAchat;
-        return this;
-    }
-
-    public RecapitulatifDepotAggregatStock uniteSortiesAchat(Unite uniteSortiesAchat) {
-        this.uniteSortiesAchat = uniteSortiesAchat;
-        return this;
-    }
-
-    public RecapitulatifDepotAggregatStock uniteSortiesTransfert(Unite uniteSortiesTransfert) {
-        this.uniteSortiesTransfert = uniteSortiesTransfert;
-        return this;
-    }
-
-    public RecapitulatifDepotAggregatStock calculerStock() {
-        this.stock = initialStock + entreesAchat + entreesTransfert - sortiesVente - sortiesTransfert;
+    public RecapitulatifDepotAggregatStock calculerStockParUnite() {
+        //initialStock + entreesAchat + entreesTransfert - sortiesVente - sortiesTransfert; by unite
+        this.stockByUnite.put(uniteIntialStock, initialStock + this.stockByUnite.getOrDefault(uniteIntialStock, 0.0F));
         return this;
     }
 
@@ -79,43 +65,27 @@ public class RecapitulatifDepotAggregatStock {
         return initialStock;
     }
 
-    public float getEntreesAchat() {
-        return entreesAchat;
-    }
-
-    public float getEntreesTransfert() {
-        return entreesTransfert;
-    }
-
-    public float getSortiesVente() {
-        return sortiesVente;
-    }
-
-    public float getSortiesTransfert() {
-        return sortiesTransfert;
-    }
-
     public Unite getUniteIntialStock() {
         return uniteIntialStock;
     }
 
-    public Unite getUniteEntreesAchat() {
-        return uniteEntreesAchat;
+    public List<StockDepot> getAchats() {
+        return achats;
     }
 
-    public Unite getUniteTransfertAchat() {
-        return uniteTransfertAchat;
+    public List<StockDepot> getVentes() {
+        return ventes;
     }
 
-    public Unite getUniteSortiesAchat() {
-        return uniteSortiesAchat;
+    public List<StockDepot> getTransfertsEntrants() {
+        return transfertsEntrants;
     }
 
-    public Unite getUniteSortiesTransfert() {
-        return uniteSortiesTransfert;
+    public List<StockDepot> getTransfertsSortants() {
+        return transfertsSortants;
     }
 
-    public Float getStock() {
-        return stock;
+    public Map<Unite, Float> getStockByUnite() {
+        return stockByUnite;
     }
 }

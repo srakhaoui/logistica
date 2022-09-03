@@ -26,4 +26,9 @@ public interface LivraisonRepositoryCustom {
     List<ChiffreAffaireParRepartition> getRepartitionChiffreAffairePar(StatistiquesChiffreAffaireRequest evolutionCARequest, UniteRepartition uniteRepartition);
 
     Double getTotalChiffreAffaire(StatistiquesChiffreAffaireRequest evolutionCARequest);
+
+    List<StockDepot> getTotalAchatMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest);
+
+    List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest);
+
 }

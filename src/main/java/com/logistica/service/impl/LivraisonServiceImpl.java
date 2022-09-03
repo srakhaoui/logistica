@@ -321,6 +321,16 @@ public class LivraisonServiceImpl implements LivraisonService {
         return courbe;
     }
 
+    @Override
+    public List<StockDepot> getTotalAchatMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest) {
+        return livraisonRepository.getTotalAchatMarchandisesByDepotAndUnite(recapitulatifDepotAggregatStockRequest);
+    }
+
+    @Override
+    public List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest) {
+        return livraisonRepository.getTotalVenteMarchandisesByDepotAndUnite(recapitulatifDepotAggregatStockRequest);
+    }
+
     private Courbe<String, Float> getEvolutionChiffreAffaire(StatistiquesChiffreAffaireRequest chiffreAffaireRequest) {
         final List<ChiffreAffaireParMois> chiffresAffaireParMois = livraisonRepository.getEvolutionChiffreAffaireParMois(chiffreAffaireRequest);
         Map<String, Float> chiffreAffaireByYearMonthMap = chiffresAffaireParMois.stream()

@@ -4,6 +4,7 @@ import com.logistica.domain.DepotAggregat;
 import com.logistica.repository.DepotAggregatRepository;
 import com.logistica.service.DepotAgregatService;
 import com.logistica.service.dto.RecapitulatifDepotAggregatStock;
+import com.logistica.service.dto.RecapitulatifDepotAggregatStockRequest;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -127,8 +128,8 @@ public class DepotAggregatResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of stocks in body.
      */
     @GetMapping("/depot-aggregats/stocks")
-    public List<RecapitulatifDepotAggregatStock> getAllDepotAggregatStocks() {
+    public List<RecapitulatifDepotAggregatStock> getAllDepotAggregatStocks(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest) {
         log.debug("REST request to get all DepotAggregatStocks");
-        return depotAgregatService.getStocks();
+        return depotAgregatService.getStocks(recapitulatifDepotAggregatStockRequest);
     }
 }

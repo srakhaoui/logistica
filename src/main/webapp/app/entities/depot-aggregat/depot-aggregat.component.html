@@ -18,7 +18,8 @@
             <thead>
             <tr>
                 <th scope="col"><span jhiTranslate="global.field.id">ID</span></th>
-                <th scope="col"><span jhiTranslate="logisticaApp.depotAggregat.stock">Stock</span></th>
+                <th scope="col"><span>Stock Initial</span></th>
+                <th scope="col"><span>Unité</span></th>
                 <th scope="col"><span jhiTranslate="logisticaApp.depotAggregat.nom">Nom</span></th>
                 <th scope="col"></th>
             </tr>
@@ -27,6 +28,7 @@
             <tr *ngFor="let depotAggregat of depotAggregats ;trackBy: trackId">
                 <td><a [routerLink]="['/depot-aggregat', depotAggregat.id, 'view' ]">{{depotAggregat.id}}</a></td>
                 <td>{{depotAggregat.stock}}</td>
+                <td>{{depotAggregat.unite}}</td>
                 <td>{{depotAggregat.nom}}</td>
                 <td class="text-right">
                     <div class="btn-group">
