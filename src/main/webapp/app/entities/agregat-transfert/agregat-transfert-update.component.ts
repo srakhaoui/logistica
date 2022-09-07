@@ -11,16 +11,20 @@ import { IAgregatTransfert, AgregatTransfert } from 'app/shared/model/agregat-tr
 import { AgregatTransfertService } from './agregat-transfert.service';
 import { IDepotAggregat } from 'app/shared/model/depot-aggregat.model';
 import { DepotAggregatService } from 'app/entities/depot-aggregat/depot-aggregat.service';
+import { ReportingService } from 'app/entities/reporting/reporting.service';
+import { IRecapitulatifDepotAgregatStock } from 'app/shared/model/recapitulatif-depot-agregat-stock.model';
 
 @Component({
   selector: 'jhi-agregat-transfert-update',
-  templateUrl: './agregat-transfert-update.component.html'
+  templateUrl: './agregat-transfert-update.component.html',
+  styleUrls: ['./agregat-transfert-update.component.scss']
 })
 export class AgregatTransfertUpdateComponent implements OnInit {
   isSaving: boolean;
 
   depotaggregats: IDepotAggregat[];
-  transfertDateDp: any;
+
+  stockDepotSource: number;
 
   editForm = this.fb.group({
     id: [],
@@ -35,6 +39,7 @@ export class AgregatTransfertUpdateComponent implements OnInit {
     protected jhiAlertService: JhiAlertService,
     protected agregatTransfertService: AgregatTransfertService,
     protected depotAggregatService: DepotAggregatService,
+    protected reportingService: ReportingService,
     protected activatedRoute: ActivatedRoute,
     private fb: FormBuilder
   ) {}
@@ -107,5 +112,29 @@ export class AgregatTransfertUpdateComponent implements OnInit {
 
   trackDepotAggregatById(index: number, item: IDepotAggregat) {
     return item.id;
+  }
+
+  onDepotSourceChange(event) {
+    const transferUniteDefined = this.editForm.get('unite') !== undefined;
+    const sourceDepotNameDefined = event.nom !== undefined;
+    if (sourceDepotNameDefined && transferUniteDefined) {
+      const sourceDepotName = event.nom;
+      const transferUnite = this.editForm.get('unite');
+      this.reportingService.getReportingDepotAgregatStock({}).subscribe((res: HttpResponse<IRecapitulatifDepotAgregatStock[]>) => {
+        this.stockDepotSource = res.body.find(recapStock => recapStock.nom === sourceDepotName).stockByUnite[transferUnite.value];
+      });
+    }
+  }
+
+  onUniteChange(event) {
+    const transferUniteDefined = event !== undefined;
+    const sourceDepotDefined = this.editForm.get('source').value !== undefined;
+    if (transferUniteDefined && sourceDepotDefined) {
+      const transferUnite = event;
+      const sourceDepotName = this.editForm.get('source').value.nom;
+      this.reportingService.getReportingDepotAgregatStock({}).subscribe((res: HttpResponse<IRecapitulatifDepotAgregatStock[]>) => {
+        this.stockDepotSource = res.body.find(recapStock => recapStock.nom === sourceDepotName).stockByUnite[transferUnite];
+      });
+    }
   }
 }

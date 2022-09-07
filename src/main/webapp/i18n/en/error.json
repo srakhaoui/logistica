@@ -33,6 +33,7 @@
     "stock.insuffisant": "The tank's available quantity is not enough : {0}",
     "depot.introuvable": "The selected tank is not found",
     "vente-gros.bon-achat-ou-depot": "you should specify the source, either provide the fuel receipt or the tank name",
-    "quantite.depot.insuffisante": "Available quantity is insuffcient"
+    "quantite.depot.insuffisante": "Available quantity is insuffcient",
+    "depot.source.inexistant": "The source tank is not found"
   }
 }

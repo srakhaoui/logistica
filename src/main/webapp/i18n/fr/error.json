@@ -42,6 +42,7 @@
     "stock.insuffisant": "Le stock du dépôt sélectionné est insuffisant: {0}",
     "depot.introuvable": "Le dépôt sélectionné est introvable",
     "vente-gros.bon-achat-ou-depot": "Vous devez spécifier la source en renseignant soit le bon d'achat du gasoil ou le dépot",
-    "quantite.depot.insuffisante": "La quantité du dépôt source est insuffisante"
+    "quantite.depot.insuffisante": "La quantité du dépôt source est insuffisante",
+    "depot.source.inexistant": "Le dépôt source est inexistant"
   }
 }

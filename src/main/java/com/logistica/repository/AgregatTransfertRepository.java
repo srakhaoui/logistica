@@ -16,10 +16,10 @@ import java.util.List;
 @Repository
 public interface AgregatTransfertRepository extends JpaRepository<AgregatTransfert, Long> {
 
-    @Query("Select new com.logistica.service.dto.StockDepot(destination.nom, unite, sum(t.quantite)) From AgregatTransfert t Group By destination, unite")
+    @Query("Select new com.logistica.service.dto.StockDepot(t.destination.nom, t.unite, sum(t.quantite)) From AgregatTransfert t Group By t.destination.nom, t.unite")
     List<StockDepot> getTotalTransfertEntrantsByDepotAndUnite();
 
-    @Query("Select new com.logistica.service.dto.StockDepot(source.nom, unite, sum(t.quantite)) From AgregatTransfert t Group By source, unite")
+    @Query("Select new com.logistica.service.dto.StockDepot(t.source.nom, t.unite, sum(t.quantite)) From AgregatTransfert t Group By t.source.nom, t.unite")
     List<StockDepot> getTotalTransfertSortantsByDepotAndUnite();
 
 }

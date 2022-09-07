@@ -7,6 +7,7 @@ import com.logistica.repository.DepotAggregatRepository;
 import com.logistica.service.dto.RecapitulatifDepotAggregatStock;
 import com.logistica.service.dto.RecapitulatifDepotAggregatStockRequest;
 import com.logistica.service.dto.StockDepot;
+import com.logistica.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -60,7 +61,8 @@ public class DepotAgregatService {
         return getStocks(new RecapitulatifDepotAggregatStockRequest())
             .stream()
             .filter(recapStock -> recapStock.getNom().equalsIgnoreCase(source.getNom()))
-            .map(recapStock -> recapStock.getStockByUnite().get(unite))
-            .findAny();
+            .map(recapStock -> Optional.ofNullable(recapStock.getStockByUnite().get(unite)))
+            .findAny()
+            .get();
     }
 }

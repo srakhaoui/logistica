@@ -38,7 +38,7 @@
         <addColumn schemaName="public"
                    tableName="livraison">
             <column name="depot_aggregat_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
         </addColumn>
         <addForeignKeyConstraint baseColumnNames="depot_aggregat_id"

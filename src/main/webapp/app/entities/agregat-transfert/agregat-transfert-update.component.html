@@ -48,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-control-label" for="field_unite">Unité</label>
-                    <select class="form-control" name="unite" formControlName="unite" id="field_unite">
+                    <select class="form-control" name="unite" formControlName="unite" id="field_unite" (ngModelChange)="onUniteChange($event)">
                         <option value="Tonne">{{'logisticaApp.Unite.Tonne' | translate}}</option>
                         <option value="M3">{{'logisticaApp.Unite.M3' | translate}}</option>
                     </select>
@@ -64,7 +64,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="logisticaApp.agregatTransfert.source"
                            for="field_source">Source</label>
-                    <select class="form-control" id="field_source" name="source" formControlName="source">
+                    <select class="form-control" id="field_source" name="source" formControlName="source" (ngModelChange)="onDepotSourceChange($event)">
                         <option *ngIf="!editForm.get('source').value" [ngValue]="null" selected></option>
                         <option
                             [ngValue]="depotAggregatOption.id === editForm.get('source').value?.id ? editForm.get('source').value : depotAggregatOption"
@@ -72,6 +72,8 @@
                             {{depotAggregatOption.nom}}
                         </option>
                     </select>
+                    <div class="stock-disponible" *ngIf="stockDepotSource && editForm.get('unite').value" class="info">Stock disponible : {{stockDepotSource}} {{editForm.get('unite').value}}</div>
+                    <div class="stock-indisponible" *ngIf="!stockDepotSource && editForm.get('unite').value" class="info">Stock indisponible en {{editForm.get('unite').value}}</div>
                 </div>
                 <div
                     *ngIf="editForm.get('source').invalid && (editForm.get('source').dirty || editForm.get('source').touched)">

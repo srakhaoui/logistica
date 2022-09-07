@@ -3,6 +3,7 @@ package com.logistica.service;
 import com.logistica.domain.AgregatTransfert;
 import com.logistica.repository.AgregatTransfertRepository;
 import com.logistica.service.dto.StockDepot;
+import com.logistica.web.rest.errors.BadRequestAlertException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class AgregatTransfertService {
         return depotAgregatService
             .getStock(agregatTransfert.getSource(), agregatTransfert.getUnite())
             .map(sourceStock -> agregatTransfert.getQuantite() < sourceStock)
-            .orElseThrow(() -> new RuntimeException("Depot source inexistant"));
+            .orElseThrow(() -> new QuantiteTransfertInsuffisanteException());
     }
 
     /**

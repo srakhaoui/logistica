@@ -632,11 +632,11 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     }
 
     public List<StockDepot> getTotalAchatMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest depotAggregatStockRequest) {
-        return getStockDepots(depotAggregatStockRequest, "Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteAchat, sum(l.quantiteAchetee)) From Livraison %s l Group By l.depotAggregat, l.uniteAchat");
+        return getStockDepots(depotAggregatStockRequest, "Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteAchat, sum(l.quantiteAchetee)) From Livraison %s l Group By l.depotAggregat.nom, l.uniteAchat");
     }
 
     public List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest depotAggregatStockRequest) {
-        return getStockDepots(depotAggregatStockRequest, "Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteVente, sum(l.quantiteVendue)) From Livraison %s l Group By l.depotAggregat, l.uniteVente");
+        return getStockDepots(depotAggregatStockRequest, "Select new com.logistica.service.dto.StockDepot(l.depotAggregat.nom, l.uniteVente, sum(l.quantiteVendue)) From Livraison %s l Group By l.depotAggregat.nom, l.uniteVente");
 
     }
 
