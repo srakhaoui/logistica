@@ -346,14 +346,6 @@
                             {{depotAggregatOption.nom}}
                         </option>
                     </select>
-                    <div
-                        *ngIf="editForm.get('depotAggregat').invalid && (editForm.get('depotAggregat').dirty || editForm.get('depotAggregat').touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('depotAggregat').errors.required"
-                               jhiTranslate="entity.validation.required">
-                            This field is required.
-                        </small>
-                    </div>
                 </div>
                 <div class="form-row">
                     <div class="col">
