@@ -36,6 +36,10 @@ public class Client implements Serializable {
     @Column(name = "telephone")
     private String telephone;
 
+    @NotNull
+    @ManyToOne
+    private Societe societeFacturation;
+
     @Embedded
     private Audit audit = new Audit();
 
@@ -93,6 +97,14 @@ public class Client implements Serializable {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Societe getSocieteFacturation() {
+        return societeFacturation;
+    }
+
+    public void setSocieteFacturation(Societe societeFacturation) {
+        this.societeFacturation = societeFacturation;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

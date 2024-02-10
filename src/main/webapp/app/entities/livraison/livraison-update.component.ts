@@ -433,10 +433,10 @@ export class LivraisonUpdateComponent implements OnInit {
     }
   }
 
-  onTransporteurChange() {
-    const transporteur: ITransporteur = this.editForm.get(['transporteur']).value;
-    if (transporteur) {
-      this.editForm.get(['societeFacturation']).setValue(transporteur.proprietaire);
+  onClientChange() {
+    const client: IClient = this.editForm.get(['client']).value;
+    if (client) {
+      this.editForm.get(['societeFacturation']).setValue(client.societeFacturation);
     }
   }
 

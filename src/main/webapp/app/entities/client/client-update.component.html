@@ -36,6 +36,13 @@
                         </small>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.client.societeFacturation" for="field_societe_facturation">Société de facturation</label>
+                    <select class="form-control" id="field_societe_facturation" name="societeFacturation" formControlName="societeFacturation">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="societeOption.id === editForm.get('societeFacturation').value?.id ? editForm.get('societeFacturation').value : societeOption" *ngFor="let societeOption of societes; trackBy: trackSocieteById">{{societeOption.nom}}</option>
+                    </select>
+                </div>
                 <jhi-alert-error></jhi-alert-error>
             </div>
             <div>

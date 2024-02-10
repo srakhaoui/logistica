@@ -18,7 +18,8 @@
       },
       "nom": "Nom",
       "adresse": "Adresse",
-      "telephone": "Telephone"
+      "telephone": "Telephone",
+      "societeFacturation": "Billing Compagny"
     }
   }
 }

@@ -50,13 +50,40 @@
                                    [loading]="transporteursLoading"
                                    formControlName="transporteur"
                                    name="transporteur"
-                                   placeholder="Recherchez par nom"
-                                   (change)="onTransporteurChange()">
+                                   placeholder="Recherchez par nom">
                         </ng-select>
                         <div
                             *ngIf="editForm.get('transporteur').invalid && (editForm.get('transporteur').dirty || editForm.get('transporteur').touched)">
                             <small class="form-text text-danger"
                                    *ngIf="editForm.get('transporteur').errors.required"
+                                   jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <label class="form-control-label" for="field_chantier">Chantier</label>
+                        <input type="text" class="form-control" name="chantier" id="field_chantier"
+                               formControlName="chantier"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col">
+                        <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
+                               for="field_client">Client</label>
+                        <ng-select [items]="clients$ | async"
+                                   [typeahead]="clientInput$"
+                                   bindLabel="nom"
+                                   [hideSelected]="true"
+                                   [loading]="clientsLoading"
+                                   formControlName="client"
+                                   name="client"
+                                   (change)="onClientChange()">
+                        </ng-select>
+                        <div
+                            *ngIf="editForm.get('client').invalid && (editForm.get('client').dirty || editForm.get('client').touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="editForm.get('client').errors.required"
                                    jhiTranslate="entity.validation.required">
                                 This field is required.
                             </small>
@@ -80,33 +107,6 @@
                                 This field is required.
                             </small>
                         </div>
-                    </div>
-                </div>
-                <div class="form-row">
-                    <div class="col">
-                        <label class="form-control-label" jhiTranslate="logisticaApp.livraison.client"
-                               for="field_client">Client</label>
-                        <ng-select [items]="clients$ | async"
-                                   [typeahead]="clientInput$"
-                                   bindLabel="nom"
-                                   [hideSelected]="true"
-                                   [loading]="clientsLoading"
-                                   formControlName="client"
-                                   name="client">
-                        </ng-select>
-                        <div
-                            *ngIf="editForm.get('client').invalid && (editForm.get('client').dirty || editForm.get('client').touched)">
-                            <small class="form-text text-danger"
-                                   *ngIf="editForm.get('client').errors.required"
-                                   jhiTranslate="entity.validation.required">
-                                This field is required.
-                            </small>
-                        </div>
-                    </div>
-                    <div class="col">
-                        <label class="form-control-label" for="field_chantier">Chantier</label>
-                        <input type="text" class="form-control" name="chantier" id="field_chantier"
-                               formControlName="chantier"/>
                     </div>
                 </div>
                 <div class="form-row">

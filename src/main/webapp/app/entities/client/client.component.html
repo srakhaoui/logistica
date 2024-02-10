@@ -22,6 +22,7 @@
             <th scope="col"  jhiSortBy="nom"><span jhiTranslate="logisticaApp.client.nom">Nom</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="adresse"><span jhiTranslate="logisticaApp.client.adresse">Adresse</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="telephone"><span jhiTranslate="logisticaApp.client.telephone">Telephone</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th scope="col"  jhiSortBy="societeFacturation"><span jhiTranslate="logisticaApp.client.societeFacturation">Société Facturation</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"></th>
             </tr>
             </thead>
@@ -31,6 +32,7 @@
                 <td>{{client.nom}}</td>
                 <td>{{client.adresse}}</td>
                 <td>{{client.telephone}}</td>
+                <td>{{client.societeFacturation.nom}}</td>
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
