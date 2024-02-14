@@ -8,7 +8,7 @@
 
         <addColumn schemaName="public"
                    tableName="client">
-            <column name="societe_facturation_id" type="bigint" defaultValue="1">
+            <column name="societe_facturation_id" type="bigint" defaultValue="2651">
                 <constraints  nullable="false" foreignKeyName="fk_societe_facturation_id" references="societe(id)" />
             </column>
         </addColumn>
