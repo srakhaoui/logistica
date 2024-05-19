@@ -18,7 +18,8 @@
       },
       "nom": "Nom",
       "adresse": "Adresse",
-      "telephone": "Téléphone"
+      "telephone": "Téléphone",
+      "ice": "ICE"
     }
   }
 }

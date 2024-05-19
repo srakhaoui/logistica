@@ -19,7 +19,8 @@ export class FournisseurUpdateComponent implements OnInit {
     id: [],
     nom: [null, [Validators.required]],
     adresse: [],
-    telephone: [null, [Validators.pattern('^0[0-9]{9}$')]]
+    telephone: [null, [Validators.pattern('^0[0-9]{9}$')]],
+    ice: [null, [Validators.required]]
   });
 
   constructor(protected fournisseurService: FournisseurService, protected activatedRoute: ActivatedRoute, private fb: FormBuilder) {}
@@ -36,7 +37,8 @@ export class FournisseurUpdateComponent implements OnInit {
       id: fournisseur.id,
       nom: fournisseur.nom,
       adresse: fournisseur.adresse,
-      telephone: fournisseur.telephone
+      telephone: fournisseur.telephone,
+      ice: fournisseur.ice
     });
   }
 
@@ -60,7 +62,8 @@ export class FournisseurUpdateComponent implements OnInit {
       id: this.editForm.get(['id']).value,
       nom: this.editForm.get(['nom']).value,
       adresse: this.editForm.get(['adresse']).value,
-      telephone: this.editForm.get(['telephone']).value
+      telephone: this.editForm.get(['telephone']).value,
+      ice: this.editForm.get(['ice']).value
     };
   }
 

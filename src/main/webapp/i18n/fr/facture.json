@@ -1,0 +1,11 @@
+{
+  "logisticaApp": {
+    "facturationRequest": {
+      "societeId": "Société de facturation",
+      "clientId": "Client"
+    },
+    "facture": {
+      "created": "Une nouvelle Facture a été créée avec l'identifiant {{ param }}"
+    }
+  }
+}

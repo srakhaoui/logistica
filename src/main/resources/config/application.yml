@@ -165,3 +165,7 @@ logistica:
       max-size: 20
   livraison:
     date-ouverture-saisie-livraison: 2020-11-01
+  facturation:
+    tva:
+      Transport: 0.14
+      Marchandise: 0.2

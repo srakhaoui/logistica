@@ -36,6 +36,17 @@
                         </small>
                     </div>
                 </div>
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="logisticaApp.fournisseur.ice" for="field_ice">ICE</label>
+                    <input type="text" class="form-control" name="telephone" id="field_ice"
+                           formControlName="ice"/>
+                    <div *ngIf="editForm.get('ice').invalid && (editForm.get('ice').dirty || editForm.get('ice').touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('ice').errors.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
                 <jhi-alert-error></jhi-alert-error>
             </div>
             <div>

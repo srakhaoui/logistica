@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet id="20240316151455-1" author="said.rakhaoui">
+        <createTable tableName="facture">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="client_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+            <column name="date_facturation" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="mois" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="annee" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="nombre_bons_livraison" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="total_quantite" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_prix_ht" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_prix_ttc" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="tva" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="remise" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(50)" defaultValue="INVALID">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createSequence cacheSize="1"
+                        cycle="false"
+                        dataType="bigint"
+                        incrementBy="1"
+                        maxValue="9223372036854775807"
+                        minValue="1"
+                        sequenceName="facture-seq"
+                        startValue="100000"/>
+        <createTable tableName="reglement">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="facturation_id" type="bigint">
+                <constraints  nullable="false" foreignKeyName="fk_reglement_facture_id" references="facture(id)" />
+            </column>
+            <column name="mode_reglement" type="varchar(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="montant" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_reglement" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="reference" type="varchar(255)">
+            </column>
+        </createTable>
+        <createSequence cacheSize="1"
+                        cycle="false"
+                        dataType="bigint"
+                        incrementBy="1"
+                        maxValue="9223372036854775807"
+                        minValue="1"
+                        sequenceName="reglement-seq"
+                        startValue="100000"/>
+
+        <createTable tableName="reglement_espece">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="montant" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_reglement" type="date">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createSequence cacheSize="1"
+                        cycle="false"
+                        dataType="bigint"
+                        incrementBy="1"
+                        maxValue="9223372036854775807"
+                        minValue="1"
+                        sequenceName="reglement-espece-seq"
+                        startValue="100000"/>
+
+        <createTable tableName="article">
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="code" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="designation" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="quantite" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="prix_unitaire_ht" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="montant" type="${floatType}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="facture_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createSequence cacheSize="1"
+                        cycle="false"
+                        dataType="bigint"
+                        incrementBy="1"
+                        maxValue="9223372036854775807"
+                        minValue="1"
+                        sequenceName="article-seq"
+                        startValue="100000"/>
+    </changeSet>
+
+    <changeSet id="20240401151455-1" author="said.rakhaoui">
+
+        <addForeignKeyConstraint baseColumnNames="client_id"
+                                 baseTableName="facture"
+                                 constraintName="fk_facture_client_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="client"/>
+        <addForeignKeyConstraint baseColumnNames="facture_id"
+                                 baseTableName="article"
+                                 constraintName="fk_article_facture_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="facture"/>
+
+        <addColumn schemaName="public" tableName="livraison">
+            <column name="facture_id" type="bigint">
+                <constraints  nullable="true" foreignKeyName="fk_facture_id" references="facture(id)" />
+            </column>
+        </addColumn>
+        <addColumn schemaName="public" tableName="livraison">
+            <column name="reglement_espece_id" type="bigint">
+                <constraints  nullable="true" foreignKeyName="fk_reglement_espece_id" references="reglement_espece(id)" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20240420111555-1" author="said.rakhaoui">
+
+        <addColumn schemaName="public" tableName="client">
+            <column name="ice" type="varchar(255)" defaultValue="To be defined">
+                <constraints  nullable="false" />
+            </column>
+        </addColumn>
+
+        <addColumn schemaName="public" tableName="fournisseur">
+            <column name="ice" type="varchar(255)" defaultValue="To be defined">
+                <constraints  nullable="false" />
+            </column>
+        </addColumn>
+    </changeSet>
+    <changeSet id="20240519160055-1" author="said.rakhaoui">
+        <addColumn tableName="facture">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="reglement">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+        <addColumn tableName="reglement_espece">
+            <column name="CREATED_BY" type="varchar(255)" defaultValue="Inconnu">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CREATED_ON" type="timestamp" defaultValueComputed="${now}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_MODIFIED_BY" type="varchar(255)">
+            </column>
+            <column name="LAST_MODIFIED_ON" type="timestamp">
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

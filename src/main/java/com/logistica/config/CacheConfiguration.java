@@ -63,6 +63,10 @@ public class CacheConfiguration {
             createCache(cm, com.logistica.domain.GasoilTransfert.class.getName());
             createCache(cm, com.logistica.domain.DepotAggregat.class.getName());
             createCache(cm, com.logistica.domain.AgregatTransfert.class.getName());
+            createCache(cm, com.logistica.domain.Facture.class.getName());
+            createCache(cm, com.logistica.domain.Article.class.getName());
+            createCache(cm, com.logistica.domain.Reglement.class.getName());
+            createCache(cm, com.logistica.domain.ReglementEspece.class.getName());
             // jhipster-needle-ehcache-add-entry
         };
     }

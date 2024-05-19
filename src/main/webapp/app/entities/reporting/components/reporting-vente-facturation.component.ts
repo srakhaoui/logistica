@@ -23,19 +23,18 @@ import { SocieteService } from 'app/entities/societe/societe.service';
   templateUrl: './reporting-vente-facturation.component.html'
 })
 export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
-
   societes: ISociete[];
 
   clients$: Observable<IClient[]>;
   clientInput$ = new Subject<string>();
-  clientsLoading:Boolean = false;
+  clientsLoading: Boolean = false;
 
   chantiers: string[] = [];
-  chantiersLoading:Boolean = false;
+  chantiersLoading: Boolean = false;
 
   produits$: Observable<IProduit[]>;
   produitInput$ = new Subject<string>();
-  produitsLoading:Boolean = false;
+  produitsLoading: Boolean = false;
 
   reportingForm = new FormGroup({
     societe: new FormControl(),
@@ -78,7 +77,7 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
     this.reverse = true;
   }
 
-  private initForm(){
+  private initForm() {
     const defaultDateDebut = moment(new Date()).startOf('month');
     this.reportingForm.get('dateDebut').setValue(defaultDateDebut);
     const defaultDateFin = moment(new Date()).endOf('month');
@@ -92,7 +91,7 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
     this.search();
   }
 
-  search(){
+  search() {
     this.isSearching = true;
     this.reportingService
       .getReportingVenteFacturation(this.buildReportingRequest())
@@ -102,9 +101,8 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
       });
   }
 
-  export(){
-    this.reportingService
-        .exportReporting(this.buildReportingRequest(), '/vente/facturation/export');
+  export() {
+    this.reportingService.exportReporting(this.buildReportingRequest(), '/vente/facturation/export');
   }
 
   private buildReportingRequest(): any {
@@ -112,26 +110,26 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
       page: this.page,
       size: this.itemsPerPage,
       sort: this.sort()
-    }
-    if(this.reportingForm.get('societe').value){
+    };
+    if (this.reportingForm.get('societe').value) {
       reportingRequest['societeId'] = this.reportingForm.get('societe').value.id;
     }
-    if(this.reportingForm.get('client').value){
+    if (this.reportingForm.get('client').value) {
       reportingRequest['clientId'] = this.reportingForm.get('client').value.id;
     }
-    if(this.reportingForm.get('chantier').value){
+    if (this.reportingForm.get('chantier').value) {
       reportingRequest['chantier'] = this.reportingForm.get('chantier').value;
     }
-    if(this.reportingForm.get('produit').value){
+    if (this.reportingForm.get('produit').value) {
       reportingRequest['produitId'] = this.reportingForm.get('produit').value.id;
     }
-    if(this.reportingForm.get('facture').value !== null){
+    if (this.reportingForm.get('facture').value !== null) {
       reportingRequest['facture'] = this.reportingForm.get('facture').value;
     }
-    if(this.reportingForm.get('dateDebut').value){
+    if (this.reportingForm.get('dateDebut').value) {
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
     }
-    if(this.reportingForm.get('dateFin').value){
+    if (this.reportingForm.get('dateFin').value) {
       reportingRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
     return reportingRequest;
@@ -152,8 +150,7 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
     this.loadAll();
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   trackSocieteById(index: number, item: ISociete) {
     return item.id;
@@ -171,28 +168,26 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  onClientChange(event){
+  onClientChange() {
     const client: IClient = this.reportingForm.get(['client']).value;
-    if(client){
+    if (client) {
       this.chantiers = [];
       this.chantiersLoading = true;
-      this.reportingService
-            .getChantiersByClient(this.buildChantiersRequest(client.id))
-            .subscribe((res: HttpResponse<string[]>) => {
-              this.chantiersLoading = false;
-              this.chantiers = Array.from(res.body);
-            });
+      this.reportingService.getChantiersByClient(this.buildChantiersRequest(client.id)).subscribe((res: HttpResponse<string[]>) => {
+        this.chantiersLoading = false;
+        this.chantiers = Array.from(res.body);
+      });
     }
   }
 
-  private buildChantiersRequest(clientIdParam: number): any{
+  private buildChantiersRequest(clientIdParam: number): any {
     const chantiersRequest = {
       clientId: clientIdParam
-    }
-    if(this.reportingForm.get('dateDebut').value){
+    };
+    if (this.reportingForm.get('dateDebut').value) {
       chantiersRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
     }
-    if(this.reportingForm.get('dateFin').value){
+    if (this.reportingForm.get('dateFin').value) {
       chantiersRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
     return chantiersRequest;
@@ -206,43 +201,45 @@ export class ReportingVenteFacturationComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadClients(){
+  private loadClients() {
     this.clients$ = concat(
-            of([]), // default items
-            this.clientInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.clientsLoading = true)),
-                switchMap(nom =>
-                    this.clientService
-                        .query({'nom.contains': nom})
-                        .pipe(map((resp: HttpResponse<IClient[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.clientsLoading = false))
-            )
+      of([]), // default items
+      this.clientInput$.pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.clientsLoading = true)),
+        switchMap(nom =>
+          this.clientService.query({ 'nom.contains': nom }).pipe(
+            map((resp: HttpResponse<IClient[]>) => resp.body),
+            catchError(() => of([]))
+          )
+        ),
+        tap(() => (this.clientsLoading = false))
+      )
     );
   }
 
-  private loadProduits(){
+  private loadProduits() {
     this.produits$ = concat(
-            of([]), // default items
-            this.produitInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.produitsLoading = true)),
-                switchMap(nom =>
-                    this.produitService
-                        .query({'code.contains': nom})
-                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.produitsLoading = false))
-            )
-        );
+      of([]), // default items
+      this.produitInput$.pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.produitsLoading = true)),
+        switchMap(nom =>
+          this.produitService.query({ 'code.contains': nom }).pipe(
+            map((resp: HttpResponse<IProduit[]>) => resp.body),
+            catchError(() => of([]))
+          )
+        ),
+        tap(() => (this.produitsLoading = false))
+      )
+    );
   }
 
-  private loadSocietes(){
+  private loadSocietes() {
     this.societeService
       .query()
       .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));

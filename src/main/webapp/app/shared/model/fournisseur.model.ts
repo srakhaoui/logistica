@@ -5,9 +5,10 @@ export interface IFournisseur {
   nom?: string;
   adresse?: string;
   telephone?: string;
+  ice?: string;
   audit?: IAudit;
 }
 
 export class Fournisseur implements IFournisseur {
-  constructor(public id?: number, public nom?: string, public adresse?: string, public telephone?: string) {}
+  constructor(public id?: number, public nom?: string, public adresse?: string, public ice?: string, public telephone?: string) {}
 }

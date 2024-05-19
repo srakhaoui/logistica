@@ -19,7 +19,8 @@
       "nom": "Nom",
       "adresse": "Adresse",
       "telephone": "Téléphone",
-      "societeFacturation": "Société Facturation"
+      "societeFacturation": "Société Facturation",
+      "ice": "ICE"
     }
   }
 }

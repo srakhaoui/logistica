@@ -99,6 +99,12 @@ public class Livraison implements ICsvConvertible, Serializable {
     @Column(name = "facture")
     private Boolean facture;
 
+    @Column(name = "facture_id")
+    private Long factureId;
+
+    @Column(name = "reglement_espece_id")
+    private Long reglementEspeceId;
+
     @NotNull
     @Column(name = "date_bon_caisse", nullable = false)
     private LocalDate dateBonCaisse;
@@ -362,6 +368,14 @@ public class Livraison implements ICsvConvertible, Serializable {
     public Livraison facture(Boolean facture) {
         this.facture = facture;
         return this;
+    }
+
+    public Long getFactureId() {
+        return factureId;
+    }
+
+    public void setFactureId(Long factureId) {
+        this.factureId = factureId;
     }
 
     public void setFacture(Boolean facture) {
@@ -710,6 +724,15 @@ public class Livraison implements ICsvConvertible, Serializable {
     public void setDepotAggregat(DepotAggregat depotAggregat) {
         this.depotAggregat = depotAggregat;
     }
+
+    public Long getReglementEspeceId() {
+        return reglementEspeceId;
+    }
+
+    public void setReglementEspeceId(Long reglementEspeceId) {
+        this.reglementEspeceId = reglementEspeceId;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

@@ -1,24 +1,26 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { Observable, Subject, of, concat } from 'rxjs';
-import { JhiEventManager, JhiParseLinks, JhiAlertService } from 'ng-jhipster';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { concat, Observable, of, Subject } from 'rxjs';
+import { JhiAlertService, JhiEventManager, JhiParseLinks } from 'ng-jhipster';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
 import { ReportingService } from '../reporting.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ISociete } from 'app/shared/model/societe.model';
 import { IClient } from 'app/shared/model/client.model';
 import { IProduit } from 'app/shared/model/produit.model';
 import { SocieteService } from 'app/entities/societe/societe.service';
 import { ProduitService } from 'app/entities/produit/produit.service';
 import { ClientService } from 'app/entities/client/client.service';
-import { startWith, debounceTime, distinctUntilChanged, tap, switchMap, catchError, map } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, finalize, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { IRecapitulatifVenteClient } from 'app/shared/model/recapitulatif-vente-client.model';
 import * as moment from 'moment';
 import { format } from 'app/shared/util/date-util';
 import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.model';
 import { ReportingBonComponent } from 'app/entities/reporting/components/reporting-bon.component';
+import { FactureService } from 'app/entities/facture/facture.service';
+import { IFacturationRequest } from 'app/shared/model/facturation-request.facture.model';
 
 @Component({
   selector: 'jhi-reporting-vente-client',
@@ -29,25 +31,27 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
 
   clients$: Observable<IClient[]>;
   clientInput$ = new Subject<string>();
-  clientsLoading:Boolean = false;
+  clientsLoading: Boolean = false;
 
   chantiers: string[] = [];
-  chantiersLoading:Boolean = false;
+  chantiersLoading: Boolean = false;
 
   produits$: Observable<IProduit[]>;
   produitInput$ = new Subject<string>();
-  produitsLoading:Boolean = false;
+  produitsLoading: Boolean = false;
+
+  activatedTab = 'livraisons';
 
   reportingForm = new FormGroup({
-      societe: new FormControl(),
-      client: new FormControl(),
-      produit: new FormControl(),
-      facture: new FormControl(),
-      typeLivraison: new FormControl(),
-      chantier: new FormControl(),
-      dateDebut: new FormControl(),
-      dateFin: new FormControl()
-    });
+    societe: new FormControl(),
+    client: new FormControl(),
+    produit: new FormControl(),
+    facture: new FormControl(),
+    typeLivraison: new FormControl(),
+    chantier: new FormControl(),
+    dateDebut: new FormControl(),
+    dateFin: new FormControl()
+  });
 
   recapitulatifs: IRecapitulatifVenteClient[];
   itemsPerPage: number;
@@ -58,11 +62,13 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   totalItems: number;
 
   isSearching: Boolean = false;
+  isBilling: Boolean = false;
 
   constructor(
     protected reportingService: ReportingService,
     protected societeService: SocieteService,
     protected clientService: ClientService,
+    protected factureService: FactureService,
     protected produitService: ProduitService,
     protected jhiAlertService: JhiAlertService,
     protected eventManager: JhiEventManager,
@@ -80,7 +86,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.reverse = true;
   }
 
-  private initForm(){
+  private initForm() {
     const defaultDateDebut = moment(new Date()).startOf('month');
     this.reportingForm.get('dateDebut').setValue(defaultDateDebut);
     const defaultDateFin = moment(new Date()).endOf('month');
@@ -90,14 +96,14 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
 
   loadAll() {
     this.societeService
-            .query()
-            .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
+      .query()
+      .subscribe((res: HttpResponse<ISociete[]>) => (this.societes = res.body), (res: HttpErrorResponse) => this.onError(res.message));
     this.loadClients();
     this.loadProduits();
     this.search();
   }
 
-  search(){
+  search() {
     this.isSearching = true;
     this.reportingService
       .getReportingVenteClient(this.buildReportingRequest())
@@ -107,45 +113,46 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
       });
   }
 
-  private loadClients(){
+  private loadClients() {
     this.clients$ = concat(
-            of([]), // default items
-            this.clientInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.clientsLoading = true)),
-                switchMap(nom =>
-                    this.clientService
-                        .query({'nom.contains': nom})
-                        .pipe(map((resp: HttpResponse<IClient[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.clientsLoading = false))
-            )
-        );
+      of([]), // default items
+      this.clientInput$.pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.clientsLoading = true)),
+        switchMap(nom =>
+          this.clientService.query({ 'nom.contains': nom }).pipe(
+            map((resp: HttpResponse<IClient[]>) => resp.body),
+            catchError(() => of([]))
+          )
+        ),
+        tap(() => (this.clientsLoading = false))
+      )
+    );
   }
 
-  private loadProduits(){
+  private loadProduits() {
     this.produits$ = concat(
-            of([]), // default items
-            this.produitInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.produitsLoading = true)),
-                switchMap(nom =>
-                    this.produitService
-                        .query({'code.contains': nom})
-                        .pipe(map((resp: HttpResponse<IProduit[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.produitsLoading = false))
-            )
-        );
+      of([]), // default items
+      this.produitInput$.pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.produitsLoading = true)),
+        switchMap(nom =>
+          this.produitService.query({ 'code.contains': nom }).pipe(
+            map((resp: HttpResponse<IProduit[]>) => resp.body),
+            catchError(() => of([]))
+          )
+        ),
+        tap(() => (this.produitsLoading = false))
+      )
+    );
   }
 
-  export(){
-    this.reportingService
-        .exportReporting(this.buildReportingRequest(), '/vente/client/export');
+  export() {
+    this.reportingService.exportReporting(this.buildReportingRequest(), '/vente/client/export');
   }
 
   private buildReportingRequest(): any {
@@ -153,29 +160,29 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
       page: this.page,
       size: this.itemsPerPage,
       sort: this.sort()
-    }
-    if(this.reportingForm.get('societe').value){
+    };
+    if (this.reportingForm.get('societe').value) {
       reportingRequest['societeId'] = this.reportingForm.get('societe').value.id;
     }
-    if(this.reportingForm.get('client').value){
+    if (this.reportingForm.get('client').value) {
       reportingRequest['clientId'] = this.reportingForm.get('client').value.id;
     }
-    if(this.reportingForm.get('produit').value){
+    if (this.reportingForm.get('produit').value) {
       reportingRequest['produitId'] = this.reportingForm.get('produit').value.id;
     }
-    if(this.reportingForm.get('typeLivraison').value){
+    if (this.reportingForm.get('typeLivraison').value) {
       reportingRequest['typeLivraison'] = this.reportingForm.get('typeLivraison').value;
     }
-    if(this.reportingForm.get('facture').value !== null){
+    if (this.reportingForm.get('facture').value !== null) {
       reportingRequest['facture'] = this.reportingForm.get('facture').value;
     }
-    if(this.reportingForm.get('chantier').value){
+    if (this.reportingForm.get('chantier').value) {
       reportingRequest['chantier'] = this.reportingForm.get('chantier').value;
     }
-    if(this.reportingForm.get('dateDebut').value){
+    if (this.reportingForm.get('dateDebut').value) {
       reportingRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
     }
-    if(this.reportingForm.get('dateFin').value){
+    if (this.reportingForm.get('dateFin').value) {
       reportingRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
     return reportingRequest;
@@ -196,8 +203,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.loadAll();
   }
 
-  ngOnDestroy() {
-  }
+  ngOnDestroy() {}
 
   trackId(index: number, item: IRecapitulatifVenteClient) {
     return item.client;
@@ -227,34 +233,32 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     }
   }
 
-  showBonLivraison(livraisonId: number){
+  showBonLivraison(livraisonId: number) {
     const modalBonRef = this.modalService.open(ReportingBonComponent);
     modalBonRef.componentInstance.livraisonId = livraisonId;
     modalBonRef.componentInstance.bonType = 'Livraison';
   }
 
-  onClientChange(event){
+  onClientChange() {
     const client: IClient = this.reportingForm.get(['client']).value;
-    if(client){
+    if (client) {
       this.chantiers = [];
       this.chantiersLoading = true;
-      this.reportingService
-            .getChantiersByClient(this.buildChantiersRequest(client.id))
-            .subscribe((res: HttpResponse<string[]>) => {
-              this.chantiersLoading = false;
-              this.chantiers = Array.from(res.body);
-            });
+      this.reportingService.getChantiersByClient(this.buildChantiersRequest(client.id)).subscribe((res: HttpResponse<string[]>) => {
+        this.chantiersLoading = false;
+        this.chantiers = Array.from(res.body);
+      });
     }
   }
 
-  private buildChantiersRequest(clientIdParam: number): any{
+  private buildChantiersRequest(clientIdParam: number): any {
     const chantiersRequest = {
       clientId: clientIdParam
-    }
-    if(this.reportingForm.get('dateDebut').value){
+    };
+    if (this.reportingForm.get('dateDebut').value) {
       chantiersRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
     }
-    if(this.reportingForm.get('dateFin').value){
+    if (this.reportingForm.get('dateFin').value) {
       chantiersRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
     return chantiersRequest;
@@ -263,4 +267,46 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   public isMarchandise(): Boolean {
     return this.reportingForm.get('typeLivraison').value === TypeLivraison.Marchandise;
   }
+
+  activateTab(tabId: string) {
+    this.activatedTab = tabId;
+  }
+
+  isActivated(tabId: string) {
+    return this.activatedTab === tabId;
+  }
+
+  private buildBillingRequest(): IFacturationRequest {
+    const facturationRequest = {};
+    if (this.reportingForm.get('societe').value) {
+      facturationRequest['societeId'] = this.reportingForm.get('societe').value.id;
+    }
+    if (this.reportingForm.get('client').value) {
+      facturationRequest['clientId'] = this.reportingForm.get('client').value.id;
+    }
+    if (this.reportingForm.get('typeLivraison').value) {
+      facturationRequest['typeLivraison'] = this.reportingForm.get('typeLivraison').value;
+    }
+    if (this.reportingForm.get('chantier').value) {
+      facturationRequest['chantier'] = this.reportingForm.get('chantier').value;
+    }
+    if (this.reportingForm.get('dateDebut').value) {
+      facturationRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
+    }
+    if (this.reportingForm.get('dateFin').value) {
+      facturationRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
+    }
+    facturationRequest['remise'] = 0;
+    return facturationRequest;
+  }
+
+  billEntirely() {
+    this.isBilling = true;
+    this.factureService
+      .facturer(this.buildBillingRequest())
+      .pipe(finalize(() => (this.isBilling = false)))
+      .subscribe();
+  }
+
+  billPartially() {}
 }

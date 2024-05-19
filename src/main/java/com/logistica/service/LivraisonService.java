@@ -85,4 +85,10 @@ public interface LivraisonService {
     List<StockDepot> getTotalAchatMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest);
 
     List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest);
+
+    List<RecapitulatifFacturationClient> getRecapitulatifFacturationClient(RecapitulatifFacturationClientRequest facturationClientRequest);
+
+    void markAsBilled(RecapitulatifFacturationClientRequest facturationClientRequest, long factureId);
+
+    void markAsPayedCash(ReglementEspeceRequest reglementRequest, long reglementEspeceId);
 }

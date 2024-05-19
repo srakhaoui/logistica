@@ -19,7 +19,8 @@
       "nom": "Nom",
       "adresse": "Adresse",
       "telephone": "Telephone",
-      "societeFacturation": "Billing Compagny"
+      "societeFacturation": "Billing Compagny",
+      "ice": "ICE"
     }
   }
 }

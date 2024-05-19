@@ -1,0 +1,11 @@
+{
+  "logisticaApp": {
+    "facturationRequest": {
+      "societeId": "Billing company",
+      "clientId": "Customer"
+    },
+    "facture": {
+      "created": "A new Depot is created with identifier {{ param }}"
+    }
+  }
+}

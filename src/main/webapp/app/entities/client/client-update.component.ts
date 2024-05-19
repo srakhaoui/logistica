@@ -24,6 +24,7 @@ export class ClientUpdateComponent implements OnInit {
     nom: [null, [Validators.required]],
     adresse: [],
     telephone: [null, [Validators.pattern('^0[0-9]{9}$')]],
+    ice: [null, [Validators.required]],
     societeFacturation: [null, [Validators.required]]
   });
 
@@ -51,6 +52,7 @@ export class ClientUpdateComponent implements OnInit {
       nom: client.nom,
       adresse: client.adresse,
       telephone: client.telephone,
+      ice: client.ice,
       societeFacturation: client.societeFacturation
     });
   }
@@ -76,6 +78,7 @@ export class ClientUpdateComponent implements OnInit {
       nom: this.editForm.get(['nom']).value,
       adresse: this.editForm.get(['adresse']).value,
       telephone: this.editForm.get(['telephone']).value,
+      ice: this.editForm.get(['ice']).value,
       societeFacturation: this.editForm.get(['societeFacturation']).value
     };
   }

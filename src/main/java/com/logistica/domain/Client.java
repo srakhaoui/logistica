@@ -37,6 +37,10 @@ public class Client implements Serializable {
     private String telephone;
 
     @NotNull
+    @Column(name = "ice", nullable = false)
+    private String ice;
+
+    @NotNull
     @ManyToOne
     private Societe societeFacturation;
 
@@ -97,6 +101,14 @@ public class Client implements Serializable {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getIce() {
+        return ice;
+    }
+
+    public void setIce(String ice) {
+        this.ice = ice;
     }
 
     public Societe getSocieteFacturation() {

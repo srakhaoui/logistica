@@ -36,6 +36,10 @@ public class Fournisseur implements Serializable {
     @Column(name = "telephone")
     private String telephone;
 
+    @NotNull
+    @Column(name = "ice", nullable = false)
+    private String ice;
+
     @Embedded
     private Audit audit = new Audit();
 
@@ -80,6 +84,14 @@ public class Fournisseur implements Serializable {
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
+    }
+
+    public String getIce() {
+        return ice;
+    }
+
+    public void setIce(String ice) {
+        this.ice = ice;
     }
 
     public String getTelephone() {

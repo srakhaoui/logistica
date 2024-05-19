@@ -459,4 +459,19 @@ public class LivraisonServiceImpl implements LivraisonService {
         return chargeGasoilParMoisMap.stream()
             .collect(Collectors.toMap(chargeGasoilParMois -> StatsUtils.getMoisAnneeAsStr(chargeGasoilParMois.getAnnee(), chargeGasoilParMois.getMois()), ChargeGasoilParMois::getChargeGasoilAsFloat));
     }
+
+    @Override
+    public List<RecapitulatifFacturationClient> getRecapitulatifFacturationClient(RecapitulatifFacturationClientRequest facturationClientRequest) {
+        return livraisonRepository.getRecapitulatifFacturationClient(facturationClientRequest.getSocieteId(), facturationClientRequest.isFacture(), facturationClientRequest.getClientId(), facturationClientRequest.getDateDebut(), facturationClientRequest.getDateFin(), facturationClientRequest.getChantier(), facturationClientRequest.getTypeLivraison(), facturationClientRequest.getMontantMax(), facturationClientRequest.isRegleEnEspece());
+    }
+
+    @Override
+    public void markAsBilled(RecapitulatifFacturationClientRequest facturationClientRequest, long factureId) {
+        livraisonRepository.markAsBilled(facturationClientRequest, factureId);
+    }
+
+    @Override
+    public void markAsPayedCash(ReglementEspeceRequest reglementRequest, long reglementEspeceId) {
+        livraisonRepository.markAsPayedCash(reglementRequest, reglementEspeceId);
+    }
 }

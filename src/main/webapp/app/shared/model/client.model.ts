@@ -7,6 +7,7 @@ export interface IClient {
   adresse?: string;
   telephone?: string;
   societeFacturation?: ISociete;
+  ice?: string;
   audit?: IAudit;
 }
 
@@ -16,6 +17,7 @@ export class Client implements IClient {
     public nom?: string,
     public adresse?: string,
     public telephone?: string,
-    public societeFacturation?: ISociete
+    public societeFacturation?: ISociete,
+    public ice?: string
   ) {}
 }

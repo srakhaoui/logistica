@@ -123,5 +123,7 @@
              relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/202402101515550000_add_SocFact_to_client.xml"
              relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/202403161315550000_add_facture_id_to_livraison.xml"
+             relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

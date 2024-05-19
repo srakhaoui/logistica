@@ -155,7 +155,7 @@ export class LivraisonUpdateComponent implements OnInit {
       prixTotalAchat: livraison.prixTotalAchat,
       quantiteConvertie: livraison.quantiteConvertie,
       type: livraison.id ? livraison.type : TypeLivraison.Transport,
-      facture: livraison.id ? livraison.facture : true,
+      facture: livraison.id ? livraison.facture : false,
       dateBonCaisse: livraison.id ? livraison.dateBonCaisse : moment(new Date()),
       reparationDivers: livraison.id ? livraison.reparationDivers : 0,
       trax: livraison.id ? livraison.trax : 0,

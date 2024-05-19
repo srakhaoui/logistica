@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Subject, Observable, of, concat } from 'rxjs';
-import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap, startWith } from 'rxjs/operators';
-import * as moment from 'moment';
+import { concat, Observable, of, Subject } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { JhiAlertService } from 'ng-jhipster';
-import { IGasoilAchatGros, GasoilAchatGros } from 'app/shared/model/gasoil-achat-gros.model';
+import { GasoilAchatGros, IGasoilAchatGros } from 'app/shared/model/gasoil-achat-gros.model';
 import { UniteGasoilGros } from 'app/shared/model/enumerations/unite-gasoil-gros.model';
 import { GasoilAchatGrosService } from './gasoil-achat-gros.service';
 import { DepotService } from 'app/entities/depot/depot.service';
@@ -29,17 +28,17 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
 
   fournisseurs$: Observable<IFournisseurGrossiste[]>;
   fournisseurInput$ = new Subject<string>();
-  fournisseursLoading:Boolean = false;
+  fournisseursLoading: Boolean = false;
 
   societes: ISociete[];
 
   produits$: Observable<ICarburant[]>;
   produitInput$ = new Subject<string>();
-  produitsLoading:Boolean = false;
+  produitsLoading: Boolean = false;
 
   depots$: Observable<IDepot[]>;
   depotInput$ = new Subject<string>();
-  depotsLoading:Boolean = false;
+  depotsLoading: Boolean = false;
 
   dateReceptionDp: any;
 
@@ -156,57 +155,60 @@ export class GasoilAchatGrosUpdateComponent implements OnInit {
     return item.id;
   }
 
-  private loadFournisseurs(){
+  private loadFournisseurs() {
     this.fournisseurs$ = concat(
-            of([]), // default items
-            this.fournisseurInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.fournisseursLoading = true)),
-                switchMap(nom =>
-                    this.fournisseurGrossisteService
-                        .query({'nom.contains': nom})
-                        .pipe(map((resp: HttpResponse<IFournisseurGrossiste[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.fournisseursLoading = false))
-            )
-        );
+      of([]), // default items
+      this.fournisseurInput$.pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.fournisseursLoading = true)),
+        switchMap(nom =>
+          this.fournisseurGrossisteService.query({ 'nom.contains': nom }).pipe(
+            map((resp: HttpResponse<IFournisseurGrossiste[]>) => resp.body),
+            catchError(() => of([]))
+          )
+        ),
+        tap(() => (this.fournisseursLoading = false))
+      )
+    );
   }
 
-  private loadProduits(){
+  private loadProduits() {
     this.produits$ = concat(
-            of([]), // default items
-            this.produitInput$.pipe(
-                startWith(''),
-                debounceTime(500),
-                distinctUntilChanged(),
-                tap(() => (this.produitsLoading = true)),
-                switchMap(nom =>
-                    this.carburantService
-                        .query({'code.contains': nom})
-                        .pipe(map((resp: HttpResponse<ICarburant[]>) => resp.body), catchError(() => of([])))
-                ),
-                tap(() => (this.produitsLoading = false))
-            )
-        );
+      of([]), // default items
+      this.produitInput$.pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.produitsLoading = true)),
+        switchMap(nom =>
+          this.carburantService.query({ 'code.contains': nom }).pipe(
+            map((resp: HttpResponse<ICarburant[]>) => resp.body),
+            catchError(() => of([]))
+          )
+        ),
+        tap(() => (this.produitsLoading = false))
+      )
+    );
   }
 
-    private loadDepots(){
-      this.depots$ = concat(
-              of([]), // default items
-              this.depotInput$.pipe(
-                  startWith(''),
-                  debounceTime(500),
-                  distinctUntilChanged(),
-                  tap(() => (this.depotsLoading = true)),
-                  switchMap(nom =>
-                      this.depotService
-                          .query({'nom.contains': nom})
-                          .pipe(map((resp: HttpResponse<IDepot[]>) => resp.body), catchError(() => of([])))
-                  ),
-                  tap(() => (this.depotsLoading = false))
-              )
-          );
-    }
+  private loadDepots() {
+    this.depots$ = concat(
+      of([]), // default items
+      this.depotInput$.pipe(
+        startWith(''),
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.depotsLoading = true)),
+        switchMap(nom =>
+          this.depotService.query({ 'nom.contains': nom }).pipe(
+            map((resp: HttpResponse<IDepot[]>) => resp.body),
+            catchError(() => of([]))
+          )
+        ),
+        tap(() => (this.depotsLoading = false))
+      )
+    );
+  }
 }
