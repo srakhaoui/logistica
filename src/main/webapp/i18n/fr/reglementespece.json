@@ -1,0 +1,21 @@
+{
+  "logisticaApp": {
+    "reglementespece": {
+      "home": {
+        "title": "Réglement en Espèce",
+        "createLabel": "Créer un nouveau Réglement en espèce",
+        "createOrEditLabel": "Créer ou éditer un Réglement en espèce",
+        "notFound": "Aucun Réglement en espèce trouvé"
+      },
+      "created": "Un nouveau Réglement en espèce a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Réglement en espèce avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Réglement en espèce avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Réglement en espèce {{ id }} ?"
+      },
+      "detail": {
+        "title": "Réglement en espèce"
+      }
+    }
+  }
+}

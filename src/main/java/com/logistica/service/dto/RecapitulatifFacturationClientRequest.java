@@ -5,21 +5,22 @@ import com.logistica.domain.enumeration.TypeLivraison;
 import java.time.LocalDate;
 
 public class RecapitulatifFacturationClientRequest {
-    private long societeId;
+    private Long societeId;
     private TypeLivraison typeLivraison;
-    private boolean facture;
-    private long clientId;
+    private Boolean facture;
+    private Long clientId;
+    private Long produitId;
     private String chantier;
     private LocalDate dateDebut;
     private LocalDate dateFin;
     private Double montantMax;
-    private boolean regleEnEspece;
+    private Boolean regleEnEspece;
 
-    public long getSocieteId() {
+    public Long getSocieteId() {
         return societeId;
     }
 
-    public void setSocieteId(long societeId) {
+    public void setSocieteId(Long societeId) {
         this.societeId = societeId;
     }
 
@@ -30,19 +31,19 @@ public class RecapitulatifFacturationClientRequest {
     public void setTypeLivraison(TypeLivraison typeLivraison) {
         this.typeLivraison = typeLivraison;
     }
-    public boolean isFacture() {
+    public Boolean isFacture() {
         return facture;
     }
 
-    public void setFacture(boolean facture) {
+    public void setFacture(Boolean facture) {
         this.facture = facture;
     }
 
-    public long getClientId() {
+    public Long getClientId() {
         return clientId;
     }
 
-    public void setClientId(long clientId) {
+    public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 
@@ -78,18 +79,27 @@ public class RecapitulatifFacturationClientRequest {
         this.montantMax = montantMax;
     }
 
-    public boolean isRegleEnEspece() {
+    public Boolean isRegleEnEspece() {
         return regleEnEspece;
     }
 
-    public void setRegleEnEspece(boolean regleEnEspece) {
+    public void setRegleEnEspece(Boolean regleEnEspece) {
         this.regleEnEspece = regleEnEspece;
+    }
+
+    public Long getProduitId() {
+        return produitId;
+    }
+
+    public void setProduitId(Long produitId) {
+        this.produitId = produitId;
     }
 
     public static RecapitulatifFacturationClientRequest from(FacturationRequest facturationRequest, boolean facture, boolean regleEnEspece){
         RecapitulatifFacturationClientRequest recapitulatifFacturationClientRequest = new RecapitulatifFacturationClientRequest();
         recapitulatifFacturationClientRequest.setSocieteId(facturationRequest.getSocieteId());
         recapitulatifFacturationClientRequest.setClientId(facturationRequest.getClientId());
+        recapitulatifFacturationClientRequest.setProduitId(facturationRequest.getProduitId());
         recapitulatifFacturationClientRequest.setFacture(facture);
         recapitulatifFacturationClientRequest.setTypeLivraison(facturationRequest.getTypeLivraison());
         recapitulatifFacturationClientRequest.setChantier(facturationRequest.getChantier());
@@ -103,6 +113,7 @@ public class RecapitulatifFacturationClientRequest {
         RecapitulatifFacturationClientRequest recapitulatifFacturationClientRequest = new RecapitulatifFacturationClientRequest();
         recapitulatifFacturationClientRequest.setSocieteId(reglementEspeceRequest.getSocieteId());
         recapitulatifFacturationClientRequest.setClientId(reglementEspeceRequest.getClientId());
+        recapitulatifFacturationClientRequest.setProduitId(reglementEspeceRequest.getProduitId());
         recapitulatifFacturationClientRequest.setFacture(facture);
         recapitulatifFacturationClientRequest.setTypeLivraison(reglementEspeceRequest.getTypeLivraison());
         recapitulatifFacturationClientRequest.setChantier(reglementEspeceRequest.getChantier());

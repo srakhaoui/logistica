@@ -3,10 +3,7 @@ package com.logistica.web.rest;
 import com.logistica.domain.Facture;
 import com.logistica.domain.Reglement;
 import com.logistica.service.FactureService;
-import com.logistica.service.dto.FacturationRequest;
-import com.logistica.service.dto.FacturationResponse;
-import com.logistica.service.dto.ValideFactureResponse;
-import com.logistica.service.dto.ValiderFactureRequest;
+import com.logistica.service.dto.*;
 import com.logistica.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -51,8 +48,8 @@ public class FactureResource {
     }
 
     @GetMapping("/factures")
-    public ResponseEntity<List<Facture>> findFactures(FacturationRequest facturationRequest, Pageable pageable) {
-        Page<Facture> page = factureService.findFactures(facturationRequest, pageable);
+    public ResponseEntity<List<Facture>> findFactures(RecapitulatifFacturationClientRequest recapitulatifFacturationClientRequest, Pageable pageable) {
+        Page<Facture> page = factureService.findFactures(recapitulatifFacturationClientRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

@@ -21,10 +21,11 @@ import { IRecapitulatifGasoilGrosAchat } from 'app/shared/model/recapitulatif-ga
 import { IRecapitulatifGasoilGros } from 'app/shared/model/recapitulatif-gasoil-gros.model';
 import { IRecapitulatifStock } from 'app/shared/model/recapitulatif-stock.model';
 import { IRecapitulatifDepotAgregatStock } from 'app/shared/model/recapitulatif-depot-agregat-stock.model';
+import { IRecapitulatifVentesClient } from 'app/shared/model/recapitulatif-ventes-client.model';
 
 type IRecapitulatifAchatsResponseType = HttpResponse<IRecapitulatifAchat[]>;
 type ILivraisonResponseType = HttpResponse<ILivraison[]>;
-type IRecapitulatifVenteClientResponseType = HttpResponse<IRecapitulatifVenteClient[]>;
+type IRecapitulatifVenteClientResponseType = HttpResponse<IRecapitulatifVentesClient>;
 type IRecapitulatifVenteChauffeurResponseType = HttpResponse<IRecapitulatifVenteChauffeur[]>;
 type IRecapitulatifVenteEfficaciteChauffeurResponseType = HttpResponse<IRecapitulatifVenteEfficaciteChauffeur[]>;
 type IRecapitulatifVenteFacturationResponseType = HttpResponse<IRecapitulatifVenteFacturation[]>;
@@ -36,8 +37,6 @@ type IRecapitulatifGasoilGrosResponseType = HttpResponse<IRecapitulatifGasoilGro
 type IRecapitulatifStocksResponseType = HttpResponse<IRecapitulatifStock[]>;
 type IChantiersResponseType = HttpResponse<string[]>;
 type IRecapitulatifDepotAgregatStockType = HttpResponse<IRecapitulatifDepotAgregatStock[]>;
-
-
 
 @Injectable({ providedIn: 'root' })
 export class ReportingService {
@@ -64,7 +63,6 @@ export class ReportingService {
       .pipe(map((res: IRecapitulatifStocksResponseType) => res));
   }
 
-
   getReportingAchatTrajet(req?: any): Observable<ILivraisonResponseType> {
     const options = createRequestOption(req);
     return this.http
@@ -75,7 +73,7 @@ export class ReportingService {
   getReportingVenteClient(req?: any): Observable<IRecapitulatifVenteClientResponseType> {
     const options = createRequestOption(req);
     return this.http
-      .get<IRecapitulatifVenteClient[]>(`${this.resourceUrl}/vente/client`, { params: options, observe: 'response' })
+      .get<IRecapitulatifVentesClient>(`${this.resourceUrl}/vente/client`, { params: options, observe: 'response' })
       .pipe(map((res: IRecapitulatifVenteClientResponseType) => this.convertRecapClientDateArrayFromServer(res)));
   }
 
@@ -87,11 +85,14 @@ export class ReportingService {
   }
 
   getReportingVenteEfficaciteChauffeur(req?: any): Observable<IRecapitulatifVenteEfficaciteChauffeurResponseType> {
-      const options = createRequestOption(req);
-      return this.http
-        .get<IRecapitulatifVenteEfficaciteChauffeur[]>(`${this.resourceUrl}/vente/chauffeur/efficacite`, { params: options, observe: 'response' })
-        .pipe(map((res: IRecapitulatifVenteEfficaciteChauffeurResponseType) => res));
-    }
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifVenteEfficaciteChauffeur[]>(`${this.resourceUrl}/vente/chauffeur/efficacite`, {
+        params: options,
+        observe: 'response'
+      })
+      .pipe(map((res: IRecapitulatifVenteEfficaciteChauffeurResponseType) => res));
+  }
 
   exportReporting(req?: any, uri?: string): void {
     const options: HttpParams = createRequestOption(req);
@@ -120,17 +121,17 @@ export class ReportingService {
   }
 
   getReportingGasoilCharges(req?: any): Observable<IRecapitulatifGasoilChargesResponseType> {
-      const options = createRequestOption(req);
-      return this.http
-        .get<IRecapitulatifChargesGasoil[]>(`${this.resourceUrlGasoil}/charges`, { params: options, observe: 'response' })
-        .pipe(map((res: IRecapitulatifGasoilChargesResponseType) => res));
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifChargesGasoil[]>(`${this.resourceUrlGasoil}/charges`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifGasoilChargesResponseType) => res));
   }
 
   getReportingGasoilGrosVente(req?: any): Observable<IRecapitulatifGasoilGrosVenteResponseType> {
-      const options = createRequestOption(req);
-      return this.http
-        .get<IRecapitulatifGasoilGrosVente[]>(`${this.resourceUrlGasoilVenteGros}/ventes`, { params: options, observe: 'response' })
-        .pipe(map((res: IRecapitulatifGasoilGrosVenteResponseType) => res));
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifGasoilGrosVente[]>(`${this.resourceUrlGasoilVenteGros}/ventes`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifGasoilGrosVenteResponseType) => res));
   }
 
   exportGasoilGrosVenteReporting(req?: any, uri?: string): void {
@@ -140,10 +141,10 @@ export class ReportingService {
   }
 
   getReportingGasoilGrosAchat(req?: any): Observable<IRecapitulatifGasoilGrosAchatResponseType> {
-      const options = createRequestOption(req);
-      return this.http
-        .get<IRecapitulatifGasoilGrosVente[]>(`${this.resourceUrlGasoilAchatGros}/achats`, { params: options, observe: 'response' })
-        .pipe(map((res: IRecapitulatifGasoilGrosAchatResponseType) => res));
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifGasoilGrosVente[]>(`${this.resourceUrlGasoilAchatGros}/achats`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifGasoilGrosAchatResponseType) => res));
   }
 
   exportGasoilGrosAchatReporting(req?: any, uri?: string): void {
@@ -153,10 +154,10 @@ export class ReportingService {
   }
 
   getReportingGasoilGros(req?: any): Observable<IRecapitulatifGasoilGrosResponseType> {
-      const options = createRequestOption(req);
-      return this.http
-        .get<IRecapitulatifGasoilGros>(`${this.resourceUrlGasoilVenteGros}/transactions`, { params: options, observe: 'response' })
-        .pipe(map((res: IRecapitulatifGasoilGrosResponseType) => res));
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifGasoilGros>(`${this.resourceUrlGasoilVenteGros}/transactions`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifGasoilGrosResponseType) => res));
   }
 
   exportGasoilGrosReporting(req?: any, uri?: string): void {
@@ -165,19 +166,18 @@ export class ReportingService {
     this.buildGetRequest(url, options);
   }
 
-
   getChantiersByClient(req?: any): Observable<IChantiersResponseType> {
-      const options = createRequestOption(req);
-      return this.http
-        .get<string[]>(`${this.resourceUrl}/client/chantiers`, { params: options, observe: 'response' })
-        .pipe(map((res: IChantiersResponseType) => res));
+    const options = createRequestOption(req);
+    return this.http
+      .get<string[]>(`${this.resourceUrl}/client/chantiers`, { params: options, observe: 'response' })
+      .pipe(map((res: IChantiersResponseType) => res));
   }
 
   getReportingDepotAgregatStock(req?: any): Observable<IRecapitulatifDepotAgregatStockType> {
-      const options = createRequestOption(req);
-      return this.http
-        .get<IRecapitulatifDepotAgregatStock[]>(`${this.resourceUrlDepotAgregat}/stocks`, { params: options, observe: 'response' })
-        .pipe(map((res: IRecapitulatifDepotAgregatStockType) => res));
+    const options = createRequestOption(req);
+    return this.http
+      .get<IRecapitulatifDepotAgregatStock[]>(`${this.resourceUrlDepotAgregat}/stocks`, { params: options, observe: 'response' })
+      .pipe(map((res: IRecapitulatifDepotAgregatStockType) => res));
   }
 
   protected convertDateArrayFromServer(res: IRecapitulatifAchatsResponseType): IRecapitulatifAchatsResponseType {
@@ -191,25 +191,29 @@ export class ReportingService {
 
   protected convertRecapClientDateArrayFromServer(res: IRecapitulatifVenteClientResponseType): IRecapitulatifVenteClientResponseType {
     if (res.body) {
-      res.body.forEach((recapitulatifVenteClient: IRecapitulatifVenteClient) => {
-        recapitulatifVenteClient.dateBonLivraison = recapitulatifVenteClient.dateBonLivraison != null ? moment(recapitulatifVenteClient.dateBonLivraison) : null;
+      res.body.recapitulatifClients.forEach((recapitulatifVenteClient: IRecapitulatifVenteClient) => {
+        recapitulatifVenteClient.dateBonLivraison =
+          recapitulatifVenteClient.dateBonLivraison != null ? moment(recapitulatifVenteClient.dateBonLivraison) : null;
       });
     }
     return res;
   }
 
-  private buildGetRequest(url, options){
+  private buildGetRequest(url, options) {
     const length = options.keys().length;
-        if(length > 0){
-          url = url.concat('?');
-          let i = 0;
-          options.keys().forEach(key => {
-             url = url.concat(key).concat('=').concat(options.get(key));
-             if(i++ < length-1){
-               url = url.concat('&');
-             }
-          });
+    if (length > 0) {
+      url = url.concat('?');
+      let i = 0;
+      options.keys().forEach(key => {
+        url = url
+          .concat(key)
+          .concat('=')
+          .concat(options.get(key));
+        if (i++ < length - 1) {
+          url = url.concat('&');
         }
-        window.open(url , '_blank');
+      });
+    }
+    window.open(url, '_blank');
   }
 }

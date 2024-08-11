@@ -238,11 +238,11 @@ public class LivraisonResource {
     }
 
     @GetMapping("/livraisons/vente/client")
-    public ResponseEntity<List<RecapitulatifClient>> getAllLivraisons(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable) {
+    public ResponseEntity<RecapitulatifVentesClient> getAllLivraisons(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable) {
         log.debug("REST request to get recapitulatifClientRequest : {}", recapitulatifClientRequest);
-        Page<RecapitulatifClient> page = livraisonService.getRecapitulatifClient(recapitulatifClientRequest, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
-        return ResponseEntity.ok().headers(headers).body(page.getContent());
+        RecapitulatifVentesClientPage recapitulatifVentesClientPage = livraisonService.getRecapitulatifClientAndMontantFacturation(recapitulatifClientRequest, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), recapitulatifVentesClientPage.getRecapitulatifClientPage());
+        return ResponseEntity.ok().headers(headers).body(RecapitulatifVentesClient.from(recapitulatifVentesClientPage));
     }
 
     @GetMapping("/livraisons/vente/client/export")

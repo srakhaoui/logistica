@@ -11,6 +11,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +58,9 @@ public class FactureService {
         List<RecapitulatifFacturationClient> recapitulatifFacturationClientList = livraisonService.getRecapitulatifFacturationClient(RecapitulatifFacturationClientRequest.from(facturationRequest, false, false));
         if(CollectionUtils.isNotEmpty(recapitulatifFacturationClientList)){
             Facture facture = getCurrentInvoiceOrBuildNewOne(facturationRequest, recapitulatifFacturationClientList);
+            if(facture.hasBeenValidated()){
+                throw new BadRequestAlertException("There is already a validated bill for the indicated period, customer and billing company", ENTITY_NAME, "facture.status.already-validated");
+            }
             facture = factureRepository.saveAndFlush(facture);
             livraisonService.markAsBilled(RecapitulatifFacturationClientRequest.from(facturationRequest, false, false), facture.getId());
             return FacturationResponse.from(facture);
@@ -78,8 +82,10 @@ public class FactureService {
     }
 
     private Facture getCurrentInvoiceOrBuildNewOne(FacturationRequest facturationRequest, List<RecapitulatifFacturationClient> recapitulatifFacturationClient) {
-        return factureRepository.findFactures(facturationRequest.getSocieteId(), facturationRequest.getClientId(), facturationRequest.getDateDebut(), facturationRequest.getDateFin(), facturationRequest.getChantier(), Pageable.unpaged())
-            .stream().findFirst().orElseGet(() -> newFacture(facturationRequest, recapitulatifFacturationClient));
+        return factureRepository
+            .getFactures(facturationRequest.getSocieteId(), false, facturationRequest.getClientId(), facturationRequest.getDateDebut(), facturationRequest.getDateFin(), facturationRequest.getChantier(), facturationRequest.getTypeLivraison(), false, facturationRequest.getProduitId(), PageRequest.of(0, 1))
+            .stream().findFirst()
+            .orElseGet(() -> newFacture(facturationRequest, recapitulatifFacturationClient));
     }
 
     private Facture newFacture(FacturationRequest facturationRequest, List<RecapitulatifFacturationClient> recapitulatifFacturationClientList) {
@@ -88,14 +94,14 @@ public class FactureService {
             .withClient(facturationRequest.getClientId())
             .withMoisAnnee(facturationRequest.getDateDebut().getMonthValue(), facturationRequest.getDateDebut().getYear())
             .withNombreBonsLivraison(recapitulatifFacturationClientList.stream().mapToLong(RecapitulatifFacturationClient::getNombreBonsLivraison).sum())
-            .withArticles(recapitulatifFacturationClientList)
             .withRemise(facturationRequest.getRemise())
+            .withArticles(recapitulatifFacturationClientList)
             .validate();
     }
 
     @Transactional(readOnly = true)
-    public Page<Facture> findFactures(FacturationRequest facturationRequest, Pageable pageable){
-        return factureRepository.findFactures(facturationRequest.getSocieteId(), facturationRequest.getClientId(), facturationRequest.getDateDebut(), facturationRequest.getDateFin(), facturationRequest.getChantier(), pageable);
+    public Page<Facture> findFactures(RecapitulatifFacturationClientRequest facturationRequest, Pageable pageable){
+        return factureRepository.getFactures(facturationRequest.getSocieteId(), facturationRequest.isFacture(), facturationRequest.getClientId(), facturationRequest.getDateDebut(), facturationRequest.getDateFin(), facturationRequest.getChantier(), facturationRequest.getTypeLivraison(), facturationRequest.isRegleEnEspece(), facturationRequest.getProduitId(), pageable);
     }
 
     public ReglementResponse reglerFacture(ReglementRequest reglementRequest){
@@ -108,13 +114,14 @@ public class FactureService {
         return reglementRepository.findReglements(facturationRequest, pageable);
     }
 
+    @Transactional
     public ReglementEspeceResponse reglerEspece(ReglementEspeceRequest reglementRequest){
         if(!isValidPeriodForCashPayment(reglementRequest.getDateDebut(), reglementRequest.getDateFin())){
             throw new BadRequestAlertException("The cash payment period is invalid", ENTITY_NAME, "reglement.espece.period.invalid");
         }
         List<RecapitulatifFacturationClient> recapitulatifFacturationClientList = livraisonService.getRecapitulatifFacturationClient(RecapitulatifFacturationClientRequest.from(reglementRequest, false, false));
         if(CollectionUtils.isNotEmpty(recapitulatifFacturationClientList)){
-            ReglementEspece reglementEspece = reglementEspeceRepository.save(ReglementEspece.of(recapitulatifFacturationClientList.stream().mapToDouble(RecapitulatifFacturationClient::getTotalPrixVente).sum()));
+            ReglementEspece reglementEspece = reglementEspeceRepository.saveAndFlush(ReglementEspece.of(recapitulatifFacturationClientList.stream().mapToDouble(RecapitulatifFacturationClient::getTotalPrixVente).sum()));
             livraisonService.markAsPayedCash(reglementRequest, reglementEspece.getId());
             return ReglementEspeceResponse.of(reglementEspece);
         }

@@ -2,10 +2,7 @@ package com.logistica.web.rest;
 
 import com.logistica.domain.Facture;
 import com.logistica.service.FactureService;
-import com.logistica.service.dto.FacturationRequest;
-import com.logistica.service.dto.FacturationResponse;
-import com.logistica.service.dto.ReglementRequest;
-import com.logistica.service.dto.ReglementResponse;
+import com.logistica.service.dto.*;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -46,8 +43,8 @@ public class ReglementResource {
     }
 
     @GetMapping("/reglements")
-    public ResponseEntity<List<Facture>> findFactures(FacturationRequest facturationRequest, Pageable pageable) {
-        Page<Facture> page = factureService.findFactures(facturationRequest, pageable);
+    public ResponseEntity<List<Facture>> findReglements(RecapitulatifFacturationClientRequest recapitulatifFacturationClientRequest, Pageable pageable) {
+        Page<Facture> page = factureService.findFactures(recapitulatifFacturationClientRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }

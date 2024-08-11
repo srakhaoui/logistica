@@ -8,25 +8,24 @@ import java.time.LocalDate;
 public class ReglementEspeceRequest {
 
     @NotNull
-    private long societeId;
+    private Long societeId;
     @NotNull
     private TypeLivraison typeLivraison;
     private String chantier;
     @NotNull
-    private long clientId;
+    private Long clientId;
+    @NotNull
+    private Long produitId;
     @NotNull
     private LocalDate dateDebut;
     @NotNull
     private LocalDate dateFin;
-    private boolean regleEnEspece;
 
-    private boolean facture;
-
-    public long getSocieteId() {
+    public Long getSocieteId() {
         return societeId;
     }
 
-    public void setSocieteId(long societeId) {
+    public void setSocieteId(Long societeId) {
         this.societeId = societeId;
     }
 
@@ -70,19 +69,10 @@ public class ReglementEspeceRequest {
         this.dateFin = dateFin;
     }
 
-    public boolean isRegleEnEspece() {
-        return regleEnEspece;
+    public Long getProduitId() {
+        return produitId;
     }
-
-    public void setRegleEnEspece(boolean regleEnEspece) {
-        this.regleEnEspece = regleEnEspece;
-    }
-
-    public boolean isFacture() {
-        return facture;
-    }
-
-    public void setFacture(boolean facture) {
-        this.facture = facture;
+    public void setProduitId(Long produitId) {
+        this.produitId = produitId;
     }
 }

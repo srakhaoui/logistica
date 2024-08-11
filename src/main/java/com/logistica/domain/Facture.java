@@ -68,7 +68,7 @@ public class Facture {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
-    private TypeFacture type = TypeFacture.AUTO;
+    private TypeFacture type;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -97,8 +97,10 @@ public class Facture {
     }
 
     public Facture(){
-        dateFacturation = LocalDate.now();
+        this.dateFacturation = LocalDate.now();
         this.status = InvoiceStatus.INVALID;
+        this.type = TypeFacture.AUTO;
+        this.remise = 0.0F;
     }
 
     public void setAudit(Audit audit) {
@@ -238,6 +240,14 @@ public class Facture {
             "}";
     }
 
+    public boolean hasNotBeenValidated(){
+        return this.status != InvoiceStatus.VALID;
+    }
+
+    public boolean hasBeenValidated(){
+        return this.status == InvoiceStatus.VALID;
+    }
+
     public static Facture newInstance(float tva){
         Facture facture = new Facture();
         facture.setTva(tva);
@@ -274,7 +284,7 @@ public class Facture {
             totalQuantite += article.getQuantite();
             totalPrixHt += article.getMontant();
         }
-        totalPrixTtc = totalPrixHt * (1 + tva);
+        totalPrixTtc = totalPrixHt * (1 - this.remise) * (1 + tva);
         return this;
     }
 

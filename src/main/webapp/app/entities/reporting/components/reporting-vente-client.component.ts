@@ -21,6 +21,10 @@ import { TypeLivraison } from 'app/shared/model/enumerations/type-livraison.mode
 import { ReportingBonComponent } from 'app/entities/reporting/components/reporting-bon.component';
 import { FactureService } from 'app/entities/facture/facture.service';
 import { IFacturationRequest } from 'app/shared/model/facturation-request.facture.model';
+import { FacturationFactureComponent } from 'app/entities/reporting/components/facturation-facture.component';
+import { IRecapitulatifVentesClient } from 'app/shared/model/recapitulatif-ventes-client.model';
+import { IFacture } from 'app/shared/model/facture.model';
+import { IReglementEspeceRequest } from 'app/shared/model/paiement-espece-request.reglement.model';
 
 @Component({
   selector: 'jhi-reporting-vente-client',
@@ -50,7 +54,8 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     typeLivraison: new FormControl(),
     chantier: new FormControl(),
     dateDebut: new FormControl(),
-    dateFin: new FormControl()
+    dateFin: new FormControl(),
+    regleEnEspece: new FormControl()
   });
 
   recapitulatifs: IRecapitulatifVenteClient[];
@@ -61,8 +66,16 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   reverse: any;
   totalItems: number;
 
+  factures: IFacture[];
+  linksFactures: any;
+  pageFactures: any;
+  totalItemsFactures: number;
+
   isSearching: Boolean = false;
   isBilling: Boolean = false;
+  isPaying: Boolean = false;
+
+  billing = { montant: 0.0, remise: 0 };
 
   constructor(
     protected reportingService: ReportingService,
@@ -82,7 +95,11 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.links = {
       last: 0
     };
-    this.predicate = 'fournisseur';
+    this.pageFactures = 0;
+    this.linksFactures = {
+      last: 0
+    };
+    this.predicate = 'id';
     this.reverse = true;
   }
 
@@ -107,7 +124,7 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.isSearching = true;
     this.reportingService
       .getReportingVenteClient(this.buildReportingRequest())
-      .subscribe((res: HttpResponse<IRecapitulatifVenteClient[]>) => {
+      .subscribe((res: HttpResponse<IRecapitulatifVentesClient>) => {
         this.isSearching = false;
         this.paginateRecapitulatifs(res.body, res.headers);
       });
@@ -185,18 +202,49 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     if (this.reportingForm.get('dateFin').value) {
       reportingRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
+    if (this.reportingForm.get('regleEnEspece').value !== null) {
+      reportingRequest['regleEnEspece'] = this.reportingForm.get('regleEnEspece').value;
+    }
     return reportingRequest;
   }
 
   reset() {
-    this.page = 0;
-    this.recapitulatifs = [];
-    this.search();
+    switch (this.activatedTab) {
+      case 'factures': {
+        this.pageFactures = 0;
+        this.factures = [];
+        this.searchFactures();
+        break;
+      }
+      case 'reglements': {
+        this.searchReglements();
+        break;
+      }
+      case 'livraisons': {
+        this.page = 0;
+        this.recapitulatifs = [];
+        this.search();
+        break;
+      }
+    }
   }
 
   loadPage(page) {
-    this.page = page;
-    this.search();
+    switch (this.activatedTab) {
+      case 'factures': {
+        this.pageFactures = page;
+        this.searchReglements();
+        break;
+      }
+      case 'reglements': {
+        break;
+      }
+      case 'livraison': {
+        this.page = page;
+        this.search();
+        break;
+      }
+    }
   }
 
   ngOnInit() {
@@ -206,6 +254,10 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
   ngOnDestroy() {}
 
   trackId(index: number, item: IRecapitulatifVenteClient) {
+    return item.client;
+  }
+
+  trackFactures(index: number, item: IFacture) {
     return item.client;
   }
 
@@ -225,11 +277,13 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     this.jhiAlertService.error(errorMessage, null, null);
   }
 
-  protected paginateRecapitulatifs(data: IRecapitulatifVenteClient[], headers: HttpHeaders) {
+  protected paginateRecapitulatifs(data: IRecapitulatifVentesClient, headers: HttpHeaders) {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
-    for (let i = 0; i < data.length; i++) {
-      this.recapitulatifs.push(data[i]);
+    this.billing['montantFacturationMax'] = data.montantFacturationMax;
+    this.billing['montantFacturationMin'] = data.montantFacturationMin;
+    for (let i = 0; i < data.recapitulatifClients.length; i++) {
+      this.recapitulatifs.push(data.recapitulatifClients[i]);
     }
   }
 
@@ -296,17 +350,111 @@ export class ReportingVenteClientComponent implements OnInit, OnDestroy {
     if (this.reportingForm.get('dateFin').value) {
       facturationRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
     }
-    facturationRequest['remise'] = 0;
+    facturationRequest['remise'] = this.billing.remise / 100;
+    facturationRequest['montant'] = this.billing.montant;
+
     return facturationRequest;
   }
 
   billEntirely() {
-    this.isBilling = true;
+    const modalBonRef = this.modalService.open(FacturationFactureComponent, { ariaLabelledBy: 'modal-basic-title' });
+    modalBonRef.componentInstance.billing = this.billing;
+    modalBonRef.componentInstance.billingEventEmitter.subscribe(billing => {
+      this.billing = billing;
+      this.isBilling = true;
+      this.factureService
+        .facturer(this.buildBillingRequest())
+        .pipe(finalize(() => (this.isBilling = false)))
+        .subscribe();
+    });
+  }
+
+  payCash() {
+    this.isPaying = true;
     this.factureService
-      .facturer(this.buildBillingRequest())
-      .pipe(finalize(() => (this.isBilling = false)))
+      .payCash(this.buildPayingCashRequest())
+      .pipe(finalize(() => (this.isPaying = false)))
       .subscribe();
   }
 
-  billPartially() {}
+  private buildPayingCashRequest(): IReglementEspeceRequest {
+    const payCashRequest = {};
+    if (this.reportingForm.get('societe').value) {
+      payCashRequest['societeId'] = this.reportingForm.get('societe').value.id;
+    }
+    if (this.reportingForm.get('client').value) {
+      payCashRequest['clientId'] = this.reportingForm.get('client').value.id;
+    }
+    if (this.reportingForm.get('produit').value) {
+      payCashRequest['produitId'] = this.reportingForm.get('produit').value.id;
+    }
+    if (this.reportingForm.get('typeLivraison').value) {
+      payCashRequest['typeLivraison'] = this.reportingForm.get('typeLivraison').value;
+    }
+    if (this.reportingForm.get('chantier').value) {
+      payCashRequest['chantier'] = this.reportingForm.get('chantier').value;
+    }
+    if (this.reportingForm.get('dateDebut').value) {
+      payCashRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
+    }
+    if (this.reportingForm.get('dateFin').value) {
+      payCashRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
+    }
+
+    return payCashRequest;
+  }
+
+  private buildFindFacturesRequest(): any {
+    const findFacturesRequest = {
+      page: this.pageFactures,
+      size: this.itemsPerPage,
+      sort: this.sort()
+    };
+    if (this.reportingForm.get('societe').value) {
+      findFacturesRequest['societeId'] = this.reportingForm.get('societe').value.id;
+    }
+    if (this.reportingForm.get('client').value) {
+      findFacturesRequest['clientId'] = this.reportingForm.get('client').value.id;
+    }
+    if (this.reportingForm.get('produit').value) {
+      findFacturesRequest['produitId'] = this.reportingForm.get('produit').value.id;
+    }
+    if (this.reportingForm.get('typeLivraison').value) {
+      findFacturesRequest['typeLivraison'] = this.reportingForm.get('typeLivraison').value;
+    }
+    if (this.reportingForm.get('facture').value) {
+      findFacturesRequest['facture'] = this.reportingForm.get('facture').value;
+    }
+    if (this.reportingForm.get('chantier').value) {
+      findFacturesRequest['chantier'] = this.reportingForm.get('chantier').value;
+    }
+    if (this.reportingForm.get('dateDebut').value) {
+      findFacturesRequest['dateDebut'] = format(this.reportingForm.get('dateDebut').value);
+    }
+    if (this.reportingForm.get('dateFin').value) {
+      findFacturesRequest['dateFin'] = format(this.reportingForm.get('dateFin').value);
+    }
+    if (this.reportingForm.get('regleEnEspece').value) {
+      findFacturesRequest['regleEnEspece'] = this.reportingForm.get('regleEnEspece').value;
+    }
+    return findFacturesRequest;
+  }
+
+  protected paginateFactures(data: IFacture[], headers: HttpHeaders) {
+    this.linksFactures = this.parseLinks.parse(headers.get('link'));
+    this.totalItemsFactures = parseInt(headers.get('X-Total-Count'), 10);
+    for (let i = 0; i < data.length; i++) {
+      this.factures.push(data[i]);
+    }
+  }
+
+  searchFactures() {
+    this.isSearching = true;
+    this.factureService.findFactures(this.buildFindFacturesRequest()).subscribe((res: HttpResponse<IFacture[]>) => {
+      this.isSearching = false;
+      this.paginateFactures(res.body, res.headers);
+    });
+  }
+
+  searchReglements() {}
 }

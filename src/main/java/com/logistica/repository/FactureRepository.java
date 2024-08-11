@@ -18,12 +18,7 @@ import java.time.LocalDate;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface FactureRepository extends JpaRepository<Facture, Long>, JpaSpecificationExecutor<Facture> {
-
-    @Query("Select distinct f From Livraison l inner join Facture f on l.factureId = f.id " +
-        "Where l.societeFacturation.id = :societeId And l.client.id = :clientId And l.dateBonLivraison >= :dateDebutLivraison And l.dateBonLivraison <= :dateFinLivraison " +
-        "And (:chantier is null Or l.chantier = :chantier)")
-    Page<Facture> findFactures(@Param("societeId") Long societeId, @Param("clientId") Long clientId, @Param("dateDebutLivraison") LocalDate dateDebutLivraison, @Param("dateFinLivraison") LocalDate dateFinLivraison, @Param("chantier") String chantier, Pageable pageable);
+public interface FactureRepository extends JpaRepository<Facture, Long>, JpaSpecificationExecutor<Facture>, FactureRepositoryCustom {
 
     @Query("Update Facture f set f.status = :status where f.id=:factureId")
     void updateStatusFacture(Long factureId, InvoiceStatus status);

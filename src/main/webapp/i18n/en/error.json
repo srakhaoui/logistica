@@ -34,6 +34,14 @@
     "depot.introuvable": "The selected tank is not found",
     "vente-gros.bon-achat-ou-depot": "you should specify the source, either provide the fuel receipt or the tank name",
     "quantite.depot.insuffisante": "Available quantity is insuffcient",
-    "depot.source.inexistant": "The source tank is not found"
+    "depot.source.inexistant": "The source tank is not found",
+    "facture.period.invalid": "The billing period must be limited to 1 month",
+    "facture.societe.invalid": "The billing company is unset",
+    "facture.client.invalid": "The billing customer is unset",
+    "facture.status.already-validated": "There is already a validated bill for the indicated period, customer and billing company",
+    "facture.moisOrAnnee.invalid": "The billing month or year is invalid",
+    "facture.numberBl.invalid": "Number of deliveries must be positive",
+    "facture.quantiteOrprix.invalid": "The billing quantity or price is invalid",
+    "facture.remise.invalid": "The billing reduction is not valid"
   }
 }

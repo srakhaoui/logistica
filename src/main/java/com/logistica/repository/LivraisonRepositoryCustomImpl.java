@@ -165,6 +165,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         final LocalDate dateDebutLivraison = recapitulatifClientRequest.getDateDebut();
         final LocalDate dateFinLivraison = recapitulatifClientRequest.getDateFin();
         boolean isMarchandise = typeLivraison == TypeLivraison.Marchandise;
+        final Boolean isRegleEnEspece = recapitulatifClientRequest.isRegleEnEspece();
 
         StringBuilder query = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifClient(l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, sum(l.quantiteVendue), l.uniteVente, sum(l.prixTotalVente), l.facture, l.chantier");
         if (isMarchandise) {
@@ -205,10 +206,12 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         if (withDateFinLivraison) {
             predicate.append(" And l.dateBonLivraison <= :dateFinLivraison");
         }
+        Optional.ofNullable(isRegleEnEspece).ifPresent(regleEnEspece -> predicate.append(String.format(" And l.reglementEspeceId is %s null", regleEnEspece ? "not" : "")));
         query.append(predicate.toString()).append(" Group by l.societeFacturation.nom, l.type, l.client.nom, l.bonLivraisonMimeType, l.dateBonLivraison, l.numeroBonLivraison, l.transporteur.matricule, l.produit.code, l.uniteVente, l.facture, l.chantier");
         if (isMarchandise) {
             query.append(", l.fournisseur.nom, l.quantiteAchetee, l.uniteAchat, l.prixTotalAchat");
         }
+
         String queryAsStr = query.toString();
         Query entityQuery = entityManager.createQuery(queryAsStr, RecapitulatifClient.class);
 
@@ -220,6 +223,7 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         Optional.ofNullable(chantier).ifPresent(aChantier -> entityQuery.setParameter("chantier", chantier));
         Optional.ofNullable(dateDebutLivraison).ifPresent(aDateDebutLivraison -> entityQuery.setParameter("dateDebutLivraison", aDateDebutLivraison));
         Optional.ofNullable(dateFinLivraison).ifPresent(aDateFinLivraison -> entityQuery.setParameter("dateFinLivraison", aDateFinLivraison));
+
 
         if (pageable.isPaged()) {
             entityQuery.setFirstResult((int) pageable.getOffset());
@@ -652,13 +656,14 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
     }
 
     @Override
-    public List<RecapitulatifFacturationClient> getRecapitulatifFacturationClient(Long societeId, Boolean facture, Long clientId, LocalDate dateDebutLivraison, LocalDate  dateFinLivraison, String chantier, TypeLivraison typeLivraison, Double montantMax, boolean regleEnEspece){
+    public List<RecapitulatifFacturationClient> getRecapitulatifFacturationClient(Long societeId, Boolean facture, Long clientId, LocalDate dateDebutLivraison, LocalDate  dateFinLivraison, String chantier, TypeLivraison typeLivraison, Double montantMax, boolean regleEnEspece, Long produitId){
         StringBuilder queryBuilder = new StringBuilder("Select new com.logistica.service.dto.RecapitulatifFacturationClient(l.produit.code, l.produit.categorie, count(l.id), sum(l.quantiteVendue), sum(l.prixTotalVente)) From Livraison l ")
             .append("Where l.societeFacturation.id = :societeId And l.facture = :facture And l.client.id = :clientId And l.dateBonLivraison >= :dateDebutLivraison And l.dateBonLivraison <= :dateFinLivraison And l.type = :typeLivraison ");
         Optional.ofNullable(chantier).ifPresent(aChantier -> queryBuilder.append(" And l.chantier = :chantier"));
         queryBuilder.append(String.format(" And l.reglementEspeceId is %s null", regleEnEspece ? "not" : ""));
-        Optional.ofNullable(montantMax).ifPresent(aMontantMax -> queryBuilder.append(" And sum(l.prixTotalVente) <= :montantMax"));
+        Optional.ofNullable(produitId).ifPresent(aProduitId -> queryBuilder.append(" And l.produit.id = :produitId"));
         queryBuilder.append(" group by l.produit.code, l.produit.categorie");
+        Optional.ofNullable(montantMax).ifPresent(aMontantMax -> queryBuilder.append(" Having sum(l.prixTotalVente) <= :montantMax"));
         TypedQuery<RecapitulatifFacturationClient> entityQuery = entityManager.createQuery(queryBuilder.toString(), RecapitulatifFacturationClient.class);
         entityQuery.setParameter("societeId", societeId);
         entityQuery.setParameter("facture", facture);
@@ -667,47 +672,71 @@ public class LivraisonRepositoryCustomImpl implements LivraisonRepositoryCustom 
         entityQuery.setParameter("dateFinLivraison", dateFinLivraison);
         entityQuery.setParameter("typeLivraison", typeLivraison);
         Optional.ofNullable(chantier).ifPresent(aChantier -> entityQuery.setParameter("chantier", chantier));
+        Optional.ofNullable(produitId).ifPresent(aProduitId -> entityQuery.setParameter("produitId", produitId));
         Optional.ofNullable(montantMax).ifPresent(aMontantMax -> entityQuery.setParameter("montantMax", montantMax));
 
         return  entityQuery.getResultList();
     }
 
     public void markAsBilled(RecapitulatifFacturationClientRequest facturationClientRequest, Long factureId){
-        StringBuilder queryBuilder = new StringBuilder("Update Livraison l set l.facture = true, l.factureId=:factureId ")
-            .append("Where l.societeFacturation.id = :societeId And l.facture = :facture And l.client.id = :clientId And l.dateBonLivraison >= :dateDebutLivraison And l.dateBonLivraison <= :dateFinLivraison And l.type = :typeLivraison ");
+        StringBuilder queryBuilder = new StringBuilder("Update livraison set facture = true, facture_id = :factureId,  reglement_espece_id = null where id in (");
+        queryBuilder.append("Select l.id From Livraison l Where l.societe_facturation_id = :societeId And l.facture = :facture And l.client_id = :clientId And l.date_bon_livraison >= :dateDebutLivraison And l.date_bon_livraison <= :dateFinLivraison And l.type = :typeLivraison ");
         Optional.ofNullable(facturationClientRequest.getChantier()).ifPresent(aChantier -> queryBuilder.append(" And l.chantier = :chantier"));
-        queryBuilder.append(String.format(" And l.reglementEspeceId is %s null", facturationClientRequest.isRegleEnEspece() ? "not" : ""));
-        Optional.ofNullable(facturationClientRequest.getMontantMax()).ifPresent(aMontantMax -> queryBuilder.append(" And sum(l.prixTotalVente) <= :montantMax"));
-        Query entityQuery = entityManager.createQuery(queryBuilder.toString());
+        Optional.ofNullable(facturationClientRequest.getProduitId()).ifPresent(aProduitId -> queryBuilder.append(" And l.produit.id = :produitId"));
+        queryBuilder.append(String.format(" And l.reglement_espece_id is %s null", facturationClientRequest.isRegleEnEspece() ? "not" : ""));
+        Optional.ofNullable(facturationClientRequest.getMontantMax()).ifPresent(aMontantMax -> queryBuilder.append(" having sum(l.prix_total_vente) <= :montantMax "));
+        queryBuilder.append(")");
+        Query entityQuery = entityManager.createNativeQuery(queryBuilder.toString());
         entityQuery.setParameter("factureId", factureId);
         entityQuery.setParameter("societeId", facturationClientRequest.getSocieteId());
         entityQuery.setParameter("facture", facturationClientRequest.isFacture());
         entityQuery.setParameter("clientId", facturationClientRequest.getClientId());
         entityQuery.setParameter("dateDebutLivraison", facturationClientRequest.getDateDebut());
         entityQuery.setParameter("dateFinLivraison", facturationClientRequest.getDateFin());
-        entityQuery.setParameter("typeLivraison", facturationClientRequest.getTypeLivraison());
+        entityQuery.setParameter("typeLivraison", facturationClientRequest.getTypeLivraison().name());
         Optional.ofNullable(facturationClientRequest.getChantier()).ifPresent(aChantier -> entityQuery.setParameter("chantier", facturationClientRequest.getChantier()));
+        Optional.ofNullable(facturationClientRequest.getProduitId()).ifPresent(aProduitId -> entityQuery.setParameter("produitId", facturationClientRequest.getProduitId()));
         Optional.ofNullable(facturationClientRequest.getMontantMax()).ifPresent(aMontantMax -> entityQuery.setParameter("montantMax", facturationClientRequest.getMontantMax()));
 
         entityQuery.executeUpdate();
     }
 
     public void markAsPayedCash(ReglementEspeceRequest reglementRequest, Long reglementEspeceId){
-        StringBuilder queryBuilder = new StringBuilder("Update Livraison l set l.facture = false, l.reglementEspeceId=:reglementEspeceId ")
+        StringBuilder queryBuilder = new StringBuilder("Update Livraison l set l.facture = false, l.factureId = null, l.reglementEspeceId=:reglementEspeceId ")
             .append("Where l.societeFacturation.id = :societeId And l.facture = :facture And l.client.id = :clientId And l.dateBonLivraison >= :dateDebutLivraison And l.dateBonLivraison <= :dateFinLivraison And l.type = :typeLivraison ");
         Optional.ofNullable(reglementRequest.getChantier()).ifPresent(aChantier -> queryBuilder.append(" And l.chantier = :chantier"));
-        queryBuilder.append(String.format(" And l.reglementEspeceId is %s null", reglementRequest.isRegleEnEspece() ? "not" : ""));
+        Optional.ofNullable(reglementRequest.getProduitId()).ifPresent(aProduitId -> queryBuilder.append(" And l.produit.id = :produitId"));
+        queryBuilder.append(" And l.reglementEspeceId is null");
 
         Query entityQuery = entityManager.createQuery(queryBuilder.toString());
         entityQuery.setParameter("reglementEspeceId", reglementEspeceId);
         entityQuery.setParameter("societeId", reglementRequest.getSocieteId());
-        entityQuery.setParameter("facture", reglementRequest.isFacture());
+        entityQuery.setParameter("facture", false);
         entityQuery.setParameter("clientId", reglementRequest.getClientId());
         entityQuery.setParameter("dateDebutLivraison", reglementRequest.getDateDebut());
         entityQuery.setParameter("dateFinLivraison", reglementRequest.getDateFin());
         entityQuery.setParameter("typeLivraison", reglementRequest.getTypeLivraison());
         Optional.ofNullable(reglementRequest.getChantier()).ifPresent(aChantier -> entityQuery.setParameter("chantier", reglementRequest.getChantier()));
+        Optional.ofNullable(reglementRequest.getProduitId()).ifPresent(aProduitId -> entityQuery.setParameter("produitId", reglementRequest.getProduitId()));
 
         entityQuery.executeUpdate();
+    }
+
+    @Override
+    public MontantFacturationMaxAndMin getMontantFacturationMaxAndMin(RecapitulatifClientRequest recapitulatifClientRequest) {
+        StringBuilder queryBuilder = new StringBuilder("Select new com.logistica.service.dto.MontantFacturationMaxAndMin(sum(l.prixTotalVente), min(l.prixTotalVente)) From Livraison l ")
+            .append("Where l.societeFacturation.id = :societeId And l.facture = :facture And l.client.id = :clientId And l.dateBonLivraison >= :dateDebutLivraison And l.dateBonLivraison <= :dateFinLivraison And l.type = :typeLivraison ");
+        Optional.ofNullable(recapitulatifClientRequest.getChantier()).ifPresent(aChantier -> queryBuilder.append(" And l.chantier = :chantier"));
+        Optional.ofNullable(recapitulatifClientRequest.isRegleEnEspece()).ifPresent(regleEnEspece -> queryBuilder.append(String.format(" And l.reglementEspeceId is %s null", regleEnEspece ? "not" : "")));
+        TypedQuery<MontantFacturationMaxAndMin> entityQuery = entityManager.createQuery(queryBuilder.toString(), MontantFacturationMaxAndMin.class);
+        entityQuery.setParameter("societeId", recapitulatifClientRequest.getSocieteId());
+        entityQuery.setParameter("facture", recapitulatifClientRequest.isFacture());
+        entityQuery.setParameter("clientId", recapitulatifClientRequest.getClientId());
+        entityQuery.setParameter("dateDebutLivraison", recapitulatifClientRequest.getDateDebut());
+        entityQuery.setParameter("dateFinLivraison", recapitulatifClientRequest.getDateFin());
+        entityQuery.setParameter("typeLivraison", recapitulatifClientRequest.getTypeLivraison());
+        Optional.ofNullable(recapitulatifClientRequest.getChantier()).ifPresent(aChantier -> entityQuery.setParameter("chantier", recapitulatifClientRequest.getChantier()));
+
+        return  entityQuery.getSingleResult();
     }
 }

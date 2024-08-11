@@ -56,6 +56,8 @@ public interface LivraisonService {
 
     Page<RecapitulatifClient> getRecapitulatifClient(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable);
 
+    RecapitulatifVentesClientPage getRecapitulatifClientAndMontantFacturation(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable);
+
     Page<RecapitulatifFacturation> getRecapitulatifFacturation(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable);
 
     Page<IRecapitulatifChauffeur> getRecapitulatifChauffeur(RecapitulatifChauffeurRequest recapitulatifChauffeurRequest, Pageable pageable);

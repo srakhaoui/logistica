@@ -24,7 +24,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/reglements/espece")
 public class ReglementEspeceResource {
 
     private final Logger log = LoggerFactory.getLogger(ReglementEspeceResource.class);
@@ -38,7 +38,7 @@ public class ReglementEspeceResource {
         this.factureService = factureService;
     }
 
-    @PostMapping("/reglementespeces")
+    @PostMapping
     public ResponseEntity<ReglementEspeceResponse> reglerEnEspece(@Valid @RequestBody ReglementEspeceRequest reglementEspeceRequest) throws URISyntaxException {
         ReglementEspeceResponse reglementEspece = factureService.reglerEspece(reglementEspeceRequest);
         if(reglementEspece.isCreated()) {
@@ -49,7 +49,7 @@ public class ReglementEspeceResource {
         return ResponseEntity.ok(reglementEspece);
     }
 
-    @GetMapping("/reglementespeces")
+    @GetMapping
     public ResponseEntity<List<ReglementEspece>> findReglementsEspece(FacturationRequest facturationRequest, Pageable pageable) {
         Page<ReglementEspece> page = factureService.findReglementsEspece(facturationRequest, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);

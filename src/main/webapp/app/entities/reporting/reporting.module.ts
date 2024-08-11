@@ -16,12 +16,43 @@ import { ReportingGasoilGrosVenteComponent } from './components/reporting-gasoil
 import { ReportingGasoilGrosAchatComponent } from './components/reporting-gasoil-gros-achat.component';
 import { ReportingGasoilGrosComponent } from './components/reporting-gasoil-gros.component';
 import { ReportingStockComponent } from './components/reporting-stock.component';
-import {ReportingDepotStockComponent} from './components/reporting-depots-stock.component';
-
+import { ReportingDepotStockComponent } from './components/reporting-depots-stock.component';
+import { FacturationFactureComponent } from 'app/entities/reporting/components/facturation-facture.component';
 
 @NgModule({
   imports: [LogisticaSharedModule, RouterModule.forChild(reportingRoute)],
-  declarations: [ReportingAchatComponent, ReportingAchatTrajetComponent, ReportingVenteClientComponent, ReportingVenteChauffeurComponent, ReportingVenteFacturationComponent, ReportingVenteCaCamionComponent, ReportingBonComponent, ReportingGasoilChargesComponent, ReportingVenteEfficaciteChauffeurComponent, ReportingGasoilGrosVenteComponent, ReportingGasoilGrosAchatComponent, ReportingGasoilGrosComponent, ReportingStockComponent, ReportingDepotStockComponent],
-  entryComponents: [ReportingAchatComponent, ReportingVenteClientComponent, ReportingVenteChauffeurComponent, ReportingVenteFacturationComponent, ReportingVenteCaCamionComponent, ReportingBonComponent, ReportingGasoilChargesComponent, ReportingVenteEfficaciteChauffeurComponent, ReportingGasoilGrosVenteComponent, ReportingGasoilGrosAchatComponent, ReportingGasoilGrosComponent, ReportingStockComponent, ReportingDepotStockComponent]
+  declarations: [
+    ReportingAchatComponent,
+    ReportingAchatTrajetComponent,
+    ReportingVenteClientComponent,
+    ReportingVenteChauffeurComponent,
+    ReportingVenteFacturationComponent,
+    ReportingVenteCaCamionComponent,
+    ReportingBonComponent,
+    ReportingGasoilChargesComponent,
+    ReportingVenteEfficaciteChauffeurComponent,
+    ReportingGasoilGrosVenteComponent,
+    ReportingGasoilGrosAchatComponent,
+    ReportingGasoilGrosComponent,
+    ReportingStockComponent,
+    ReportingDepotStockComponent,
+    FacturationFactureComponent
+  ],
+  entryComponents: [
+    ReportingAchatComponent,
+    ReportingVenteClientComponent,
+    ReportingVenteChauffeurComponent,
+    ReportingVenteFacturationComponent,
+    ReportingVenteCaCamionComponent,
+    ReportingBonComponent,
+    ReportingGasoilChargesComponent,
+    ReportingVenteEfficaciteChauffeurComponent,
+    ReportingGasoilGrosVenteComponent,
+    ReportingGasoilGrosAchatComponent,
+    ReportingGasoilGrosComponent,
+    ReportingStockComponent,
+    ReportingDepotStockComponent,
+    FacturationFactureComponent
+  ]
 })
 export class LogisticaReportingModule {}

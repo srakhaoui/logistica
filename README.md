@@ -2,6 +2,15 @@
 
 This application was generated using JHipster 6.5.1, you can find documentation and help at [https://www.jhipster.tech/documentation-archive/v6.5.1](https://www.jhipster.tech/documentation-archive/v6.5.1).
 
+## Notes
+
+- In the invoices tab you should be able to display all invoices
+- Can not create an invoice (the displayed message doesn't show the min and max amount)
+- Next:
+  - display payments
+  - validate / invalidate an invoice
+  - display invoice's payments in its tab
+
 ## Development
 
 Before you can build this project, you must install and configure the following dependencies on your machine:

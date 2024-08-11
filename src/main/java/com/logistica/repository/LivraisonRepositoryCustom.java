@@ -35,10 +35,11 @@ public interface LivraisonRepositoryCustom {
 
     List<StockDepot> getTotalVenteMarchandisesByDepotAndUnite(RecapitulatifDepotAggregatStockRequest recapitulatifDepotAggregatStockRequest);
 
-    List<RecapitulatifFacturationClient> getRecapitulatifFacturationClient(Long societeId, Boolean facture, Long clientId, LocalDate dateDebutLivraison, LocalDate  dateFinLivraison, String chantier, TypeLivraison typeLivraison, Double montantMax, boolean regleEnEspece);
+    List<RecapitulatifFacturationClient> getRecapitulatifFacturationClient(Long societeId, Boolean facture, Long clientId, LocalDate dateDebutLivraison, LocalDate  dateFinLivraison, String chantier, TypeLivraison typeLivraison, Double montantMax, boolean regleEnEspece, Long produitId);
 
     void markAsBilled(RecapitulatifFacturationClientRequest facturationClientRequest, Long factureId);
 
     void markAsPayedCash(ReglementEspeceRequest reglementRequest, Long reglementEspeceId);
 
+    MontantFacturationMaxAndMin getMontantFacturationMaxAndMin(RecapitulatifClientRequest recapitulatifClientRequest);
 }

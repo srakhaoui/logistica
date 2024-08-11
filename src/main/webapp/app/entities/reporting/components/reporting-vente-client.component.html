@@ -90,13 +90,23 @@
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
-                <select class="form-control" id="field_facture" name="facture" formControlName="facture">
-                    <option [ngValue]="null"></option>
-                    <option [ngValue]="true">Oui</option>
-                    <option [ngValue]="false">Non</option>
-                </select>
+            <div class="row">
+                <div class="col">
+                    <label class="form-control-label" for="field_facture">Factur&eacute;e</label>
+                    <select class="form-control" id="field_facture" name="facture" formControlName="facture">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="true">Oui</option>
+                        <option [ngValue]="false">Non</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label class="form-control-label" for="field_regleEnEspece">Réglé en espece</label>
+                    <select class="form-control" id="field_regleEnEspece" name="regleEnEspece" formControlName="regleEnEspece">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="true">Oui</option>
+                        <option [ngValue]="false">Non</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <br>
@@ -134,14 +144,14 @@
         <div *ngIf="isActivated('livraisons')">
             <br/>
             <div>
-                <button type="button" id="facturer-btn-total" class="btn btn-light" (click)="billEntirely()" [disabled]="isBilling || !reportingForm.get('societe').value || !reportingForm.get('client').value || reportingForm.get('facture').value!==false">
+                <button type="button" id="facturer-btn-total" class="btn btn-light" (click)="billEntirely()" [disabled]="isBilling || !reportingForm.get('societe').value || !reportingForm.get('client').value || reportingForm.get('facture').value !== false || reportingForm.get('regleEnEspece').value !== false">
                     <fa-icon *ngIf="!isBilling" [icon]="'money-bill'"></fa-icon>&nbsp;
-                    <span *ngIf="!isBilling">Facturer totalement</span>
+                    <span *ngIf="!isBilling">Facturer</span>
                     <span *ngIf="isBilling" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
-                <button type="button" id="facturer--partial" class="btn btn-light" (click)="billPartially()">
-                    <fa-icon *ngIf="!isBilling" [icon]="'money-bill'"></fa-icon>&nbsp;
-                    <span *ngIf="!isBilling">Facturer partiellement</span>
+                <button type="button" id="regler-btn-en-espece" class="btn btn-light" (click)="payCash()" [disabled]="isBilling || !reportingForm.get('societe').value || !reportingForm.get('client').value || reportingForm.get('facture').value !== false || reportingForm.get('regleEnEspece').value !== false">
+                    <fa-icon *ngIf="!isBilling" [icon]="'dollar-sign'"></fa-icon>&nbsp;
+                    <span *ngIf="!isBilling">Régler en espèce</span>
                     <span *ngIf="isBilling" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
             </div>
@@ -193,6 +203,44 @@
                     <td *ngIf="isMarchandise()">{{recapitulatif.uniteAchat}}</td>
                     <td *ngIf="isMarchandise()">{{recapitulatif.prixTotalAchat}}</td>
                 </tr>
+                </tbody>
+            </table>
+        </div>
+        <div *ngIf="isActivated('factures')">
+            <br/>
+            <table class="table table-striped" aria-describedby="page-heading">
+                <thead>
+                    <tr jhiSort [(predicate)]="predicate" [(ascending)]="reverse" [callback]="reset.bind(this)">
+                        <th scope="col"><span>N&#176; Facture</span></th>
+                        <th scope="col"><span>Créée le</span></th>
+                        <th scope="col"><span>Date</span></th>
+                        <th scope="col"><span>Nombre de BLs</span>
+                            <fa-icon [icon]="'sort'"></fa-icon>
+                        </th>
+                        <th scope="col"><span>Quantité Totale</span></th>
+                        <th scope="col"><span>Montant Total HT</span></th>
+                        <th scope="col"><span>Remise</span></th>
+                        <th scope="col"><span>TVA</span></th>
+                        <th scope="col"><span>Montant Total TTC</span></th>
+                        <th scope="col"><span>Type</span></th>
+                        <th scope="col"><span>Statut</span></th>
+                    </tr>
+                </thead>
+                <tbody infinite-scroll (scrolled)="loadPage(pageFactures + 1)" [infiniteScrollDisabled]="pageFactures >= linksFactures['last']" [infiniteScrollDistance]="0">
+                    <tr *ngFor="let facture of factures ;trackBy: trackFactures">
+                        <td>{{facture.id}}</td>
+                        <td>{{facture.dateFacturation | date:'dd MMM yyyy'}}</td>
+                        <td>{{facture.mois}}/{{facture.annee}}</td>
+                        <td>{{facture.nombreBonsLivraison}}</td>
+                        <td>{{facture.totalQuantite}}</td>
+                        <td>{{facture.totalPrixHt}}</td>
+                        <td>{{facture.remise}}</td>
+                        <td>{{facture.tva}}</td>
+                        <td>{{facture.totalPrixTtc}}</td>
+                        <td>{{facture.type}}</td>
+                        <td>{{facture.status}}</td>
+                        <td [colSpan]="4"></td>
+                    </tr>
                 </tbody>
             </table>
         </div>

@@ -1,4 +1,4 @@
-export interface IFacturationFactureResponse {
+export interface IFacturationResponse {
   factureId?: number;
   nombreBonsLivraison?: number;
   prixTtc?: number;
@@ -6,7 +6,7 @@ export interface IFacturationFactureResponse {
   id?: number;
 }
 
-export class FacturationFactureResponse implements IFacturationFactureResponse {
+export class FacturationResponse implements IFacturationResponse {
   constructor(
     public factureId?: number,
     public nombreBonsLivraison?: number,

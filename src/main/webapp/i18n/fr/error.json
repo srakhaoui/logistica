@@ -43,6 +43,14 @@
     "depot.introuvable": "Le dépôt sélectionné est introvable",
     "vente-gros.bon-achat-ou-depot": "Vous devez spécifier la source en renseignant soit le bon d'achat du gasoil ou le dépot",
     "quantite.depot.insuffisante": "La quantité du dépôt source est insuffisante",
-    "depot.source.inexistant": "Le dépôt source est inexistant"
+    "depot.source.inexistant": "Le dépôt source est inexistant",
+    "facture.period.invalid": "La période de facturation doit être limitée à un mois",
+    "facture.societe.invalid": "Vous devez sélectionner une société",
+    "facture.client.invalid": "Vous devez sélectionner un client",
+    "facture.status.already-validated": "Elle existe une facture validée pour la période, le client et la société sélectionnés",
+    "facture.moisOrAnnee.invalid": "Le mois ou l'année de la facture est invalide",
+    "facture.numberBl.invalid": "Le nombre de livraisons doit être supérieur à 0",
+    "facture.quantiteOrprix.invalid": "La quantité ou le prix de la facture est invalide",
+    "facture.remise.invalid": "La remise est invalide (elle doit être comprise en 0 et 1)"
   }
 }

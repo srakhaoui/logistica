@@ -224,6 +224,14 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     @Transactional(readOnly = true)
+    public RecapitulatifVentesClientPage getRecapitulatifClientAndMontantFacturation(RecapitulatifClientRequest recapitulatifClientRequest, Pageable pageable){
+        Page<RecapitulatifClient> recapitulatifClientPage = livraisonRepository.getRecapitulatifClient(recapitulatifClientRequest, pageable);
+        MontantFacturationMaxAndMin montantFacturationMaxAndMin = livraisonRepository.getMontantFacturationMaxAndMin(recapitulatifClientRequest);
+        return new RecapitulatifVentesClientPage(recapitulatifClientPage, montantFacturationMaxAndMin.getMontantMax(), montantFacturationMaxAndMin.getMontantMin());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Page<RecapitulatifFacturation> getRecapitulatifFacturation(RecapitulatifFacturationRequest recapitulatifFacturationRequest, Pageable pageable){
         return livraisonRepository.getRecapitulatifFacturation(recapitulatifFacturationRequest, pageable);
     }
@@ -462,7 +470,7 @@ public class LivraisonServiceImpl implements LivraisonService {
 
     @Override
     public List<RecapitulatifFacturationClient> getRecapitulatifFacturationClient(RecapitulatifFacturationClientRequest facturationClientRequest) {
-        return livraisonRepository.getRecapitulatifFacturationClient(facturationClientRequest.getSocieteId(), facturationClientRequest.isFacture(), facturationClientRequest.getClientId(), facturationClientRequest.getDateDebut(), facturationClientRequest.getDateFin(), facturationClientRequest.getChantier(), facturationClientRequest.getTypeLivraison(), facturationClientRequest.getMontantMax(), facturationClientRequest.isRegleEnEspece());
+        return  livraisonRepository.getRecapitulatifFacturationClient(facturationClientRequest.getSocieteId(), facturationClientRequest.isFacture(), facturationClientRequest.getClientId(), facturationClientRequest.getDateDebut(), facturationClientRequest.getDateFin(), facturationClientRequest.getChantier(), facturationClientRequest.getTypeLivraison(), facturationClientRequest.getMontantMax(), facturationClientRequest.isRegleEnEspece(), facturationClientRequest.getProduitId());
     }
 
     @Override

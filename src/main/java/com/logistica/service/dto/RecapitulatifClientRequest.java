@@ -13,6 +13,7 @@ public class RecapitulatifClientRequest {
     private String chantier;
     private LocalDate dateDebut;
     private LocalDate dateFin;
+    private Boolean regleEnEspece;
 
     public Long getSocieteId() {
         return societeId;
@@ -76,5 +77,13 @@ public class RecapitulatifClientRequest {
 
     public void setChantier(String chantier) {
         this.chantier = chantier;
+    }
+
+    public Boolean isRegleEnEspece() {
+        return regleEnEspece;
+    }
+
+    public void setRegleEnEspece(Boolean regleEnEspece) {
+        this.regleEnEspece = regleEnEspece;
     }
 }

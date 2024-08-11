@@ -16,6 +16,8 @@ public class FacturationRequest {
     private String chantier;
     @NotNull
     private Long clientId;
+
+    private Long produitId;
     @NotNull
     private LocalDate dateDebut;
     @NotNull
@@ -85,5 +87,13 @@ public class FacturationRequest {
 
     public void setRemise(Float remise) {
         this.remise = remise;
+    }
+
+    public Long getProduitId() {
+        return produitId;
+    }
+
+    public void setProduitId(Long produitId) {
+        this.produitId = produitId;
     }
 }
